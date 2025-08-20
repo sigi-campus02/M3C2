@@ -43,22 +43,6 @@ class BatchOrchestrator:
 
         logger.info("=== BatchOrchestrator initialisiert ===")
         logger.info("Konfigurationen: %d Jobs", len(self.configs))
-        logger.info("Strategie: %s (sample_size=%s)", type(self.strategy).__name__, str(self.sample_size))
-
-        if isinstance(self.strategy, RadiusScanStrategy):
-            logger.info(
-                "  RadiusScan: multipliers=%s min_points=%s signed=%s",
-                getattr(self.strategy, "multipliers", None),
-                getattr(self.strategy, "min_points", None),
-                getattr(self.strategy, "signed", None),
-            )
-        if isinstance(self.strategy, VoxelScanStrategy):
-            logger.info(
-                "  VoxelScan: steps=%s start_pow=%s min_points=%s",
-                getattr(self.strategy, "steps", None),
-                getattr(self.strategy, "start_pow", None),
-                getattr(self.strategy, "min_points", None),
-            )
 
     def _resolve_strategy(self, name: str, sample_size: int | None) -> ScaleStrategy:
         if name in ("radius", "radiusbased", "radius-based"):
@@ -80,16 +64,19 @@ class BatchOrchestrator:
                 logger.exception("[Job] Fehler in Job '%s' (Version %s)", cfg.folder_id, cfg.filename_ref)
 
     def _run_single(self, cfg: PipelineConfig) -> None:
-        logger.info("%s, %s, %s", cfg.folder_id, cfg.filename_mov, cfg.filename_ref)
+        logger.info("%s, %s, %s", cfg.folder_id, cfg.filename_mov, cfg.filename_ref, cfg.process_python_CC)
         start = time.perf_counter()
 
         ds, mov, ref, corepoints = self._load_data(cfg)
-        normal, projection = self._determine_scales(cfg, corepoints)
-        out_base = ds.folder
-        self._save_params(cfg, normal, projection, out_base)
-        distances, _ = self._run_m3c2(cfg, mov, ref, corepoints, normal, projection, out_base)
+        if cfg.process_python_CC == "python":
+            normal, projection = self._determine_scales(cfg, corepoints)
+            out_base = ds.folder
+            self._save_params(cfg, normal, projection, out_base)
+            distances, _ = self._run_m3c2(cfg, mov, ref, corepoints, normal, projection, out_base)
+            self._generate_visuals(cfg, mov, distances, out_base)
+
         self._compute_statistics(cfg)
-        self._generate_visuals(cfg, mov, distances, out_base)
+
 
         logger.info("[Job] %s abgeschlossen in %.3fs", cfg.folder_id, time.perf_counter() - start)
 
@@ -100,7 +87,7 @@ class BatchOrchestrator:
             cfg.filename_mov,
             cfg.filename_ref,
             cfg.mov_as_corepoints,
-            cfg.use_subsampled_corepoints,
+            cfg.use_subsampled_corepoints
         )
         mov, ref, corepoints = ds.load_points()
         logger.info(
@@ -140,7 +127,7 @@ class BatchOrchestrator:
 
     def _save_params(self, cfg: PipelineConfig, normal: float, projection: float, out_base: str) -> None:
         os.makedirs(out_base, exist_ok=True)
-        params_path = os.path.join(out_base, f"{cfg.filename_ref}_m3c2_params.txt")
+        params_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_params.txt")
         with open(params_path, "w") as f:
             f.write(f"NormalScale={normal}\nSearchScale={projection}\n")
         logger.info("[Params] gespeichert: %s", params_path)
@@ -163,11 +150,11 @@ class BatchOrchestrator:
         nan_share = float(np.isnan(distances).sum()) / n if n else 0.0
         logger.info("[Run] Punkte=%d | NaN=%.2f%% | Zeit=%.3fs", n, 100.0 * nan_share, duration)
 
-        dists_path = os.path.join(out_base, f"{cfg.filename_ref}_m3c2_distances.txt")
+        dists_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_distances.txt")
         np.savetxt(dists_path, distances, fmt="%.6f")
         logger.info("[Run] Distanzen gespeichert: %s (%d Werte, %.2f%% NaN)", dists_path, n, 100.0 * nan_share)
 
-        uncert_path = os.path.join(out_base, f"{cfg.filename_ref}_m3c2_uncertainties.txt")
+        uncert_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_uncertainties.txt")
         np.savetxt(uncert_path, uncertainties, fmt="%.6f")
         logger.info("[Run] Unsicherheiten gespeichert: %s", uncert_path)
         return distances, uncertainties
@@ -177,6 +164,7 @@ class BatchOrchestrator:
         StatisticsService.compute_m3c2_statistics(
             folder_ids=[cfg.folder_id],
             filename_ref=cfg.filename_ref,
+            process_python_CC=cfg.process_python_CC,
             out_xlsx="m3c2_stats_all.xlsx",
             sheet_name="Results",
         )
@@ -185,9 +173,9 @@ class BatchOrchestrator:
         logger.info("[Visual] Erzeuge Visualisierungen …")
         os.makedirs(out_base, exist_ok=True)
 
-        hist_path = os.path.join(out_base, f"{cfg.filename_ref}_histogram.png")
-        ply_path = os.path.join(out_base, f"{cfg.filename_ref}_colored_cloud.ply")
-        ply_valid_path = os.path.join(out_base, f"{cfg.filename_ref}_colored_cloud_validonly.ply")
+        hist_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_histogram.png")
+        ply_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud.ply")
+        ply_valid_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly.ply")
 
         VisualizationService.histogram(distances, path=hist_path)
         logger.info("[Visual] Histogram gespeichert: %s", hist_path)

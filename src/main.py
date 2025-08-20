@@ -24,7 +24,7 @@ mov_as_corepoints = True
 use_subsampled_corepoints = 1 # 1 for no subsampling, 1000 for 1000 points subsampling
 strategy = "radius"
 sample_size = 10000 # for parameter estimation, not used in radius strategy
-process_python_CC = "python" # alternative CC for CloudCompare Distance Files
+process_python_CC = "CC" # alternative CC for CloudCompare Distance Files
 
 cfgs = [
     PipelineConfig(folder, filename_mov, filename_ref, mov_as_corepoints, use_subsampled_corepoints, process_python_CC),
