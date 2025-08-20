@@ -101,7 +101,6 @@ class BatchOrchestrator:
             cfg.filename_ref,
             cfg.mov_as_corepoints,
             cfg.use_subsampled_corepoints,
-            cfg.process_python_CC,
         )
         mov, ref, corepoints = ds.load_points()
         logger.info(
@@ -141,9 +140,7 @@ class BatchOrchestrator:
 
     def _save_params(self, cfg: PipelineConfig, normal: float, projection: float, out_base: str) -> None:
         os.makedirs(out_base, exist_ok=True)
-        params_path = os.path.join(
-            out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_params.txt"
-        )
+        params_path = os.path.join(out_base, f"{cfg.filename_ref}_m3c2_params.txt")
         with open(params_path, "w") as f:
             f.write(f"NormalScale={normal}\nSearchScale={projection}\n")
         logger.info("[Params] gespeichert: %s", params_path)
@@ -166,15 +163,11 @@ class BatchOrchestrator:
         nan_share = float(np.isnan(distances).sum()) / n if n else 0.0
         logger.info("[Run] Punkte=%d | NaN=%.2f%% | Zeit=%.3fs", n, 100.0 * nan_share, duration)
 
-        dists_path = os.path.join(
-            out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_distances.txt"
-        )
+        dists_path = os.path.join(out_base, f"{cfg.filename_ref}_m3c2_distances.txt")
         np.savetxt(dists_path, distances, fmt="%.6f")
         logger.info("[Run] Distanzen gespeichert: %s (%d Werte, %.2f%% NaN)", dists_path, n, 100.0 * nan_share)
 
-        uncert_path = os.path.join(
-            out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_uncertainties.txt"
-        )
+        uncert_path = os.path.join(out_base, f"{cfg.filename_ref}_m3c2_uncertainties.txt")
         np.savetxt(uncert_path, uncertainties, fmt="%.6f")
         logger.info("[Run] Unsicherheiten gespeichert: %s", uncert_path)
         return distances, uncertainties
@@ -184,7 +177,6 @@ class BatchOrchestrator:
         StatisticsService.compute_m3c2_statistics(
             folder_ids=[cfg.folder_id],
             filename_ref=cfg.filename_ref,
-            process_python_CC=cfg.process_python_CC,
             out_xlsx="m3c2_stats_all.xlsx",
             sheet_name="Results",
         )
@@ -193,16 +185,9 @@ class BatchOrchestrator:
         logger.info("[Visual] Erzeuge Visualisierungen …")
         os.makedirs(out_base, exist_ok=True)
 
-        hist_path = os.path.join(
-            out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_histogram.png"
-        )
-        ply_path = os.path.join(
-            out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud.ply"
-        )
-        ply_valid_path = os.path.join(
-            out_base,
-            f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly.ply",
-        )
+        hist_path = os.path.join(out_base, f"{cfg.filename_ref}_histogram.png")
+        ply_path = os.path.join(out_base, f"{cfg.filename_ref}_colored_cloud.ply")
+        ply_valid_path = os.path.join(out_base, f"{cfg.filename_ref}_colored_cloud_validonly.ply")
 
         VisualizationService.histogram(distances, path=hist_path)
         logger.info("[Visual] Histogram gespeichert: %s", hist_path)

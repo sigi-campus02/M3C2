@@ -11,7 +11,7 @@ import laspy
 
 class DataSource:
     """
-    Erwartetes Layout: <folder>/{prefix}_{mov,ref}.{xyz|las|laz|ply}
+    Erwartetes Layout: <folder>/{mov,ref}.{xyz|las|laz|ply}
     Priorität:
       1) Wenn BEIDE .xyz  -> py4dgeo.read_from_xyz
       2) Wenn BEIDE .las/.laz (gemischt ok) -> py4dgeo.read_from_las
@@ -28,17 +28,9 @@ class DataSource:
             mov_as_corepoints: bool = True,
             use_subsampled_corepoints: int = 1,
             process_python_CC: str = "python") -> None:
-        """Initialisiere die Datenquelle.
-
-        Alle Dateinamen werden mit einem Präfix versehen, um zwischen
-        verschiedenen Herkunftssystemen (z.B. Python oder CloudCompare)
-        unterscheiden zu können. Der Präfix wird bereits hier in die
-        Basisnamen eingearbeitet.
-        """
         self.folder = folder
-        prefix = f"{process_python_CC}_"
-        self.mov_base = os.path.join(folder, prefix + mov_basename)
-        self.ref_base = os.path.join(folder, prefix + ref_basename)
+        self.mov_base = os.path.join(folder, mov_basename)
+        self.ref_base = os.path.join(folder, ref_basename)
         self.mov_as_corepoints = mov_as_corepoints
         self.use_subsampled_corepoints = use_subsampled_corepoints
         self.process_python_CC = process_python_CC

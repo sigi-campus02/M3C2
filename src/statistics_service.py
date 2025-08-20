@@ -211,46 +211,69 @@ class StatisticsService:
         cls,
         folder_ids: List[str],
         filename_ref: str = "",
-        process_python_CC: str = "python",
         bins: int = 256,
         range_override: Optional[Tuple[float, float]] = None,
         min_expected: Optional[float] = None,
         out_xlsx: str = "m3c2_stats_all.xlsx",
         sheet_name: str = "Results",
     ) -> pd.DataFrame:
-        """Liest je Folder {prefix}_{version}_m3c2_distances.txt und hängt die
-        Ergebnisse an eine Excel-Datei an (mit Timestamp)."""
+        """
+        Liest je Folder {version}_m3c2_distances.txt (Python) und optional CloudCompare
+        und hängt die Ergebnisse an eine Excel-Datei an (mit Timestamp).
+        Spalten: Folder | Version | Typ | ... (Metriken)
+        """
         rows: List[Dict] = []
 
         for fid in folder_ids:
-            dist_path = cls._resolve(
-                fid, f"{process_python_CC}_{filename_ref}_m3c2_distances.txt"
-            )
-            params_path = cls._resolve(
-                fid, f"{process_python_CC}_{filename_ref}_m3c2_params.txt"
-            )
-            if not os.path.exists(dist_path):
-                print(f"[Stats] Datei nicht gefunden: {dist_path}")
-                continue
-
-            values = np.loadtxt(dist_path)
-            stats = cls.calc_stats(
-                values,
-                params_path=params_path if os.path.exists(params_path) else None,
-                bins=bins,
-                range_override=range_override,
-                min_expected=min_expected,
-            )
-            rows.append(
-                {
+            # ----- Python (unsere Berechnung)
+            py_dist_path   = cls._resolve(fid, f"{filename_ref}_m3c2_distances.txt")
+            py_params_path = cls._resolve(fid, f"{filename_ref}_m3c2_params.txt")
+            if os.path.exists(py_dist_path):
+                values = np.loadtxt(py_dist_path)
+                stats = cls.calc_stats(
+                    values,
+                    params_path=py_params_path if os.path.exists(py_params_path) else None,
+                    bins=bins,
+                    range_override=range_override,
+                    min_expected=min_expected,
+                )
+                rows.append({
                     "Folder": fid,
                     "Filename_Ref": filename_ref or "",
-                    "Typ": process_python_CC,
-                    "Distances Path": dist_path,
-                    "Params Path": params_path if os.path.exists(params_path) else "",
-                    **stats,
-                }
-            )
+                    "Typ": "Python",
+                    "Distances Path": py_dist_path,
+                    "Params Path": py_params_path if os.path.exists(py_params_path) else "",
+                    **stats
+                })
+
+            # ----- CloudCompare (falls vorhanden)
+            cc_path        = cls._resolve(fid, "M3C2 output.txt")
+            cc_params_path = cls._resolve(fid, "M3C2 params.txt")
+            if os.path.exists(cc_path):
+                try:
+                    df = pd.read_csv(cc_path, sep=";")
+                    col = "M3C2 distance"
+                    if col in df.columns:
+                        values = df[col].astype(float).values
+                        stats = cls.calc_stats(
+                            values,
+                            params_path=cc_params_path if os.path.exists(cc_params_path) else None,
+                            bins=bins,
+                            range_override=range_override,
+                            min_expected=min_expected,
+                        )
+                        rows.append({
+                            "Folder": fid,
+                            "Filename_Ref": filename_ref or "",
+                            "Typ": "CC",
+                            "Distances Path": cc_path,
+                            "Params Path": cc_params_path if os.path.exists(cc_params_path) else "",
+                            **stats
+                        })
+                    else:
+                        print(f"[Stats] Spalte '{col}' fehlt in: {cc_path}")
+                except Exception as e:
+                    print(f"[Stats] Konnte CC-Datei nicht lesen für {fid}: {e}")
 
         df_result = pd.DataFrame(rows)
 
