@@ -572,7 +572,17 @@ class StatisticsService:
         nbrs = NearestNeighbors(radius=radius).fit(S)
         ind_list = nbrs.radius_neighbors(S, return_distance=False)
         vol = 4.0 / 3.0 * np.pi * (radius ** 3)
-        local_dens, rough, lin_list, pla_list, sph_list, normals = [], [], [], [], [], []
+        local_dens: List[float] = []
+        rough: List[float] = []
+        lin_list: List[float] = []
+        pla_list: List[float] = []
+        sph_list: List[float] = []
+        anis_list: List[float] = []
+        omni_list: List[float] = []
+        eigent_list: List[float] = []
+        curv_list: List[float] = []
+        vert_list: List[float] = []
+        normals: List[np.ndarray] = []
 
         for ind in ind_list:
             if ind.size < 3:
@@ -591,9 +601,27 @@ class StatisticsService:
             linearity = (evals[0] - evals[1]) / evals[0]
             planarity = (evals[1] - evals[2]) / evals[0]
             sphericity = evals[2] / evals[0]
+            anisotropy = (evals[0] - evals[2]) / evals[0]
+            omnivariance = float(np.cbrt(np.prod(evals)))
+            sum_eval = float(np.sum(evals))
+            if sum_eval > 0:
+                ratios = evals / sum_eval
+                eigenentropy = float(-np.sum(ratios * np.log(ratios + 1e-15)))
+                curvature = float(evals[2] / sum_eval)
+            else:
+                eigenentropy = np.nan
+                curvature = np.nan
+            verticality = float(
+                np.degrees(np.arccos(np.clip(np.abs(n[2]), -1.0, 1.0)))
+            )
             lin_list.append(float(linearity))
             pla_list.append(float(planarity))
             sph_list.append(float(sphericity))
+            anis_list.append(float(anisotropy))
+            omni_list.append(omnivariance)
+            eigent_list.append(eigenentropy)
+            curv_list.append(curvature)
+            vert_list.append(verticality)
             normals.append(n)
 
         def _agg(arr):
@@ -612,6 +640,11 @@ class StatisticsService:
         lin_mean, lin_med, _, _ = _agg(lin_list)
         pla_mean, pla_med, _, _ = _agg(pla_list)
         sph_mean, sph_med, _, _ = _agg(sph_list)
+        anis_mean, anis_med, _, _ = _agg(anis_list)
+        omni_mean, omni_med, _, _ = _agg(omni_list)
+        eig_mean, eig_med, _, _ = _agg(eigent_list)
+        curv_mean, curv_med, _, _ = _agg(curv_list)
+        vert_mean, vert_med, vert_q05, vert_q95 = _agg(vert_list)
 
         # Normalenkonsistenz
         normal_std_deg = np.nan
@@ -657,6 +690,18 @@ class StatisticsService:
             "Planarity Median": pla_med,
             "Sphericity Mean": sph_mean,
             "Sphericity Median": sph_med,
+            "Anisotropy Mean": anis_mean,
+            "Anisotropy Median": anis_med,
+            "Omnivariance Mean": omni_mean,
+            "Omnivariance Median": omni_med,
+            "Eigenentropy Mean": eig_mean,
+            "Eigenentropy Median": eig_med,
+            "Curvature Mean": curv_mean,
+            "Curvature Median": curv_med,
+            "Verticality Mean [deg]": vert_mean,
+            "Verticality Median [deg]": vert_med,
+            "Verticality Q05 [deg]": vert_q05,
+            "Verticality Q95 [deg]": vert_q95,
             "Normal Std Angle [deg]": normal_std_deg,
             "Radius [m]": float(radius),
             "k-NN": int(k),
