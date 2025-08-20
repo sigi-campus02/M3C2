@@ -1,30 +1,32 @@
-# BatchOrchestrator.py
+"""Batch orchestration for the M3C2 pipeline."""
+
 from __future__ import annotations
 
 import logging
 import os
 import time
-from typing import Dict, List
+from typing import List, Tuple
 
 import numpy as np
-import pandas as pd
-from pipeline_config import PipelineConfig
+
 from datasource import DataSource
-from strategies import ScaleStrategy, RadiusScanStrategy, VoxelScanStrategy, ScaleScan
-from param_estimator import ParamEstimator
 from m3c2_runner import M3C2Runner
+from param_estimator import ParamEstimator
+from pipeline_config import PipelineConfig
 from statistics_service import StatisticsService
+from strategies import (
+    RadiusScanStrategy,
+    ScaleScan,
+    ScaleStrategy,
+    VoxelScanStrategy,
+)
 from visualization_service import VisualizationService
+
+logger = logging.getLogger(__name__)
 
 
 class BatchOrchestrator:
-    """
-    - Lädt Daten (DataSource)
-    - Schätzt/übernimmt Scales (ParamEstimator + Strategy)
-    - Run mit py4dgeo (M3C2Runner)
-    - Statistiken + Visuals (Services)
-    - Loggt detailliert jeden Schritt
-    """
+    """Run the full M3C2 pipeline for a collection of configurations."""
 
     def __init__(
         self,
@@ -39,21 +41,24 @@ class BatchOrchestrator:
         logging.basicConfig(level=log_level, format="%(asctime)s [%(levelname)s] %(message)s")
         self.strategy: ScaleStrategy = self._resolve_strategy(self.strategy_name, self.sample_size)
 
-        logging.info("=== BatchOrchestrator initialisiert ===")
-        logging.info("Konfigurationen: %d Jobs", len(self.configs))
-        logging.info("Strategie: %s (sample_size=%s)", type(self.strategy).__name__, str(self.sample_size))
+        logger.info("=== BatchOrchestrator initialisiert ===")
+        logger.info("Konfigurationen: %d Jobs", len(self.configs))
+        logger.info("Strategie: %s (sample_size=%s)", type(self.strategy).__name__, str(self.sample_size))
 
-        # Zusatzinfos zur Strategie (falls vorhanden)
         if isinstance(self.strategy, RadiusScanStrategy):
-            logging.info("  RadiusScan: multipliers=%s min_points=%s signed=%s",
-                         getattr(self.strategy, "multipliers", None),
-                         getattr(self.strategy, "min_points", None),
-                         getattr(self.strategy, "signed", None))
+            logger.info(
+                "  RadiusScan: multipliers=%s min_points=%s signed=%s",
+                getattr(self.strategy, "multipliers", None),
+                getattr(self.strategy, "min_points", None),
+                getattr(self.strategy, "signed", None),
+            )
         if isinstance(self.strategy, VoxelScanStrategy):
-            logging.info("  VoxelScan: steps=%s start_pow=%s min_points=%s",
-                         getattr(self.strategy, "steps", None),
-                         getattr(self.strategy, "start_pow", None),
-                         getattr(self.strategy, "min_points", None))
+            logger.info(
+                "  VoxelScan: steps=%s start_pow=%s min_points=%s",
+                getattr(self.strategy, "steps", None),
+                getattr(self.strategy, "start_pow", None),
+                getattr(self.strategy, "min_points", None),
+            )
 
     def _resolve_strategy(self, name: str, sample_size: int | None) -> ScaleStrategy:
         if name in ("radius", "radiusbased", "radius-based"):
@@ -63,120 +68,136 @@ class BatchOrchestrator:
         raise ValueError(f"Unbekannte Strategie: {name!r}")
 
     def run_all(self) -> None:
+        """Run the pipeline for each configured dataset."""
         if not self.configs:
-            logging.warning("Keine Konfigurationen – nichts zu tun.")
+            logger.warning("Keine Konfigurationen – nichts zu tun.")
             return
 
-        stats_rows: List[Dict] = []
-
         for cfg in self.configs:
-            logging.info(f"{cfg.folder_id}, {cfg.filename_mov}, {cfg.filename_ref}")
-            t_job0 = time.perf_counter()
-
             try:
-                # 1) Daten laden
-                t0 = time.perf_counter()
-                ds = DataSource(cfg.folder_id, cfg.filename_mov, cfg.filename_ref, cfg.mov_as_corepoints, cfg.use_subsampled_corepoints)
-                mov, ref, corepoints = ds.load_points()
-
-                t1 = time.perf_counter()
-
-                logging.info("[Load] data/%s: mov=%s, ref=%s, corepoints=%s | %.3fs",
-                             cfg.folder_id,
-                             getattr(mov, "cloud", np.array([])).shape if hasattr(mov, "cloud") else "Epoch",
-                             getattr(ref, "cloud", np.array([])).shape if hasattr(ref, "cloud") else "Epoch",
-                             np.asarray(corepoints).shape,
-                             t1 - t0)
-
-                # 2) Scales bestimmen (Overrides oder Estimation)
-                if cfg.normal_override is not None and cfg.proj_override is not None:
-                    normal, projection = cfg.normal_override, cfg.proj_override
-                    logging.info("[Scales] Overrides verwendet: normal=%.6f, proj=%.6f", normal, projection)
-                else:
-                    t2 = time.perf_counter()
-                    avg = ParamEstimator.estimate_min_spacing(corepoints)
-                    logging.info("[Spacing] avg_spacing=%.6f (k=6) | %.3fs", avg, time.perf_counter() - t2)
-
-                    t3 = time.perf_counter()
-                    scans: List[ScaleScan] = ParamEstimator.scan_scales(corepoints, self.strategy, avg)
-                    t4 = time.perf_counter()
-                    logging.info("[Scan] %d Skalen evaluiert | %.3fs", len(scans), t4 - t3)
-                    # kleine Übersicht
-                    if scans:
-                        top_valid = sorted(scans, key=lambda s: s.valid_normals, reverse=True)[:5]
-                        logging.debug("  Top(valid_normals): %s",
-                                      [(round(s.scale, 6), int(s.valid_normals)) for s in top_valid])
-                        top_smooth = sorted(scans, key=lambda s: (np.nan_to_num(s.roughness, nan=np.inf)))[:5]
-                        logging.debug("  Top(min_roughness): %s",
-                                      [(round(s.scale, 6), float(s.roughness)) for s in top_smooth])
-
-                    t5 = time.perf_counter()
-                    normal, projection = ParamEstimator.select_scales(scans)
-                    logging.info("[Select] normal=%.6f, proj=%.6f | %.3fs", normal, projection, time.perf_counter() - t5)
-
-                # 2b) Parameter-Datei speichern (data/<fid>/<version>_m3c2_params.txt)  # NEW
-                out_base = ds.folder  # "data/<fid>"
-                os.makedirs(out_base, exist_ok=True)  # sicherstellen
-                params_path = os.path.join(out_base, f"{cfg.filename_ref}_m3c2_params.txt")
-                with open(params_path, "w") as f:
-                    f.write(f"NormalScale={normal}\nSearchScale={projection}\n")
-                logging.info("[Params] gespeichert: %s", params_path)   
-
-                # 3) Run
-                t6 = time.perf_counter()
-                runner = M3C2Runner()
-                distances, uncertainties = runner.run(mov, ref, corepoints, normal, projection)
-                t7 = time.perf_counter()
-                n = len(distances)
-                nan_share = float(np.isnan(distances).sum()) / n if n else 0.0
-                logging.info("[Run] Punkte=%d | NaN=%.2f%% | Zeit=%.3fs", n, 100.0 * nan_share, t7 - t6)
-
-
-                # 3b) Distanzen abspeichern                                
-                dists_path = os.path.join(out_base, f"{cfg.filename_ref}_m3c2_distances.txt")
-                np.savetxt(dists_path, distances, fmt="%.6f")
-                logging.info("[Run] Distanzen gespeichert: %s (%d Werte, %.2f%% NaN)",
-                            dists_path, n, 100.0 * nan_share)
-                
-                uncert_path = os.path.join(out_base, f"{cfg.filename_ref}_m3c2_uncertainties.txt")
-                np.savetxt(uncert_path, uncertainties, fmt="%.6f")
-                logging.info("[Run] Unsicherheiten gespeichert: %s", uncert_path)
-
-                # 4) Stats
-                logging.info("[Stats] Berechne M3C2-Statistiken …")
-                StatisticsService.compute_m3c2_statistics(
-                    folder_ids=[cfg.folder_id],
-                    filename_ref=cfg.filename_ref,
-                    out_xlsx="m3c2_stats_all.xlsx",
-                    sheet_name="Results",
-                )
-
-                # 5) Visuals
-                logging.info("[Visual] Erzeuge Visualisierungen …")
-                out_base = ds.folder  # -> "data/<fid>"
-                os.makedirs(out_base, exist_ok=True)
-
-                hist_path = os.path.join(out_base, f"{cfg.filename_ref}_histogram.png")
-                ply_path = os.path.join(out_base, f"{cfg.filename_ref}_colored_cloud.ply")
-                ply_valid_path = os.path.join(out_base, f"{cfg.filename_ref}_colored_cloud_validonly.ply")
-
-                VisualizationService.histogram(distances, path=hist_path)
-                logging.info("[Visual] Histogram gespeichert: %s", hist_path)
-
-                colors = VisualizationService.colorize(mov.cloud, distances, outply=ply_path)
-                logging.info("[Visual] Farb-PLY gespeichert: %s", ply_path)
-
-                # optional: nur gültige Punkte exportieren
-                try:
-                    VisualizationService.export_valid(mov.cloud, colors, distances, outply=ply_valid_path)
-                    logging.info("[Visual] Valid-PLY gespeichert: %s", ply_valid_path)
-                except Exception as e:
-                    logging.warning("[Visual] Export valid-only übersprungen: %s", e)
-
-                # Job-Timing
-                logging.info("[Job] %s abgeschlossen in %.3fs", cfg.folder_id, time.perf_counter() - t_job0)
-
+                self._run_single(cfg)
             except Exception:
-                logging.exception("[Job] Fehler in Job '%s' (Version %s)", cfg.folder_id, cfg.filename_ref)
-                # Weiter mit dem nächsten Job
-                continue
+                logger.exception("[Job] Fehler in Job '%s' (Version %s)", cfg.folder_id, cfg.filename_ref)
+
+    def _run_single(self, cfg: PipelineConfig) -> None:
+        logger.info("%s, %s, %s", cfg.folder_id, cfg.filename_mov, cfg.filename_ref)
+        start = time.perf_counter()
+
+        ds, mov, ref, corepoints = self._load_data(cfg)
+        normal, projection = self._determine_scales(cfg, corepoints)
+        out_base = ds.folder
+        self._save_params(cfg, normal, projection, out_base)
+        distances, _ = self._run_m3c2(cfg, mov, ref, corepoints, normal, projection, out_base)
+        self._compute_statistics(cfg)
+        self._generate_visuals(cfg, mov, distances, out_base)
+
+        logger.info("[Job] %s abgeschlossen in %.3fs", cfg.folder_id, time.perf_counter() - start)
+
+    def _load_data(self, cfg: PipelineConfig) -> Tuple[DataSource, object, object, object]:
+        t0 = time.perf_counter()
+        ds = DataSource(
+            cfg.folder_id,
+            cfg.filename_mov,
+            cfg.filename_ref,
+            cfg.mov_as_corepoints,
+            cfg.use_subsampled_corepoints,
+        )
+        mov, ref, corepoints = ds.load_points()
+        logger.info(
+            "[Load] data/%s: mov=%s, ref=%s, corepoints=%s | %.3fs",
+            cfg.folder_id,
+            getattr(mov, "cloud", np.array([])).shape if hasattr(mov, "cloud") else "Epoch",
+            getattr(ref, "cloud", np.array([])).shape if hasattr(ref, "cloud") else "Epoch",
+            np.asarray(corepoints).shape,
+            time.perf_counter() - t0,
+        )
+        return ds, mov, ref, corepoints
+
+    def _determine_scales(self, cfg: PipelineConfig, corepoints) -> Tuple[float, float]:
+        if cfg.normal_override is not None and cfg.proj_override is not None:
+            normal, projection = cfg.normal_override, cfg.proj_override
+            logger.info("[Scales] Overrides verwendet: normal=%.6f, proj=%.6f", normal, projection)
+            return normal, projection
+
+        t0 = time.perf_counter()
+        avg = ParamEstimator.estimate_min_spacing(corepoints)
+        logger.info("[Spacing] avg_spacing=%.6f (k=6) | %.3fs", avg, time.perf_counter() - t0)
+
+        t0 = time.perf_counter()
+        scans: List[ScaleScan] = ParamEstimator.scan_scales(corepoints, self.strategy, avg)
+        logger.info("[Scan] %d Skalen evaluiert | %.3fs", len(scans), time.perf_counter() - t0)
+
+        if scans:
+            top_valid = sorted(scans, key=lambda s: s.valid_normals, reverse=True)[:5]
+            logger.debug("  Top(valid_normals): %s", [(round(s.scale, 6), int(s.valid_normals)) for s in top_valid])
+            top_smooth = sorted(scans, key=lambda s: (np.nan_to_num(s.roughness, nan=np.inf)))[:5]
+            logger.debug("  Top(min_roughness): %s", [(round(s.scale, 6), float(s.roughness)) for s in top_smooth])
+
+        t0 = time.perf_counter()
+        normal, projection = ParamEstimator.select_scales(scans)
+        logger.info("[Select] normal=%.6f, proj=%.6f | %.3fs", normal, projection, time.perf_counter() - t0)
+        return normal, projection
+
+    def _save_params(self, cfg: PipelineConfig, normal: float, projection: float, out_base: str) -> None:
+        os.makedirs(out_base, exist_ok=True)
+        params_path = os.path.join(out_base, f"{cfg.filename_ref}_m3c2_params.txt")
+        with open(params_path, "w") as f:
+            f.write(f"NormalScale={normal}\nSearchScale={projection}\n")
+        logger.info("[Params] gespeichert: %s", params_path)
+
+    def _run_m3c2(
+        self,
+        cfg: PipelineConfig,
+        mov,
+        ref,
+        corepoints,
+        normal: float,
+        projection: float,
+        out_base: str,
+    ) -> Tuple[np.ndarray, np.ndarray]:
+        t0 = time.perf_counter()
+        runner = M3C2Runner()
+        distances, uncertainties = runner.run(mov, ref, corepoints, normal, projection)
+        duration = time.perf_counter() - t0
+        n = len(distances)
+        nan_share = float(np.isnan(distances).sum()) / n if n else 0.0
+        logger.info("[Run] Punkte=%d | NaN=%.2f%% | Zeit=%.3fs", n, 100.0 * nan_share, duration)
+
+        dists_path = os.path.join(out_base, f"{cfg.filename_ref}_m3c2_distances.txt")
+        np.savetxt(dists_path, distances, fmt="%.6f")
+        logger.info("[Run] Distanzen gespeichert: %s (%d Werte, %.2f%% NaN)", dists_path, n, 100.0 * nan_share)
+
+        uncert_path = os.path.join(out_base, f"{cfg.filename_ref}_m3c2_uncertainties.txt")
+        np.savetxt(uncert_path, uncertainties, fmt="%.6f")
+        logger.info("[Run] Unsicherheiten gespeichert: %s", uncert_path)
+        return distances, uncertainties
+
+    def _compute_statistics(self, cfg: PipelineConfig) -> None:
+        logger.info("[Stats] Berechne M3C2-Statistiken …")
+        StatisticsService.compute_m3c2_statistics(
+            folder_ids=[cfg.folder_id],
+            filename_ref=cfg.filename_ref,
+            out_xlsx="m3c2_stats_all.xlsx",
+            sheet_name="Results",
+        )
+
+    def _generate_visuals(self, cfg: PipelineConfig, mov, distances: np.ndarray, out_base: str) -> None:
+        logger.info("[Visual] Erzeuge Visualisierungen …")
+        os.makedirs(out_base, exist_ok=True)
+
+        hist_path = os.path.join(out_base, f"{cfg.filename_ref}_histogram.png")
+        ply_path = os.path.join(out_base, f"{cfg.filename_ref}_colored_cloud.ply")
+        ply_valid_path = os.path.join(out_base, f"{cfg.filename_ref}_colored_cloud_validonly.ply")
+
+        VisualizationService.histogram(distances, path=hist_path)
+        logger.info("[Visual] Histogram gespeichert: %s", hist_path)
+
+        colors = VisualizationService.colorize(mov.cloud, distances, outply=ply_path)
+        logger.info("[Visual] Farb-PLY gespeichert: %s", ply_path)
+
+        try:
+            VisualizationService.export_valid(mov.cloud, colors, distances, outply=ply_valid_path)
+            logger.info("[Visual] Valid-PLY gespeichert: %s", ply_valid_path)
+        except Exception as exc:
+            logger.warning("[Visual] Export valid-only übersprungen: %s", exc)
+
