@@ -50,50 +50,6 @@ class ParamEstimator:
         return scans
 
 
-    # @staticmethod
-    # def estimate_avg_spacing(points: np.ndarray, k: int = 6) -> float:
-    #     nbrs = NearestNeighbors(n_neighbors=k + 1).fit(points)
-    #     distances, _ = nbrs.kneighbors(points)
-    #     avg = float(np.mean(distances[:, 1:]))
-    #     return avg
-
-
-    # @staticmethod
-    # def select_scales(scans: List[ScaleScan]) -> Tuple[float, float]:
-    #     """
-    #     - Primär: maximale Zahl gültiger Normalen
-    #     - Sekundär: minimale mittlere Roughness
-    #     - Projection ≈ 2 × Normal; wenn eine größere gefundene Skala existiert,
-    #       nimm die nächste größere aus den Ergebnissen.
-    #     - Fallback: Median-Skala und 2× davon, wenn keine Roughness verfügbar ist.
-    #     """
-    #     if not scans:
-    #         raise ValueError("Keine Scales gefunden.")
-    #
-    #     # 1) Nur Ergebnisse mit gültiger Roughness verwenden
-    #     valid = [s for s in scans if s.roughness is not None and not np.isnan(s.roughness)]
-    #
-    #     if not valid:
-    #         # 2) Fallback: Median der vorhandenen Scales + 2×
-    #         scales_sorted = sorted(float(s.scale) for s in scans)
-    #         mid = scales_sorted[len(scales_sorted) // 2]
-    #         normal = float(mid)
-    #         projection = float(2.0 * normal)
-    #         return normal, projection
-    #
-    #     # 3) Primär nach valid_normals (absteigend), sekundär nach roughness (aufsteigend)
-    #     valid.sort(key=lambda s: (-int(s.valid_normals), float(s.roughness)))
-    #     normal = float(valid[0].scale)
-    #
-    #     # 4) Projektion: standardmäßig 2× normal;
-    #     #    falls vorhanden, nimm die nächste größere gefundene Skala als Projektion.
-    #     bigger = sorted(float(s.scale) for s in scans if float(s.scale) > normal)
-    #     projection = float(bigger[0]) if bigger else float(2.0 * normal)
-    #
-    #     return normal, projection
-
-
-
     @staticmethod
     def select_scales(scans: List[ScaleScan]) -> Tuple[float, float]:
         """

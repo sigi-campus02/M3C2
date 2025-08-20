@@ -10,5 +10,7 @@ class PipelineConfig:
     filename_ref: str
     mov_as_corepoints: bool
     use_subsampled_corepoints: int
+    process_python_CC: str
     normal_override: Optional[float] = None
     proj_override: Optional[float] = None
+

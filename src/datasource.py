@@ -21,12 +21,19 @@ class DataSource:
     """
     logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
-    def __init__(self, folder: str, mov_basename: str = "mov", ref_basename: str = "ref", mov_as_corepoints: bool = True, use_subsampled_corepoints: int = 1) -> None:
+    def __init__(
+            self, folder: str,
+            mov_basename: str = "mov",
+            ref_basename: str = "ref",
+            mov_as_corepoints: bool = True,
+            use_subsampled_corepoints: int = 1,
+            process_python_CC: str = "python") -> None:
         self.folder = folder
         self.mov_base = os.path.join(folder, mov_basename)
         self.ref_base = os.path.join(folder, ref_basename)
         self.mov_as_corepoints = mov_as_corepoints
         self.use_subsampled_corepoints = use_subsampled_corepoints
+        self.process_python_CC = process_python_CC
         os.makedirs(folder, exist_ok=True)
 
     @staticmethod
