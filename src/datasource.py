@@ -19,7 +19,6 @@ class DataSource:
       4) Sonst: pro Seite in .xyz konvertieren und read_from_xyz
     Liefert: (mov_epoch, ref_epoch, corepoints_np)
     """
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
     def __init__(
             self, folder: str,
