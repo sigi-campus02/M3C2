@@ -46,19 +46,29 @@ class BatchOrchestrator:
             return VoxelScanStrategy(sample_size=sample_size)
         raise ValueError(f"Unbekannte Strategie: {name!r}")
 
-    def run_all(self) -> None:
-        """Run the pipeline for each configured dataset."""
+    def run_all(self, run_m3c2: bool = True, run_stats: bool = True, run_visuals: bool = True) -> None:
+        """Run selected pipeline steps for each configured dataset.
+
+        Parameters
+        ----------
+        run_m3c2:
+            Execute the M3C2 algorithm and store the resulting distances.
+        run_stats:
+            Compute statistics for existing distance files.
+        run_visuals:
+            Generate histogram and colored PLYs from the distances.
+        """
         if not self.configs:
             logger.warning("Keine Konfigurationen – nichts zu tun.")
             return
 
         for cfg in self.configs:
             try:
-                self._run_single(cfg)
+                self._run_single(cfg, run_m3c2, run_stats, run_visuals)
             except Exception:
                 logger.exception("[Job] Fehler in Job '%s' (Version %s)", cfg.folder_id, cfg.filename_ref)
 
-    def _run_single(self, cfg: PipelineConfig) -> None:
+    def _run_single(self, cfg: PipelineConfig, run_m3c2: bool, run_stats: bool, run_visuals: bool) -> None:
         logger.info(
             "%s, %s, %s, %s",
             cfg.folder_id,
@@ -68,16 +78,37 @@ class BatchOrchestrator:
         )
         start = time.perf_counter()
 
-        ds, mov, ref, corepoints = self._load_data(cfg)
-        if cfg.process_python_CC == "python":
-            normal, projection = self._determine_scales(cfg, corepoints)
+        mov = ref = corepoints = None
+        out_base = cfg.folder_id
+
+        if run_m3c2 or run_visuals:
+            ds, mov, ref, corepoints = self._load_data(cfg)
             out_base = ds.folder
+
+        distances: np.ndarray | None = None
+
+        if run_m3c2 and cfg.process_python_CC == "python":
+            normal, projection = self._determine_scales(cfg, corepoints)
             self._save_params(cfg, normal, projection, out_base)
-            distances, _ = self._run_m3c2(cfg, mov, ref, corepoints, normal, projection, out_base)
-            self._generate_visuals(cfg, mov, distances, out_base)
+            distances, _ = self._run_m3c2(
+                cfg, mov, ref, corepoints, normal, projection, out_base
+            )
 
-        self._compute_statistics(cfg)
+        if run_visuals and cfg.process_python_CC == "python":
+            if distances is None:
+                dists_path = os.path.join(
+                    out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_distances.txt"
+                )
+                try:
+                    distances = np.loadtxt(dists_path)
+                except Exception as exc:
+                    logger.error("[Visual] Distanzdatei fehlt oder fehlerhaft: %s", exc)
+                    distances = None
+            if distances is not None and mov is not None:
+                self._generate_visuals(cfg, mov, distances, out_base)
 
+        if run_stats:
+            self._compute_statistics(cfg)
 
         logger.info("[Job] %s abgeschlossen in %.3fs", cfg.folder_id, time.perf_counter() - start)
 
