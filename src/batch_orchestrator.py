@@ -30,12 +30,10 @@ class BatchOrchestrator:
         configs: List[PipelineConfig],
         strategy: str,
         sample_size: int | None = None,
-        log_level: int = logging.INFO,
     ) -> None:
         self.configs = configs
         self.strategy_name = strategy.lower().strip()
         self.sample_size = sample_size
-        logging.basicConfig(level=log_level, format="%(asctime)s [%(levelname)s] %(message)s")
         self.strategy: ScaleStrategy = self._resolve_strategy(self.strategy_name, self.sample_size)
 
         logger.info("=== BatchOrchestrator initialisiert ===")
