@@ -1,14 +1,11 @@
 """Batch orchestration for the M3C2 pipeline."""
 
 from __future__ import annotations
-
 import logging
 import os
 import time
 from typing import List, Tuple
-
 import numpy as np
-
 from datasource import DataSource
 from m3c2_runner import M3C2Runner
 from param_estimator import ParamEstimator
@@ -132,16 +129,9 @@ class BatchOrchestrator:
             f.write(f"NormalScale={normal}\nSearchScale={projection}\n")
         logger.info("[Params] gespeichert: %s", params_path)
 
-    def _run_m3c2(
-        self,
-        cfg: PipelineConfig,
-        mov,
-        ref,
-        corepoints,
-        normal: float,
-        projection: float,
-        out_base: str,
+    def _run_m3c2(self, cfg: PipelineConfig, mov, ref, corepoints, normal: float, projection: float, out_base: str,
     ) -> Tuple[np.ndarray, np.ndarray]:
+
         t0 = time.perf_counter()
         runner = M3C2Runner()
         distances, uncertainties = runner.run(mov, ref, corepoints, normal, projection)
@@ -157,6 +147,7 @@ class BatchOrchestrator:
         uncert_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_uncertainties.txt")
         np.savetxt(uncert_path, uncertainties, fmt="%.6f")
         logger.info("[Run] Unsicherheiten gespeichert: %s", uncert_path)
+
         return distances, uncertainties
 
     def _compute_statistics(self, cfg: PipelineConfig) -> None:
