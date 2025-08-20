@@ -1,12 +1,6 @@
-import numpy as np
-
 from batch_orchestrator import BatchOrchestrator
 from pipeline_config import PipelineConfig
-from pathlib import Path
-import py4dgeo
-from datasource import DataSource
 import os
-import matplotlib.pyplot as plt
 from logging_utils import setup_logging
 
 
