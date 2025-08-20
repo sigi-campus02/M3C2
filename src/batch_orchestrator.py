@@ -69,15 +69,15 @@ class BatchOrchestrator:
         start = time.perf_counter()
 
         ds, mov, ref, corepoints = self._load_data(cfg)
-        if cfg.process_python_CC == "python":
+        if cfg.process_python_CC == "python" and not cfg.only_stats:
+            # Nur ausführen, wenn nicht nur Statistiken berechnet werden sollen
             normal, projection = self._determine_scales(cfg, corepoints)
             out_base = ds.folder
             self._save_params(cfg, normal, projection, out_base)
             distances, _ = self._run_m3c2(cfg, mov, ref, corepoints, normal, projection, out_base)
             self._generate_visuals(cfg, mov, distances, out_base)
 
-        self._compute_statistics(cfg)
-
+        self._compute_statistics(cfg, ref)
 
         logger.info("[Job] %s abgeschlossen in %.3fs", cfg.folder_id, time.perf_counter() - start)
 
@@ -154,15 +154,32 @@ class BatchOrchestrator:
 
         return distances, uncertainties
 
-    def _compute_statistics(self, cfg: PipelineConfig) -> None:
-        logger.info("[Stats] Berechne M3C2-Statistiken …")
-        StatisticsService.compute_m3c2_statistics(
-            folder_ids=[cfg.folder_id],
-            filename_ref=cfg.filename_ref,
-            process_python_CC=cfg.process_python_CC,
-            out_xlsx="m3c2_stats_all.xlsx",
-            sheet_name="Results",
-        )
+    def _compute_statistics(self, cfg: PipelineConfig, ref) -> None:
+        if cfg.stats_singleordistance == "distance":
+            logger.info(f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …")
+            StatisticsService.compute_m3c2_statistics(
+                folder_ids=[cfg.folder_id],
+                filename_ref=cfg.filename_ref,
+                process_python_CC=cfg.process_python_CC,
+                out_xlsx="m3c2_stats_all.xlsx",
+                sheet_name="Results",
+            )
+        if cfg.stats_singleordistance == "single":
+            logger.info(f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …")
+            rows = []
+            stats = StatisticsService.calc_single_cloud_stats(
+                        points= ref.cloud if hasattr(ref, "cloud") else ref,
+                    )
+            stats.update({
+                "File": cfg.filename_ref,
+                "Folder": cfg.folder_id,
+            })
+            rows.append(stats)
+            StatisticsService.write_cloud_stats(
+                rows,
+                out_xlsx="m3c2_stats_clouds.xlsx",
+                sheet_name="CloudStats"
+            )
 
     def _generate_visuals(self, cfg: PipelineConfig, mov, distances: np.ndarray, out_base: str) -> None:
         logger.info("[Visual] Erzeuge Visualisierungen …")

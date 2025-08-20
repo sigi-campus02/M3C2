@@ -235,7 +235,7 @@ class StatisticsService:
                     )
                     rows.append({
                         "Folder": fid,
-                        "Filename_Ref": filename_ref or "",
+                        "Version": filename_ref or "",
                         "Typ": process_python_CC,
                         "Distances Path": py_dist_path,
                         "Params Path": py_params_path if os.path.exists(py_params_path) else "",
@@ -261,7 +261,7 @@ class StatisticsService:
                             )
                             rows.append({
                                 "Folder": fid,
-                                "Filename_Ref": filename_ref or "",
+                                "Version": filename_ref or "",
                                 "Typ": process_python_CC,
                                 "Distances Path": cc_path,
                                 "Params Path": cc_params_path if os.path.exists(cc_params_path) else "",
@@ -521,7 +521,7 @@ class StatisticsService:
         radius: float = 1.0,
         k: int = 6,
         sample_size: Optional[int] = 100_000,
-        use_convex_hull: bool = False,
+        use_convex_hull: bool = True,
     ) -> Dict:
         """
         Basis-Qualitätsmetriken für EINE Punktwolke (XYZ in Metern).
@@ -664,73 +664,6 @@ class StatisticsService:
         }
 
     @staticmethod
-    def _load_points_generic(path_or_folder: str, role: str = "mov") -> np.ndarray:
-        """
-        Lädt XYZ-Punkte aus Datei oder Ordner (verschiedene Formate).
-        """
-        if os.path.isdir(path_or_folder) or not os.path.splitext(path_or_folder)[1]:
-            from datasource import DataSource
-            folder_id = os.path.basename(path_or_folder) if os.path.isdir(path_or_folder) else path_or_folder
-            ds = DataSource(folder_id)
-            ds._ensure_xyz(write_csv=False)
-            xyz_path = ds.mov_xyz if role.lower() == "mov" else ds.ref_xyz
-            return np.loadtxt(xyz_path, dtype=float)
-
-        ext = os.path.splitext(path_or_folder)[1].lower()
-        if ext in (".xyz", ".txt", ".csv"):
-            return np.loadtxt(path_or_folder, usecols=(0, 1, 2), dtype=float)
-        if ext == ".ply":
-            from plyfile import PlyData
-            ply = PlyData.read(path_or_folder)
-            if "vertex" not in ply:
-                raise ValueError(f"'vertex' element fehlt in PLY: {path_or_folder}")
-            v = ply["vertex"].data
-            for names in (("x", "y", "z"), ("X", "Y", "Z")):
-                if all(n in v.dtype.names for n in names):
-                    pts = np.column_stack([v[n].astype(np.float64, copy=False) for n in names])
-                    pts = pts[np.isfinite(pts).all(axis=1)]
-                    return pts
-            raise ValueError(f"Keine XYZ-Felder in PLY gefunden: {v.dtype.names}")
-        if ext in (".las", ".laz"):
-            import laspy
-            las = laspy.read(path_or_folder)
-            pts = np.vstack((las.x, las.y, las.z)).T.astype(np.float64)
-            pts = pts[np.isfinite(pts).all(axis=1)]
-            return pts
-        raise ValueError(f"Nicht unterstütztes Format: {path_or_folder}")
-
-    @classmethod
-    def cloud_stats_from_file(
-        cls,
-        path_or_folder: str,
-        *,
-        role: str = "mov",
-        area_m2: float | None = None,
-        radius: float = 1.0,
-        k: int = 6,
-        sample_size: int | None = 100_000,
-        use_convex_hull: bool = False,
-    ) -> Dict:
-        """
-        Einstiegspunkt für Single-Cloud-Stats aus Datei oder Ordner.
-        """
-        pts = cls._load_points_generic(path_or_folder, role=role)
-        stats = cls.calc_single_cloud_stats(
-            pts,
-            area_m2=area_m2,
-            radius=radius,
-            k=k,
-            sample_size=sample_size,
-            use_convex_hull=use_convex_hull,
-        )
-        src = os.path.abspath(path_or_folder)
-        stats.update({
-            "File/Folder": src,
-            "Role": role if os.path.isdir(path_or_folder) or not os.path.splitext(path_or_folder)[1] else "",
-        })
-        return stats
-
-    @staticmethod
     def _bbox_area_xy(xy: np.ndarray) -> float:
         x_min, y_min = np.min(xy[:, 0]), np.min(xy[:, 1])
         x_max, y_max = np.max(xy[:, 0]), np.max(xy[:, 1])
@@ -746,7 +679,7 @@ class StatisticsService:
         return float(hull.volume)
 
     @staticmethod
-    def write_cloud_stats(rows: List[Dict], out_xlsx: str = "cloud_stats.xlsx", sheet_name: str = "CloudStats") -> None:
+    def write_cloud_stats(rows: List[Dict], out_xlsx: str = "m3c2_stats_clouds.xlsx", sheet_name: str = "CloudStats") -> None:
         df = pd.DataFrame(rows)
         if df.empty:
             return
