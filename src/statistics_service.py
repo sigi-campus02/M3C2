@@ -27,6 +27,24 @@ class StatisticsService:
         min_expected: Optional[float] = None,
         tolerance: float = 0.01,
     ) -> Dict:
+        """Berechne diverse Metriken aus den gegebenen Distanzwerten.
+
+        Parameters
+        ----------
+        distances:
+            Array mit Distanzwerten, das NaN enthalten kann.
+        params_path:
+            Optionaler Pfad zu einer Datei mit ``NormalScale`` und ``SearchScale`` Parametern.
+        bins:
+            Anzahl der Bins für das Histogramm.
+        range_override:
+            Optionales Tupel zur expliziten Festlegung des Wertebereichs.
+        min_expected:
+            Mindestanzahl erwarteter Werte pro Bin für die Chi²-Berechnung.
+        tolerance:
+            Toleranzschwelle zur Bewertung der Distanzwerte.
+        """
+
         total_count = len(distances)
         nan_count = int(np.isnan(distances).sum())
         valid = distances[~np.isnan(distances)]
@@ -50,71 +68,48 @@ class StatisticsService:
         avg = float(np.mean(clipped))
         rms = float(np.sqrt(np.mean(clipped ** 2)))
 
-            # NEW: MAE (gegen 0) & NMAD (robuste Sigma)
-        mae = float(np.mean(np.abs(clipped)))                       # Mean Absolute Error
-        
+        # NEW: MAE (gegen 0) & NMAD (robuste Sigma)
+        mae = float(np.mean(np.abs(clipped)))  # Mean Absolute Error
+
         med = float(np.median(clipped))
         mad = float(np.median(np.abs(clipped - med)))
-        nmad = float(1.4826 * mad)                                  # Normalized MAD
+        nmad = float(1.4826 * mad)  # Normalized MAD
 
         # Histogramm
         hist, bin_edges = np.histogram(clipped, bins=bins, range=(data_min, data_max))
         hist = hist.astype(float)
-        N = int(hist.sum())
-        assert N == len(clipped), f"Histogram N ({N}) != len(clipped) ({len(clipped)})"
 
-        # ---- Gauss (Fit + Chi²)
-        mu, std = norm.fit(clipped)
-        cdfL = norm.cdf(bin_edges[:-1], mu, std)
-        cdfR = norm.cdf(bin_edges[1:],  mu, std)
-        expected_gauss = N * (cdfR - cdfL)
-        eps = 1e-12
-        thr = min_expected if min_expected is not None else eps
-        maskG = expected_gauss > thr
-        pearson_gauss = float(np.sum((hist[maskG] - expected_gauss[maskG])**2 / expected_gauss[maskG]))
-
-        # ---- Weibull (Fit + Chi²)
-        a, loc, b = weibull_min.fit(clipped)
-        cdfL = weibull_min.cdf(bin_edges[:-1], a, loc=loc, scale=b)
-        cdfR = weibull_min.cdf(bin_edges[1:],  a, loc=loc, scale=b)
-        expected_weib = N * (cdfR - cdfL)
-        maskW = expected_weib > thr
-        pearson_weib = float(np.sum((hist[maskW] - expected_weib[maskW])**2 / expected_weib[maskW]))
-
-        # Zusätzliche Weibull-Kennzahlen
-        skew_weibull = float(weibull_min(a, loc=loc, scale=b).stats(moments="s"))
-        mode_weibull = float(loc + b * ((a - 1) / a) ** (1 / a)) if a > 1 else float(loc)
+        # Fits (Gauss & Weibull)
+        fit_results = StatisticsService._fit_distributions(
+            clipped, hist, bin_edges, min_expected
+        )
+        mu = fit_results["mu"]
+        std = fit_results["std"]
+        pearson_gauss = fit_results["pearson_gauss"]
+        a = fit_results["a"]
+        b = fit_results["b"]
+        loc = fit_results["loc"]
+        pearson_weib = fit_results["pearson_weib"]
+        skew_weibull = fit_results["skew_weibull"]
+        mode_weibull = fit_results["mode_weibull"]
 
         # Optional: CC-/Params-Datei
-        normal_scale = np.nan
-        search_scale = np.nan
-        if params_path and os.path.exists(params_path):
-            with open(params_path, "r") as f:
-                for line in f:
-                    if line.startswith("NormalScale="):
-                        normal_scale = float(line.strip().split("=")[1])
-                    elif line.startswith("SearchScale="):
-                        search_scale = float(line.strip().split("=")[1])
+        normal_scale, search_scale = StatisticsService._load_params(params_path)
 
-        # Outlier 3*RMSE
-        outlier_mask = np.abs(clipped) > (3 * rms)
-        inliers = clipped[~outlier_mask]
-        outliers = clipped[outlier_mask]
-        
-        mean_out = float(np.mean(outliers)) if outliers.size else np.nan
-        mean_in  = float(np.mean(inliers))  if inliers.size  else np.nan
-
-        std_in = float(np.std(inliers)) if inliers.size > 0 else np.nan
-        std_out = float(np.std(outliers)) if outliers.size > 0 else np.nan
-
-        pos_out = int(np.sum(outliers > 0))
-        neg_out = int(np.sum(outliers < 0))
-
-        pos_in = int(np.sum(inliers > 0))
-        neg_in = int(np.sum(inliers < 0))
-
-        mae_in = float(np.mean(np.abs(inliers))) if inliers.size > 0 else np.nan
-        nmad_in = float(1.4826 * np.median(np.abs(inliers - med))) if inliers.size > 0 else np.nan
+        # Outliers
+        outlier_info = StatisticsService._compute_outliers(clipped, rms, med)
+        outlier_count = outlier_info["outlier_count"]
+        inlier_count = outlier_info["inlier_count"]
+        mean_in = outlier_info["mean_in"]
+        mean_out = outlier_info["mean_out"]
+        std_in = outlier_info["std_in"]
+        std_out = outlier_info["std_out"]
+        pos_out = outlier_info["pos_out"]
+        neg_out = outlier_info["neg_out"]
+        pos_in = outlier_info["pos_in"]
+        neg_in = outlier_info["neg_in"]
+        mae_in = outlier_info["mae_in"]
+        nmad_in = outlier_info["nmad_in"]
 
         # Bias & Toleranz
         bias = float(np.mean(clipped))
@@ -160,8 +155,8 @@ class StatisticsService:
             "NMAD Inlier": nmad_in,
 
             # 3) Outlier / Inlier
-            "Outlier Count": int(outlier_mask.sum()),
-            "Inlier Count": int((~outlier_mask).sum()),  # FIX
+            "Outlier Count": outlier_count,
+            "Inlier Count": inlier_count,
             "Mean Inlier": mean_in,
             "Std Inlier": std_in,
             "Mean Outlier": mean_out,
@@ -298,6 +293,134 @@ class StatisticsService:
     # =============================
     # Helpers
     # =============================
+
+    @staticmethod
+    def _fit_distributions(
+        clipped: np.ndarray,
+        hist: np.ndarray,
+        bin_edges: np.ndarray,
+        min_expected: Optional[float],
+    ) -> Dict[str, float]:
+        """Fit Gaussian and Weibull distributions and compute Chi² metrics.
+
+        Parameters
+        ----------
+        clipped:
+            Werte, die innerhalb des gewählten Bereichs liegen.
+        hist, bin_edges:
+            Histogramm der ``clipped`` Werte und die zugehörigen Grenzen.
+        min_expected:
+            Mindestanzahl erwarteter Werte pro Bin für die Chi²-Berechnung.
+
+        Returns
+        -------
+        dict
+            Kennzahlen der Fits, inklusive Parameter und Chi²-Werten.
+        """
+
+        N = int(hist.sum())
+        assert N == len(clipped), f"Histogram N ({N}) != len(clipped) ({len(clipped)})"
+
+        mu, std = norm.fit(clipped)
+        cdfL = norm.cdf(bin_edges[:-1], mu, std)
+        cdfR = norm.cdf(bin_edges[1:], mu, std)
+        expected_gauss = N * (cdfR - cdfL)
+        eps = 1e-12
+        thr = min_expected if min_expected is not None else eps
+        maskG = expected_gauss > thr
+        pearson_gauss = float(
+            np.sum((hist[maskG] - expected_gauss[maskG]) ** 2 / expected_gauss[maskG])
+        )
+
+        a, loc, b = weibull_min.fit(clipped)
+        cdfL = weibull_min.cdf(bin_edges[:-1], a, loc=loc, scale=b)
+        cdfR = weibull_min.cdf(bin_edges[1:], a, loc=loc, scale=b)
+        expected_weib = N * (cdfR - cdfL)
+        maskW = expected_weib > thr
+        pearson_weib = float(
+            np.sum((hist[maskW] - expected_weib[maskW]) ** 2 / expected_weib[maskW])
+        )
+
+        skew_weibull = float(weibull_min(a, loc=loc, scale=b).stats(moments="s"))
+        mode_weibull = float(loc + b * ((a - 1) / a) ** (1 / a)) if a > 1 else float(loc)
+
+        return {
+            "mu": float(mu),
+            "std": float(std),
+            "pearson_gauss": pearson_gauss,
+            "a": float(a),
+            "loc": float(loc),
+            "b": float(b),
+            "pearson_weib": pearson_weib,
+            "skew_weibull": skew_weibull,
+            "mode_weibull": mode_weibull,
+        }
+
+    @staticmethod
+    def _compute_outliers(
+        clipped: np.ndarray, rms: float, median: float
+    ) -> Dict[str, float]:
+        """Bestimme Outlier- und Inlier-Kennzahlen.
+
+        Die Abgrenzung erfolgt über ``3 * rms``. Zusätzlich werden Kennwerte
+        für Inlier und Outlier berechnet.
+        """
+
+        outlier_mask = np.abs(clipped) > (3 * rms)
+        inliers = clipped[~outlier_mask]
+        outliers = clipped[outlier_mask]
+
+        mean_out = float(np.mean(outliers)) if outliers.size else np.nan
+        mean_in = float(np.mean(inliers)) if inliers.size else np.nan
+
+        std_in = float(np.std(inliers)) if inliers.size > 0 else np.nan
+        std_out = float(np.std(outliers)) if outliers.size > 0 else np.nan
+
+        pos_out = int(np.sum(outliers > 0))
+        neg_out = int(np.sum(outliers < 0))
+        pos_in = int(np.sum(inliers > 0))
+        neg_in = int(np.sum(inliers < 0))
+
+        mae_in = float(np.mean(np.abs(inliers))) if inliers.size > 0 else np.nan
+        nmad_in = (
+            float(1.4826 * np.median(np.abs(inliers - median)))
+            if inliers.size > 0
+            else np.nan
+        )
+
+        return {
+            "outlier_count": int(outlier_mask.sum()),
+            "inlier_count": int((~outlier_mask).sum()),
+            "mean_out": mean_out,
+            "mean_in": mean_in,
+            "std_in": std_in,
+            "std_out": std_out,
+            "pos_out": pos_out,
+            "neg_out": neg_out,
+            "pos_in": pos_in,
+            "neg_in": neg_in,
+            "mae_in": mae_in,
+            "nmad_in": nmad_in,
+        }
+
+    @staticmethod
+    def _load_params(params_path: Optional[str]) -> Tuple[float, float]:
+        """Lese ``NormalScale`` und ``SearchScale`` aus einer Parameterdatei.
+
+        Returns ``(np.nan, np.nan)`` falls die Datei nicht existiert oder die
+        Werte fehlen.
+        """
+
+        normal_scale = np.nan
+        search_scale = np.nan
+        if params_path and os.path.exists(params_path):
+            with open(params_path, "r") as f:
+                for line in f:
+                    if line.startswith("NormalScale="):
+                        normal_scale = float(line.strip().split("=")[1])
+                    elif line.startswith("SearchScale="):
+                        search_scale = float(line.strip().split("=")[1])
+        return normal_scale, search_scale
 
     @staticmethod
     def _resolve(fid: str, filename: str) -> str:
