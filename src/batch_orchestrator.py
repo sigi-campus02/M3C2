@@ -59,7 +59,13 @@ class BatchOrchestrator:
                 logger.exception("[Job] Fehler in Job '%s' (Version %s)", cfg.folder_id, cfg.filename_ref)
 
     def _run_single(self, cfg: PipelineConfig) -> None:
-        logger.info("%s, %s, %s", cfg.folder_id, cfg.filename_mov, cfg.filename_ref, cfg.process_python_CC)
+        logger.info(
+            "%s, %s, %s, %s",
+            cfg.folder_id,
+            cfg.filename_mov,
+            cfg.filename_ref,
+            cfg.process_python_CC,
+        )
         start = time.perf_counter()
 
         ds, mov, ref, corepoints = self._load_data(cfg)

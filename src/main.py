@@ -40,6 +40,7 @@ def main(args: argparse.Namespace) -> None:
     orchestrator.run_all()
 
 
+
 if __name__ == "__main__":
     setup_logging()
     parser = argparse.ArgumentParser(description="Run the M3C2 pipeline")
