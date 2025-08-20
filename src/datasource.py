@@ -2,10 +2,9 @@
 from __future__ import annotations
 import os
 import logging
-from typing import Tuple, Optional
+from typing import Tuple
 import numpy as np
 import py4dgeo
-import pandas as pd
 from plyfile import PlyData
 import laspy
 
