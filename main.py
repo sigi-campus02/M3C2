@@ -16,6 +16,7 @@ sample_size = 10000                  # nur für Parameterschätzung, nicht für 
 process_python_CC = "CC"             # "python" oder "CC"
 only_stats = False                   # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
 stats_singleordistance = "distance"  # "single" oder "distance"
+output_format = "excel"              # "excel" oder "csv"
 
 def main() -> None:
     cfgs = []
@@ -35,7 +36,7 @@ def main() -> None:
                 )
             )
 
-    orchestrator = BatchOrchestrator(cfgs, strategy, sample_size)
+    orchestrator = BatchOrchestrator(cfgs, strategy, sample_size, output_format)
     orchestrator.run_all()
 
 
