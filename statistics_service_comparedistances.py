@@ -8,7 +8,7 @@ import numpy as np
 
 
 class StatisticsCompareDistances:
-    """Service class generating Bland–Altman plots for distance files."""
+    """Service class generating comparison plots for distance files."""
 
     @staticmethod
     def _resolve(fid: str, filename: str) -> str:
@@ -100,6 +100,100 @@ class StatisticsCompareDistances:
             outpath = os.path.join(
                 outdir,
                 f"bland_altman_{fid}_{ref_variants[0]}_vs_{ref_variants[1]}.png",
+            )
+            plt.tight_layout()
+            plt.savefig(outpath, dpi=300)
+            plt.close()
+
+    @classmethod
+    def passing_bablok_plot(
+        cls,
+        folder_ids: List[str],
+        ref_variants: List[str],
+        outdir: str = "PassingBablok",
+    ) -> None:
+        """Create Passing–Bablok regression plots for the given folder IDs.
+
+        Parameters
+        ----------
+        folder_ids:
+            List of folder identifiers or ranges (e.g. ``"0001-0003"``).
+        ref_variants:
+            Exactly two variants that form the file name pattern
+            ``python_{variant}_m3c2_distances.txt``.
+        outdir:
+            Directory in which the PNG plots will be stored.
+        """
+
+        if len(ref_variants) != 2:
+            raise ValueError("ref_variants must contain exactly two entries")
+
+        os.makedirs(outdir, exist_ok=True)
+
+        for fid in folder_ids:
+            paths = []
+            for variant in ref_variants:
+                basename = f"python_{variant}_m3c2_distances.txt"
+                path = cls._resolve(fid, basename)
+                if not os.path.exists(path):
+                    print(f"[PassingBablok] Datei nicht gefunden: {path}")
+                    path = None
+                paths.append(path)
+
+            if None in paths:
+                # At least one file is missing -> skip this folder
+                continue
+
+            data = [np.loadtxt(p) for p in paths]
+
+            x_raw, y_raw = data
+            mask = ~np.isnan(x_raw) & ~np.isnan(y_raw)
+            x = x_raw[mask]
+            y = y_raw[mask]
+
+            if x.size == 0 or y.size == 0:
+                print(f"[PassingBablok] Leere Distanzwerte in {fid}, übersprungen")
+                continue
+
+            # Passing–Bablok regression
+            slopes = []
+            n = len(x)
+            for i in range(n - 1):
+                for j in range(i + 1, n):
+                    if x[j] != x[i]:
+                        slopes.append((y[j] - y[i]) / (x[j] - x[i]))
+
+            if not slopes:
+                print(f"[PassingBablok] Keine gültigen Paare in {fid}, übersprungen")
+                continue
+
+            slope = float(np.median(slopes))
+            intercept = float(np.median(y - slope * x))
+
+            # Plot
+            plt.figure(figsize=(8, 6))
+            plt.scatter(x, y, alpha=0.3)
+
+            min_val = float(min(np.min(x), np.min(y)))
+            max_val = float(max(np.max(x), np.max(y)))
+            line_x = np.array([min_val, max_val])
+
+            plt.plot(line_x, line_x, color="grey", linestyle="--", label="Identity")
+            plt.plot(
+                line_x,
+                intercept + slope * line_x,
+                color="red",
+                label=f"y = {slope:.4f}x + {intercept:.4f}",
+            )
+            plt.xlabel(ref_variants[0])
+            plt.ylabel(ref_variants[1])
+            plt.title(
+                f"Passing-Bablok {fid}: {ref_variants[0]} vs {ref_variants[1]}"
+            )
+            plt.legend()
+            outpath = os.path.join(
+                outdir,
+                f"passing_bablok_{fid}_{ref_variants[0]}_vs_{ref_variants[1]}.png",
             )
             plt.tight_layout()
             plt.savefig(outpath, dpi=300)
