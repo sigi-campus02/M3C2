@@ -16,4 +16,5 @@ class PipelineConfig:
     project: str
     normal_override: Optional[float] = None
     proj_override: Optional[float] = None
+    use_existing_params: bool = False
 
