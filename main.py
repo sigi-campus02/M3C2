@@ -11,7 +11,7 @@ from logging_utils import setup_logging
 
 
 folder_ids = ["0817-0821"]
-ref_variants = ["ref_ai"]
+ref_variants = ["ref","ref_ai"]
 
 # Fix-Parameter
 filename_mov = "mov"                 # Moving point cloud
@@ -24,8 +24,8 @@ only_stats = False                   # nur Stats berechnen (True) oder Pipeline 
 stats_singleordistance = "distance"  # "single" oder "distance"
 output_format = "excel"              # "excel" oder "json"
 project = "MARS"                     # "TUNSPEKT" "MARS"
-normal_override = 0.116427276796056  # Normal Scale Override
-proj_override = 0.232854553592111    # Projection Scale Override
+normal_override = None               # Normal Scale Override
+proj_override = None                 # Projection Scale Override
 use_existing_params = True           # ob vorhandene Parameter (in Ordner) genutzt werden (True) oder neu berechnet (False)       
 
 def main() -> None:
