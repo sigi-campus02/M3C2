@@ -621,48 +621,44 @@ class StatisticsService:
         df_new = df_new.copy()
         df_new.insert(0, "Timestamp", ts)
 
+        # Falls Datei existiert: einlesen, Spaltenunion bilden, zusammenführen
+        if os.path.exists(out_xlsx):
+            try:
+                df_old = pd.read_excel(out_xlsx, sheet_name=sheet_name)
+            except Exception:
+                # Falls Sheet fehlt oder Datei leer/korrupt ist: so behandeln, als gäbe es nichts
+                df_old = pd.DataFrame(columns=["Timestamp"])
+
+            # Spaltenreihenfolge beibehalten: Timestamp + bestehende + neue (ohne Duplikate)
+            cols = list(df_old.columns) if not df_old.empty else ["Timestamp"]
+            if "Timestamp" not in cols:
+                cols.insert(0, "Timestamp")
+
+            for c in df_new.columns:
+                if c not in cols:
+                    cols.append(c)
+
+            df_old = df_old.reindex(columns=cols)
+            df_new = df_new.reindex(columns=cols)
+
+            df_all = pd.concat([df_old, df_new], ignore_index=True)
+        else:
+            df_all = df_new
+
+        # Passt Reihenfolge in Excel an
+        for c in CANONICAL_COLUMNS:
+            if c not in df_all.columns:
+                df_all[c] = np.nan
+        df_all = df_all.reindex(columns=CANONICAL_COLUMNS)
+
+        # Schreiben (überschreibt Datei; Inhalt ist df_all)
         try:
-            from openpyxl import load_workbook, Workbook
-            from openpyxl.utils.dataframe import dataframe_to_rows
+            with pd.ExcelWriter(out_xlsx, engine="openpyxl", mode="w") as writer:
+                df_all.to_excel(writer, index=False, sheet_name=sheet_name)
         except ModuleNotFoundError as e:
             raise ModuleNotFoundError(
                 "Zum Schreiben nach Excel wird 'openpyxl' benötigt. Bitte installieren: pip install openpyxl"
             ) from e
-
-        # Daten in kanonische Reihenfolge bringen, fehlende Spalten mit NaN auffüllen
-        for c in CANONICAL_COLUMNS:
-            if c not in df_new.columns:
-                df_new[c] = np.nan
-        df_new = df_new.reindex(columns=CANONICAL_COLUMNS)
-
-        if os.path.exists(out_xlsx):
-            wb = load_workbook(out_xlsx)
-            ws = wb[sheet_name] if sheet_name in wb.sheetnames else wb.create_sheet(sheet_name)
-
-            # Existierende Spaltenreihenfolge aus der ersten Zeile auslesen
-            existing_cols = [cell.value for cell in ws[1]] if ws.max_row >= 1 else []
-            if not existing_cols:
-                ws.append(CANONICAL_COLUMNS)
-                existing_cols = CANONICAL_COLUMNS
-
-            # Neue Spalten, die noch nicht im Sheet existieren, anhängen
-            for c in df_new.columns:
-                if c not in existing_cols:
-                    existing_cols.append(c)
-                    ws.cell(row=1, column=len(existing_cols), value=c)
-
-            df_new = df_new.reindex(columns=existing_cols)
-            for row in dataframe_to_rows(df_new, index=False, header=False):
-                ws.append(row)
-        else:
-            wb = Workbook()
-            ws = wb.active
-            ws.title = sheet_name
-            ws.append(CANONICAL_COLUMNS)
-            for row in dataframe_to_rows(df_new, index=False, header=False):
-                ws.append(row)
-
-        wb.save(out_xlsx)
 
     @staticmethod
     def _append_df_to_json(df_new: pd.DataFrame, out_json: str) -> None:
