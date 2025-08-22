@@ -13,6 +13,28 @@ from sklearn.decomposition import PCA
 from sklearn.neighbors import NearestNeighbors
 
 
+# Kanonische Spaltenreihenfolge für Statistik-Exports
+CANONICAL_COLUMNS = [
+    "Timestamp", "Folder", "Version", "Typ",
+    "Gesamt", "NaN", "% NaN", "% Valid",
+    "Valid Count", "Valid Sum", "Valid Squared Sum",
+    "Normal Scale", "Search Scale",
+    "Min", "Max", "Mean", "Median", "RMS", "Std Empirical", "MAE", "MAE Inlier", "NMAD", "NMAD Inlier",
+    "Outlier Count", "Inlier Count",
+    "Mean Inlier", "Std Inlier", "Mean Outlier", "Std Outlier",
+    "Pos Outlier", "Neg Outlier", "Pos Inlier", "Neg Inlier",
+    "Q05", "Q25", "Q75", "Q95", "IQR",
+    "Gauss Mean", "Gauss Std", "Gauss Chi2",
+    "Weibull a", "Weibull b", "Weibull shift", "Weibull mode",
+    "Weibull skewness", "Weibull Chi2",
+    "Skewness", "Kurtosis",
+    "Anteil |Distanz| > 0.01", "Anteil [-2Std,2Std]",
+    "Max |Distanz|", "Bias", "Within-Tolerance",
+    "ICC", "CCC", "Bland-Altman Lower", "Bland-Altman Upper", "Jaccard Index",
+    "Dice Coefficient", "Distances Path", "Params Path",
+]
+
+
 class StatisticsService:
     # =============================
     # Public API
@@ -210,12 +232,13 @@ class StatisticsService:
         bins: int = 256,
         range_override: Optional[Tuple[float, float]] = None,
         min_expected: Optional[float] = None,
-        out_xlsx: str = "m3c2_stats_all.xlsx",
+        out_path: str = "m3c2_stats_all.xlsx",
         sheet_name: str = "Results",
+        output_format: str = "excel",
     ) -> pd.DataFrame:
         """
         Liest je Folder {version}_m3c2_distances.txt (Python) und optional CloudCompare
-        und hängt die Ergebnisse an eine Excel-Datei an (mit Timestamp).
+        und hängt die Ergebnisse an eine Datei (Excel oder JSON) an.
         Spalten: Folder | Version | Typ | ... (Metriken)
         """
         rows: List[Dict] = []
@@ -275,19 +298,29 @@ class StatisticsService:
 
         df_result = pd.DataFrame(rows)
 
-        # Excel-Append (mit Timestamp)
-        if out_xlsx and not df_result.empty:
-            cls._append_df_to_excel(df_result, out_xlsx, sheet_name=sheet_name)
+        if out_path and not df_result.empty:
+            if output_format.lower() == "json":
+                cls._append_df_to_json(df_result, out_path)
+            else:
+                cls._append_df_to_excel(df_result, out_path, sheet_name=sheet_name)
 
         return df_result
 
 
     @staticmethod
-    def write_table(rows: List[Dict], out_path: str = "m3c2_stats_all.xlsx", sheet_name: str = "Results") -> None:
+    def write_table(
+        rows: List[Dict],
+        out_path: str = "m3c2_stats_all.xlsx",
+        sheet_name: str = "Results",
+        output_format: str = "excel",
+    ) -> None:
         df = pd.DataFrame(rows)
         if df.empty:
             return
-        StatisticsService._append_df_to_excel(df, out_path, sheet_name=sheet_name)
+        if output_format.lower() == "json":
+            StatisticsService._append_df_to_json(df, out_path)
+        else:
+            StatisticsService._append_df_to_excel(df, out_path, sheet_name=sheet_name)
 
 
 
@@ -460,30 +493,9 @@ class StatisticsService:
     @staticmethod
     def _append_df_to_excel(df_new: pd.DataFrame, out_xlsx: str, sheet_name: str = "Results") -> None:
         """
-        Hängt df_new an eine bestehende Excel-Datei an (oder erzeugt sie),
-        sorgt für 'Timestamp' als erste Spalte und harmonisiert Spalten.
+        Hängt ``df_new`` an eine bestehende Excel-Datei an (oder erzeugt sie),
+        sorgt für ``Timestamp`` als erste Spalte und harmonisiert Spalten.
         """
-
-            # Reihenfolge
-        CANONICAL_COLUMNS = [
-            "Timestamp", "Folder", "Version", "Typ",
-            "Gesamt", "NaN", "% NaN", "% Valid",
-            "Valid Count", "Valid Sum", "Valid Squared Sum",
-            "Normal Scale", "Search Scale",
-            "Min", "Max", "Mean", "Median", "RMS", "Std Empirical", "MAE", "MAE Inlier", "NMAD", "NMAD Inlier",
-            "Outlier Count", "Inlier Count",
-            "Mean Inlier", "Std Inlier", "Mean Outlier", "Std Outlier",
-            "Pos Outlier", "Neg Outlier", "Pos Inlier", "Neg Inlier",
-            "Q05", "Q25", "Q75", "Q95", "IQR",
-            "Gauss Mean", "Gauss Std", "Gauss Chi2",
-            "Weibull a", "Weibull b", "Weibull shift", "Weibull mode",
-            "Weibull skewness", "Weibull Chi2",
-            "Skewness", "Kurtosis",
-            "Anteil |Distanz| > 0.01", "Anteil [-2Std,2Std]",
-            "Max |Distanz|", "Bias", "Within-Tolerance",
-            "ICC", "CCC", "Bland-Altman Lower", "Bland-Altman Upper", "Jaccard Index",
-            "Dice Coefficient", "Distances Path", "Params Path",
-        ]
 
         if df_new is None or df_new.empty:
             return
@@ -531,6 +543,42 @@ class StatisticsService:
             raise ModuleNotFoundError(
                 "Zum Schreiben nach Excel wird 'openpyxl' benötigt. Bitte installieren: pip install openpyxl"
             ) from e
+
+    @staticmethod
+    def _append_df_to_json(df_new: pd.DataFrame, out_json: str) -> None:
+        """Wie ``_append_df_to_excel``, aber schreibt eine JSON-Datei."""
+        if df_new is None or df_new.empty:
+            return
+
+        ts = StatisticsService._now_timestamp()
+        df_new = df_new.copy()
+        df_new.insert(0, "Timestamp", ts)
+
+        if os.path.exists(out_json):
+            try:
+                df_old = pd.read_json(out_json)
+            except Exception:
+                df_old = pd.DataFrame(columns=["Timestamp"])
+
+            cols = list(df_old.columns) if not df_old.empty else ["Timestamp"]
+            if "Timestamp" not in cols:
+                cols.insert(0, "Timestamp")
+            for c in df_new.columns:
+                if c not in cols:
+                    cols.append(c)
+
+            df_old = df_old.reindex(columns=cols)
+            df_new = df_new.reindex(columns=cols)
+            df_all = pd.concat([df_old, df_new], ignore_index=True)
+        else:
+            df_all = df_new
+
+        for c in CANONICAL_COLUMNS:
+            if c not in df_all.columns:
+                df_all[c] = np.nan
+        df_all = df_all.reindex(columns=CANONICAL_COLUMNS)
+
+        df_all.to_json(out_json, orient="records", indent=2)
 
 
 # --------------------------------------------- #
@@ -747,15 +795,23 @@ class StatisticsService:
         return float(hull.volume)
 
     @staticmethod
-    def write_cloud_stats(rows: List[Dict], out_xlsx: str = "m3c2_stats_clouds.xlsx", sheet_name: str = "CloudStats") -> None:
+    def write_cloud_stats(
+        rows: List[Dict],
+        out_path: str = "m3c2_stats_clouds.xlsx",
+        sheet_name: str = "CloudStats",
+        output_format: str = "excel",
+    ) -> None:
         df = pd.DataFrame(rows)
         if df.empty:
             return
         ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         df.insert(0, "Timestamp", ts)
-        if os.path.exists(out_xlsx):
+        if os.path.exists(out_path):
             try:
-                old = pd.read_excel(out_xlsx, sheet_name=sheet_name)
+                if output_format.lower() == "json":
+                    old = pd.read_json(out_path)
+                else:
+                    old = pd.read_excel(out_path, sheet_name=sheet_name)
             except Exception:
                 old = pd.DataFrame(columns=["Timestamp"])
             cols = list(old.columns) if not old.empty else ["Timestamp"]
@@ -767,5 +823,9 @@ class StatisticsService:
             all_df = pd.concat([old, df], ignore_index=True)
         else:
             all_df = df
-        with pd.ExcelWriter(out_xlsx, engine="openpyxl", mode="w") as w:
-            all_df.to_excel(w, index=False, sheet_name=sheet_name)
+
+        if output_format.lower() == "json":
+            all_df.to_json(out_path, orient="records", indent=2)
+        else:
+            with pd.ExcelWriter(out_path, engine="openpyxl", mode="w") as w:
+                all_df.to_excel(w, index=False, sheet_name=sheet_name)

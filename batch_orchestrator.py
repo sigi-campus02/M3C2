@@ -30,10 +30,12 @@ class BatchOrchestrator:
         configs: List[PipelineConfig],
         strategy: str,
         sample_size: int | None = None,
+        output_format: str = "excel",
     ) -> None:
         self.configs = configs
         self.strategy_name = strategy.lower().strip()
         self.sample_size = sample_size
+        self.output_format = output_format.lower()
         self.strategy: ScaleStrategy = self._resolve_strategy(self.strategy_name, self.sample_size)
 
         logger.info("=== BatchOrchestrator initialisiert ===")
@@ -161,12 +163,14 @@ class BatchOrchestrator:
     def _compute_statistics(self, cfg: PipelineConfig, ref) -> None:
         if cfg.stats_singleordistance == "distance":
             logger.info(f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …")
+            out_path = "m3c2_stats_all.xlsx" if self.output_format == "excel" else "m3c2_stats_all.json"
             StatisticsService.compute_m3c2_statistics(
                 folder_ids=[cfg.folder_id],
                 filename_ref=cfg.filename_ref,
                 process_python_CC=cfg.process_python_CC,
-                out_xlsx="m3c2_stats_all.xlsx",
+                out_path=out_path,
                 sheet_name="Results",
+                output_format=self.output_format,
             )
         if cfg.stats_singleordistance == "single":
             logger.info(f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …")
@@ -179,10 +183,12 @@ class BatchOrchestrator:
                 "Folder": cfg.folder_id,
             })
             rows.append(stats)
+            out_path = "m3c2_stats_clouds.xlsx" if self.output_format == "excel" else "m3c2_stats_clouds.json"
             StatisticsService.write_cloud_stats(
                 rows,
-                out_xlsx="m3c2_stats_clouds.xlsx",
-                sheet_name="CloudStats"
+                out_path=out_path,
+                sheet_name="CloudStats",
+                output_format=self.output_format,
             )
 
     def _generate_visuals(self, cfg: PipelineConfig, mov, distances: np.ndarray, out_base: str) -> None:
