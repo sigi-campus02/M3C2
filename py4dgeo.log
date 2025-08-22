@@ -1,0 +1,386 @@
+[2025-08-19 14:00:41][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data/ahk\ahk_2020_uls.laz'
+[2025-08-19 14:00:45][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data/ahk\ahk_2021_uls.laz'
+[2025-08-19 14:02:13][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2020_uls.laz'
+[2025-08-19 14:02:16][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2021_uls.laz'
+[2025-08-19 14:03:44][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2020_uls.laz'
+[2025-08-19 14:03:47][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2021_uls.laz'
+[2025-08-19 14:04:32][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2020_uls.laz'
+[2025-08-19 14:04:35][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2021_uls.laz'
+[2025-08-19 14:04:41][WARNING] DEPRECATION: use cyl_radius instead of cyl_radii. In a future version, cyl_radii will be removed!
+[2025-08-19 14:04:41][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:04:59][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:09:17][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2020_uls.laz'
+[2025-08-19 14:09:20][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2021_uls.laz'
+[2025-08-19 14:20:57][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2020_uls.laz'
+[2025-08-19 14:21:00][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2021_uls.laz'
+[2025-08-19 14:21:07][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:24:42][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2020_uls.laz'
+[2025-08-19 14:24:45][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2021_uls.laz'
+[2025-08-19 14:24:51][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:25:10][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:33:51][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2020_uls.laz'
+[2025-08-19 14:33:54][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2021_uls.laz'
+[2025-08-19 14:34:01][WARNING] DEPRECATION: use cyl_radius instead of cyl_radii. In a future version, cyl_radii will be removed!
+[2025-08-19 14:34:01][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:34:20][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:35:33][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2020_uls.laz'
+[2025-08-19 14:35:35][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2021_uls.laz'
+[2025-08-19 14:35:42][WARNING] DEPRECATION: use cyl_radius instead of cyl_radii. In a future version, cyl_radii will be removed!
+[2025-08-19 14:35:42][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:36:00][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:38:33][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2020_uls.laz'
+[2025-08-19 14:38:36][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2021_uls.laz'
+[2025-08-19 14:38:43][WARNING] DEPRECATION: use cyl_radius instead of cyl_radii. In a future version, cyl_radii will be removed!
+[2025-08-19 14:38:43][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:39:02][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:42:01][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2020_uls.laz'
+[2025-08-19 14:42:04][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2021_uls.laz'
+[2025-08-19 14:42:11][WARNING] DEPRECATION: use cyl_radius instead of cyl_radii. In a future version, cyl_radii will be removed!
+[2025-08-19 14:42:11][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:42:36][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:45:59][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2020_uls.laz'
+[2025-08-19 14:46:02][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2021_uls.laz'
+[2025-08-19 14:46:09][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:46:34][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:51:42][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2020_uls.laz'
+[2025-08-19 14:51:45][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\ahk\ahk_2021_uls.laz'
+[2025-08-19 14:51:53][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 14:52:12][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 15:44:31][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_100.laz'
+[2025-08-19 15:44:31][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_80.laz'
+[2025-08-19 15:44:31][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 15:44:31][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 15:59:36][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_100.laz'
+[2025-08-19 15:59:36][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_80.laz'
+[2025-08-19 15:59:40][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 15:59:40][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:02:46][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_100.laz'
+[2025-08-19 16:02:46][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_80.laz'
+[2025-08-19 16:02:49][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:02:49][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:06:38][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_100.laz'
+[2025-08-19 16:06:39][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_80.laz'
+[2025-08-19 16:06:42][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:06:42][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:08:50][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_100.laz'
+[2025-08-19 16:08:50][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_80.laz'
+[2025-08-19 16:12:20][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_100.laz'
+[2025-08-19 16:12:20][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_80.laz'
+[2025-08-19 16:12:20][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:12:20][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:12:58][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_100.laz'
+[2025-08-19 16:12:58][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_80.laz'
+[2025-08-19 16:13:01][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:13:01][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:13:34][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_100.laz'
+[2025-08-19 16:13:34][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_40.laz'
+[2025-08-19 16:13:37][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:13:37][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:14:21][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_100.laz'
+[2025-08-19 16:14:21][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_overlap2.laz'
+[2025-08-19 16:14:24][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:14:24][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:14:51][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_100.laz'
+[2025-08-19 16:14:51][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2\src\data\rocks\points_zshift.laz'
+[2025-08-19 16:14:56][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-19 16:14:56][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 09:38:13][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 09:38:13][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 09:38:16][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 09:38:16][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:00:55][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:00:55][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 10:00:58][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:00:58][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:05:54][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:05:54][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 10:05:57][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:05:57][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:21:11][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:21:12][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 10:21:15][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:21:16][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:24:14][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:24:14][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 10:24:17][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:24:17][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:25:13][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:25:13][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 10:25:16][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:25:17][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:30:58][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:30:58][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_40.laz'
+[2025-08-20 10:31:01][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:31:01][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:31:31][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:31:31][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_80.laz'
+[2025-08-20 10:31:34][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:31:34][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:32:02][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:32:02][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_overlap2.laz'
+[2025-08-20 10:32:05][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:32:05][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 10:33:09][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:33:09][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_40.laz'
+[2025-08-20 10:34:34][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:34:34][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_40.laz'
+[2025-08-20 10:35:50][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:35:50][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_40.laz'
+[2025-08-20 10:40:51][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:40:51][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_40.laz'
+[2025-08-20 10:45:10][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:45:10][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_40.laz'
+[2025-08-20 10:49:01][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:49:01][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_40.laz'
+[2025-08-20 10:49:22][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:49:22][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_40.laz'
+[2025-08-20 10:50:10][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:50:10][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_80.laz'
+[2025-08-20 10:50:32][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:50:32][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_overlap2.laz'
+[2025-08-20 10:50:43][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 10:50:44][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 12:43:04][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 12:43:05][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 12:48:57][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 12:48:57][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 13:13:36][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 13:13:36][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 13:17:48][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 13:17:48][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 13:25:01][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 13:25:01][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 13:25:15][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 13:25:15][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 13:25:18][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 13:25:18][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-20 13:28:48][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 13:28:49][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 13:48:57][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 13:48:57][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 14:01:31][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 14:01:31][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 14:03:01][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 14:03:01][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 14:11:54][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 14:11:54][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 14:16:13][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 14:16:13][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 14:21:14][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 14:21:14][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 14:25:33][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 14:25:33][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-20 14:30:13][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_100.laz'
+[2025-08-20 14:30:13][INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\src\data\rocks\points_zshift.laz'
+[2025-08-21 09:17:36][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 09:17:39][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 09:17:40][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 09:17:40][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 09:22:36][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 09:22:38][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 09:22:41][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 09:22:41][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 09:26:17][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 09:26:19][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 09:26:42][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 09:26:44][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 09:28:12][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 09:28:14][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 09:34:45][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 09:34:47][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+[2025-08-21 09:34:52][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 09:34:52][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 09:41:37][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 09:41:51][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+[2025-08-21 09:42:06][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 09:42:07][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 10:02:19][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 10:02:33][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref_ai.xyz'
+[2025-08-21 10:02:47][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 10:02:48][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:10:23][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\mov.xyz'
+[2025-08-21 11:10:38][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\ref.xyz'
+[2025-08-21 11:10:53][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:10:54][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:15:51][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\mov.xyz'
+[2025-08-21 11:16:06][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\ref.xyz'
+[2025-08-21 11:16:52][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\mov.xyz'
+[2025-08-21 11:17:07][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\ref_ai.xyz'
+[2025-08-21 11:17:22][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:17:23][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:22:06][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\mov.xyz'
+[2025-08-21 11:22:06][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\ref.xyz'
+[2025-08-21 11:22:08][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:22:08][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:22:22][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\mov.xyz'
+[2025-08-21 11:22:23][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\ref_ai.xyz'
+[2025-08-21 11:22:25][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:22:25][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:22:47][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\mov.xyz'
+[2025-08-21 11:22:47][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\ref_ai.xyz'
+[2025-08-21 11:23:03][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\mov.xyz'
+[2025-08-21 11:23:03][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\ref.xyz'
+[2025-08-21 11:23:19][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\mov.xyz'
+[2025-08-21 11:23:21][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\ref.xyz'
+[2025-08-21 11:23:23][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:23:23][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:23:41][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\mov.xyz'
+[2025-08-21 11:23:43][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\ref_ai.xyz'
+[2025-08-21 11:23:46][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:23:46][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:24:02][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\mov.xyz'
+[2025-08-21 11:24:04][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\ref_ai.xyz'
+[2025-08-21 11:24:24][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\mov.xyz'
+[2025-08-21 11:24:25][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\ref.xyz'
+[2025-08-21 11:24:46][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\mov.xyz'
+[2025-08-21 11:24:48][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\ref.xyz'
+[2025-08-21 11:24:53][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:24:53][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:25:29][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\mov.xyz'
+[2025-08-21 11:25:31][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\ref_ai.xyz'
+[2025-08-21 11:25:36][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:25:36][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 11:26:08][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\mov.xyz'
+[2025-08-21 11:26:09][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\ref_ai.xyz'
+[2025-08-21 11:26:24][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\mov.xyz'
+[2025-08-21 11:26:25][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\ref.xyz'
+[2025-08-21 11:27:03][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 11:27:05][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+[2025-08-21 11:27:26][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 11:27:40][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref_ai.xyz'
+[2025-08-21 11:27:54][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 11:28:08][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+[2025-08-21 11:28:25][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\mov.xyz'
+[2025-08-21 11:28:39][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\ref.xyz'
+[2025-08-21 11:29:46][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\mov.xyz'
+[2025-08-21 11:30:01][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\ref_ai.xyz'
+[2025-08-21 15:24:17][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 15:24:19][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 15:24:22][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 15:24:23][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 15:47:43][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 15:47:46][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 15:47:49][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 15:47:49][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 15:51:36][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 15:51:38][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 15:51:41][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 15:51:41][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:00:55][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 16:00:57][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 16:02:28][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 16:02:30][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+[2025-08-21 16:02:35][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:02:36][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:05:35][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 16:05:37][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 16:05:55][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 16:05:58][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+[2025-08-21 16:07:05][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 16:07:19][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+[2025-08-21 16:07:33][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:07:34][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:17:32][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 16:17:46][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+[2025-08-21 16:18:00][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:18:01][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:50:19][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 16:50:21][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 16:50:24][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:50:24][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:50:44][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 16:50:58][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+[2025-08-21 16:51:12][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:51:13][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:52:30][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 16:52:44][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+[2025-08-21 16:52:58][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:52:59][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 16:59:50][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 17:00:04][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+[2025-08-21 17:04:19][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 17:04:33][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+[2025-08-21 17:07:00][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 17:07:14][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+[2025-08-21 17:07:28][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 17:07:29][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 17:07:56][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 17:07:58][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 17:08:01][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 17:08:02][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 17:09:49][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 17:09:52][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 17:09:55][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 17:09:55][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 17:19:00][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 17:19:02][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-21 17:19:05][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 17:19:05][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 17:25:20][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-21 17:25:22][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+[2025-08-21 17:25:27][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 17:25:28][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 17:36:56][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 17:37:11][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+[2025-08-21 17:37:25][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 17:37:26][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 19:03:40][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-21 19:03:54][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref_ai.xyz'
+[2025-08-21 19:04:09][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 19:04:10][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 19:25:02][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\mov.xyz'
+[2025-08-21 19:25:18][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\ref.xyz'
+[2025-08-21 19:25:34][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 19:25:35][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 19:53:29][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\mov.xyz'
+[2025-08-21 19:53:44][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\ref_ai.xyz'
+[2025-08-21 19:54:00][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 19:54:01][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 20:16:41][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\mov.xyz'
+[2025-08-21 20:16:42][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\ref.xyz'
+[2025-08-21 20:16:44][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 20:16:44][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 20:17:01][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\mov.xyz'
+[2025-08-21 20:17:02][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\ref_ai.xyz'
+[2025-08-21 20:17:04][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 20:17:04][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 20:17:21][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\mov.xyz'
+[2025-08-21 20:17:23][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\ref.xyz'
+[2025-08-21 20:17:26][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 20:17:26][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 20:18:01][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\mov.xyz'
+[2025-08-21 20:18:03][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\ref_ai.xyz'
+[2025-08-21 20:18:06][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 20:18:06][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 20:18:37][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\mov.xyz'
+[2025-08-21 20:18:39][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\ref.xyz'
+[2025-08-21 20:18:44][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 20:18:44][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 20:23:14][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\mov.xyz'
+[2025-08-21 20:23:15][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\ref_ai.xyz'
+[2025-08-21 20:23:22][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-21 20:23:22][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-22 08:06:02][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-22 08:06:04][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-22 08:06:19][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-22 08:06:22][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+[2025-08-22 08:06:34][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-22 08:06:48][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+[2025-08-22 08:06:57][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-22 08:07:12][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref_ai.xyz'
+[2025-08-22 08:07:20][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\mov.xyz'
+[2025-08-22 08:07:35][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\ref.xyz'
+[2025-08-22 08:08:37][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\mov.xyz'
+[2025-08-22 08:08:52][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\ref_ai.xyz'
+[2025-08-22 08:09:59][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\mov.xyz'
+[2025-08-22 08:09:59][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\ref.xyz'
+[2025-08-22 08:10:01][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\mov.xyz'
+[2025-08-22 08:10:01][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\ref_ai.xyz'
+[2025-08-22 08:10:02][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\mov.xyz'
+[2025-08-22 08:10:04][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\ref.xyz'
+[2025-08-22 08:10:17][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\mov.xyz'
+[2025-08-22 08:10:18][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\ref_ai.xyz'
+[2025-08-22 08:10:26][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\mov.xyz'
+[2025-08-22 08:10:27][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\ref.xyz'
+[2025-08-22 08:10:42][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\mov.xyz'
+[2025-08-22 08:10:43][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\ref_ai.xyz'

@@ -1,0 +1,8 @@
+**/__pycache__/
+*.py[cod]
+*$py.class
+backups/
+data/
+Plots/
+Plots_V7/
+Plots_CC_Python/
