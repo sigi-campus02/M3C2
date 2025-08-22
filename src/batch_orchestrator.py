@@ -77,7 +77,11 @@ class BatchOrchestrator:
             distances, _ = self._run_m3c2(cfg, mov, ref, corepoints, normal, projection, out_base)
             self._generate_visuals(cfg, mov, distances, out_base)
 
-        self._compute_statistics(cfg, ref)
+        try:
+            self._compute_statistics(cfg, ref)
+        except Exception:
+            logger.exception("Statistik konnte nicht berechnet werden")
+        
 
         logger.info("[Job] %s abgeschlossen in %.3fs", cfg.folder_id, time.perf_counter() - start)
 
