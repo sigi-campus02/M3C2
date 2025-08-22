@@ -16,30 +16,11 @@ class ParamEstimator:
     """
     Kapselt Spacing-Schätzung + Scale-Scan + finale Auswahl.
     """
-
     @staticmethod
-    def estimate_min_spacing(
-            points: np.ndarray,
-            subsample: int = 200_000,
-            trim: tuple[float, float] = (0.05, 0.95),
-            use_median: bool = True
-    ) -> float:
-        """
-        Robuste Schätzung der Punktwolkenauflösung (minSpacing) per 1-NN.
-        """
-        if subsample and len(points) > subsample:
-            idx = np.random.choice(len(points), size=subsample, replace=False)
-            points = points[idx]
-
-        nn = NearestNeighbors(n_neighbors=2).fit(points)
-        dists, _ = nn.kneighbors(points)
-        nn1 = dists[:, 1]  # 1-NN (erste Spalte ist 0 = Punkt selbst)
-
-        if trim:
-            lo, hi = np.quantile(nn1, [trim[0], trim[1]])
-            nn1 = nn1[(nn1 >= lo) & (nn1 <= hi)]
-
-        min_spacing = float(np.median(nn1) if use_median else np.mean(nn1))
+    def estimate_min_spacing(points: np.ndarray, k: int = 6) -> float:
+        nbrs = NearestNeighbors(n_neighbors=k + 1).fit(points)
+        distances, _ = nbrs.kneighbors(points)
+        min_spacing = float(np.mean(distances[:, 1:]))
         return min_spacing
 
     @staticmethod
@@ -54,7 +35,8 @@ class ParamEstimator:
         Paper-nahe Auswahl:
         - Primär: minimale mittlere λ_min (Planarität), dann hohe Abdeckung, dann geringe σ(D)
         - D/σ-Regel: bevorzuge ersten Kandidaten mit D/sigma >= 25
-        - Projektion d: größte getestete Skala < D; Fallback 0.5 * D
+        - Normal D = gewählte Stufe
+        - Projektion d = exakt die nächsthöhere getestete Stufe (> D); Fallback: d = D
         """
         if not scans:
             raise ValueError("Keine Scales gefunden.")
@@ -69,31 +51,38 @@ class ParamEstimator:
             )
         ]
 
+        # Fallback (keine validen Scans): nimm Median als D, nächsthöhere Stufe als d
         if not valid:
-            # Fallback: Median-D, d = 0.5 * D (konservativ, d < D)
-            scales_sorted = sorted(float(s.scale) for s in scans)
-            mid = scales_sorted[len(scales_sorted) // 2]
-            normal = float(mid)
-            projection = float(0.5 * normal)
-            return normal, projection
+            ladder = sorted({float(s.scale) for s in scans})
+            mid_idx = len(ladder) // 2
+            normal = ladder[mid_idx]
+            projection = ladder[mid_idx + 1] if mid_idx + 1 < len(ladder) else ladder[mid_idx]
+            return float(normal), float(projection)
 
         # Primär Planarität (λ_min), dann Abdeckung, dann geringe σ(D)
         valid.sort(key=lambda s: (float(s.mean_lambda3), -int(s.valid_normals), float(s.roughness)))
 
-        # D/σ-Regel: ersten Kandidaten nehmen, der sie erfüllt
+        # D/σ-Regel: ersten Kandidaten nehmen, der sie erfüllt; sonst bestes λ_min
         chosen = None
         for s in valid:
             if s.roughness > 0 and (float(s.scale) / float(s.roughness)) >= 25.0:
                 chosen = s
                 break
         if chosen is None:
-            chosen = valid[0]  # bestes λ_min
+            chosen = valid[0]
 
-        normal = float(chosen.scale)
+        # Leiter (einmalig aus den getesteten Skalen)
+        ladder = sorted({float(s.scale) for s in scans})
 
-        # größte getestete Skala < D; sonst 0.5 * D
-        all_scales = sorted({float(s.scale) for s in scans})
-        smaller = [x for x in all_scales if x < normal]
-        projection = float(smaller[-1]) if smaller else float(0.5 * normal)
+        # Index der gewählten Stufe (tolerant „snappen“)
+        EPS = 1e-12
+        try:
+            idx = next(i for i, v in enumerate(ladder) if abs(v - float(chosen.scale)) <= EPS)
+        except StopIteration:
+            idx = min(range(len(ladder)), key=lambda i: abs(ladder[i] - float(chosen.scale)))
 
-        return normal, projection
+        # Normal = gewählte Stufe, Projektion = exakt die nächsthöhere Stufe (eins drüber)
+        normal = ladder[idx]
+        projection = ladder[idx + 1] if (idx + 1) < len(ladder) else ladder[idx]  # am oberen Rand: d = D
+
+        return float(normal), float(projection)
