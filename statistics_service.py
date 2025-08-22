@@ -18,20 +18,25 @@ CANONICAL_COLUMNS = [
     "Timestamp", "Folder", "Version", "Typ",
     "Gesamt", "NaN", "% NaN", "% Valid",
     "Valid Count", "Valid Sum", "Valid Squared Sum",
+    "Valid Count Inlier", "Valid Sum Inlier", "Valid Squared Sum Inlier",
     "Normal Scale", "Search Scale",
-    "Min", "Max", "Mean", "Median", "RMS", "Std Empirical", "MAE", "MAE Inlier", "NMAD", "NMAD Inlier",
+    "Min", "Max", "Mean", "Median", "RMS", "Std Empirical", "MAE", "NMAD",
+    "Min Inlier", "Max Inlier", "Mean Inlier", "Median Inlier", "RMS Inlier", "Std Inlier", "MAE Inlier", "NMAD Inlier",
     "Outlier Count", "Inlier Count",
-    "Mean Inlier", "Std Inlier", "Mean Outlier", "Std Outlier",
+    "Mean Outlier", "Std Outlier",
     "Pos Outlier", "Neg Outlier", "Pos Inlier", "Neg Inlier",
     "Q05", "Q25", "Q75", "Q95", "IQR",
+    "Q05 Inlier", "Q25 Inlier", "Q75 Inlier", "Q95 Inlier", "IQR Inlier",
     "Gauss Mean", "Gauss Std", "Gauss Chi2",
     "Weibull a", "Weibull b", "Weibull shift", "Weibull mode",
     "Weibull skewness", "Weibull Chi2",
-    "Skewness", "Kurtosis",
+    "Skewness", "Kurtosis", "Skewness Inlier", "Kurtosis Inlier",
     "Anteil |Distanz| > 0.01", "Anteil [-2Std,2Std]",
+    "Anteil |Distanz| > 0.01 Inlier", "Anteil [-2Std,2Std] Inlier",
     "Max |Distanz|", "Bias", "Within-Tolerance",
-    "ICC", "CCC", "Bland-Altman Lower", "Bland-Altman Upper", "Jaccard Index",
-    "Dice Coefficient", "Distances Path", "Params Path",
+    "Max |Distanz| Inlier", "Bias Inlier", "Within-Tolerance Inlier",
+    "ICC", "CCC", "Bland-Altman Lower", "Bland-Altman Upper", "Jaccard Index", "Dice Coefficient",
+    "Jaccard Index Inlier", "Dice Coefficient Inlier", "Distances Path", "Params Path",
 ]
 
 
@@ -84,18 +89,16 @@ class StatisticsService:
         if clipped.size == 0:
             raise ValueError("All values fall outside the selected range")
 
-        # Summen/Momente (CLIPPED)
-        valid_sum = float(np.sum(clipped))
-        valid_squared_sum = float(np.sum(clipped ** 2))
-        avg = float(np.mean(clipped))
-        std_empirical = float(np.std(clipped))
-        rms = float(np.sqrt(np.mean(clipped ** 2)))
-
-        # NEW: MAE (gegen 0) & NMAD (robuste Sigma)
-        mae = float(np.mean(np.abs(clipped)))               # Mean Absolute Error
-        med = float(np.median(clipped))                     # Median
-        mad = float(np.median(np.abs(clipped - med)))       # Median Absolute Deviation
-        nmad = float(1.4826 * mad)                          # Normalized MAD
+        # Basis-Statistiken für alle Werte (inkl. Outlier)
+        stats_all = StatisticsService._basic_stats(clipped, tolerance)
+        valid_sum = stats_all["Valid Sum"]
+        valid_squared_sum = stats_all["Valid Squared Sum"]
+        avg = stats_all["Mean"]
+        med = stats_all["Median"]
+        rms = stats_all["RMS"]
+        std_empirical = stats_all["Std Empirical"]
+        mae = stats_all["MAE"]
+        nmad = stats_all["NMAD"]
 
         # Histogramm
         hist, bin_edges = np.histogram(clipped, bins=bins, range=(data_min, data_max))
@@ -119,23 +122,49 @@ class StatisticsService:
         normal_scale, search_scale = StatisticsService._load_params(params_path)
 
         # Outliers
-        outlier_info = StatisticsService._compute_outliers(clipped, rms, med)
+        outlier_mask = np.abs(clipped) > (3 * rms)
+        inliers = clipped[~outlier_mask]
+        outliers = clipped[outlier_mask]
+        outlier_info = StatisticsService._compute_outliers(inliers, outliers)
         outlier_count = outlier_info["outlier_count"]
         inlier_count = outlier_info["inlier_count"]
-        mean_in = outlier_info["mean_in"]
         mean_out = outlier_info["mean_out"]
-        std_in = outlier_info["std_in"]
         std_out = outlier_info["std_out"]
         pos_out = outlier_info["pos_out"]
         neg_out = outlier_info["neg_out"]
         pos_in = outlier_info["pos_in"]
         neg_in = outlier_info["neg_in"]
-        mae_in = outlier_info["mae_in"]
-        nmad_in = outlier_info["nmad_in"]
+
+        stats_in = StatisticsService._basic_stats(inliers, tolerance)
+        mean_in = stats_in["Mean"]
+        std_in = stats_in["Std Empirical"]
+        mae_in = stats_in["MAE"]
+        nmad_in = stats_in["NMAD"]
+        min_in = stats_in["Min"]
+        max_in = stats_in["Max"]
+        median_in = stats_in["Median"]
+        rms_in = stats_in["RMS"]
+        q05_in = stats_in["Q05"]
+        q25_in = stats_in["Q25"]
+        q75_in = stats_in["Q75"]
+        q95_in = stats_in["Q95"]
+        iqr_in = stats_in["IQR"]
+        skew_in = stats_in["Skewness"]
+        kurt_in = stats_in["Kurtosis"]
+        share_abs_gt_in = stats_in["Anteil |Distanz| > 0.01"]
+        share_2std_in = stats_in["Anteil [-2Std,2Std]"]
+        max_abs_in = stats_in["Max |Distanz|"]
+        bias_in = stats_in["Bias"]
+        within_tolerance_in = stats_in["Within-Tolerance"]
+        jaccard_in = stats_in["Jaccard Index"]
+        dice_in = stats_in["Dice Coefficient"]
+        valid_count_in = stats_in["Valid Count"]
+        valid_sum_in = stats_in["Valid Sum"]
+        valid_squared_sum_in = stats_in["Valid Squared Sum"]
 
         # Bias & Toleranz
-        bias = float(np.mean(clipped))
-        within_tolerance = float(np.mean(np.abs(clipped) <= tolerance))
+        bias = stats_all["Bias"]
+        within_tolerance = stats_all["Within-Tolerance"]
 
         # ICC/CCC/Bland-Altman
         icc = np.nan  # Placeholder
@@ -147,10 +176,8 @@ class StatisticsService:
         bland_altman_upper = bias + 1.96 * std_dist
 
         # Overlap (Jaccard/Dice)
-        intersection = np.sum((clipped > -tolerance) & (clipped < tolerance))
-        union = len(clipped)
-        jaccard_index = intersection / union if union > 0 else np.nan
-        dice_coefficient = (2 * intersection) / (2 * union) if union > 0 else np.nan
+        jaccard_index = stats_all["Jaccard Index"]
+        dice_coefficient = stats_all["Dice Coefficient"]
 
         return {
             # 1) Counts & Scales
@@ -161,6 +188,9 @@ class StatisticsService:
             "Valid Count": int(clipped.size),
             "Valid Sum": valid_sum,
             "Valid Squared Sum": valid_squared_sum,
+            "Valid Count Inlier": int(valid_count_in),
+            "Valid Sum Inlier": valid_sum_in,
+            "Valid Squared Sum Inlier": valid_squared_sum_in,
             "Normal Scale": normal_scale,
             "Search Scale": search_scale,
 
@@ -172,15 +202,19 @@ class StatisticsService:
             "RMS": rms,
             "Std Empirical": std_empirical,
             "MAE": mae,
-            "MAE Inlier": mae_in,
             "NMAD": nmad,
+            "Min Inlier": min_in,
+            "Max Inlier": max_in,
+            "Mean Inlier": mean_in,
+            "Median Inlier": median_in,
+            "RMS Inlier": rms_in,
+            "Std Inlier": std_in,
+            "MAE Inlier": mae_in,
             "NMAD Inlier": nmad_in,
 
             # 3) Outlier / Inlier
             "Outlier Count": outlier_count,
             "Inlier Count": inlier_count,
-            "Mean Inlier": mean_in,
-            "Std Inlier": std_in,
             "Mean Outlier": mean_out,
             "Std Outlier": std_out,
             "Pos Outlier": pos_out,
@@ -189,11 +223,16 @@ class StatisticsService:
             "Neg Inlier": neg_in,
 
             # 4) Quantile
-            "Q05": float(np.percentile(clipped, 5)),
-            "Q25": float(np.percentile(clipped, 25)),
-            "Q75": float(np.percentile(clipped, 75)),
-            "Q95": float(np.percentile(clipped, 95)),
-            "IQR": float(np.percentile(clipped, 75) - np.percentile(clipped, 25)),
+            "Q05": stats_all["Q05"],
+            "Q25": stats_all["Q25"],
+            "Q75": stats_all["Q75"],
+            "Q95": stats_all["Q95"],
+            "IQR": stats_all["IQR"],
+            "Q05 Inlier": q05_in,
+            "Q25 Inlier": q25_in,
+            "Q75 Inlier": q75_in,
+            "Q95 Inlier": q95_in,
+            "IQR Inlier": iqr_in,
 
             # 5) Fit-Metriken
             "Gauss Mean": float(mu),
@@ -207,19 +246,28 @@ class StatisticsService:
             "Weibull Chi2": float(pearson_weib),
 
             # 6) Weitere Kennzahlen
-            "Skewness": float(pd.Series(clipped).skew()),
-            "Kurtosis": float(pd.Series(clipped).kurt()),
-            "Anteil |Distanz| > 0.01": float(np.mean(np.abs(clipped) > 0.01)), # 1. Anteil |Distanz| > 0.01 (1 cm-Grenze)
-            "Anteil [-2Std,2Std]": float(np.mean((clipped > -2*std) & (clipped < 2*std))), # 2. Anteil innerhalb ±2·Std
-            "Max |Distanz|": float(np.max(np.abs(clipped))), # 3. Maximaler Absolutwert (Extremabweichung)
+            "Skewness": stats_all["Skewness"],
+            "Kurtosis": stats_all["Kurtosis"],
+            "Skewness Inlier": skew_in,
+            "Kurtosis Inlier": kurt_in,
+            "Anteil |Distanz| > 0.01": stats_all["Anteil |Distanz| > 0.01"], # 1. Anteil |Distanz| > 0.01 (1 cm-Grenze)
+            "Anteil [-2Std,2Std]": stats_all["Anteil [-2Std,2Std]"], # 2. Anteil innerhalb ±2·Std
+            "Anteil |Distanz| > 0.01 Inlier": share_abs_gt_in,
+            "Anteil [-2Std,2Std] Inlier": share_2std_in,
+            "Max |Distanz|": stats_all["Max |Distanz|"], # 3. Maximaler Absolutwert (Extremabweichung)
             "Bias": bias,
             "Within-Tolerance": within_tolerance, # 4. Within-Tolerance (default: ±1 cm)
+            "Max |Distanz| Inlier": max_abs_in,
+            "Bias Inlier": bias_in,
+            "Within-Tolerance Inlier": within_tolerance_in,
             "ICC": icc,
             "CCC": ccc,
             "Bland-Altman Lower": bland_altman_lower,
             "Bland-Altman Upper": bland_altman_upper,
             "Jaccard Index": jaccard_index,
-            "Dice Coefficient": dice_coefficient
+            "Dice Coefficient": dice_coefficient,
+            "Jaccard Index Inlier": jaccard_in,
+            "Dice Coefficient Inlier": dice_in
         }
 
 
@@ -412,24 +460,14 @@ class StatisticsService:
 
     @staticmethod
     def _compute_outliers(
-        clipped: np.ndarray, rms: float, median: float
+        inliers: np.ndarray, outliers: np.ndarray
     ) -> Dict[str, float]:
-        """Bestimme Outlier- und Inlier-Kennzahlen.
+        """Bestimme Kennzahlen zu Inliern und Outliern.
 
-        Die Abgrenzung erfolgt über ``3 * rms``. Zusätzlich werden Kennwerte
-        für Inlier und Outlier berechnet.
+        Erwartet bereits separierte Arrays ``inliers`` und ``outliers``.
         """
 
-        outlier_mask = np.abs(clipped) > (3 * rms)
-        inliers = clipped[~outlier_mask] # nur die Punkte behalten, die innerhalb ±3·RMS liegen
-        outliers = clipped[outlier_mask]
-
         mean_out = float(np.mean(outliers)) if outliers.size else np.nan
-
-        # Voraussetzung: inliers sind die Werte, die |x| <= 3·RMS erfüllen
-        mean_in = float(np.mean(inliers)) if inliers.size else np.nan
-
-        std_in = float(np.std(inliers)) if inliers.size > 0 else np.nan
         std_out = float(np.std(outliers)) if outliers.size > 0 else np.nan
 
         pos_out = int(np.sum(outliers > 0))
@@ -437,26 +475,109 @@ class StatisticsService:
         pos_in = int(np.sum(inliers > 0))
         neg_in = int(np.sum(inliers < 0))
 
-        mae_in = float(np.mean(np.abs(inliers))) if inliers.size > 0 else np.nan
-        nmad_in = (
-            float(1.4826 * np.median(np.abs(inliers - median)))
-            if inliers.size > 0
-            else np.nan
-        )
-
         return {
-            "outlier_count": int(outlier_mask.sum()),
-            "inlier_count": int((~outlier_mask).sum()),
+            "outlier_count": int(outliers.size),
+            "inlier_count": int(inliers.size),
             "mean_out": mean_out,
-            "mean_in": mean_in,
-            "std_in": std_in,
             "std_out": std_out,
             "pos_out": pos_out,
             "neg_out": neg_out,
             "pos_in": pos_in,
             "neg_in": neg_in,
-            "mae_in": mae_in,
-            "nmad_in": nmad_in,
+        }
+
+    @staticmethod
+    def _basic_stats(values: np.ndarray, tolerance: float) -> Dict[str, float]:
+        """Berechne Grundkennzahlen für ein Werte-Array.
+
+        Gibt ein Dictionary mit Summen, Momenten und weiteren Kennzahlen
+        zurück. Bei leeren Arrays werden ``np.nan`` bzw. 0 geliefert.
+        """
+
+        if values.size == 0:
+            return {
+                "Valid Count": 0,
+                "Valid Sum": 0.0,
+                "Valid Squared Sum": 0.0,
+                "Min": np.nan,
+                "Max": np.nan,
+                "Mean": np.nan,
+                "Median": np.nan,
+                "RMS": np.nan,
+                "Std Empirical": np.nan,
+                "MAE": np.nan,
+                "NMAD": np.nan,
+                "Q05": np.nan,
+                "Q25": np.nan,
+                "Q75": np.nan,
+                "Q95": np.nan,
+                "IQR": np.nan,
+                "Skewness": np.nan,
+                "Kurtosis": np.nan,
+                "Anteil |Distanz| > 0.01": np.nan,
+                "Anteil [-2Std,2Std]": np.nan,
+                "Max |Distanz|": np.nan,
+                "Bias": np.nan,
+                "Within-Tolerance": np.nan,
+                "Jaccard Index": np.nan,
+                "Dice Coefficient": np.nan,
+            }
+
+        valid_count = int(values.size)
+        valid_sum = float(np.sum(values))
+        valid_squared_sum = float(np.sum(values ** 2))
+        min_val = float(np.min(values))
+        max_val = float(np.max(values))
+        mean_val = float(np.mean(values))
+        median_val = float(np.median(values))
+        rms_val = float(np.sqrt(np.mean(values ** 2)))
+        std_emp = float(np.std(values))
+        mae = float(np.mean(np.abs(values)))
+        mad = float(np.median(np.abs(values - median_val)))
+        nmad = float(1.4826 * mad)
+        q05 = float(np.percentile(values, 5))
+        q25 = float(np.percentile(values, 25))
+        q75 = float(np.percentile(values, 75))
+        q95 = float(np.percentile(values, 95))
+        iqr = float(q75 - q25)
+        skew = float(pd.Series(values).skew())
+        kurt = float(pd.Series(values).kurt())
+        share_abs_gt = float(np.mean(np.abs(values) > 0.01))
+        share_2std = float(np.mean((values > -2 * std_emp) & (values < 2 * std_emp)))
+        max_abs = float(np.max(np.abs(values)))
+        bias = mean_val
+        within_tolerance = float(np.mean(np.abs(values) <= tolerance))
+        intersection = np.sum((values > -tolerance) & (values < tolerance))
+        union = len(values)
+        jaccard_index = intersection / union if union > 0 else np.nan
+        dice_coefficient = (2 * intersection) / (2 * union) if union > 0 else np.nan
+
+        return {
+            "Valid Count": valid_count,
+            "Valid Sum": valid_sum,
+            "Valid Squared Sum": valid_squared_sum,
+            "Min": min_val,
+            "Max": max_val,
+            "Mean": mean_val,
+            "Median": median_val,
+            "RMS": rms_val,
+            "Std Empirical": std_emp,
+            "MAE": mae,
+            "NMAD": nmad,
+            "Q05": q05,
+            "Q25": q25,
+            "Q75": q75,
+            "Q95": q95,
+            "IQR": iqr,
+            "Skewness": skew,
+            "Kurtosis": kurt,
+            "Anteil |Distanz| > 0.01": share_abs_gt,
+            "Anteil [-2Std,2Std]": share_2std,
+            "Max |Distanz|": max_abs,
+            "Bias": bias,
+            "Within-Tolerance": within_tolerance,
+            "Jaccard Index": jaccard_index,
+            "Dice Coefficient": dice_coefficient,
         }
 
     @staticmethod
