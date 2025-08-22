@@ -14,7 +14,8 @@ cfg = PlotConfig(
     filenames=filenames,
     versions=versions,
     bins=256,
-    outdir="Plots",
+    outdir="Plots_TUNSPEKT", # "Plots_TUNSPEKT", "Plots_Mars"
+    project = "TUNSPEKT" # "TUNSPEKT" "MARS"
 )
 
 opts = PlotOptions(
@@ -26,4 +27,4 @@ opts = PlotOptions(
 PlotService.overlay_plots(cfg, opts)
 
 # optional: ein PDF pro filename erzeugen
-PlotService.summary_pdf(cfg, pdf_name="Plot_Vergleich.pdf")
+PlotService.summary_pdf(cfg, pdf_name="TUNSPEKT_Plot_Vergleich.pdf") #"TUNSPEKT_Plot_Vergleich.pdf", "MARS_Plot_Vergleich.pdf"

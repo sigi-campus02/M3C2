@@ -13,6 +13,7 @@ class PipelineConfig:
     process_python_CC: str
     only_stats: bool
     stats_singleordistance: str
+    project: str
     normal_override: Optional[float] = None
     proj_override: Optional[float] = None
 

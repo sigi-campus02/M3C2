@@ -4,19 +4,26 @@ import os
 from logging_utils import setup_logging
 
 # Variationen
-folder_ids = ["0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
-ref_variants = ["ref", "ref_ai"]
+
+# TUNSPEKT FOLDERS: "TUNSPEKT_Altone(mov)-Faro(ref)", "TUNSPEKT_Handheld(mov)-Faro(ref)", "TUNSPEKT_Mavic(mov)-Faro(ref)"
+# MARS FOLDERS:     "0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"
+# MARS REF VARIANTS: "ref", "ref_ai"
+
+
+folder_ids = ["TUNSPEKT_Altone(mov)-Faro(ref)"]
+ref_variants = ["ref"]
 
 # Fix-Parameter
 filename_mov = "mov"                 # Moving point cloud
 mov_as_corepoints = True
-use_subsampled_corepoints = 1        # 1 = kein Subsampling
+use_subsampled_corepoints = 5        # 1 = kein Subsampling
 strategy = "radius"                  # "radius" oder "voxel"
 sample_size = 10000                  # nur für Parameterschätzung, nicht für Algorithmus
-process_python_CC = "CC"             # "python" oder "CC"
+process_python_CC = "python"             # "python" oder "CC"
 only_stats = False                   # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
 stats_singleordistance = "distance"  # "single" oder "distance"
-output_format = "excel"              # "excel" oder "csv"
+output_format = "json"              # "excel" oder "json"
+project = "TUNSPEKT"                # "TUNSPEKT" "MARS"
 
 def main() -> None:
     cfgs = []
@@ -33,6 +40,7 @@ def main() -> None:
                     process_python_CC,
                     only_stats,
                     stats_singleordistance,
+                    project,
                 )
             )
 

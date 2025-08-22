@@ -163,7 +163,9 @@ class BatchOrchestrator:
     def _compute_statistics(self, cfg: PipelineConfig, ref) -> None:
         if cfg.stats_singleordistance == "distance":
             logger.info(f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …")
-            out_path = "m3c2_stats_all.xlsx" if self.output_format == "excel" else "m3c2_stats_all.json"
+
+            out_path = os.path.join(f"{cfg.project}_m3c2_stats_distances.xlsx") if self.output_format == "excel" else os.path.join(f"{cfg.project}_m3c2_stats_distances.json")
+
             StatisticsService.compute_m3c2_statistics(
                 folder_ids=[cfg.folder_id],
                 filename_ref=cfg.filename_ref,
@@ -183,7 +185,7 @@ class BatchOrchestrator:
                 "Folder": cfg.folder_id,
             })
             rows.append(stats)
-            out_path = "m3c2_stats_clouds.xlsx" if self.output_format == "excel" else "m3c2_stats_clouds.json"
+            out_path = os.path.join(f"{cfg.project}_m3c2_stats_clouds.xlsx") if self.output_format == "excel" else os.path.join(f"{cfg.project}_m3c2_stats_clouds.json")
             StatisticsService.write_cloud_stats(
                 rows,
                 out_path=out_path,
