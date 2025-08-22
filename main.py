@@ -10,20 +10,23 @@ from logging_utils import setup_logging
 # MARS REF VARIANTS: "ref", "ref_ai"
 
 
-folder_ids = ["TUNSPEKT_Altone(mov)-Faro(ref)"]
-ref_variants = ["ref"]
+folder_ids = ["0817-0821"]
+ref_variants = ["ref_ai"]
 
 # Fix-Parameter
 filename_mov = "mov"                 # Moving point cloud
 mov_as_corepoints = True
-use_subsampled_corepoints = 5        # 1 = kein Subsampling
+use_subsampled_corepoints = 1        # 1 = kein Subsampling
 strategy = "radius"                  # "radius" oder "voxel"
 sample_size = 10000                  # nur für Parameterschätzung, nicht für Algorithmus
-process_python_CC = "python"             # "python" oder "CC"
+process_python_CC = "python"         # "python" oder "CC"
 only_stats = False                   # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
 stats_singleordistance = "distance"  # "single" oder "distance"
-output_format = "json"              # "excel" oder "json"
-project = "TUNSPEKT"                # "TUNSPEKT" "MARS"
+output_format = "excel"              # "excel" oder "json"
+project = "MARS"                     # "TUNSPEKT" "MARS"
+normal_override = 0.116427276796056  # Normal Scale Override
+proj_override = 0.232854553592111    # Projection Scale Override
+use_existing_params = True           # ob vorhandene Parameter (in Ordner) genutzt werden (True) oder neu berechnet (False)       
 
 def main() -> None:
     cfgs = []
@@ -41,6 +44,9 @@ def main() -> None:
                     only_stats,
                     stats_singleordistance,
                     project,
+                    normal_override,
+                    proj_override,
+                    use_existing_params
                 )
             )
 

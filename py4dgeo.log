@@ -388,3 +388,11 @@
 [2025-08-22 09:42:03][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT_Altone(mov)-Faro(ref)\ref.xyz'
 [2025-08-22 09:42:32][INFO] Building KDTree structure with leaf parameter 10
 [2025-08-22 09:42:33][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-22 09:49:20][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT_Altone(mov)-Faro(ref)\mov.xyz'
+[2025-08-22 09:49:38][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT_Altone(mov)-Faro(ref)\ref.xyz'
+[2025-08-22 09:51:18][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT_Altone(mov)-Faro(ref)\mov.xyz'
+[2025-08-22 09:51:35][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT_Altone(mov)-Faro(ref)\ref.xyz'
+[2025-08-22 10:43:18][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+[2025-08-22 10:43:32][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref_ai.xyz'
+[2025-08-22 10:43:32][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-22 10:43:33][INFO] Building KDTree structure with leaf parameter 10
