@@ -15,28 +15,23 @@ from sklearn.neighbors import NearestNeighbors
 
 # Kanonische Spaltenreihenfolge für Statistik-Exports
 CANONICAL_COLUMNS = [
-    "Timestamp", "Folder", "Version", "Typ",
-    "Gesamt", "NaN", "% NaN", "% Valid",
+    "Timestamp", "Folder", "Version", "Total Points",
+    "Normal Scale", "Search Scale",
+    "NaN", "% NaN", "% Valid",
     "Valid Count", "Valid Sum", "Valid Squared Sum",
     "Valid Count Inlier", "Valid Sum Inlier", "Valid Squared Sum Inlier",
-    "Normal Scale", "Search Scale",
     "Min", "Max", "Mean", "Median", "RMS", "Std Empirical", "MAE", "NMAD",
-    "Min Inlier", "Max Inlier", "Mean Inlier", "Median Inlier", "RMS Inlier", "Std Inlier", "MAE Inlier", "NMAD Inlier",
-    "Outlier Count", "Inlier Count",
+    "Min Inlier", "Max Inlier", "Mean Inlier", "Median Inlier", "RMS Inlier",
+    "Std Inlier", "MAE Inlier", "NMAD Inlier",
+    "Inlier Count", "Pos Inlier", "Neg Inlier",
+    "Pos Outlier", "Neg Outlier", "Outlier Count",
     "Mean Outlier", "Std Outlier",
-    "Pos Outlier", "Neg Outlier", "Pos Inlier", "Neg Inlier",
     "Q05", "Q25", "Q75", "Q95", "IQR",
     "Q05 Inlier", "Q25 Inlier", "Q75 Inlier", "Q95 Inlier", "IQR Inlier",
-    "Gauss Mean", "Gauss Std", "Gauss Chi2",
-    "Weibull a", "Weibull b", "Weibull shift", "Weibull mode",
-    "Weibull skewness", "Weibull Chi2",
-    "Skewness", "Kurtosis", "Skewness Inlier", "Kurtosis Inlier",
-    "Anteil |Distanz| > 0.01", "Anteil [-2Std,2Std]",
-    "Anteil |Distanz| > 0.01 Inlier", "Anteil [-2Std,2Std] Inlier",
-    "Max |Distanz|", "Bias", "Within-Tolerance",
-    "Max |Distanz| Inlier", "Bias Inlier", "Within-Tolerance Inlier",
-    "ICC", "CCC", "Bland-Altman Lower", "Bland-Altman Upper", "Jaccard Index", "Dice Coefficient",
-    "Jaccard Index Inlier", "Dice Coefficient Inlier", "Distances Path", "Params Path",
+    "Gauss Mean", "Gauss Std",
+    "Weibull a", "Weibull b", "Weibull shift", "Weibull mode", "Weibull skewness",
+    "Skewness", "Kurtosis",
+    "Distances Path", "Params Path",
 ]
 
 
@@ -181,7 +176,7 @@ class StatisticsService:
 
         return {
             # 1) Counts & Scales
-            "Gesamt": total_count,
+            "Total Points": total_count,
             "NaN": nan_count,
             "% NaN": (nan_count / total_count) if total_count > 0 else np.nan,
             "% Valid": (1 - nan_count / total_count) if total_count > 0 else np.nan,
