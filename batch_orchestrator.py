@@ -73,10 +73,31 @@ class BatchOrchestrator:
         ds, mov, ref, corepoints = self._load_data(cfg)
         if cfg.process_python_CC == "python" and not cfg.only_stats:
             # Nur ausführen, wenn nicht nur Statistiken berechnet werden sollen
-            normal, projection = self._determine_scales(cfg, corepoints)
             out_base = ds.folder
-            self._save_params(cfg, normal, projection, out_base)
-            distances, _ = self._run_m3c2(cfg, mov, ref, corepoints, normal, projection, out_base)
+            normal = projection = np.nan
+            if cfg.use_existing_params:
+                params_path = os.path.join(
+                    out_base,
+                    f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_params.txt",
+                )
+                normal, projection = StatisticsService._load_params(params_path)
+                if not np.isnan(normal) and not np.isnan(projection):
+                    logger.info(
+                        "[Params] geladen: %s (NormalScale=%.6f, SearchScale=%.6f)",
+                        params_path,
+                        normal,
+                        projection,
+                    )
+                else:
+                    logger.info(
+                        "[Params] keine vorhandenen Parameter gefunden, berechne neu",
+                    )
+            if np.isnan(normal) or np.isnan(projection):
+                normal, projection = self._determine_scales(cfg, corepoints)
+                self._save_params(cfg, normal, projection, out_base)
+            distances, _ = self._run_m3c2(
+                cfg, mov, ref, corepoints, normal, projection, out_base
+            )
             self._generate_visuals(cfg, mov, distances, out_base)
 
         try:
