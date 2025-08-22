@@ -1,5 +1,7 @@
 from __future__ import annotations
-
+import logging
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 import os
 from typing import List
 
@@ -131,12 +133,14 @@ class StatisticsCompareDistances:
         os.makedirs(outdir, exist_ok=True)
 
         for fid in folder_ids:
+            logger.info(f"Processing folder: {fid}")
             paths = []
             for variant in ref_variants:
+                logger.info(f" Looking for variant: {variant}")
                 basename = f"python_{variant}_m3c2_distances.txt"
                 path = cls._resolve(fid, basename)
                 if not os.path.exists(path):
-                    print(f"[PassingBablok] Datei nicht gefunden: {path}")
+                    logger.warning(f"[PassingBablok] Datei nicht gefunden: {path}")
                     path = None
                 paths.append(path)
 
