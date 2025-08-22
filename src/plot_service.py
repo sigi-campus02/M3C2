@@ -31,12 +31,17 @@ class PlotOptions:
 
 @dataclass
 class PlotConfig:
-    folder_id: str
+    folder_ids: List[str]
     filenames: List[str]
     versions: List[str] = field(default_factory=lambda: ["python", "CC"])
     bins: int = 256
     colors: Dict[str, str] = field(default_factory=dict)
     outdir: str = "Plots"
+
+    def labels(self) -> List[str]:
+        # Reihenfolge der vier Kurven, z.B. ["python_ref","python_ref_ai","CC_ref","CC_ref_ai"]
+        return [f"{v}_{f}" for v in self.versions for f in self.filenames]
+    
 
     def ensure_colors(self) -> Dict[str, str]:
         if self.colors:
@@ -45,7 +50,8 @@ class PlotConfig:
             "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
             "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf",
         ]
-        return {v: default_palette[i % len(default_palette)] for i, v in enumerate(self.versions)}
+        lbls = self.labels()
+        return {lbls[i]: default_palette[i % len(default_palette)] for i in range(len(lbls))}
 
 
 # =========================
@@ -56,7 +62,7 @@ class PlotService:
     # ------- Public API -------------------------------------
 
     @classmethod
-    def overlay_plots(cls, folder_id: str, config: PlotConfig, options: PlotOptions) -> None:
+    def overlay_plots(cls, config: PlotConfig, options: PlotOptions) -> None:
         """
         Erzeugt pro filename alle gewünschten Overlay-Plots (PNG).
         Für jeden filename werden die in config.versions angegebenen
@@ -65,36 +71,36 @@ class PlotService:
         colors = config.ensure_colors()
         os.makedirs(config.outdir, exist_ok=True)
 
-        for fname in config.filenames:
-            data, gauss_params = cls._load_data(folder_id, fname, config.versions)
+        for fid in config.folder_ids:
+            data, gauss_params = cls._load_data(fid, config.filenames, config.versions)
             if not data:
-                logging.warning(f"[Report] Keine Daten für {folder_id}/{fname} gefunden.")
+                logging.warning(f"[Report] Keine Daten für {fid} gefunden.")
                 continue
 
             data_min, data_max, x = cls._get_common_range(data)
 
             if options.plot_hist:
-                cls._plot_overlay_histogram(folder_id, fname, data, config.bins, data_min, data_max, colors, config.outdir)
+                cls._plot_overlay_histogram(fid, "ALL", data, config.bins, data_min, data_max, colors, config.outdir)
 
             if options.plot_gauss:
-                cls._plot_overlay_gauss(folder_id, fname, data, gauss_params, x, colors, config.outdir)
+                cls._plot_overlay_gauss(fid, "ALL", data, gauss_params, x, colors, config.outdir)
 
             if options.plot_weibull:
-                cls._plot_overlay_weibull(folder_id, fname, data, x, colors, config.outdir)
+                cls._plot_overlay_weibull(fid, "ALL", data, x, colors, config.outdir)
 
             if options.plot_box:
-                cls._plot_overlay_boxplot(folder_id, fname, data, colors, config.outdir)
+                cls._plot_overlay_boxplot(fid, "ALL", data, colors, config.outdir)
 
             if options.plot_qq:
-                cls._plot_overlay_qq(folder_id, fname, data, colors, config.outdir)
+                cls._plot_overlay_qq(fid, "ALL", data, colors, config.outdir)
 
             if options.plot_grouped_bar:
-                cls._plot_grouped_bar_means_stds(folder_id, fname, data, colors, config.outdir)
+                cls._plot_grouped_bar_means_stds(fid, "ALL", data, colors, config.outdir)
 
-            logging.info(f"[Report] PNGs für {folder_id}/{fname} erzeugt.")
+            logging.info(f"[Report] PNGs für {fid} erzeugt.")
 
     @classmethod
-    def summary_pdf(cls, folder_id: str, filenames: List[str], pdf_name: str = "Plot_Vergleich.pdf", outdir: str = "Plots") -> None:
+    def summary_pdf(cls, config: PlotConfig, pdf_name: str = "Plot_Vergleich.pdf") -> None:
         """
         Baut pro filename eine Seite mit allen Plots.
         """
@@ -108,11 +114,11 @@ class PlotService:
         ]
 
         with PdfPages(pdf_name) as pdf:
-            for fname in filenames:
+            for fid in config.folder_ids:
                 fig, axs = plt.subplots(2, 3, figsize=(24, 16))
                 for suffix, title, (row, col) in plot_types:
                     ax = axs[row, col]
-                    png = os.path.join(outdir, f"{folder_id}_{fname}_{suffix}.png")
+                    png = os.path.join(config.outdir, f"{fid}_ALL_{suffix}.png")
                     if os.path.exists(png):
                         img = mpimg.imread(png)
                         ax.imshow(img)
@@ -121,7 +127,7 @@ class PlotService:
                     else:
                         ax.axis("off")
                         ax.set_title(f"{title}\n(nicht gefunden)", fontsize=18)
-                plt.suptitle(f"{folder_id}/{fname} – Vergleichsplots", fontsize=28)
+                plt.suptitle(f"{fid} – Vergleichsplots", fontsize=28)
                 plt.subplots_adjust(left=0.03, right=0.97, top=0.92, bottom=0.08, wspace=0.08, hspace=0.15)
                 pdf.savefig(fig)
                 plt.close(fig)
@@ -141,43 +147,53 @@ class PlotService:
         return os.path.join("data", fid, filename)
 
     @classmethod
-    def _load_data(cls, fid: str, fname: str, versions: List[str]) -> Tuple[Dict[str, np.ndarray], Dict[str, Tuple[float, float]]]:
+    def _load_data(cls, fid: str, filenames: List[str], versions: List[str]) -> Tuple[Dict[str, np.ndarray], Dict[str, Tuple[float, float]]]:
         """
-        Lädt für einen filename die Daten aller Versionen.
-        Erwartetes Schema:
-          - python:  '<version>_<filename>_m3c2_distances.txt' (whitespace getrennt)
-          - CC:      '<version>_<filename>_m3c2_distances.txt' (CSV mit ';' und Spalte 'M3C2 distance')
+        Lädt alle Kombinationen (version x filename) und legt sie als
+        separate Serien in einem einzigen Dictionary ab.
+        Key = '<version>_<filename>' (z.B. 'python_ref').
+        Erwartete Dateien: '<version>_<filename>_m3c2_distances.txt'
+          - CC: CSV mit ';' und Spalte 'M3C2 distance' (oder erste numerische Spalte)
+          - python: whitespace-getrennte Liste (np.loadtxt)
         """
         data: Dict[str, np.ndarray] = {}
         gauss_params: Dict[str, Tuple[float, float]] = {}
 
         for v in versions:
-            basename = f"{v}_{fname}_m3c2_distances.txt"
-            path = cls._resolve(fid, basename)
-            logging.info(f"[Report] Lade Daten: {path}")
+            for fname in filenames:
+                label = f"{v}_{fname}"
+                basename = f"{v}_{fname}_m3c2_distances.txt"
+                path = cls._resolve(fid, basename)
+                logging.info(f"[Report] Lade Daten: {path}")
 
-            if not os.path.exists(path):
-                logging.warning(f"[Report] Datei fehlt: {path}")
-                continue
+                if not os.path.exists(path):
+                    logging.warning(f"[Report] Datei fehlt: {path}")
+                    continue
 
-            try:
-                if v.lower() == "cc":
-                    df = pd.read_csv(path, sep=";")
-                    # robust: finde eine passende Distanzspalte
-                    cand = [c for c in df.columns if "m3c2" in c.lower() and "distance" in c.lower()]
-                    col = cand[0] if cand else df.select_dtypes(include=[np.number]).columns[0]
-                    arr = df[col].astype(float).to_numpy()
-                else:
-                    arr = np.loadtxt(path)
-            except Exception as e:
-                logging.error(f"[Report] Laden fehlgeschlagen ({path}): {e}")
-                continue
+                try:
+                    if v.lower() == "cc":
+                        df = pd.read_csv(path, sep=";")
+                        cand = [c for c in df.columns if "m3c2" in c.lower() and "distance" in c.lower()]
+                        if cand:
+                            col = cand[0]
+                        else:
+                            # Fallback: erste numerische Spalte
+                            num_cols = df.select_dtypes(include=[np.number]).columns
+                            if len(num_cols) == 0:
+                                raise ValueError("Keine numerische Spalte gefunden.")
+                            col = num_cols[0]
+                        arr = df[col].astype(float).to_numpy()
+                    else:
+                        arr = np.loadtxt(path)
+                except Exception as e:
+                    logging.error(f"[Report] Laden fehlgeschlagen ({path}): {e}")
+                    continue
 
-            arr = arr[~np.isnan(arr)]
-            if arr.size:
-                data[v] = arr
-                mu, std = norm.fit(arr)
-                gauss_params[v] = (float(mu), float(std))
+                arr = arr[~np.isnan(arr)]
+                if arr.size:
+                    data[label] = arr
+                    mu, std = norm.fit(arr)
+                    gauss_params[label] = (float(mu), float(std))
 
         return data, gauss_params
 
