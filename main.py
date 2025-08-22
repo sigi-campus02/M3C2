@@ -1,6 +1,7 @@
 from batch_orchestrator import BatchOrchestrator
 from pipeline_config import PipelineConfig
 import os
+import argparse
 from logging_utils import setup_logging
 
 # Variationen
@@ -17,7 +18,7 @@ process_python_CC = "CC"         # "python" oder "CC"
 only_stats = False                   # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
 stats_singleordistance = "distance"  # "single" oder "distance"
 
-def main() -> None:
+def main(stats_format: str) -> None:
     cfgs = []
     for fid in folder_ids:
         folder = os.path.join("data", fid)
@@ -35,10 +36,18 @@ def main() -> None:
                 )
             )
 
-    orchestrator = BatchOrchestrator(cfgs, strategy, sample_size)
+    orchestrator = BatchOrchestrator(cfgs, strategy, sample_size, output_format=stats_format)
     orchestrator.run_all()
 
 
 if __name__ == "__main__":
     setup_logging()
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--stats-format",
+        choices=["excel", "json"],
+        default="excel",
+        help="Format für Statistik-Exports",
+    )
+    args = parser.parse_args()
+    main(args.stats_format)
