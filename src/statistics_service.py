@@ -66,14 +66,14 @@ class StatisticsService:
         valid_sum = float(np.sum(clipped))
         valid_squared_sum = float(np.sum(clipped ** 2))
         avg = float(np.mean(clipped))
+        std_empirical = float(np.std(clipped))
         rms = float(np.sqrt(np.mean(clipped ** 2)))
 
         # NEW: MAE (gegen 0) & NMAD (robuste Sigma)
-        mae = float(np.mean(np.abs(clipped)))  # Mean Absolute Error
-
-        med = float(np.median(clipped))
-        mad = float(np.median(np.abs(clipped - med)))
-        nmad = float(1.4826 * mad)  # Normalized MAD
+        mae = float(np.mean(np.abs(clipped)))               # Mean Absolute Error
+        med = float(np.median(clipped))                     # Median
+        mad = float(np.median(np.abs(clipped - med)))       # Median Absolute Deviation
+        nmad = float(1.4826 * mad)                          # Normalized MAD
 
         # Histogramm
         hist, bin_edges = np.histogram(clipped, bins=bins, range=(data_min, data_max))
@@ -146,9 +146,9 @@ class StatisticsService:
             "Min": float(np.nanmin(distances)),
             "Max": float(np.nanmax(distances)),
             "Mean": avg,
-            "Median": float(np.median(clipped)),
+            "Median": med,
             "RMS": rms,
-            "Std": float(np.std(clipped)),
+            "Std Empirical": std_empirical,
             "MAE": mae,
             "MAE Inlier": mae_in,
             "NMAD": nmad,
@@ -171,6 +171,7 @@ class StatisticsService:
             "Q25": float(np.percentile(clipped, 25)),
             "Q75": float(np.percentile(clipped, 75)),
             "Q95": float(np.percentile(clipped, 95)),
+            "IQR": float(np.percentile(clipped, 75) - np.percentile(clipped, 25)),
 
             # 5) Fit-Metriken
             "Gauss Mean": float(mu),
@@ -186,11 +187,11 @@ class StatisticsService:
             # 6) Weitere Kennzahlen
             "Skewness": float(pd.Series(clipped).skew()),
             "Kurtosis": float(pd.Series(clipped).kurt()),
-            "Anteil |Distanz| > 0.01": float(np.mean(np.abs(clipped) > 0.01)),
-            "Anteil [-2Std,2Std]": float(np.mean((clipped > -2*std) & (clipped < 2*std))),
-            "Max |Distanz|": float(np.max(np.abs(clipped))),
+            "Anteil |Distanz| > 0.01": float(np.mean(np.abs(clipped) > 0.01)), # 1. Anteil |Distanz| > 0.01 (1 cm-Grenze)
+            "Anteil [-2Std,2Std]": float(np.mean((clipped > -2*std) & (clipped < 2*std))), # 2. Anteil innerhalb ±2·Std
+            "Max |Distanz|": float(np.max(np.abs(clipped))), # 3. Maximaler Absolutwert (Extremabweichung)
             "Bias": bias,
-            "Within-Tolerance": within_tolerance,
+            "Within-Tolerance": within_tolerance, # 4. Within-Tolerance (default: ±1 cm)
             "ICC": icc,
             "CCC": ccc,
             "Bland-Altman Lower": bland_altman_lower,
@@ -321,27 +322,47 @@ class StatisticsService:
         N = int(hist.sum())
         assert N == len(clipped), f"Histogram N ({N}) != len(clipped) ({len(clipped)})"
 
+        # ------ Gauss ------ #
         mu, std = norm.fit(clipped)
-        cdfL = norm.cdf(bin_edges[:-1], mu, std)
-        cdfR = norm.cdf(bin_edges[1:], mu, std)
+
+        # Histogramm-Fit vorbereiten
+        cdfL = norm.cdf(bin_edges[:-1], mu, std)  # CDF am linken Rand jedes Bins
+        cdfR = norm.cdf(bin_edges[1:], mu, std)   # CDF am rechten Rand jedes Bins
+
+        # Erwartete Häufigkeiten unter der Gauß-Verteilung
         expected_gauss = N * (cdfR - cdfL)
+
+        # Kleine erwartete Werte aussortieren, um Division durch 0 zu vermeiden
         eps = 1e-12
         thr = min_expected if min_expected is not None else eps
         maskG = expected_gauss > thr
+
+        # Pearson-Chi²
         pearson_gauss = float(
             np.sum((hist[maskG] - expected_gauss[maskG]) ** 2 / expected_gauss[maskG])
         )
 
-        a, loc, b = weibull_min.fit(clipped)
+        # ------ Weibull ------ #
+
+        # Fit der Weibull-Verteilung
+        a, loc, b = weibull_min.fit(clipped) # Shape, Scale, Location
+
+        # Erwartete Häufigkeiten unter der Weibull-Verteilung
         cdfL = weibull_min.cdf(bin_edges[:-1], a, loc=loc, scale=b)
         cdfR = weibull_min.cdf(bin_edges[1:], a, loc=loc, scale=b)
+
         expected_weib = N * (cdfR - cdfL)
+
+        # Kleine erwartete Klassen ausschließen
         maskW = expected_weib > thr
+
+        # Pearson-Chi² für Weibull
         pearson_weib = float(
             np.sum((hist[maskW] - expected_weib[maskW]) ** 2 / expected_weib[maskW])
         )
 
         skew_weibull = float(weibull_min(a, loc=loc, scale=b).stats(moments="s"))
+        # Modus (nur definiert, wenn a > 1)
         mode_weibull = float(loc + b * ((a - 1) / a) ** (1 / a)) if a > 1 else float(loc)
 
         return {
@@ -367,10 +388,12 @@ class StatisticsService:
         """
 
         outlier_mask = np.abs(clipped) > (3 * rms)
-        inliers = clipped[~outlier_mask]
+        inliers = clipped[~outlier_mask] # nur die Punkte behalten, die innerhalb ±3·RMS liegen
         outliers = clipped[outlier_mask]
 
         mean_out = float(np.mean(outliers)) if outliers.size else np.nan
+
+        # Voraussetzung: inliers sind die Werte, die |x| <= 3·RMS erfüllen
         mean_in = float(np.mean(inliers)) if inliers.size else np.nan
 
         std_in = float(np.std(inliers)) if inliers.size > 0 else np.nan
@@ -447,11 +470,11 @@ class StatisticsService:
             "Gesamt", "NaN", "% NaN", "% Valid",
             "Valid Count", "Valid Sum", "Valid Squared Sum",
             "Normal Scale", "Search Scale",
-            "Min", "Max", "Mean", "Median", "RMS", "Std", "MAE", "MAE Inlier", "NMAD", "NMAD Inlier",
+            "Min", "Max", "Mean", "Median", "RMS", "Std Empirical", "MAE", "MAE Inlier", "NMAD", "NMAD Inlier",
             "Outlier Count", "Inlier Count",
             "Mean Inlier", "Std Inlier", "Mean Outlier", "Std Outlier",
             "Pos Outlier", "Neg Outlier", "Pos Inlier", "Neg Inlier",
-            "Q05", "Q25", "Q75", "Q95",
+            "Q05", "Q25", "Q75", "Q95", "IQR",
             "Gauss Mean", "Gauss Std", "Gauss Chi2",
             "Weibull a", "Weibull b", "Weibull shift", "Weibull mode",
             "Weibull skewness", "Weibull Chi2",
