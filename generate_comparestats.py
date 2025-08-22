@@ -4,11 +4,11 @@ from statistics_service_comparedistances import StatisticsCompareDistances
 
 folder_ids = ["0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
 ref_variants = ["ref_ai", "ref"]
-outdir = "Plots_BlandAltman"
+outdir = "Plots_PassingBablok"
 
 def main():
     for fid in folder_ids:
-        StatisticsCompareDistances.bland_altman_plot(
+        StatisticsCompareDistances.passing_bablok_plot(
             folder_ids=[fid],
             ref_variants=ref_variants,
             outdir=outdir,
