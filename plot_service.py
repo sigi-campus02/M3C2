@@ -37,7 +37,6 @@ class PlotConfig:
     bins: int = 256
     colors: Dict[str, str] = field(default_factory=dict)
     outdir: str = "Plots"
-    project: str
 
     def labels(self) -> List[str]:
         # Reihenfolge der vier Kurven, z.B. ["python_ref","python_ref_ai","CC_ref","CC_ref_ai"]
