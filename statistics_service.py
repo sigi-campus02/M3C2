@@ -243,26 +243,26 @@ class StatisticsService:
             # 6) Weitere Kennzahlen
             "Skewness": stats_all["Skewness"],
             "Kurtosis": stats_all["Kurtosis"],
-            "Skewness Inlier": skew_in,
-            "Kurtosis Inlier": kurt_in,
-            "Anteil |Distanz| > 0.01": stats_all["Anteil |Distanz| > 0.01"], # 1. Anteil |Distanz| > 0.01 (1 cm-Grenze)
-            "Anteil [-2Std,2Std]": stats_all["Anteil [-2Std,2Std]"], # 2. Anteil innerhalb ±2·Std
-            "Anteil |Distanz| > 0.01 Inlier": share_abs_gt_in,
-            "Anteil [-2Std,2Std] Inlier": share_2std_in,
-            "Max |Distanz|": stats_all["Max |Distanz|"], # 3. Maximaler Absolutwert (Extremabweichung)
-            "Bias": bias,
-            "Within-Tolerance": within_tolerance, # 4. Within-Tolerance (default: ±1 cm)
-            "Max |Distanz| Inlier": max_abs_in,
-            "Bias Inlier": bias_in,
-            "Within-Tolerance Inlier": within_tolerance_in,
-            "ICC": icc,
-            "CCC": ccc,
-            "Bland-Altman Lower": bland_altman_lower,
-            "Bland-Altman Upper": bland_altman_upper,
-            "Jaccard Index": jaccard_index,
-            "Dice Coefficient": dice_coefficient,
-            "Jaccard Index Inlier": jaccard_in,
-            "Dice Coefficient Inlier": dice_in
+            # "Skewness Inlier": skew_in,
+            # "Kurtosis Inlier": kurt_in,
+            # "Anteil |Distanz| > 0.01": stats_all["Anteil |Distanz| > 0.01"], # 1. Anteil |Distanz| > 0.01 (1 cm-Grenze)
+            # "Anteil [-2Std,2Std]": stats_all["Anteil [-2Std,2Std]"], # 2. Anteil innerhalb ±2·Std
+            # "Anteil |Distanz| > 0.01 Inlier": share_abs_gt_in,
+            # "Anteil [-2Std,2Std] Inlier": share_2std_in,
+            # "Max |Distanz|": stats_all["Max |Distanz|"], # 3. Maximaler Absolutwert (Extremabweichung)
+            # "Bias": bias,
+            # "Within-Tolerance": within_tolerance, # 4. Within-Tolerance (default: ±1 cm)
+            # "Max |Distanz| Inlier": max_abs_in,
+            # "Bias Inlier": bias_in,
+            # "Within-Tolerance Inlier": within_tolerance_in,
+            # "ICC": icc,
+            # "CCC": ccc,
+            # "Bland-Altman Lower": bland_altman_lower,
+            # "Bland-Altman Upper": bland_altman_upper,
+            # "Jaccard Index": jaccard_index,
+            # "Dice Coefficient": dice_coefficient,
+            # "Jaccard Index Inlier": jaccard_in,
+            # "Dice Coefficient Inlier": dice_in
         }
 
 
@@ -303,7 +303,7 @@ class StatisticsService:
                     rows.append({
                         "Folder": fid,
                         "Version": filename_ref or "",
-                        "Typ": process_python_CC,
+                        # "Typ": process_python_CC,
                         "Distances Path": py_dist_path,
                         "Params Path": py_params_path if os.path.exists(py_params_path) else "",
                         **stats
@@ -329,7 +329,7 @@ class StatisticsService:
                             rows.append({
                                 "Folder": fid,
                                 "Version": filename_ref or "",
-                                "Typ": process_python_CC,
+                                # "Typ": process_python_CC,
                                 "Distances Path": cc_path,
                                 "Params Path": cc_params_path if os.path.exists(cc_params_path) else "",
                                 **stats
