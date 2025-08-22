@@ -10,7 +10,7 @@ import laspy
 
 class DataSource:
     """
-    Erwartetes Layout: <folder>/{mov,ref}.{xyz|las|laz|ply}
+    Erwartetes Layout: <folder>/{mov,ref}.{xyz|las|laz|ply|obj|gpc}
     Priorität:
       1) Wenn BEIDE .xyz  -> py4dgeo.read_from_xyz
       2) Wenn BEIDE .las/.laz (gemischt ok) -> py4dgeo.read_from_las
@@ -37,8 +37,15 @@ class DataSource:
         return os.path.exists(p)
 
     def _detect(self, base: str) -> tuple[str | None, str | None]:
-        """Gibt (kind, path) zurück, wobei kind in {'xyz','laslike','ply'} oder None ist."""
-        xyz, las, laz, ply = base + ".xyz", base + ".las", base + ".laz", base + ".ply"
+        """Gibt (kind, path) zurück, wobei kind in {'xyz','laslike','ply','obj','gpc'} oder None ist."""
+        xyz, las, laz, ply, obj, gpc = (
+            base + ".xyz",
+            base + ".las",
+            base + ".laz",
+            base + ".ply",
+            base + ".obj",
+            base + ".gpc",
+        )
         if self._exists(xyz):
             return "xyz", xyz
         if self._exists(las) or self._exists(laz):
@@ -46,6 +53,10 @@ class DataSource:
             return "laslike", las if self._exists(las) else laz
         if self._exists(ply):
             return "ply", ply
+        if self._exists(obj):
+            return "obj", obj
+        if self._exists(gpc):
+            return "gpc", gpc
         return None, None
 
     def _read_las_or_laz_to_xyz_array(self, path: str) -> np.ndarray:
@@ -57,6 +68,22 @@ class DataSource:
         except ModuleNotFoundError as e:
             raise RuntimeError("LAZ erkannt, bitte 'pip install \"laspy[lazrs]\"' installieren.") from e
         return np.vstack([las.x, las.y, las.z]).T.astype(np.float64)
+
+    def _read_obj_to_xyz_array(self, path: str) -> np.ndarray:
+        """Parst ein einfaches Wavefront-OBJ mit 'v x y z'-Zeilen."""
+        vertices: list[list[float]] = []
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith("v "):
+                    parts = line.split()
+                    if len(parts) >= 4:
+                        vertices.append([float(parts[1]), float(parts[2]), float(parts[3])])
+        return np.asarray(vertices, dtype=np.float64)
+
+    def _read_gpc_to_xyz_array(self, path: str) -> np.ndarray:
+        """Lädt .gpc als einfache whitespace-separierte XYZ-Tabelle."""
+        return np.loadtxt(path, dtype=np.float64, usecols=(0, 1, 2))
 
     def _ensure_xyz(self, base: str, detected: tuple[str | None, str | None]) -> str:
         """Sorgt dafür, dass base.xyz existiert (konvertiert bei Bedarf)."""
@@ -78,7 +105,17 @@ class DataSource:
             arr = np.vstack([v["x"], v["y"], v["z"]]).T.astype(np.float64)
             np.savetxt(xyz, arr, fmt="%.6f")
             return xyz
-        raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply")
+        if kind == "obj" and path:
+            logging.info(f"[{base}] Konvertiere OBJ → XYZ …")
+            arr = self._read_obj_to_xyz_array(path)
+            np.savetxt(xyz, arr, fmt="%.6f")
+            return xyz
+        if kind == "gpc" and path:
+            logging.info(f"[{base}] Konvertiere GPC → XYZ …")
+            arr = self._read_gpc_to_xyz_array(path)
+            np.savetxt(xyz, arr, fmt="%.6f")
+            return xyz
+        raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
 
     def load_points(self) -> Tuple[py4dgeo.Epoch, py4dgeo.Epoch, np.ndarray]:
         m_kind, m_path = self._detect(self.mov_base)
