@@ -1,26 +1,7 @@
-"""Utility for comparing distance outputs using a Bland–Altman plot.
-
-This module loads two distance result files for a set of folder IDs and
-creates Bland–Altman plots showing the agreement of the two variants.
-
-Example
--------
->>> from statistics_service_comparedistances import StatisticsCompareDistances
->>> StatisticsCompareDistances.bland_altman_plot(
-...     folder_ids=["0342-0349"],
-...     ref_variants=["ref", "ref_ai"],
-... )
-
-The function searches files following the pattern
-``python_{variant}_m3c2_distances.txt`` in either ``<fid>/`` or
-``data/<fid>/`` and writes one PNG file per folder ID to the output
-directory.
-"""
-
 from __future__ import annotations
 
 import os
-from typing import Iterable, List
+from typing import List
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -42,24 +23,10 @@ class StatisticsCompareDistances:
             return p1
         return os.path.join("data", fid, filename)
 
-    @staticmethod
-    def _expand_folders(folder_ids: Iterable[str]) -> List[str]:
-        """Expand ranges like ``'0001-0003'`` into a list of IDs."""
-
-        result: List[str] = []
-        for fid in folder_ids:
-            if "-" in fid:
-                start, end = fid.split("-", 1)
-                for num in range(int(start), int(end) + 1):
-                    result.append(f"{num:04d}")
-            else:
-                result.append(fid)
-        return result
-
     @classmethod
     def bland_altman_plot(
         cls,
-        folder_ids: Iterable[str],
+        folder_ids: List[str],
         ref_variants: List[str],
         outdir: str = "BlandAltman",
     ) -> None:
@@ -80,9 +47,8 @@ class StatisticsCompareDistances:
             raise ValueError("ref_variants must contain exactly two entries")
 
         os.makedirs(outdir, exist_ok=True)
-        fids = cls._expand_folders(folder_ids)
 
-        for fid in fids:
+        for fid in folder_ids:
             paths = []
             for variant in ref_variants:
                 basename = f"python_{variant}_m3c2_distances.txt"
@@ -97,7 +63,13 @@ class StatisticsCompareDistances:
                 continue
 
             data = [np.loadtxt(p) for p in paths]
-            a, b = (arr[~np.isnan(arr)] for arr in data)
+            
+            a_raw, b_raw = data
+            mask = ~np.isnan(a_raw) & ~np.isnan(b_raw)
+            a = a_raw[mask]
+            b = b_raw[mask]
+
+
             if a.size == 0 or b.size == 0:
                 print(f"[BlandAltman] Leere Distanzwerte in {fid}, übersprungen")
                 continue
@@ -133,33 +105,4 @@ class StatisticsCompareDistances:
             plt.savefig(outpath, dpi=300)
             plt.close()
 
-
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        description="Generate Bland-Altman plots for distance outputs"
-    )
-    parser.add_argument(
-        "--folder_ids",
-        nargs="+",
-        required=True,
-        help="Folder IDs or ranges (e.g. 0001-0005)",
-    )
-    parser.add_argument(
-        "--ref_variants",
-        nargs=2,
-        required=True,
-        help="Two reference variants, e.g. ref ref_ai",
-    )
-    parser.add_argument(
-        "--outdir", default="BlandAltman", help="Output directory for plots"
-    )
-    args = parser.parse_args()
-
-    StatisticsCompareDistances.bland_altman_plot(
-        folder_ids=args.folder_ids,
-        ref_variants=list(args.ref_variants),
-        outdir=args.outdir,
-    )
 
