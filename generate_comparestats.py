@@ -11,8 +11,8 @@ logging.basicConfig(level=logging.INFO)
 # ref_variants = ["altone-faro", "handheld-faro", "mavic-faro"]
 
 # folder_ids = ["TUNSPEKT Labordaten_all"]
-# ref_variants = ["altone-faro", "mavic-faro"]
-# outdir = "Plots_TUNSPEKT_BlandAltman"
+# ref_variants = ["altone-faro", "handheld-faro"]
+# outdir = "Plots_TUNSPEKT_PassingBablok"
 
 folder_ids = ["0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
 ref_variants = ["ref", "ref_ai"]
@@ -24,8 +24,13 @@ outdir = "Plots_MARS_PassingBablok"
 #     outdir=outdir,
 # )
 
+# StatisticsCompareDistances.passing_bablok_plot(
+#     folder_ids=folder_ids,
+#     ref_variants=ref_variants,
+#     outdir=outdir,
+# )
 
-StatisticsCompareDistances.passing_bablok_plot(
+StatisticsCompareDistances.linear_regression_plot(
     folder_ids=folder_ids,
     ref_variants=ref_variants,
     outdir=outdir,

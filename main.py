@@ -11,7 +11,7 @@ from logging_utils import setup_logging
 # folder_ids = ["TUNSPEKT Labordaten_all"]
 
 
-folder_ids = ["TUNSPEKT Labordaten_all"]
+folder_ids = ["TUNSPEKT_Altone(mov)-Faro(ref)"]
 ref_variants = ["ref"]
 
 # Fix-Parameter
@@ -21,8 +21,8 @@ use_subsampled_corepoints = 100        # 1 = kein Subsampling; bsp. 3 -> jeder d
 strategy = "radius"                  # "radius" oder "voxel"
 sample_size = 10000                  # nur für Parameterschätzung, nicht für Algorithmus
 process_python_CC = "python"         # "python" oder "CC"
-only_stats = True                   # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
-stats_singleordistance = "single"  # "single" oder "distance"
+only_stats = True                       # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
+stats_singleordistance = "distance"  # "single" oder "distance"
 output_format = "excel"              # "excel" oder "json"
 project = "TUNSPEKT"                     # "TUNSPEKT" "MARS"
 normal_override = None               # Normal Scale Override

@@ -107,6 +107,7 @@ class StatisticsCompareDistances:
             plt.savefig(outpath, dpi=300)
             plt.close()
 
+
     @classmethod
     def passing_bablok_plot(
         cls,
@@ -114,18 +115,7 @@ class StatisticsCompareDistances:
         ref_variants: List[str],
         outdir: str = "PassingBablok",
     ) -> None:
-        """Create Passing–Bablok regression plots for the given folder IDs.
-
-        Parameters
-        ----------
-        folder_ids:
-            List of folder identifiers or ranges (e.g. ``"0001-0003"``).
-        ref_variants:
-            Exactly two variants that form the file name pattern
-            ``python_{variant}_m3c2_distances.txt``.
-        outdir:
-            Directory in which the PNG plots will be stored.
-        """
+        """Create Passing–Bablok regression plots (nach Rowannicholls-Tutorial)."""
 
         if len(ref_variants) != 2:
             raise ValueError("ref_variants must contain exactly two entries")
@@ -133,10 +123,9 @@ class StatisticsCompareDistances:
         os.makedirs(outdir, exist_ok=True)
 
         for fid in folder_ids:
-            logger.info(f"Processing folder: {fid}")
+            logger.info(f"[PassingBablok] Processing folder: {fid}")
             paths = []
             for variant in ref_variants:
-                logger.info(f" Looking for variant: {variant}")
                 basename = f"python_{variant}_m3c2_distances.txt"
                 path = cls._resolve(fid, basename)
                 if not os.path.exists(path):
@@ -145,86 +134,269 @@ class StatisticsCompareDistances:
                 paths.append(path)
 
             if None in paths:
-                # At least one file is missing -> skip this folder
                 continue
 
-            data = [np.loadtxt(p) for p in paths]
+            x_raw = np.loadtxt(paths[0])
+            y_raw = np.loadtxt(paths[1])
 
-            x_raw, y_raw = data
+            # Nur gültige Werte
             mask = ~np.isnan(x_raw) & ~np.isnan(y_raw)
-            x = x_raw[mask]
-            y = y_raw[mask]
+            x = np.asarray(x_raw[mask], dtype=float)
+            y = np.asarray(y_raw[mask], dtype=float)
 
-
-            max_n = 5000
-            if len(x) > max_n:
-                idx = np.random.choice(len(x), size=max_n, replace=False)
+            # Optionales Downsampling (nur zur Plot-Ästhetik; Regression bleibt robust)
+            max_n = 1000
+            if x.size > max_n:
+                idx = np.random.choice(x.size, size=max_n, replace=False)
                 x, y = x[idx], y[idx]
 
-            if x.size == 0 or y.size == 0:
-                print(f"[PassingBablok] Leere Distanzwerte in {fid}, übersprungen")
+            if x.size < 2:
+                logger.warning(f"[PassingBablok] Zu wenige Punkte in {fid} – übersprungen")
                 continue
 
-            # Passing–Bablok regression
-            slopes = []
-            n = len(x)
+            # ------- Passing–Bablok nach Tutorial -------
+            n = int(len(x))  # Anzahl Rohpunkte
+            S = []           # Steigungen aller Punktpaare
+
+            # Alle Kombinationen (i<j); Ausschlüsse wie im Tutorial
             for i in range(n - 1):
+                x_i, y_i = x[i], y[i]
                 for j in range(i + 1, n):
-                    if x[j] != x[i]:
-                        slopes.append((y[j] - y[i]) / (x[j] - x[i]))
+                    x_j, y_j = x[j], y[j]
 
-            if not slopes:
-                print(f"[PassingBablok] Keine gültigen Paare in {fid}, übersprungen")
+                    # Identische Punkte ignorieren
+                    if (x_i == x_j) and (y_i == y_j):
+                        continue
+
+                    # Vertikale Verbindungen -> +/- inf je nach Vorzeichen von Δy
+                    if x_i == x_j:
+                        S.append(np.inf if (y_i > y_j) else -np.inf)
+                        continue
+
+                    # Steigung
+                    g = (y_i - y_j) / (x_i - x_j)
+
+                    # Steigung == -1 verwerfen (Symmetrieargument im Original)
+                    if g == -1:
+                        continue
+
+                    S.append(g)
+
+            if not S:
+                logger.warning(f"[PassingBablok] Keine gültigen Paare in {fid}")
                 continue
 
-            slopes = np.array(slopes)
-            slopes_sorted = np.sort(slopes)
-            N = len(slopes_sorted)
+            S = np.array(S, dtype=float)
+            S.sort()
+            N = int(len(S))                # Anzahl Steigungen
+            K = int((S < -1).sum())        # Shift (Number of slopes < -1)
 
-            # Median slope
-            slope = float(np.median(slopes_sorted))
+            # Shifted median b (Gradient)
+            if N % 2:  # ungerade
+                idx = int((N + 1) / 2 + K) - 1  # 0-based
+                b = float(S[idx])
+            else:      # gerade
+                idx = int(N / 2 + K) - 1
+                b = float(0.5 * (S[idx] + S[idx + 1]))
 
-            # CI-Berechnung nach Passing & Bablok
-            z = 1.96  # für 95%
-            C_alpha = z * np.sqrt(N*(N-1)*(2*N+5)/18)
-            L = int(np.floor((N - C_alpha)/2))
-            U = int(np.ceil( (N + C_alpha)/2.0 )) - 1
+            # y-Achsenabschnitt a (Median der Residuen)
+            a = float(np.median(y - b * x))
 
-            L = max(L, 0)
-            U = min(U, N-1)
+            # 95%-Konfidenzintervalle für b und a
+            from scipy import stats as st
+            C = 0.95
+            gamma = 1 - C
+            q = 1 - (gamma / 2.0)
+            w = float(st.norm.ppf(q))  # ~1.96
 
-            slope_low = float(slopes_sorted[L])
-            slope_high = float(slopes_sorted[U])
+            # Achtung: C_gamma benutzt n (Rohpunkte), nicht N (Steigungen)
+            C_gamma = w * np.sqrt((n * (n - 1) * (2 * n + 5)) / 18.0)
+            M1 = int(np.round((N - C_gamma) / 2.0))
+            M2 = int(N - M1 + 1)
 
-            # Intercept + CI
-            intercept = float(np.median(y - slope * x))
-            intercepts = y - slope * x
-            intercept_low = float(np.median(y - slope_high * x))
-            intercept_high = float(np.median(y - slope_low * x))
+            # Indexgrenzen 0-basiert + Shift K (wie im Tutorial gezeigt)
+            b_L = float(S[M1 + K - 1])
+            b_U = float(S[M2 + K - 1])
+
+            # CI für a via b_U / b_L
+            a_L = float(np.median(y - b_U * x))
+            a_U = float(np.median(y - b_L * x))
+
+            # ------- Plot -------
+            # 1) Immer die gleiche Figurgröße
+            fig = plt.figure(figsize=(8, 6), constrained_layout=True)
+            ax = fig.add_subplot(111)
+
+            ax.scatter(x, y, alpha=0.35, label="Daten", s=12)
+
+            # Identitäts- und Regressionslinien
+            (xl, xu), (yl, yu) = _square_limits(x, y, pad=0.05)
+            xx = np.array([xl, xu], dtype=float)
+
+            ax.plot(xx, xx, linestyle="--", color="grey", label="y = x")
+            ax.plot(xx, a + b*xx, color="red", label=f"PB: y = {a:.4f} + {b:.4f} x")
+            ax.plot(xx, (a_U + b_U*xx), linestyle="--", alpha=0.7, label=f"CI oben: y = {a_U:.4f} + {b_U:.4f} x")
+            ax.plot(xx, (a_L + b_L*xx), linestyle="--", alpha=0.7, label=f"CI unten: y = {a_L:.4f} + {b_L:.4f} x")
+            ax.fill_between(xx, a_L + b_L*xx, a_U + b_U*xx, alpha=0.12)
+
+            # 2) Quadratische Limits anwenden
+            ax.set_xlim(xl, xu)
+            ax.set_ylim(yl, yu)
+            ax.set_aspect("equal", adjustable="box")  # gleiches Seitenverhältnis, volle Fläche
+
+            ax.set_xlabel(ref_variants[0])
+            ax.set_ylabel(ref_variants[1])
+            ax.set_title(f"Passing–Bablok {fid}: {ref_variants[0]} vs {ref_variants[1]}")
+            ax.legend(frameon=False)
 
 
-            plt.figure(figsize=(8, 6))
-            plt.scatter(x, y, alpha=0.3)
-
-            min_val = float(min(np.min(x), np.min(y)))
-            max_val = float(max(np.max(x), np.max(y)))
-            line_x = np.array([min_val, max_val], dtype=float)
-
-            # Identity
-            plt.plot(line_x, line_x, color="grey", linestyle="--", label="Identity y=x")
-
-            # PB-Linie + 95%-CI-Band
-            plt.plot(line_x, intercept + slope * line_x,
-                    color="red", label=f"PB: y = {slope:.4f}x + {intercept:.4f}")
-            plt.plot(line_x, intercept_low  + slope_low  * line_x, color="orange", linestyle="--",
-                    label=f"Slope 95% CI: [{slope_low:.4f}, {slope_high:.4f}]")
-            plt.plot(line_x, intercept_high + slope_high * line_x, color="orange", linestyle="--")
-
-            plt.xlabel(ref_variants[0]); plt.ylabel(ref_variants[1])
-            plt.title(f"Passing–Bablok {fid}: {ref_variants[0]} vs {ref_variants[1]}")
-            plt.legend(); plt.tight_layout()
-            plt.savefig(outpath, dpi=300); plt.close()
-
+            outpath = os.path.join(
+                outdir,
+                f"passing_bablok_{fid}_{ref_variants[0]}_vs_{ref_variants[1]}.png",
+            )
+            plt.savefig(outpath, dpi=300)
             plt.close()
 
+            logger.info(
+                f"[PassingBablok] {fid}: b={b:.6f} "
+                f"[{b_L:.6f},{b_U:.6f}], a={a:.6f} [{a_L:.6f},{a_U:.6f}] -> {outpath}"
+            )
 
+    @classmethod
+    def linear_regression_plot(
+        cls,
+        folder_ids: List[str],
+        ref_variants: List[str],
+        outdir: str = "LinearRegression",
+    ) -> None:
+        """
+        Erzeugt OLS-Linearregressionsplots (y = a + b x) für alle folder_ids.
+        - gleiche Figurgröße wie beim PB-Plot
+        - quadratische Achsenlimits mit _square_limits
+        - 95%-CIs für a und b (t-Verteilung)
+        """
+
+        if len(ref_variants) != 2:
+            raise ValueError("ref_variants must contain exactly two entries")
+
+        os.makedirs(outdir, exist_ok=True)
+
+        for fid in folder_ids:
+            logger.info(f"[OLS] Processing folder: {fid}")
+            paths = []
+            for variant in ref_variants:
+                basename = f"python_{variant}_m3c2_distances.txt"
+                path = cls._resolve(fid, basename)
+                if not os.path.exists(path):
+                    logger.warning(f"[OLS] Datei nicht gefunden: {path}")
+                    path = None
+                paths.append(path)
+
+            if None in paths:
+                continue
+
+            x_raw = np.loadtxt(paths[0])
+            y_raw = np.loadtxt(paths[1])
+
+            # Gültige Werte
+            mask = ~np.isnan(x_raw) & ~np.isnan(y_raw)
+            x = np.asarray(x_raw[mask], dtype=float)
+            y = np.asarray(y_raw[mask], dtype=float)
+
+            # Optionales Downsampling (nur fürs Plotten)
+            max_n = 1000
+            if x.size > max_n:
+                idx = np.random.choice(x.size, size=max_n, replace=False)
+                x, y = x[idx], y[idx]
+
+            if x.size < 3:  # für OLS-CIs brauchen wir mind. n>=3 (df = n-2)
+                logger.warning(f"[OLS] Zu wenige Punkte in {fid} – übersprungen")
+                continue
+
+            # -------- OLS-Schätzer + Standardfehler (ohne weitere Abhängigkeiten) --------
+            n = x.size
+            xbar = float(np.mean(x))
+            ybar = float(np.mean(y))
+            Sxx = float(np.sum((x - xbar) ** 2))
+            if Sxx == 0.0:
+                logger.warning(f"[OLS] Sxx=0 (keine Varianz in x) – übersprungen: {fid}")
+                continue
+
+            Sxy = float(np.sum((x - xbar) * (y - ybar)))
+            b = Sxy / Sxx
+            a = ybar - b * xbar
+
+            resid = y - (a + b * x)
+            SSE = float(np.sum(resid ** 2))
+            s2 = SSE / (n - 2)  # Residualvarianz
+            se_b = float(np.sqrt(s2 / Sxx))
+            se_a = float(np.sqrt(s2 * (1.0 / n + (xbar ** 2) / Sxx)))
+
+            # 95%-Konfidenzintervalle mit t-Verteilung
+            from scipy.stats import t
+            tcrit = float(t.ppf(0.975, df=n - 2))
+            b_L, b_U = b - tcrit * se_b, b + tcrit * se_b
+            a_L, a_U = a - tcrit * se_a, a + tcrit * se_a
+
+            # -------- Plot --------
+            fig = plt.figure(figsize=(8, 6), constrained_layout=True)
+            ax = fig.add_subplot(111)
+
+            ax.scatter(x, y, alpha=0.35, label="Daten", s=12)
+
+            # Identitäts- und Regressionslinien
+            (xl, xu), (yl, yu) = _square_limits(x, y, pad=0.05)
+            xx = np.array([xl, xu], dtype=float)
+
+            ax.plot(xx, xx, linestyle="--", color="grey", label="y = x")
+            ax.plot(xx, a + b * xx, color="red", label=f"OLS: y = {a:.4f} + {b:.4f} x")
+
+            # Konservative CI-Hüllkurve über getrennte CIs von a & b
+            ax.plot(xx, a_U + b_U * xx, linestyle="--", alpha=0.7,
+                    label=f"CI oben: y = {a_U:.4f} + {b_U:.4f} x")
+            ax.plot(xx, a_L + b_L * xx, linestyle="--", alpha=0.7,
+                    label=f"CI unten: y = {a_L:.4f} + {b_L:.4f} x")
+            ax.fill_between(xx, a_L + b_L * xx, a_U + b_U * xx, alpha=0.12)
+
+            # Quadratische Limits & Achsen
+            ax.set_xlim(xl, xu)
+            ax.set_ylim(yl, yu)
+            ax.set_aspect("equal", adjustable="box")
+
+            ax.set_xlabel(ref_variants[0])
+            ax.set_ylabel(ref_variants[1])
+            ax.set_title(f"Linear Regression {fid}: {ref_variants[0]} vs {ref_variants[1]}")
+            ax.legend(frameon=False)
+
+            outpath = os.path.join(
+                outdir,
+                f"linear_regression_{fid}_{ref_variants[0]}_vs_{ref_variants[1]}.png",
+            )
+            plt.savefig(outpath, dpi=300)
+            plt.close()
+
+            logger.info(
+                f"[OLS] {fid}: b={b:.6f} [{b_L:.6f},{b_U:.6f}], "
+                f"a={a:.6f} [{a_L:.6f},{a_U:.6f}] -> {outpath}"
+            )
+
+
+def _square_limits(x: np.ndarray, y: np.ndarray, pad: float = 0.05):
+    """
+    Liefert quadratische Achsenlimits, die alle Punkte abdecken
+    und den Plotbereich maximal ausnutzen.
+    pad = 5% Rand.
+    """
+    x_min, x_max = float(np.min(x)), float(np.max(x))
+    y_min, y_max = float(np.min(y)), float(np.max(y))
+
+    # Gemeinsamer Min/Max-Bereich über beide Achsen
+    v_min = min(x_min, y_min)
+    v_max = max(x_max, y_max)
+
+    # Quadratischer Bereich um das Zentrum
+    cx = cy = (v_min + v_max) / 2.0
+    half = max((x_max - x_min), (y_max - y_min)) / 2.0
+    half = half * (1.0 + pad) if half > 0 else 1.0  # fallback falls alle Punkte identisch
+
+    return (cx - half, cx + half), (cy - half, cy + half)
