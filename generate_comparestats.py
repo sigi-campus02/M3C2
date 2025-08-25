@@ -3,21 +3,23 @@ import logging
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-# "0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"
 
-folder_ids = ["0342-0349"]
-ref_variants = ["ref", "ref_ai"]
-outdir = "Plots_PassingBablok"
+# TUNSPEKT FOLDERS: "TUNSPEKT_Altone(mov)-Faro(ref)", "TUNSPEKT_Handheld(mov)-Faro(ref)", "TUNSPEKT_Mavic(mov)-Faro(ref)"
+# MARS FOLDERS:     "0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"
+# MARS REF VARIANTS: "ref", "ref_ai"
+
+# ref_variants = ["altone-faro", "handheld-faro", "mavic-faro"]
+
+folder_ids = ["TUNSPEKT Labordaten_all"]
+ref_variants = ["altone-faro", "mavic-faro"]
+outdir = "Plots_TUNSPEKT_BlandAltman"
 
 
-try:    
-    StatisticsCompareDistances.passing_bablok_plot(
-        folder_ids=folder_ids,
-        ref_variants=ref_variants,
-        outdir=outdir,
-    )
-except Exception as e:
-    logger.error(f"Error processing folder {folder_ids}: {e}")
+StatisticsCompareDistances.bland_altman_plot(
+    folder_ids=folder_ids,
+    ref_variants=ref_variants,
+    outdir=outdir,
+)
 
 
 

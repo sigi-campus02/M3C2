@@ -8,25 +8,26 @@ from logging_utils import setup_logging
 # TUNSPEKT FOLDERS: "TUNSPEKT_Altone(mov)-Faro(ref)", "TUNSPEKT_Handheld(mov)-Faro(ref)", "TUNSPEKT_Mavic(mov)-Faro(ref)"
 # MARS FOLDERS:     "0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"
 # MARS REF VARIANTS: "ref", "ref_ai"
+# folder_ids = ["TUNSPEKT Labordaten_all"]
 
 
-folder_ids = ["0342-0349"]
+folder_ids = ["TUNSPEKT Labordaten_all"]
 ref_variants = ["ref"]
 
 # Fix-Parameter
 filename_mov = "mov"                 # Moving point cloud
-mov_as_corepoints = True
-use_subsampled_corepoints = 1        # 1 = kein Subsampling
+mov_as_corepoints = False              # ACHTUNG TUNSPEKT: Ref als Corepoints!, MARS mov als Corepoints!
+use_subsampled_corepoints = 100        # 1 = kein Subsampling; bsp. 3 -> jeder dritte Punkt
 strategy = "radius"                  # "radius" oder "voxel"
 sample_size = 10000                  # nur für Parameterschätzung, nicht für Algorithmus
-process_python_CC = "CC"         # "python" oder "CC"
+process_python_CC = "python"         # "python" oder "CC"
 only_stats = True                   # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
-stats_singleordistance = "distance"  # "single" oder "distance"
+stats_singleordistance = "single"  # "single" oder "distance"
 output_format = "excel"              # "excel" oder "json"
-project = "MARS"                     # "TUNSPEKT" "MARS"
+project = "TUNSPEKT"                     # "TUNSPEKT" "MARS"
 normal_override = None               # Normal Scale Override
 proj_override = None                 # Projection Scale Override
-use_existing_params = True           # ob vorhandene Parameter (in Ordner) genutzt werden (True) oder neu berechnet (False)       
+use_existing_params = False           # ob vorhandene Parameter (in Ordner) genutzt werden (True) oder neu berechnet (False)       
 
 def main() -> None:
     cfgs = []
