@@ -12,6 +12,8 @@ from datetime import datetime
 from sklearn.decomposition import PCA
 from sklearn.neighbors import NearestNeighbors
 
+from datasource import DataSource
+
 
 # Kanonische Spaltenreihenfolge für Statistik-Exports
 CANONICAL_COLUMNS = [
@@ -709,12 +711,12 @@ class StatisticsService:
         df_all.to_json(out_json, orient="records", indent=2)
 
 
-# --------------------------------------------- #
-# SINGLE-CLOUD STATISTIKEN (ohne Distanzwerte)
-# --------------------------------------------- #
+    # --------------------------------------------- #
+    # SINGLE-CLOUD STATISTIKEN (ohne Distanzwerte)
+    # --------------------------------------------- #
 
     @staticmethod
-    def calc_single_cloud_stats(
+    def _calc_single_cloud_stats(
         points: np.ndarray,
         area_m2: Optional[float] = None,
         radius: float = 1.0,
@@ -722,8 +724,12 @@ class StatisticsService:
         sample_size: Optional[int] = 100_000,
         use_convex_hull: bool = True,
     ) -> Dict:
-        """
-        Basis-Qualitätsmetriken für EINE Punktwolke (XYZ in Metern).
+        """Berechne Qualitätsmetriken für eine Punktwolke.
+
+        Diese interne Funktion erwartet bereits geladene Punkte und liefert die
+        statistischen Kennzahlen zurück. Die öffentliche Variante
+        :meth:`calc_single_cloud_stats` kümmert sich zusätzlich um das Laden der
+        Daten sowie das Schreiben in die Ergebnisdatei.
         """
         if points is None or len(points) == 0:
             raise ValueError("Points array is empty")
@@ -921,6 +927,67 @@ class StatisticsService:
             return np.nan
         hull = ConvexHull(xy)
         return float(hull.volume)
+
+    # --------------------------------------------- #
+    # High-Level API für Single-Cloud-Statistiken
+    # --------------------------------------------- #
+
+    @classmethod
+    def calc_single_cloud_stats(
+        cls,
+        folder_ids: List[str],
+        filename_mov: str = "mov",
+        filename_ref: str = "ref",
+        area_m2: Optional[float] = None,
+        radius: float = 1.0,
+        k: int = 6,
+        sample_size: Optional[int] = 100_000,
+        use_convex_hull: bool = True,
+        out_path: str = "m3c2_stats_clouds.xlsx",
+        sheet_name: str = "CloudStats",
+        output_format: str = "excel",
+    ) -> pd.DataFrame:
+        """Berechne Single-Cloud-Kennzahlen und speichere sie.
+
+        Parameters
+        ----------
+        folder_ids:
+            Liste von Ordnern, in denen die Punktwolken liegen.
+        filename_mov, filename_ref:
+            Basisnamen der bewegten und Referenzwolke.
+        area_m2, radius, k, sample_size, use_convex_hull:
+            Parameter, die an :func:`_calc_single_cloud_stats` weitergereicht werden.
+        out_path, sheet_name, output_format:
+            Ziel-Datei und Format für die Ausgabe.
+        """
+
+        rows: List[Dict] = []
+
+        for fid in folder_ids:
+            ds = DataSource(fid, filename_mov, filename_ref)
+            mov, ref, _ = ds.load_points()
+            for fname, epoch in ((filename_mov, mov), (filename_ref, ref)):
+                pts = epoch.cloud if hasattr(epoch, "cloud") else epoch
+                stats = cls._calc_single_cloud_stats(
+                    pts,
+                    area_m2=area_m2,
+                    radius=radius,
+                    k=k,
+                    sample_size=sample_size,
+                    use_convex_hull=use_convex_hull,
+                )
+                stats.update({"File": fname, "Folder": fid})
+                rows.append(stats)
+
+        df_result = pd.DataFrame(rows)
+        if out_path and rows:
+            cls.write_cloud_stats(
+                rows,
+                out_path=out_path,
+                sheet_name=sheet_name,
+                output_format=output_format,
+            )
+        return df_result
 
     @staticmethod
     def write_cloud_stats(

@@ -482,3 +482,7 @@
 [2025-08-25 09:50:01][INFO] Building KDTree structure with leaf parameter 10
 [2025-08-25 10:12:34][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT_Altone(mov)-Faro(ref)\mov.las'
 [2025-08-25 10:12:34][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT_Altone(mov)-Faro(ref)\ref.las'
+[2025-08-25 08:28:11][INFO] Reading point cloud from file '/tmp/pytest-of-root/pytest-3/test_calc_single_cloud_stats_w0/f1/mov.xyz'
+[2025-08-25 08:28:11][INFO] Reading point cloud from file '/tmp/pytest-of-root/pytest-3/test_calc_single_cloud_stats_w0/f1/ref.xyz'
+[2025-08-25 08:28:18][INFO] Reading point cloud from file '/tmp/pytest-of-root/pytest-4/test_calc_single_cloud_stats_w0/f1/mov.xyz'
+[2025-08-25 08:28:18][INFO] Reading point cloud from file '/tmp/pytest-of-root/pytest-4/test_calc_single_cloud_stats_w0/f1/ref.xyz'
