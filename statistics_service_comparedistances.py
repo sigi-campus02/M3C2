@@ -156,15 +156,15 @@ class StatisticsCompareDistances:
 
             # ------- Passing–Bablok nach Tutorial -------
             n = int(len(x))  # Anzahl Rohpunkte
-            S = []           # Steigungen aller Punktpaare
+            S = []           # Initialise a list of the gradients between each combination of two points
 
-            # Alle Kombinationen (i<j); Ausschlüsse wie im Tutorial
+            # Iterate over all combinations of two points
             for i in range(n - 1):
                 x_i, y_i = x[i], y[i]
                 for j in range(i + 1, n):
                     x_j, y_j = x[j], y[j]
 
-                    # Identische Punkte ignorieren
+                    # Ignore identical points
                     if (x_i == x_j) and (y_i == y_j):
                         continue
 
@@ -173,13 +173,14 @@ class StatisticsCompareDistances:
                         S.append(np.inf if (y_i > y_j) else -np.inf)
                         continue
 
-                    # Steigung
+                    # Calculate the gradient between this pair of points
                     g = (y_i - y_j) / (x_i - x_j)
 
-                    # Steigung == -1 verwerfen (Symmetrieargument im Original)
+                    # Ignore any gradient equal to -1
                     if g == -1:
                         continue
-
+                    
+                    # Add the gradient to the list of gradients
                     S.append(g)
 
             if not S:
@@ -187,37 +188,70 @@ class StatisticsCompareDistances:
                 continue
 
             S = np.array(S, dtype=float)
-            S.sort()
-            N = int(len(S))                # Anzahl Steigungen
-            K = int((S < -1).sum())        # Shift (Number of slopes < -1)
 
-            # Shifted median b (Gradient)
-            if N % 2:  # ungerade
-                idx = int((N + 1) / 2 + K) - 1  # 0-based
+            # Sort the list of gradients in preparation for taking the median
+            S.sort()
+
+            # However, as Passing & Bablok point out, the values of these gradients are not independent and so their median 
+            # would be a biased estimator of the gradient of the overall line-of-best-fit. As such, 
+            # we need to use an offset, K, to calculate a shifted median, b, which can be used as an estimate for the overall gradient. 
+            # This offset is defined as the number of gradients that have a value of less than -1:
+
+            N = int(len(S))                # Anzahl Steigungen (gradients)
+            K = int((S < -1).sum())        # K is the number of gradients less than -1
+
+            # Calculate the shifted median
+
+            # If N is odd
+            if N % 2 != 0:  
+                # Convert to an integer and adjust for the fact that Python is 0-indexed
+                idx = int((N + 1) / 2 + K) - 1  
                 b = float(S[idx])
-            else:      # gerade
-                idx = int(N / 2 + K) - 1
+            
+            # If N is even
+            else:     
+                # Convert to an integer and adjust for the fact that Python is 0-indexed
+                idx = int(N / 2 + K) - 1 
                 b = float(0.5 * (S[idx] + S[idx + 1]))
+
+            #Using this estimated gradient of the line-of-best-fit, we can plug in the raw data to get the estimated y-intercept of the line-of-best-fit, 
+            # a, as follows:
 
             # y-Achsenabschnitt a (Median der Residuen)
             a = float(np.median(y - b * x))
 
+
+            # Calculate the Confidence Intervals
+            # Usually we are interested in the 95% confidence interval and so could simply use the 
+            # well-known fact that this interval width corresponds to about 1.96 (or about 2) standard deviations either side of the mean. 
+            # However, let’s calculate this explicitly to make sure we are being accurate:
+
+
             # 95%-Konfidenzintervalle für b und a
             from scipy import stats as st
             C = 0.95
-            gamma = 1 - C
-            q = 1 - (gamma / 2.0)
+            gamma = 1 - C # 0.05
+            # Quantile (the cumulative probability; two-tailed)
+            q = 1 - (gamma / 2.0) # 0.975
+            # Critical z-score, calculated using the percent-point function (aka the
+            # quantile function) of the normal distribution
             w = float(st.norm.ppf(q))  # ~1.96
 
-            # Achtung: C_gamma benutzt n (Rohpunkte), nicht N (Steigungen)
+
+            # Passing & Bablok provide formulas for getting the indexes of the gradients 
+            # that correspond to the bounds of the confidence intervals:
+                
+            # Intermediate values
             C_gamma = w * np.sqrt((n * (n - 1) * (2 * n + 5)) / 18.0)
             M1 = int(np.round((N - C_gamma) / 2.0))
             M2 = int(N - M1 + 1)
 
-            # Indexgrenzen 0-basiert + Shift K (wie im Tutorial gezeigt)
+            # Get the lower and upper bounds of the confidence interval for the gradient
+            # (convert floats to ints and subtract 1 to adjust for Python being 0-indexed)
             b_L = float(S[M1 + K - 1])
             b_U = float(S[M2 + K - 1])
 
+            # Get the lower and upper bounds of the confidence interval for the y-intercept
             # CI für a via b_U / b_L
             a_L = float(np.median(y - b_U * x))
             a_U = float(np.median(y - b_L * x))

@@ -27,6 +27,7 @@ class PlotOptions:
     plot_box: bool = True
     plot_qq: bool = True
     plot_grouped_bar: bool = True
+    plot_violin: bool = True
 
 
 @dataclass
@@ -95,6 +96,9 @@ class PlotService:
 
             if options.plot_grouped_bar:
                 cls._plot_grouped_bar_means_stds(fid, "ALL", data, colors, config.outdir)
+
+            if options.plot_violin:
+                cls._plot_overlay_violin(fid, "ALL", data, colors, config.outdir)
 
             logging.info(f"[Report] PNGs für {fid} erzeugt.")
 
@@ -356,3 +360,26 @@ class PlotService:
         plt.savefig(out)
         plt.close()
         logging.info(f"[Report] Plot gespeichert: {out}")
+
+
+    @staticmethod
+    def _plot_overlay_violin(fid: str, fname: str, data: Dict[str, np.ndarray],
+                             colors: Dict[str, str], outdir: str) -> None:
+        try:
+            import seaborn as sns
+            records = [pd.DataFrame({"Version": v, "Distanz": arr}) for v, arr in data.items()]
+            if not records:
+                return
+            df = pd.concat(records, ignore_index=True)
+            palette = {v: colors.get(v) for v in df["Version"].unique()}
+
+            plt.figure(figsize=(10, 6))
+            sns.violinplot(data=df, x="Version", y="Distanz", palette=palette, cut=0, inner="quartile")
+            plt.title(f"Violinplot – {fid}/{fname}")
+            plt.xlabel("Version")
+            plt.ylabel("M3C2-Distanz")
+            plt.tight_layout()
+            plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Violinplot.png"))
+            plt.close()
+        except Exception as e:
+            logging.warning(f"[Report] Violinplot fehlgeschlagen ({fid}/{fname}): {e}")

@@ -490,3 +490,7 @@
 [2025-08-25 10:37:12][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT_Altone(mov)-Faro(ref)\ref.las'
 [2025-08-25 10:37:12][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT_Altone(mov)-Faro(ref)\mov.las'
 [2025-08-25 10:37:13][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT_Altone(mov)-Faro(ref)\ref.las'
+[2025-08-25 12:22:08][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data/TUNSPEKT Labordaten_all\AltoneRoi.las'
+[2025-08-25 12:22:09][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data/TUNSPEKT Labordaten_all\FaroRoi.las'
+[2025-08-25 12:45:36][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data/TUNSPEKT Labordaten_all\HandheldRoi.las'
+[2025-08-25 12:45:36][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data/TUNSPEKT Labordaten_all\MavicRoi.las'
