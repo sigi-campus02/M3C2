@@ -84,6 +84,11 @@ class StatisticsCompareDistances:
             upper = mean_diff + 1.96 * std_diff
             lower = mean_diff - 1.96 * std_diff
 
+            logger.info(
+                f"[BlandAltman] {fid}: mean_diff={mean_diff:.6f}, std_diff={std_diff:.6f}, "
+                f"upper={upper:.6f}, lower={lower:.6f}, n={a.size} -> {outdir}"
+            )
+
             # Plot
             plt.figure(figsize=(8, 6))
             plt.scatter(mean_vals, diff_vals, alpha=0.3)
