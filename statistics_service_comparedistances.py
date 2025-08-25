@@ -155,6 +155,12 @@ class StatisticsCompareDistances:
             x = x_raw[mask]
             y = y_raw[mask]
 
+
+            max_n = 5000
+            if len(x) > max_n:
+                idx = np.random.choice(len(x), size=max_n, replace=False)
+                x, y = x[idx], y[idx]
+
             if x.size == 0 or y.size == 0:
                 print(f"[PassingBablok] Leere Distanzwerte in {fid}, übersprungen")
                 continue
@@ -171,36 +177,54 @@ class StatisticsCompareDistances:
                 print(f"[PassingBablok] Keine gültigen Paare in {fid}, übersprungen")
                 continue
 
-            slope = float(np.median(slopes))
-            intercept = float(np.median(y - slope * x))
+            slopes = np.array(slopes)
+            slopes_sorted = np.sort(slopes)
+            N = len(slopes_sorted)
 
-            # Plot
+            # Median slope
+            slope = float(np.median(slopes_sorted))
+
+            # CI-Berechnung nach Passing & Bablok
+            z = 1.96  # für 95%
+            C_alpha = z * np.sqrt(N*(N-1)*(2*N+5)/18)
+            L = int(np.floor((N - C_alpha)/2))
+            U = int(np.ceil( (N + C_alpha)/2.0 )) - 1
+
+            L = max(L, 0)
+            U = min(U, N-1)
+
+            slope_low = float(slopes_sorted[L])
+            slope_high = float(slopes_sorted[U])
+
+            # Intercept + CI
+            intercept = float(np.median(y - slope * x))
+            intercepts = y - slope * x
+            intercept_low = float(np.median(y - slope_high * x))
+            intercept_high = float(np.median(y - slope_low * x))
+
+
             plt.figure(figsize=(8, 6))
             plt.scatter(x, y, alpha=0.3)
 
             min_val = float(min(np.min(x), np.min(y)))
             max_val = float(max(np.max(x), np.max(y)))
-            line_x = np.array([min_val, max_val])
+            line_x = np.array([min_val, max_val], dtype=float)
 
-            plt.plot(line_x, line_x, color="grey", linestyle="--", label="Identity")
-            plt.plot(
-                line_x,
-                intercept + slope * line_x,
-                color="red",
-                label=f"y = {slope:.4f}x + {intercept:.4f}",
-            )
-            plt.xlabel(ref_variants[0])
-            plt.ylabel(ref_variants[1])
-            plt.title(
-                f"Passing-Bablok {fid}: {ref_variants[0]} vs {ref_variants[1]}"
-            )
-            plt.legend()
-            outpath = os.path.join(
-                outdir,
-                f"passing_bablok_{fid}_{ref_variants[0]}_vs_{ref_variants[1]}.png",
-            )
-            plt.tight_layout()
-            plt.savefig(outpath, dpi=300)
+            # Identity
+            plt.plot(line_x, line_x, color="grey", linestyle="--", label="Identity y=x")
+
+            # PB-Linie + 95%-CI-Band
+            plt.plot(line_x, intercept + slope * line_x,
+                    color="red", label=f"PB: y = {slope:.4f}x + {intercept:.4f}")
+            plt.plot(line_x, intercept_low  + slope_low  * line_x, color="orange", linestyle="--",
+                    label=f"Slope 95% CI: [{slope_low:.4f}, {slope_high:.4f}]")
+            plt.plot(line_x, intercept_high + slope_high * line_x, color="orange", linestyle="--")
+
+            plt.xlabel(ref_variants[0]); plt.ylabel(ref_variants[1])
+            plt.title(f"Passing–Bablok {fid}: {ref_variants[0]} vs {ref_variants[1]}")
+            plt.legend(); plt.tight_layout()
+            plt.savefig(outpath, dpi=300); plt.close()
+
             plt.close()
 
 
