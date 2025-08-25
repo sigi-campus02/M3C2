@@ -51,3 +51,22 @@ def test_append_df_to_excel_preserves_multiline_header(tmp_path):
     assert ws2.max_row == 3
     assert ws2["B3"].value == 1
     assert ws2["C3"].value == 2
+
+
+def test_calc_single_cloud_stats_writes_file(tmp_path):
+    folder = tmp_path / "f1"
+    folder.mkdir()
+    mov = np.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])
+    ref = np.array([[0.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]])
+    np.savetxt(folder / "mov.xyz", mov)
+    np.savetxt(folder / "ref.xyz", ref)
+
+    out_json = tmp_path / "stats.json"
+    df = StatisticsService.calc_single_cloud_stats(
+        folder_ids=[str(folder)],
+        out_path=str(out_json),
+        output_format="json",
+    )
+
+    assert out_json.exists()
+    assert set(df["File"]) == {"mov", "ref"}

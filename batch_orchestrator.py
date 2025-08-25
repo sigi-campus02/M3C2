@@ -196,19 +196,18 @@ class BatchOrchestrator:
                 output_format=self.output_format,
             )
         if cfg.stats_singleordistance == "single":
-            logger.info(f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …")
-            rows = []
-            stats = StatisticsService.calc_single_cloud_stats(
-                        points= ref.cloud if hasattr(ref, "cloud") else ref,
-                    )
-            stats.update({
-                "File": cfg.filename_ref,
-                "Folder": cfg.folder_id,
-            })
-            rows.append(stats)
-            out_path = os.path.join(f"{cfg.project}_m3c2_stats_clouds.xlsx") if self.output_format == "excel" else os.path.join(f"{cfg.project}_m3c2_stats_clouds.json")
-            StatisticsService.write_cloud_stats(
-                rows,
+            logger.info(
+                f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …"
+            )
+            out_path = (
+                os.path.join(f"{cfg.project}_m3c2_stats_clouds.xlsx")
+                if self.output_format == "excel"
+                else os.path.join(f"{cfg.project}_m3c2_stats_clouds.json")
+            )
+            StatisticsService.calc_single_cloud_stats(
+                folder_ids=[cfg.folder_id],
+                filename_mov=cfg.filename_mov,
+                filename_ref=cfg.filename_ref,
                 out_path=out_path,
                 sheet_name="CloudStats",
                 output_format=self.output_format,
