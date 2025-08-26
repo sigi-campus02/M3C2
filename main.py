@@ -11,20 +11,20 @@ from logging_utils import setup_logging
 # folder_ids = ["TUNSPEKT Labordaten_all"]
 
 
-folder_ids = ["TUNSPEKT_Altone(mov)-Faro(ref)"]
+folder_ids = ["Multi-illumination"]
 ref_variants = ["ref"]
 
 # Fix-Parameter
 filename_mov = "mov"                 # Moving point cloud
-mov_as_corepoints = False              # ACHTUNG TUNSPEKT: Ref als Corepoints!, MARS mov als Corepoints!
-use_subsampled_corepoints = 100        # 1 = kein Subsampling; bsp. 3 -> jeder dritte Punkt
+mov_as_corepoints = True              # ACHTUNG TUNSPEKT: Ref als Corepoints!, MARS mov als Corepoints!
+use_subsampled_corepoints = 1        # 1 = kein Subsampling; bsp. 3 -> jeder dritte Punkt
 strategy = "radius"                  # "radius" oder "voxel"
 sample_size = 10000                  # nur für Parameterschätzung, nicht für Algorithmus
 process_python_CC = "python"         # "python" oder "CC"
-only_stats = True                       # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
+only_stats = False                       # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
 stats_singleordistance = "distance"  # "single" oder "distance"
 output_format = "excel"              # "excel" oder "json"
-project = "TUNSPEKT"                     # "TUNSPEKT" "MARS"
+project = "MARS"                     # "TUNSPEKT" "MARS"
 normal_override = None               # Normal Scale Override
 proj_override = None                 # Projection Scale Override
 use_existing_params = False           # ob vorhandene Parameter (in Ordner) genutzt werden (True) oder neu berechnet (False)       

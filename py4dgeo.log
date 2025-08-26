@@ -494,3 +494,7 @@
 [2025-08-25 12:22:09][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data/TUNSPEKT Labordaten_all\FaroRoi.las'
 [2025-08-25 12:45:36][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data/TUNSPEKT Labordaten_all\HandheldRoi.las'
 [2025-08-25 12:45:36][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data/TUNSPEKT Labordaten_all\MavicRoi.las'
+[2025-08-25 17:33:18][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\mov.xyz'
+[2025-08-25 17:33:54][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\ref.xyz'
+[2025-08-25 17:35:10][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-25 17:35:14][INFO] Building KDTree structure with leaf parameter 10
