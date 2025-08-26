@@ -1884,3 +1884,147 @@ Traceback (most recent call last):
     distances, uncertainties = runner.run(mov, ref, corepoints, normal, projection)
                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: M3C2Runner.run() missing 1 required positional argument: 'project'
+2025-08-26 21:38:16,636 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 21:38:16,636 [INFO] Konfigurationen: 2 Jobs
+2025-08-26 21:38:16,636 [INFO] data\rocks, points_100, points_40, python
+2025-08-26 21:38:16,644 [INFO] Nutze py4dgeo.read_from_las (unterstützt .las und .laz)
+2025-08-26 21:38:16,702 [INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\data\rocks\points_100.laz'
+2025-08-26 21:38:16,818 [INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\data\rocks\points_40.laz'
+2025-08-26 21:38:16,871 [INFO] Mov Points: (474380, 3)
+2025-08-26 21:38:16,872 [INFO] Ref Points: (189752, 3)
+2025-08-26 21:38:16,872 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 21:38:16,872 [INFO] Corepoints: (474380, 3)
+2025-08-26 21:38:16,872 [INFO] [Load] data/data\rocks: mov=(474380, 3), ref=(189752, 3), corepoints=(474380, 3) | 0.236s
+2025-08-26 21:38:18,284 [INFO] [Spacing] avg_spacing=0.191303 (k=6) | 1.411s
+2025-08-26 21:38:18,295 [INFO] [RadiusScan] Subsample: 10000/474380
+2025-08-26 21:38:18,326 [INFO] [RadiusScan] D=0.0239128 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:38:18,356 [INFO] [RadiusScan] D=0.0478257 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:38:18,386 [INFO] [RadiusScan] D=0.0956514 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:38:18,419 [INFO] [RadiusScan] D=0.191303 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:38:18,455 [INFO] [RadiusScan] D=0.382605 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:38:18,486 [INFO] [RadiusScan] D=0.765211 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:38:18,528 [INFO] [RadiusScan] D=1.53042 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:38:18,612 [INFO] [RadiusScan] D=3.06084 | pop=11.0±1.3 | 97%>14 | valid=1063/10000 (11%) | sigma=0.0884979 | lambda_min=0.00926992 | Sigma/D=0.0289
+2025-08-26 21:38:19,028 [INFO] [RadiusScan] D=6.12169 | pop=22.4±6.0 | 97%>34 | valid=9696/10000 (97%) | sigma=0.158174 | lambda_min=0.0302463 | Sigma/D=0.0258
+2025-08-26 21:38:19,504 [INFO] [RadiusScan] D=12.2434 | pop=83.1±20.8 | 97%>117 | valid=9998/10000 (100%) | sigma=0.268507 | lambda_min=0.0878328 | Sigma/D=0.0219
+2025-08-26 21:38:20,139 [INFO] [RadiusScan] D=24.4868 | pop=313.1±79.1 | 97%>442 | valid=10000/10000 (100%) | sigma=0.498692 | lambda_min=0.304328 | Sigma/D=0.0204
+2025-08-26 21:38:21,212 [INFO] [RadiusScan] D=48.9735 | pop=1128.4±299.6 | 97%>1628 | valid=10000/10000 (100%) | sigma=1.0702 | lambda_min=1.2822 | Sigma/D=0.0219
+2025-08-26 21:38:21,212 [INFO] [Scan] 12 Skalen evaluiert | 2.928s
+2025-08-26 21:38:21,213 [INFO] [Select] normal=3.060844, proj=6.121688 | 0.000s
+2025-08-26 21:38:21,214 [INFO] [Params] gespeichert: data\rocks\python_points_40_m3c2_params.txt
+2025-08-26 21:38:21,215 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 21:38:21,387 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 21:39:26,528 [INFO] [Run] Punkte=474380 | NaN=0.00% | Zeit=65.313s
+2025-08-26 21:39:27,329 [INFO] [Run] Distanzen gespeichert: data\rocks\python_points_40_m3c2_distances.txt (474380 Werte, 0.00% NaN)
+2025-08-26 21:39:28,792 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\rocks\python_points_40_m3c2_distances_coordinates.txt
+2025-08-26 21:39:31,127 [INFO] [Run] Unsicherheiten gespeichert: data\rocks\python_points_40_m3c2_uncertainties.txt
+2025-08-26 21:39:31,129 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-26 21:39:31,816 [INFO] [Visual] Histogram gespeichert: data\rocks\python_points_40_histogram.png
+2025-08-26 21:39:32,652 [INFO] [Visual] Farb-PLY gespeichert: data\rocks\python_points_40_colored_cloud.ply
+2025-08-26 21:39:33,489 [INFO] [Visual] Valid-PLY gespeichert: data\rocks\python_points_40_colored_cloud_validonly.ply
+2025-08-26 21:39:33,489 [INFO] [Outlier] Entferne Ausreißer für data\rocks
+2025-08-26 21:39:35,042 [INFO] [Exclude Outliers] Gesamt: 474380
+2025-08-26 21:39:35,043 [INFO] [Exclude Outliers] NaN: 0
+2025-08-26 21:39:35,043 [INFO] [Exclude Outliers] Valid (ohne NaN): 474380
+2025-08-26 21:39:35,043 [INFO] [Exclude Outliers] RMS: 0.008755
+2025-08-26 21:39:35,044 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * RMS = 0.026264
+2025-08-26 21:39:35,045 [INFO] [Exclude Outliers] Outlier: 8810
+2025-08-26 21:39:35,045 [INFO] [Exclude Outliers] Inlier: 465570
+2025-08-26 21:39:35,045 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\rocks\python_points_40_m3c2_distances_coordinates_inlier.txt
+2025-08-26 21:39:35,045 [INFO] [Exclude Outliers] Outlier gespeichert: data\rocks\python_points_40_m3c2_distances_coordinates_outlier.txt
+2025-08-26 21:39:35,048 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 21:39:35,048 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 21:39:35,071 [INFO] [TXT->PLY] data\rocks\python_points_40_m3c2_distances_coordinates_outlier.txt -> data\rocks\python_points_40_colored_cloud_validonly_outlier.ply (8810 Punkte)
+2025-08-26 21:39:36,212 [INFO] [TXT->PLY] data\rocks\python_points_40_m3c2_distances_coordinates_inlier.txt -> data\rocks\python_points_40_colored_cloud_validonly_inlier.ply (465570 Punkte)
+2025-08-26 21:39:36,213 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\rocks,points_40 …
+2025-08-26 21:39:44,561 [ERROR] Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 105, in _run_single
+    self._compute_statistics(cfg, ref)
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 222, in _compute_statistics
+    StatisticsService.compute_m3c2_statistics(
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\services\statistics_service.py", line 352, in compute_m3c2_statistics
+    cls._append_df_to_excel(df_result, out_path, sheet_name=sheet_name)
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\services\statistics_service.py", line 677, in _append_df_to_excel
+    wb.save(out_xlsx)
+  File "C:\Users\siegl\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\openpyxl\workbook\workbook.py", line 386, in save
+    save_workbook(self, filename)
+  File "C:\Users\siegl\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\openpyxl\writer\excel.py", line 291, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\zipfile\__init__.py", line 1336, in __init__
+    self.fp = io.open(file, filemode)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'outputs/ROCKS_output/ROCKS_m3c2_stats_distances.xlsx'
+2025-08-26 21:39:44,569 [INFO] [Job] data\rocks abgeschlossen in 87.933s
+2025-08-26 21:39:44,573 [INFO] data\rocks, points_100, points_80, python
+2025-08-26 21:39:44,574 [INFO] Nutze py4dgeo.read_from_las (unterstützt .las und .laz)
+2025-08-26 21:39:44,629 [INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\data\rocks\points_100.laz'
+2025-08-26 21:39:44,745 [INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\data\rocks\points_80.laz'
+2025-08-26 21:39:44,812 [INFO] Mov Points: (474380, 3)
+2025-08-26 21:39:44,812 [INFO] Ref Points: (379504, 3)
+2025-08-26 21:39:44,812 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 21:39:44,812 [INFO] Corepoints: (474380, 3)
+2025-08-26 21:39:44,812 [INFO] [Load] data/data\rocks: mov=(474380, 3), ref=(379504, 3), corepoints=(474380, 3) | 0.239s
+2025-08-26 21:39:46,250 [INFO] [Spacing] avg_spacing=0.191303 (k=6) | 1.437s
+2025-08-26 21:39:46,261 [INFO] [RadiusScan] Subsample: 10000/474380
+2025-08-26 21:39:46,290 [INFO] [RadiusScan] D=0.0239128 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:39:46,319 [INFO] [RadiusScan] D=0.0478257 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:39:46,349 [INFO] [RadiusScan] D=0.0956514 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:39:46,379 [INFO] [RadiusScan] D=0.191303 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:39:46,409 [INFO] [RadiusScan] D=0.382605 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:39:46,439 [INFO] [RadiusScan] D=0.765211 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:39:46,478 [INFO] [RadiusScan] D=1.53042 | pop=10.0±0.0 | 97%>10 | valid=1/10000 (0%) | sigma=0.0595291 | lambda_min=0.00354371 | Sigma/D=0.0389
+2025-08-26 21:39:46,570 [INFO] [RadiusScan] D=3.06084 | pop=11.1±1.3 | 97%>14 | valid=1082/10000 (11%) | sigma=0.0907942 | lambda_min=0.0100101 | Sigma/D=0.0297
+2025-08-26 21:39:46,979 [INFO] [RadiusScan] D=6.12169 | pop=22.4±6.1 | 97%>34 | valid=9679/10000 (97%) | sigma=0.159368 | lambda_min=0.0307779 | Sigma/D=0.0260
+2025-08-26 21:39:47,463 [INFO] [RadiusScan] D=12.2434 | pop=82.4±20.3 | 97%>116 | valid=9999/10000 (100%) | sigma=0.269285 | lambda_min=0.0881377 | Sigma/D=0.0220
+2025-08-26 21:39:48,095 [INFO] [RadiusScan] D=24.4868 | pop=308.7±73.7 | 97%>425 | valid=10000/10000 (100%) | sigma=0.4991 | lambda_min=0.304418 | Sigma/D=0.0204
+2025-08-26 21:39:49,242 [INFO] [RadiusScan] D=48.9735 | pop=1109.4±275.7 | 97%>1543 | valid=10000/10000 (100%) | sigma=1.06887 | lambda_min=1.27876 | Sigma/D=0.0218
+2025-08-26 21:39:49,242 [INFO] [Scan] 12 Skalen evaluiert | 2.992s
+2025-08-26 21:39:49,242 [INFO] [Select] normal=1.530422, proj=3.060844 | 0.000s
+2025-08-26 21:39:49,244 [INFO] [Params] gespeichert: data\rocks\python_points_80_m3c2_params.txt
+2025-08-26 21:39:49,244 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 21:39:49,402 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 21:40:21,827 [INFO] [Run] Punkte=474380 | NaN=0.00% | Zeit=32.582s
+2025-08-26 21:40:22,601 [INFO] [Run] Distanzen gespeichert: data\rocks\python_points_80_m3c2_distances.txt (474380 Werte, 0.00% NaN)
+2025-08-26 21:40:24,051 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\rocks\python_points_80_m3c2_distances_coordinates.txt
+2025-08-26 21:40:26,252 [INFO] [Run] Unsicherheiten gespeichert: data\rocks\python_points_80_m3c2_uncertainties.txt
+2025-08-26 21:40:26,253 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-26 21:40:26,731 [INFO] [Visual] Histogram gespeichert: data\rocks\python_points_80_histogram.png
+2025-08-26 21:40:27,573 [INFO] [Visual] Farb-PLY gespeichert: data\rocks\python_points_80_colored_cloud.ply
+2025-08-26 21:40:28,396 [INFO] [Visual] Valid-PLY gespeichert: data\rocks\python_points_80_colored_cloud_validonly.ply
+2025-08-26 21:40:28,397 [INFO] [Outlier] Entferne Ausreißer für data\rocks
+2025-08-26 21:40:29,990 [INFO] [Exclude Outliers] Gesamt: 474380
+2025-08-26 21:40:29,991 [INFO] [Exclude Outliers] NaN: 0
+2025-08-26 21:40:29,991 [INFO] [Exclude Outliers] Valid (ohne NaN): 474380
+2025-08-26 21:40:29,991 [INFO] [Exclude Outliers] RMS: 0.005008
+2025-08-26 21:40:29,991 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * RMS = 0.015025
+2025-08-26 21:40:29,993 [INFO] [Exclude Outliers] Outlier: 8972
+2025-08-26 21:40:29,993 [INFO] [Exclude Outliers] Inlier: 465408
+2025-08-26 21:40:29,993 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\rocks\python_points_80_m3c2_distances_coordinates_inlier.txt
+2025-08-26 21:40:29,993 [INFO] [Exclude Outliers] Outlier gespeichert: data\rocks\python_points_80_m3c2_distances_coordinates_outlier.txt
+2025-08-26 21:40:29,996 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 21:40:29,996 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 21:40:30,029 [INFO] [TXT->PLY] data\rocks\python_points_80_m3c2_distances_coordinates_outlier.txt -> data\rocks\python_points_80_colored_cloud_validonly_outlier.ply (8972 Punkte)
+2025-08-26 21:40:31,137 [INFO] [TXT->PLY] data\rocks\python_points_80_m3c2_distances_coordinates_inlier.txt -> data\rocks\python_points_80_colored_cloud_validonly_inlier.ply (465408 Punkte)
+2025-08-26 21:40:31,138 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\rocks,points_80 …
+2025-08-26 21:40:41,266 [ERROR] Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 105, in _run_single
+    self._compute_statistics(cfg, ref)
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 222, in _compute_statistics
+    StatisticsService.compute_m3c2_statistics(
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\services\statistics_service.py", line 352, in compute_m3c2_statistics
+    cls._append_df_to_excel(df_result, out_path, sheet_name=sheet_name)
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\services\statistics_service.py", line 677, in _append_df_to_excel
+    wb.save(out_xlsx)
+  File "C:\Users\siegl\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\openpyxl\workbook\workbook.py", line 386, in save
+    save_workbook(self, filename)
+  File "C:\Users\siegl\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\openpyxl\writer\excel.py", line 291, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\zipfile\__init__.py", line 1336, in __init__
+    self.fp = io.open(file, filemode)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'outputs/ROCKS_output/ROCKS_m3c2_stats_distances.xlsx'
+2025-08-26 21:40:41,267 [INFO] [Job] data\rocks abgeschlossen in 56.694s
