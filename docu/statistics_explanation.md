@@ -1,35 +1,37 @@
-# Distance Analysis (M3C2 Output)
+# Point Cloud Distance Analysis (M3C2 Output)
 
 ## Fundamental Metrics
 
-* **Total Count**: Total number of distance values (including NaN). Provides dataset size context.
+### Dataset Overview
+
+* **Total Count**: Total number of distance values (including NaN). Provides context for dataset size.
 
   ```python
   total_count = len(distances)
   ```
 
-* **NaN Count**: Number of invalid results (e.g., no neighbors). Lower values indicate better coverage.
+* **NaN Count**: Number of invalid/failed computations (e.g., no neighbors found within search radius). Lower values indicate better coverage.
 
   ```python
   nan_count = int(np.isnan(distances).sum())
   ```
 
-  * `np.isnan()` returns a Boolean array (`True` where NaN).
-  * `.sum()` counts the number of NaN values.
+  * `np.isnan()` returns a Boolean array (`True` where NaN exists)
+  * `.sum()` counts the total number of NaN values
 
-* **% NaN**: Proportion of invalid results. High values indicate poor coverage.
-
-  ```python
-  perc_nan = (nan_count / total_count) if total_count > 0 else np.nan
-  ```
-
-* **% Valid**: Proportion of valid results (= 1 − %NaN). High values indicate robust coverage.
+* **% NaN**: Proportion of failed computations. High percentages indicate poor coverage or inadequate parameter settings.
 
   ```python
-  perc_valid = (1 - nan_count / total_count) if total_count > 0 else np.nan
+  perc_nan = (nan_count / total_count) * 100 if total_count > 0 else np.nan
   ```
 
-* **Valid Count**: Number of valid (non-NaN) values. Comparable to %Valid.
+* **% Valid**: Proportion of successful computations (complement of % NaN). Higher values indicate robust coverage.
+
+  ```python
+  perc_valid = ((total_count - nan_count) / total_count) * 100 if total_count > 0 else np.nan
+  ```
+
+* **Valid Count**: Number of non-NaN distance values after optional range clipping.
 
   ```python
   valid = distances[~np.isnan(distances)]
@@ -37,14 +39,14 @@
   valid_count = int(clipped.size)
   ```
 
-  * `range_override`: Optional tuple to explicitly set the value range.
-  * If not set, `data_min`/`data_max` are computed from the data.
+  * `range_override`: Optional tuple `(min, max)` to explicitly set the analysis range
+  * If not specified, `data_min`/`data_max` are computed from the data
 
-* **Valid Sum**: Sum of all valid distances.
+* **Valid Sum**: Sum of all valid distance values.
 
-  * \~0 → deviations cancel out → no systematic bias between clouds.
-  * Positive → comparison surface is higher/outward vs. reference.
-  * Negative → comparison surface is lower/inward vs. reference.
+  * Near zero → deviations cancel out → no systematic bias between clouds
+  * Positive → comparison surface is systematically above/outside the reference
+  * Negative → comparison surface is systematically below/inside the reference
 
   ```python
   valid_sum = float(np.sum(clipped))
@@ -52,9 +54,9 @@
 
 * **Valid Squared Sum**: Sum of squared valid distance values.
 
-  * Each distance $d_i$ is squared ($d_i^2$), then summed.
-  * Always ≥ 0.
-  * Sensitive to large outliers.
+  * Each distance $d_i$ is squared ($d_i^2$), then summed: $\sum_{i=1}^{n} d_i^2$
+  * Always non-negative
+  * Heavily influenced by outliers due to squaring
 
   ```python
   valid_squared_sum = float(np.sum(clipped ** 2))
@@ -62,86 +64,94 @@
 
 ---
 
-## Parameters
+## M3C2 Parameters
 
-* **Normal Scale**: Defines the radius (in point cloud units) used for local normal estimation.
+* **Normal Scale**: Radius (in point cloud units) used for local surface normal estimation.
 
-  * Too small → surface noise dominates, normals become unstable.
-  * Too large → over-smoothing, local detail lost.
+  * Too small → noise dominates, unstable normals
+  * Too large → over-smoothing, loss of local detail
+  * Typically set to capture local surface geometry while filtering noise
 
   ```python
-  normal_scale
+  normal_scale  # User-defined parameter
   ```
 
-* **Search Scale**: Defines the radius of the projection cylinder along the normal.
+* **Search Scale**: Radius of the projection cylinder along the normal direction.
 
-  * Typically \~2 × Normal Scale (rule of thumb).
-  * Too small → few/no hits → many NaNs.
-  * Too large → strong smoothing, loss of detail.
+  * Rule of thumb: ~2× Normal Scale
+  * Too small → few/no points found → many NaN values
+  * Too large → excessive smoothing, loss of detail
 
   ```python
-  search_scale
+  search_scale  # User-defined parameter
   ```
 
 ---
 
 ## Location & Dispersion Metrics
 
-* **Min / Max**: Minimum and maximum distance values. May reveal extreme outliers.
+### Central Tendency
+
+* **Min / Max**: Extreme distance values in the dataset. Useful for identifying outliers and data range.
 
   ```python
   min_val = float(np.nanmin(distances))
   max_val = float(np.nanmax(distances))
   ```
 
-* **Mean (Bias)**: Arithmetic mean. Ideal near 0.
+* **Mean (Bias)**: Arithmetic mean of distances. Ideally near zero for unbiased comparisons.
+
+  $$\bar{d} = \frac{1}{n} \sum_{i=1}^{n} d_i$$
 
   ```python
   avg = float(np.mean(clipped))
   ```
 
-* **Median**: Robust central tendency, less sensitive to outliers.
+* **Median**: Robust measure of central tendency, less sensitive to outliers than mean.
 
   ```python
   med = float(np.median(clipped))
   ```
 
-* **Empirical Std**: Standard deviation. Sensitive to outliers.
+### Spread Measures
+
+* **Empirical Standard Deviation**: Measure of dispersion around the mean. Sensitive to outliers.
+
+  $$\sigma = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (d_i - \bar{d})^2}$$
 
   ```python
-  std_empirical = float(np.std(clipped))
+  std_empirical = float(np.std(clipped, ddof=1))  # Note: ddof=1 for sample std
   ```
 
-* **RMS (Root Mean Square)**:
+* **RMS (Root Mean Square)**: Combined measure of bias and spread.
 
-  * Square root of the mean squared distances.
-  * Reflects typical deviation, includes both spread (Std) and bias (Mean).
+  $$\text{RMS} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} d_i^2}$$
 
-
-    $x_{RMS} = \sqrt{\frac{1}{n} \left( x_{1}^{2} + x_{2}^{2} + \cdots + x_{n}^{2} \right)}$
+  * Includes both systematic offset (bias) and random variation (spread)
+  * Always ≥ |Mean| (equality when all values are identical)
 
   ```python
   rms = float(np.sqrt(np.mean(clipped ** 2)))
   ```
 
-* **MAE (Mean Absolute Error)**:
+* **MAE (Mean Absolute Error)**: Average magnitude of deviations, robust to outliers.
 
-  * $\mathrm{MAE} = \frac{\sum_{i=1}^{n} \lvert y_i - x_i \rvert}{n} 
-= \frac{\sum_{i=1}^{n} \lvert e_i \rvert}{n}$
-  * Uses absolute values instead of squares.
-  * More robust to outliers.
-  * Represents the average magnitude of deviations (typical offset between clouds).
-  * $MAE = 0$ → perfect agreement.
-  * $MAE = 0.01$ → on average, the point clouds deviate by 1 cm (assuming units are in meters).
+  $$\text{MAE} = \frac{1}{n} \sum_{i=1}^{n} |d_i|$$
+
+  * More robust than RMS due to linear (not quadratic) penalty
+  * MAE = 0 → perfect agreement
+  * MAE = 0.01 m → average deviation of 1 cm between clouds
 
   ```python
   mae = float(np.mean(np.abs(clipped)))
   ```
 
-* **NMAD (Normalized Median Absolute Deviation)**:
+* **NMAD (Normalized Median Absolute Deviation)**: Robust standard deviation estimator.
 
-  * Robust estimate of σ.
-  * Equivalent to Std for normally distributed data.
+  $$\text{NMAD} = 1.4826 \times \text{median}(|d_i - \text{median}(d)|)$$
+
+  * Factor 1.4826 makes NMAD equivalent to σ for normal distributions
+  * Highly robust to outliers (50% breakdown point)
 
   ```python
   mad = float(np.median(np.abs(clipped - med)))
@@ -152,512 +162,403 @@
 
 ## Inlier/Outlier Analysis
 
-* **Inlier/Outlier Definition**: Values classified using threshold $|x| ≤ 3·RMS$.
+### Classification Criteria
 
-* **MAE Inlier**: Mean absolute error excluding outliers.
+* **Outlier Definition**: Points with |distance| > 3×RMS
+* **Inlier Definition**: Points with |distance| ≤ 3×RMS
+
+### Subset Statistics
+
+* **MAE Inlier**: Mean absolute error computed only for inliers.
 
   ```python
   mae_in = float(np.mean(np.abs(inliers))) if inliers.size > 0 else np.nan
   ```
 
-* **NMAD Inlier**: NMAD excluding outliers.
+* **NMAD Inlier**: Robust spread measure for inliers only.
 
   ```python
-  nmad_in = (
-      float(1.4826 * np.median(np.abs(inliers - median)))
-      if inliers.size > 0 else np.nan
-  )
+  median_inliers = np.median(inliers)
+  nmad_in = float(1.4826 * np.median(np.abs(inliers - median_inliers))) 
+           if inliers.size > 0 else np.nan
   ```
 
-* **Outlier Count**: Number of points with |x| > 3·RMS.
+* **Outlier/Inlier Counts**: 
+  * Total outliers and inliers (sum equals valid_count)
+  * Positive/negative outliers: Points above/below zero
+  * Positive/negative inliers: Distribution of inliers around zero
 
-* **Inlier Count**: Number of points with |x| ≤ 3·RMS.
-
-  * Sum of inliers + outliers = valid\_count.
-
-* **Mean/Std Inlier**: Mean and standard deviation without outliers.
-
-* **Mean/Std Outlier**: Mean and standard deviation of outliers only.
-
-* **Positive/Negative Outliers**: Count of outliers above/below zero.
-
-* **Positive/Negative Inliers**: Counts for inliers above/below zero.
+* **Mean/Std Statistics**:
+  * Computed separately for inlier and outlier subsets
+  * Useful for understanding systematic patterns in outliers
 
 ---
 
-## Quantiles
+## Quantile Statistics
 
-* **Q05/Q95**: Range containing 90% of values.
-* **Q25/Q75**: Interquartile range (IQR = Q75 − Q25). Robust spread measure.
+* **Q05/Q95**: 5th and 95th percentiles
+  * Range containing central 90% of data
+  * More robust than min/max for identifying typical range
 
+* **Q25/Q75**: First and third quartiles
+  * Interquartile Range (IQR) = Q75 - Q25
+  * Robust measure of spread, unaffected by outliers
 
+---
 
-## Distribution Fits
+## Distribution Fitting
 
+### Gaussian (Normal) Distribution Fit
 
-### Gaussian Mean / Standard Deviation
+Fits a normal distribution $\mathcal{N}(\mu, \sigma^2)$ to the data using maximum likelihood estimation.
 
-* Useful for comparing the distance distribution with a theoretical Gaussian distribution.
-* **Gaussian Mean (`mu`)**
-
-  * Location parameter of the fitted normal distribution.
-  * Represents the estimated “center” of the data.
-  * May slightly differ from the empirical mean since it is obtained through curve fitting.
-
-  ```python
-  float(mu)
-  ```
-* **Gaussian Std (`std`)**
-
-  * Scale parameter of the fitted normal distribution.
-  * Represents the estimated standard deviation of the data.
-  * Smooths the actual distribution and is less sensitive to small irregularities.
-
-  ```python
-  float(std)
-  ```
-* Example usage:
+* **Gaussian Mean (μ)**: Location parameter of the fitted distribution
 
   ```python
   mu, std = norm.fit(clipped)
   ```
-* Library:
+
+* **Gaussian Std (σ)**: Scale parameter of the fitted distribution
 
   ```python
   from scipy.stats import norm
+  mu, std = norm.fit(clipped)
   ```
 
----
+### Gaussian Chi-Square Goodness-of-Fit
 
-### Gaussian Chi²
+Measures how well the data follows a normal distribution using Pearson's χ² test.
 
-* **Low value** → Histogram matches the Gaussian distribution well → “good fit.”
-* **High value** → Strong deviations (e.g., skewness, multimodality, heavy tails).
-* The absolute magnitude depends on the number of bins and data size, so it is more suitable for **comparing different runs** rather than absolute interpretation.
+* **Low χ²** → Data closely follows Gaussian distribution
+* **High χ²** → Significant deviations (skewness, heavy tails, multimodality)
 
-**Computation steps:**
+**Calculation steps:**
 
-1. **Prepare histogram fit:**
-
-   ```python
-   cdfL = norm.cdf(bin_edges[:-1], mu, std)
-   cdfR = norm.cdf(bin_edges[1:], mu, std)
-   ```
-
-2. **Expected frequencies under the Gaussian fit:**
-
-   * Number of points predicted by the fitted distribution in each histogram bin.
+1. **Compute expected frequencies under Gaussian model:**
 
    ```python
-   expected_gauss = N * (cdfR - cdfL)
+   # CDF at bin edges
+   cdf_left = norm.cdf(bin_edges[:-1], mu, std)
+   cdf_right = norm.cdf(bin_edges[1:], mu, std)
+   
+   # Expected counts per bin
+   expected_gauss = N * (cdf_right - cdf_left)
    ```
 
-3. **Filter out very small expected values (to avoid division by zero):**
+2. **Filter bins with very low expected counts** (to avoid numerical instability):
 
    ```python
-   eps = 1e-12
-   thr = min_expected if min_expected is not None else eps
-   maskG = expected_gauss > thr
+   min_expected = 1e-12  # or user-defined threshold
+   mask = expected_gauss > min_expected
    ```
 
-   * Bins with very small expected counts (< thr) are ignored, since they would make the result unstable.
+3. **Calculate Pearson χ² statistic:**
 
-4. **Pearson Chi² statistic:**
+   $$\chi^2 = \sum_{i} \frac{(O_i - E_i)^2}{E_i}$$
+
+   where $O_i$ = observed frequency, $E_i$ = expected frequency
 
    ```python
-   pearson_gauss = float(
-       np.sum((hist[maskG] - expected_gauss[maskG]) ** 2 / expected_gauss[maskG])
-   )
+   chi2_gauss = float(np.sum((hist[mask] - expected_gauss[mask])**2 
+                            / expected_gauss[mask]))
    ```
-
-   * `hist` = observed frequencies (actual counts per bin).
-   * `expected_gauss` = expected frequencies under the fitted Gaussian model.
 
 ---
 
-## Weibull Distribution
+## Weibull Distribution Fit
 
-* **Reference**: [Wikipedia](https://en.wikipedia.org/wiki/Weibull_distribution)
-* **Library**: [`scipy.stats.weibull_min`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.weibull_min.html)
+The Weibull distribution is particularly suitable for modeling skewed error distributions common in point cloud comparisons.
 
-The Weibull distribution is often a better fit than a Gaussian distribution for strongly skewed error distributions (e.g., when distances are not normally distributed).
+* **Probability Density Function:**
 
-It is one of the most widely used distributions for modeling non-normally distributed data. The Weibull distribution is defined by three parameters: **shape**, **scale**, and **shift (location)**. Depending on their values, the Weibull distribution can take on very different forms.
+  $$f(x; k, \lambda, \theta) = \frac{k}{\lambda}\left(\frac{x-\theta}{\lambda}\right)^{k-1} e^{-\left(\frac{x-\theta}{\lambda}\right)^k}$$
 
-(Source: [Minitab Documentation](https://support.minitab.com/de-de/minitab/help-and-how-to/quality-and-process-improvement/capability-analysis/supporting-topics/distributions-and-transformations-for-nonnormal-data/why-is-weibull-the-default-distribution/))
+  where:
+  * $k$ = shape parameter
+  * $\lambda$ = scale parameter  
+  * $\theta$ = location (shift) parameter
 
----
+### Weibull Parameters
 
-### Weibull Shape Parameter (a)
+* **Shape Parameter (k or a)**:
+  * $k < 1$: Heavy right tail, exponential-like decay
+  * $k = 2$: Rayleigh distribution
+  * $k > 3.5$: Approaching normal distribution
+  * Controls the distribution's asymmetry and tail behavior
+  
+  ![Weibull Shape Parameter Effect](image.png)
 
-* **Effect of shape (a):**
+* **Scale Parameter (λ or b)**:
+  * Controls the width/spread of the distribution
+  * Larger values → broader distribution
+  * Roughly corresponds to a "stretching" of the distance distribution
+  
+  ![Weibull Scale Parameter Effect](image-1.png)
 
-  * $a < 1$ → heavy tails, strong right skew.
-  * $a \approx 2$ → similar to a Rayleigh distribution.
-  * $a > 3$ → distribution becomes more symmetric, approaching Gaussian.
-  * ![alt text](image.png)
+* **Location Parameter (θ or loc)**:
+  * Shifts the distribution along the x-axis
+  * Often close to the minimum value for distance data
+  * In CloudCompare, typically near the median or minimum depending on dataset
+  
+  ![Weibull Location Parameter Effect](image-2.png)
 
 ```python
-float(a)
-a, loc, b = weibull_min.fit(clipped)
+from scipy.stats import weibull_min
+a, loc, b = weibull_min.fit(clipped)  # a=shape, loc=location, b=scale
 ```
 
----
+### Weibull-Derived Metrics
 
-### Weibull Scale Parameter (b)
+* **Mode**: Position of maximum probability density
 
-* **Effect of scale (b):**
+  $$\text{Mode} = \begin{cases}
+  \theta + \lambda\left(\frac{k-1}{k}\right)^{1/k} & \text{if } k > 1 \\
+  \theta & \text{if } k \leq 1
+  \end{cases}$$
 
-  * Larger values → broader distribution.
-  * Roughly corresponds to a “stretching” of the distance distribution.
-  * ![alt text](image-1.png)
+* **Skewness**: Measure of asymmetry
+  * Positive: Right-skewed (long right tail)
+  * Negative: Left-skewed (long left tail)
 
-```python
-float(b)
-a, loc, b = weibull_min.fit(clipped)
-```
-
----
-
-### Weibull Shift Parameter (loc)
-
-* **Effect of shift (loc):**
-
-  * Translates the distribution along the axis.
-  * In CloudCompare, often close to the median or minimum, depending on the dataset.
-  * ![alt text](image-2.png)
-
-```python
-float(loc)
-a, loc, b = weibull_min.fit(clipped)
-```
+* **Weibull χ²**: Goodness-of-fit test, calculated analogously to Gaussian χ²
 
 ---
-
-### Weibull Mode
-
-* Position of the maximum of the probability density function.
-
-```python
-mode_weibull = float(loc + b * ((a - 1) / a) ** (1 / a)) if a > 1 else float(loc)
-```
-
----
-
-### Weibull Skewness
-
-* Measure of asymmetry:
-
-  * Positive = right skew (long right tail).
-  * Negative = left skew (long left tail).
-
-```python
-skew_weibull = float(weibull_min(a, loc=loc, scale=b).stats(moments="s"))
-```
-
----
-
-### Weibull Chi² (Goodness-of-Fit)
-
-* Pearson Chi² statistic for the Weibull fit.
-* Should only be interpreted **relatively** (for comparisons between runs).
-
-**Computation:**
-
-1. Expected frequencies under the Weibull distribution:
-
-   ```python
-   cdfL = weibull_min.cdf(bin_edges[:-1], a, loc=loc, scale=b)
-   cdfR = weibull_min.cdf(bin_edges[1:], a, loc=loc, scale=b)
-   expected_weib = N * (cdfR - cdfL)
-   ```
-
-2. Exclude bins with very small expected counts:
-
-   ```python
-   maskW = expected_weib > thr
-   ```
-
-3. Pearson Chi² statistic:
-
-   ```python
-   pearson_weib = float(
-       np.sum((hist[maskW] - expected_weib[maskW]) ** 2 / expected_weib[maskW])
-   )
-   ```
 
 ## Distribution Characteristics
 
-* **Skewness**: Asymmetry of distribution.
+* **Skewness**: Third standardized moment, measures asymmetry
 
-  * \~0 → symmetric.
-  * > 0 → right-skew.
-  * <0 → left-skew.
+  $$\text{Skewness} = \frac{\mathbb{E}[(X-\mu)^3]}{\sigma^3}$$
 
-* **Kurtosis (Excess)**: Tail heaviness/peakedness.
+  * = 0: Symmetric distribution
+  * > 0: Right-skewed (tail extends right)
+  * < 0: Left-skewed (tail extends left)
 
-  * 0 = Gaussian.
-  * > 0 = heavy tails.
-  * <0 = light tails.
+* **Excess Kurtosis**: Fourth standardized moment minus 3, measures tail heaviness
+
+  $$\text{Excess Kurtosis} = \frac{\mathbb{E}[(X-\mu)^4]}{\sigma^4} - 3$$
+
+  * = 0: Normal distribution tails
+  * > 0: Heavy tails (leptokurtic)
+  * < 0: Light tails (platykurtic)
 
 ---
 
 ## Tolerance & Coverage Metrics
 
-* **% |Distance| > Threshold**: Fraction exceeding tolerance (e.g., 1 cm).
-* **% Within ±2 Std**: Fraction within two standard deviations. \~95% for Gaussian data.
-* **Max |Distance|**: Largest absolute deviation (sensitive to outliers).
-* **Within Tolerance**: Fraction of values within defined tolerance (default ±1 cm).
+* **% |Distance| > Threshold**: Fraction of points exceeding a specified tolerance (e.g., 1 cm)
+  
+* **% Within ±2σ**: Fraction within two standard deviations
+  * ~95% for normally distributed data
+  * Deviations indicate non-normality
+
+* **Max |Distance|**: Maximum absolute deviation
+  * Highly sensitive to outliers
+  * Useful for worst-case analysis
+
+* **Within Tolerance**: Fraction of values within user-defined tolerance bounds
 
 ---
 
 ## Agreement & Comparison Metrics
 
+### Bland-Altman Analysis
 
-### Bland–Altman Analysis (Lower/Upper Limits)
+Used to assess agreement between two measurement methods or point clouds. Answers the question: **"Do both methods provide comparable results?"**
 
-* **References**:
+**Structure of the Bland-Altman Plot:**
 
-  * [Wikipedia: Bland–Altman plot](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot)
-  * [PMC Article](https://pmc.ncbi.nlm.nih.gov/articles/PMC4470095/)
-  * [Datatab Tutorial](https://datatab.net/tutorial/bland-altman-plot)
+![Bland-Altman Plot Example](image-3.png)
 
-A **Bland–Altman plot** is used to compare two measurement methods or outputs.
-It answers the question:
-**“Do both methods provide comparable results?”**
+* **x-axis (Mean of measurements)**: Mean of both methods per data point - shows the magnitude of measured values
+* **y-axis (Difference)**: Difference between methods (typically Method A − Method B) - shows deviation magnitude and direction
+* **Red line (Bias)**: Mean difference across all points - indicates systematic offset
+* **Green lines (Limits of Agreement)**: Bias ± 1.96 × SD - range containing ~95% of differences
 
----
+**Key Components:**
 
-#### Structure of the Diagram
-![alt text](image-3.png)
-* **x-axis (Mean of measurements)**
+* **Bias (Mean Difference)**: Systematic offset between methods
 
-  * Mean of both methods per data point.
-  * Shows how large the measured values are on average.
+  $\text{Bias} = \bar{d} = \frac{1}{n}\sum_{i=1}^{n} d_i$
 
-* **y-axis (Difference)**
+* **Limits of Agreement (LoA)**: Expected range for 95% of differences
 
-  * Difference between the two methods per data point (typically Method A − Method B).
-  * Shows how large the deviations are and in which direction.
+  $\text{LoA} = \text{Bias} \pm 1.96 \times \sigma_d$
 
-* **Red line (Bias)**
+  where $\sigma_d$ is the standard deviation of differences
 
-  * Mean difference across all points.
-  * Indicates the **systematic offset** between the methods.
+**Interpretation:**
+* **Bias ≈ 0**: Methods agree on average
+* **Bias ≠ 0**: One method consistently yields higher/lower results
+* **Narrow LoA**: High agreement (low variance)
+* **Wide LoA**: High uncertainty, poor reproducibility
+* **Random scatter**: Differences independent of measurement magnitude (good)
+* **Patterns/trends**: Systematic errors or heteroscedasticity (problematic)
 
-* **Green lines (Limits of Agreement)**
-
-  * Bias ± 1.96 × standard deviation of the differences.
-  * Range in which \~95% of all differences are expected to lie.
-  * Provides a measure of the **spread of deviations**.
-
----
-
-#### Interpretation
-
-1. **Bias close to 0** → Methods are, on average, equivalent.
-   **Bias significantly ≠ 0** → One method consistently yields higher/lower results.
-
-2. **Narrow Limits of Agreement** → High agreement (low variance).
-   **Wide Limits** → High uncertainty, poor reproducibility.
-
-3. **Pattern of the scatter plot:**
-
-   * Random scatter around the bias line → Differences are independent of measurement magnitude (good).
-   * Systematic structures or trends (e.g., funnel shape, slope) → Deviations depend on the size of the measurement (heteroscedasticity, systematic errors).
-
----
-
-#### What a Bland–Altman Plot Shows
-
-* The **systematic bias** between two outputs.
-* The **spread of deviations**.
-* Whether the differences are **random** or depend on the magnitude of the measured values.
-
+**References:**
+* [Wikipedia: Bland–Altman plot](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot)
+* [PMC Article](https://pmc.ncbi.nlm.nih.gov/articles/PMC4470095/)
+* [Datatab Tutorial](https://datatab.net/tutorial/bland-altman-plot)
 
 ### Passing-Bablok Regression
-Passing–Bablok regression is a non-parametric way to, for example, compare two methods of measuring something in order to judge if they are equivalent or not. It was first described in Passing & Bablok (1983). 
 
-[Reference H. Passing und W. Bablok](https://www.degruyterbrill.com/document/doi/10.1515/cclm.1983.21.11.709/html)
+Non-parametric method for comparing measurement methods, robust to outliers.
 
-[Code Example](https://rowannicholls.github.io/python/statistics/hypothesis_testing/passing_bablok.html)
+**Method:**
+1. Calculate slopes for all point pairs
+2. Take median slope (β₁) and median intercept (β₀)
+3. Compute confidence intervals
 
-[Wikipedia](https://rowannicholls.github.io/python/statistics/hypothesis_testing/passing_bablok.html)
+**Interpretation:**
+* 1 ∈ CI(slope) AND 0 ∈ CI(intercept): Methods are comparable
+* 1 ∉ CI(slope): Proportional difference exists
+* 0 ∉ CI(intercept): Systematic difference exists
 
-Essentially, when two different methods are being used to take the same measurements the values generated can be plotted on a scatter plot and a line-of-best-fit can fitted. The Passing-Bablok method does this fitting by:
-
-+ Looking at every combination of two points in the scatter plot
-+ Drawing a line between the two points in each of these combinations
-+ Taking the gradient of each of these lines
-+ Extending these lines to the y-axis and taking the y-intercepts
-+ Taking the median of the gradients and the median of the y-intercepts of these lines
-
-The median gradient and median y-intercept create the overall line-of-best-fit. This has an associated confidence interval which can be interpreted as follows:
-
-+ If 1 is within the confidence interval of the gradient and 0 is within the confidence interval of the y-intercept, then the two methods are comparable within the investigated concentration range
-+ If 1 is not within the confidence interval of the gradient then there is a proportional difference between the two methods
-+ If 0 is not within the confidence interval of the y-intercept then there is a systematic difference.
-+ ![alt text](image-4.png)
-
+---
 
 # Single-Cloud Statistics
 
-### Input / Context Parameters
+## Input Parameters
 
+* **Radius [m]**: Search radius for local neighborhood analysis
+  * Larger: Smoother metrics, less noise-sensitive
+  * Smaller: More detailed, captures fine-scale variation
 
-* **Radius \[m]** – Search radius for local neighborhoods (sphere in 3D).
+* **k-NN**: Number of nearest neighbors for distance calculations
+  * Larger k: More stable but less localized metrics
 
-  * Larger radius = smoother, less noise-sensitive metrics.
-  * Smaller radius = more detailed, but also more sensitive to noise.
+* **Sampled Points**: Number of randomly sampled points for computationally intensive metrics
+  * Balances accuracy with computation time
 
-* **k-NN** – Number of nearest neighbors used for k-NN distances.
-
-  * Larger k = more stable, but less localized.
-
-* **Sampled Points** – Number of points randomly sampled for local metrics (kNN, radius, PCA).
-
-  * Controls runtime and stability.
-
-* **Area Source** – Method used to estimate XY area:
-
-  * `convex_hull`: convex hull of the footprint (closer to reality).
-  * `bbox`: axis-aligned bounding box (upper bound).
-
-* **Area XY \[m²]** – Estimated footprint area in XY (used for global density calculations).
+* **Area Source**: Method for XY area estimation
+  * `convex_hull`: Convex hull of 2D footprint (more realistic)
+  * `bbox`: Axis-aligned bounding box (overestimate)
 
 ---
 
-### Global Height Statistics (Z)
+## Global Height Statistics (Z-dimension)
 
+* **Z Min/Max [m]**: Elevation extrema
 
-* **Z Min / Max \[m]** – Minimum and maximum elevation values.
-  *   $z_{\min}=\min(z),\quad z_{\max}=\max(z)$
-  * Interpretation: Coarse elevation extremes; may include outliers.
+  $$z_{\min} = \min(z), \quad z_{\max} = \max(z)$$
 
-* **Z Mean / Median \[m]** – Central tendency of elevation values.
+* **Z Mean/Median [m]**: Central tendency of elevation
 
-  * Median is more robust to outliers.
-  * Difference between mean and median indicates skewness.
-  * $\bar z=\frac{1}{N}\sum_i z_i,\quad \tilde z=\mathrm{median}(z)$
+  $$\bar{z} = \frac{1}{N}\sum_{i=1}^{N} z_i$$
 
-* **Z Std \[m]** – Standard deviation of elevation values.
+  * Large mean-median difference indicates skewed distribution
 
-  * Large = strong relief variation;
-  * Small = flat/homogeneous surface.
-  * $\sigma_z=\sqrt{\tfrac{1}{N}\sum_i (z_i-\bar z)^2}$
+* **Z Standard Deviation [m]**: Elevation variability
 
-* **Z Quantiles (Q05, Q25, Q75, Q95) \[m]** – Elevation quantiles.
+  $$\sigma_z = \sqrt{\frac{1}{N-1}\sum_{i=1}^{N} (z_i - \bar{z})^2}$$
 
-  * Provides range without extreme outliers.
-  * Interquartile Range (IQR = Q75 − Q25) describes relief width.
-  * `np.percentile(z, [5, 25, 75, 95])`
+  * High: Strong relief variation
+  * Low: Flat/homogeneous surface
+
+* **Z Quantiles [m]**: Robust elevation range descriptors
+  * Q05/Q95: Range excluding extreme 10%
+  * Q25/Q75: Interquartile range (IQR)
 
 ---
 
-### Area & Global Point Density
+## Density Metrics
 
-Let $xy = P[:,0:2]$.
+* **Global Density [pts/m²]**: Overall point density
 
-* **Area XY \[m²]** – Footprint area (see above).
-* **Density Global \[pt/m²]** – Number of points per unit area.
+  $$\rho_{\text{global}} = \frac{N}{A_{XY}}$$
 
-  * High = dense sampling;
-  * Low = sparse coverage.
-  * Dependent on the chosen `Area Source`.
-  * $\rho_{\text{global}}=\frac{N}{A_{\text{XY}}}$
+  where $N$ = point count, $A_{XY}$ = footprint area
 
----
+* **Local Density [pts/m³]**: Neighborhood-based density
 
+  $$\rho_{\text{local}}(p) = \frac{|\mathcal{N}_r(p)|}{V_{\text{sphere}}}$$
 
-### k-Nearest Neighbors (kNN)
-On subsample $S$ (size $M\le N$):
-
-* **Mean NN Dist (1..k) \[m]** – Mean distance to neighbors 1 through k.
-  * $\overline{d}_{1..k}=\frac{1}{M}\sum_{p\in S}\frac{1}{k}\sum_{j=1}^{k} d_j(p)$
-  * Code: `mean_nn_all = np.mean(dists_knn[:, 1:])` (index 0 is the point itself)
-
-  * Small = dense sampling;
-  * Large = sparse sampling or gaps.
-
-* **Mean Distance to k-th NN \[m]** – Average distance to the k-th neighbor.
-  * $\overline{d}_{k}=\frac{1}{M}\sum_{p\in S} d_k(p)$
-  * Code: `mean_nn_kth = np.mean(dists_knn[:, min(k, dists_knn.shape[1]-1)])`
-
-  * Acts as a scale indicator.
-  * Smaller = denser
+  where $|\mathcal{N}_r(p)|$ = neighbor count, $V_{\text{sphere}} = \frac{4}{3}\pi r^3$
 
 ---
 
-### Radius-Based Neighborhoods (per point $p\in S$)
+## k-Nearest Neighbor Statistics
 
-Neighbors: $\mathcal{N}_r(p)=\{q\in S:\lVert q-p\rVert\le r\}$, volume $V=\tfrac{4}{3}\pi r^3$.
+* **Mean Distance to 1st-kth NN [m]**: Average distance to k nearest neighbors
 
-* **Local Density \[pt/m³] (Mean/Median/Q05/Q95)** – Number of neighbors divided by neighborhood volume.
+  $$\bar{d}_{1:k} = \frac{1}{M}\sum_{p \in S} \left(\frac{1}{k}\sum_{j=1}^{k} d_j(p)\right)$$
 
-  * High = dense sampling;
-  * Low = sparse sampling.
-  * Quantiles describe heterogeneity of density.
-  * $\rho(p)=\frac{|\mathcal{N}_r(p)|}{V}$
+* **Mean Distance to kth NN [m]**: Scale indicator
 
-* **Roughness \[m] (Mean/Median/Q05/Q95)** – Standard deviation of perpendicular distances of neighbors to the local PCA plane.
+  $$\bar{d}_k = \frac{1}{M}\sum_{p \in S} d_k(p)$$
 
-  * Low = smooth/planar surface.
-  * High = rough, uneven, or noisy surface. 
+  * Smaller values indicate denser sampling
 
 ---
 
-### PCA Shape Descriptors
+## Surface Roughness
 
-Let eigenvalues sorted $\lambda_1\ge \lambda_2\ge \lambda_3\ge 0$ of covariance of $U$.
-
-Derived from eigenvalues of local PCA analysis of point neighborhoods:
-
-* **Linearity** – High when structure is line-like (e.g., an edge).
-  * $\mathrm{Lin}=\frac{\lambda_1-\lambda_2}{\lambda_1}$
-  * Code: `(evals[0] - evals[1]) / evals[0]`
-  
-* **Planarity** – High when structure is planar (e.g., flat surface).
-  * $\mathrm{Pla}=\frac{\lambda_2-\lambda_3}{\lambda_1}$
-  * Code: `(evals[1] - evals[2]) / evals[0]`
-
-* **Sphericity** – High when distribution is isotropic; low when strongly structured.
-  * $\mathrm{Sph}=\frac{\lambda_3}{\lambda_1}$
-  * Code: `evals[2] / evals[0]`
-  
-* **Anisotropy** – High when variance is strongly directional (line or plane).
-  * $\mathrm{Ani}=\frac{\lambda_1-\lambda_3}{\lambda_1}$
-  * Code: `(evals[0] - evals[2]) / evals[0]`
-   
-* **Omnivariance \[m²]** – Overall spread of variance (scale-dependent).
-  * $\mathrm{Omni}=(\lambda_1\lambda_2\lambda_3)^{1/3}$
-  * Code: `np.cbrt(np.prod(evals))`
-
-* **Eigenentropy** – Higher when distribution is disordered/isotropic; lower when structured.
-  * With $s=\lambda_1+\lambda_2+\lambda_3$, $p_i=\lambda_i/s$:
-  * $H=-\sum_{i=1}^{3} p_i \log(p_i)$
-  * Code: `-np.sum(ratios * np.log(ratios + 1e-15))`
-  
-* **Curvature** – High = strong curvature/relief; low = flat.
-  * \kappa=\frac{\lambda_3}{\lambda_1+\lambda_2+\lambda_3}
-  * Code: `curvature = evals[2] / sum_eval`
+* **Roughness [m]**: Standard deviation of points from local best-fit plane
+  * Low: Smooth/planar surface
+  * High: Rough, uneven, or noisy surface
+  * Computed via PCA of local neighborhoods
 
 ---
 
-### Orientation Metrics
+## PCA Shape Descriptors
 
-* **Verticality \[deg] (Mean/Median/Q05/Q95)** – Angle between local normal vector and Z-axis.
-  * With local normal $n$ (unit) and global Z‑axis $e_z=(0,0,1)$:
-  * $\theta(p)=\arccos\big(|n\cdot e_z|\big)\cdot\frac{180}{\pi}$
-  * Code: `np.degrees(np.arccos(np.clip(np.abs(n[2]), -1.0, 1.0)))`
+Based on eigenvalue analysis of local point neighborhoods with eigenvalues $\lambda_1 \geq \lambda_2 \geq \lambda_3 \geq 0$:
 
-  * 0° → Normal points upward/downward (horizontal surface).
-  * 90° → Normal lies horizontal (vertical surface).
-  * High = predominantly vertical surfaces.
-  * Low = predominantly horizontal surfaces.
+* **Linearity**: Degree of linear structure
 
-* **Normal Std Angle \[deg]** – Standard deviation of the angle between locally fitted normals and their mean direction (sign consistency considered).
-  * $\sigma_{\angle}=\mathrm{std}\left(\arccos\big(\mathrm{clip}(N\,\bar n,-1,1)\big)\right)\cdot\frac{180}{\pi}$
-  * Code: compute `ang = degrees(arccos(cosang))`, then `np.std(ang)`
+  $$L = \frac{\lambda_1 - \lambda_2}{\lambda_1}$$
 
-  * Low = consistent normals (smooth, uniform orientation).
-  * High = inconsistent normals (edges, noise, mixed geometries).
+  * High: Edge-like features
+
+* **Planarity**: Degree of planar structure
+
+  $$P = \frac{\lambda_2 - \lambda_3}{\lambda_1}$$
+
+  * High: Surface-like features
+
+* **Sphericity**: Degree of isotropic distribution
+
+  $$S = \frac{\lambda_3}{\lambda_1}$$
+
+  * High: Volumetric/scattered points
+
+* **Anisotropy**: Overall directional bias
+
+  $$A = \frac{\lambda_1 - \lambda_3}{\lambda_1}$$
+
+  * High: Strong directional structure
+
+* **Omnivariance [m²]**: Geometric mean of eigenvalues
+
+  $$O = (\lambda_1 \lambda_2 \lambda_3)^{1/3}$$
+
+  * Scale-dependent measure of overall variance
+
+* **Eigenentropy**: Disorder measure
+
+  $$H = -\sum_{i=1}^{3} p_i \log(p_i), \quad p_i = \frac{\lambda_i}{\sum_j \lambda_j}$$
+
+  * High: Disordered/isotropic
+  * Low: Ordered/structured
+
+* **Curvature**: Surface curvature indicator
+
+  $$\kappa = \frac{\lambda_3}{\lambda_1 + \lambda_2 + \lambda_3}$$
+
+  * High: Strong curvature
+  * Low: Flat surface
+
+---
+
+## Orientation Metrics
+
+* **Verticality [degrees]**: Angle between local normal and vertical (Z-axis)
+
+  $$\theta = \arccos(|n_z|) \times \frac{180°}{\pi}$$
+
+  * 0°: Horizontal surface (normal vertical)
+  * 90°: Vertical surface (normal horizontal)
+
+* **Normal Standard Deviation [degrees]**: Consistency of normal orientations
+  * Low: Uniform orientation (smooth surface)
+  * High: Variable orientation (edges, rough surfaces)
