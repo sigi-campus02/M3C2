@@ -54,8 +54,6 @@ class PlotService:
 
     @classmethod
     def summary_pdf(cls, config: PlotConfig) -> None:
-        pdf_name = f"{config.project}_comparison_report.pdf"
-
         plot_types = [
             ("OverlayHistogramm", "Histogramm", (0, 0)),
             ("Boxplot", "Boxplot", (0, 1)),
@@ -65,26 +63,25 @@ class PlotService:
             ("GroupedBar_Mean_Std", "Mittelwert & Std Dev", (1, 2)),
         ]
 
-        with PdfPages(pdf_name) as pdf:
-            for fid in config.folder_ids:
-                fig, axs = plt.subplots(2, 3, figsize=(24, 16))
-                for suffix, title, (row, col) in plot_types:
-                    ax = axs[row, col]
-                    png = os.path.join(config.path, f"{fid}_ALL_{suffix}.png")
-                    if os.path.exists(png):
-                        img = mpimg.imread(png)
-                        ax.imshow(img)
-                        ax.axis("off")
-                        ax.set_title(title, fontsize=22)
-                    else:
-                        ax.axis("off")
-                        ax.set_title(f"{title}\n(nicht gefunden)", fontsize=18)
-                plt.suptitle(f"{fid} – Vergleichsplots", fontsize=28)
-                plt.subplots_adjust(left=0.03, right=0.97, top=0.92, bottom=0.08, wspace=0.08, hspace=0.15)
-                pdf.savefig(fig)
-                plt.close(fig)
+        for fid in config.folder_ids:
+            fig, axs = plt.subplots(2, 3, figsize=(24, 16))
+            for suffix, title, (row, col) in plot_types:
+                ax = axs[row, col]
+                png = os.path.join(config.path, f"{fid}_ALL_{suffix}.png")
+                if os.path.exists(png):
+                    img = mpimg.imread(png)
+                    ax.imshow(img)
+                    ax.axis("off")
+                    ax.set_title(title, fontsize=22)
+                else:
+                    ax.axis("off")
+                    ax.set_title(f"{title}\n(nicht gefunden)", fontsize=18)
+            plt.suptitle(f"{fid} – Vergleichsplots", fontsize=28)
+            plt.subplots_adjust(left=0.03, right=0.97, top=0.92, bottom=0.08, wspace=0.08, hspace=0.15)
+            plt.savefig(config.path + f"_comparison_report.pdf")
+            plt.close(fig)
 
-        logging.info(f"[Report] Zusammenfassung gespeichert: {pdf_name}")
+        logging.info(f"[Report] Zusammenfassung gespeichert")
 
     # ------- Loader & Helpers --------------------------------
 
@@ -96,7 +93,7 @@ class PlotService:
         p1 = os.path.join(fid, filename)
         if os.path.exists(p1):
             return p1
-        return os.path.join("data", fid, filename)
+        return os.path.join("../data", fid, filename)
 
     @classmethod
     def _load_data(cls, fid: str, filenames: List[str], versions: List[str]) -> Tuple[Dict[str, np.ndarray], Dict[str, Tuple[float, float]]]:

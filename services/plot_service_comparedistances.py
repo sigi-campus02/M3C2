@@ -12,16 +12,16 @@ logger = logging.getLogger(__name__)
 class PlotServiceCompareDistances:
     @classmethod
     def overlay_plots(cls, config: PlotConfig, options: PlotOptionsComparedistances) -> None:
-        os.makedirs(config.outdir, exist_ok=True)
+        os.makedirs(config.path, exist_ok=True)
         folder_ids = config.folder_ids
         ref_variants = config.filenames
 
         if options.plot_blandaltman:
-            cls._bland_altman_plot(folder_ids, ref_variants, outdir=config.outdir)
+            cls._bland_altman_plot(folder_ids, ref_variants, outdir=config.path)
         if options.plot_passingbablok:
-            cls._passing_bablok_plot(folder_ids, ref_variants, outdir=config.outdir)
+            cls._passing_bablok_plot(folder_ids, ref_variants, outdir=config.path)
         if options.plot_linearregression:
-            cls._linear_regression_plot(folder_ids, ref_variants, outdir=config.outdir)
+            cls._linear_regression_plot(folder_ids, ref_variants, outdir=config.path)
 
     @staticmethod
     def _resolve(fid: str, filename: str) -> str:
@@ -34,7 +34,7 @@ class PlotServiceCompareDistances:
         p1 = os.path.join(fid, filename)
         if os.path.exists(p1):
             return p1
-        return os.path.join("data", fid, filename)
+        return os.path.join("../data", fid, filename)
 
     @staticmethod
     def _load_ref_variant_data(fid: str, variant: str) -> np.ndarray | None:

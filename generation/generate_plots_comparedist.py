@@ -13,7 +13,7 @@ cfg = PlotConfig(
     folder_ids=folder_ids,
     filenames=ref_variants,
     bins=256,
-    outdir="outputs",
+    outdir="../outputs",
     project="ROCKS"
 )
 
