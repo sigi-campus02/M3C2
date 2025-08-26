@@ -17,7 +17,7 @@ ref_variants = ["ref"]
 # Fix-Parameter
 filename_mov = "mov"                 # Moving point cloud
 mov_as_corepoints = True              # ACHTUNG TUNSPEKT: Ref als Corepoints!, MARS mov als Corepoints!
-use_subsampled_corepoints = 100        # 1 = kein Subsampling; bsp. 3 -> jeder dritte Punkt
+use_subsampled_corepoints = 1        # 1 = kein Subsampling; bsp. 3 -> jeder dritte Punkt
 strategy = "radius"                  # "radius" oder "voxel"
 sample_size = 10000                  # nur für Parameterschätzung, nicht für Algorithmus
 process_python_CC = "python"         # "python" oder "CC"
@@ -27,7 +27,8 @@ output_format = "excel"              # "excel" oder "json"
 project = "MARS"                     # "TUNSPEKT" "MARS"
 normal_override = None               # Normal Scale Override
 proj_override = None                 # Projection Scale Override
-use_existing_params = False           # ob vorhandene Parameter (in Ordner) genutzt werden (True) oder neu berechnet (False)       
+use_existing_params = False           # ob vorhandene Parameter (in Ordner) genutzt werden (True) oder neu berechnet (False)
+outlier_rmse_multiplicator = 3       # RMSE-Multiplikator für Ausreißer (bsp. 3 * RMSE = Outlier)
 
 def main() -> None:
     cfgs = []
@@ -47,7 +48,8 @@ def main() -> None:
                     project,
                     normal_override,
                     proj_override,
-                    use_existing_params
+                    use_existing_params,
+                    outlier_rmse_multiplicator
                 )
             )
 

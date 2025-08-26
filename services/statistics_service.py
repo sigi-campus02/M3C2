@@ -33,7 +33,7 @@ CANONICAL_COLUMNS = [
     "Gauss Mean", "Gauss Std",
     "Weibull a", "Weibull b", "Weibull shift", "Weibull mode", "Weibull skewness",
     "Skewness", "Kurtosis",
-    "Distances Path", "Params Path",
+    "Distances Path", "Params Path", "Outlier RMSE Multiplicator"
 ]
 
 
@@ -50,6 +50,7 @@ class StatisticsService:
         range_override: Optional[Tuple[float, float]] = None,
         min_expected: Optional[float] = None,
         tolerance: float = 0.01,
+        outlier_rmse_multiplicator: float = 3.0
     ) -> Dict:
         """Berechne diverse Metriken aus den gegebenen Distanzwerten.
 
@@ -119,7 +120,7 @@ class StatisticsService:
         normal_scale, search_scale = StatisticsService._load_params(params_path)
 
         # Outliers
-        outlier_mask = np.abs(clipped) > (3 * rms)
+        outlier_mask = np.abs(clipped) > (outlier_rmse_multiplicator * rms)
         inliers = clipped[~outlier_mask]
         outliers = clipped[outlier_mask]
         outlier_info = StatisticsService._compute_outliers(inliers, outliers)
@@ -218,6 +219,7 @@ class StatisticsService:
             "Neg Outlier": neg_out,
             "Pos Inlier": pos_in,
             "Neg Inlier": neg_in,
+            "Outlier RMSE Multiplicator": outlier_rmse_multiplicator,
 
             # 4) Quantile
             "Q05": stats_all["Q05"],
@@ -280,6 +282,7 @@ class StatisticsService:
         out_path: str = "m3c2_stats_all.xlsx",
         sheet_name: str = "Results",
         output_format: str = "excel",
+        outlier_rmse_multiplicator: float = 3.0,
     ) -> pd.DataFrame:
         """
         Liest je Folder {version}_m3c2_distances.txt (Python) und optional CloudCompare
@@ -301,6 +304,7 @@ class StatisticsService:
                         bins=bins,
                         range_override=range_override,
                         min_expected=min_expected,
+                        outlier_rmse_multiplicator=outlier_rmse_multiplicator
                     )
                     rows.append({
                         "Folder": fid,
@@ -327,6 +331,7 @@ class StatisticsService:
                                 bins=bins,
                                 range_override=range_override,
                                 min_expected=min_expected,
+                                outlier_rmse_multiplicator=outlier_rmse_multiplicator
                             )
                             rows.append({
                                 "Folder": fid,

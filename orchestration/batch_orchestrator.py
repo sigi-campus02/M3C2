@@ -98,6 +98,8 @@ class BatchOrchestrator:
             distances, _ = self._run_m3c2(
                 cfg, mov, ref, corepoints, normal, projection, out_base
             )
+
+            # all distances incl. outliers
             self._generate_visuals(cfg, mov, distances, out_base)
 
         try:
@@ -175,6 +177,25 @@ class BatchOrchestrator:
         np.savetxt(dists_path, distances, fmt="%.6f")
         logger.info("[Run] Distanzen gespeichert: %s (%d Werte, %.2f%% NaN)", dists_path, n, 100.0 * nan_share)
 
+
+        # NEU: Speichere XYZ-Koordinaten + Distanz in einer Datei
+
+
+        coords_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_distances_coordinates.txt")
+        if hasattr(mov, "cloud"):
+            xyz = np.asarray(mov.cloud)
+        else:
+            xyz = np.asarray(mov)
+        if xyz.shape[0] == distances.shape[0]:
+            arr = np.column_stack((xyz, distances))
+            header = "x y z distance"
+            np.savetxt(coords_path, arr, fmt="%.6f", header=header)
+            logger.info(f"[Run] Distanzen mit Koordinaten gespeichert: {coords_path}")
+        else:
+            logger.warning(f"[Run] Anzahl Koordinaten stimmt nicht mit Distanzen überein: {xyz.shape[0]} vs {distances.shape[0]}")
+
+
+
         uncert_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_uncertainties.txt")
         np.savetxt(uncert_path, uncertainties, fmt="%.6f")
         logger.info("[Run] Unsicherheiten gespeichert: %s", uncert_path)
@@ -197,7 +218,9 @@ class BatchOrchestrator:
                 out_path=out_path,
                 sheet_name="Results",
                 output_format=self.output_format,
+                outlier_rmse_multiplicator=cfg.outlier_rmse_multiplicator
             )
+
         if cfg.stats_singleordistance == "single":
             logger.info(
                 f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …"
@@ -215,6 +238,7 @@ class BatchOrchestrator:
                 out_path=out_path,
                 sheet_name="CloudStats",
                 output_format=self.output_format,
+                outlier_rmse_multiplicator=cfg.outlier_rmse_multiplicator
             )
 
     def _generate_visuals(self, cfg: PipelineConfig, mov, distances: np.ndarray, out_base: str) -> None:
