@@ -12,7 +12,7 @@ from datetime import datetime
 from sklearn.decomposition import PCA
 from sklearn.neighbors import NearestNeighbors
 
-from datasource import DataSource
+from datasource.datasource import DataSource
 
 
 # Kanonische Spaltenreihenfolge für Statistik-Exports

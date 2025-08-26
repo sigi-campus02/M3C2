@@ -7,11 +7,11 @@ import time
 from typing import List, Tuple
 import numpy as np
 from datasource.datasource import DataSource
-from m3c2_runner import M3C2Runner
+from orchestration.m3c2_runner import M3C2Runner
 from services.param_estimator import ParamEstimator
 from config.pipeline_config import PipelineConfig
 from services.statistics_service import StatisticsService
-from strategies import (
+from orchestration.strategies import (
     RadiusScanStrategy,
     ScaleScan,
     ScaleStrategy,
@@ -19,8 +19,6 @@ from strategies import (
 )
 from services.visualization_service import VisualizationService
 
-from logging.logging_utils import setup_logging
-setup_logging(log_file="statistics_analysis.log", level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -187,7 +185,10 @@ class BatchOrchestrator:
         if cfg.stats_singleordistance == "distance":
             logger.info(f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …")
 
-            out_path = os.path.join(f"{cfg.project}_m3c2_stats_distances.xlsx") if self.output_format == "excel" else os.path.join(f"{cfg.project}_m3c2_stats_distances.json")
+            if cfg.project == "MARS":
+                out_path = os.path.join(f"outputs/MARS_output/{cfg.project}_m3c2_stats_distances.xlsx") if self.output_format == "excel" else os.path.join(f"outputs/MARS_output/{cfg.project}_m3c2_stats_distances.json")
+            if cfg.project == "TUNSPEKT":
+                out_path = os.path.join(f"outputs/TUNSPEKT_output/{cfg.project}_m3c2_stats_distances.xlsx") if self.output_format == "excel" else os.path.join(f"outputs/TUNSPEKT_output/{cfg.project}_m3c2_stats_distances.json")
 
             StatisticsService.compute_m3c2_statistics(
                 folder_ids=[cfg.folder_id],
@@ -201,11 +202,12 @@ class BatchOrchestrator:
             logger.info(
                 f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …"
             )
-            out_path = (
-                os.path.join(f"{cfg.project}_m3c2_stats_clouds.xlsx")
-                if self.output_format == "excel"
-                else os.path.join(f"{cfg.project}_m3c2_stats_clouds.json")
-            )
+
+            if cfg.project == "MARS":
+                out_path = os.path.join(f"outputs/MARS_output/{cfg.project}_m3c2_stats_clouds.xlsx") if self.output_format == "excel" else os.path.join(f"outputs/MARS_output/{cfg.project}_m3c2_stats_clouds.json")
+            if cfg.project == "TUNSPEKT":
+                out_path = os.path.join(f"outputs/TUNSPEKT_output/{cfg.project}_m3c2_stats_clouds.xlsx") if self.output_format == "excel" else os.path.join(f"outputs/TUNSPEKT_output/{cfg.project}_m3c2_stats_clouds.json")
+
             StatisticsService.calc_single_cloud_stats(
                 folder_ids=[cfg.folder_id],
                 filename_mov=cfg.filename_mov,

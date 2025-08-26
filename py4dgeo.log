@@ -498,3 +498,85 @@
 [2025-08-25 17:33:54][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\ref.xyz'
 [2025-08-25 17:35:10][INFO] Building KDTree structure with leaf parameter 10
 [2025-08-25 17:35:14][INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 11:54:18,007 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 11:54:18,007 [INFO] Konfigurationen: 1 Jobs
+2025-08-26 11:54:18,007 [INFO] data\0342-0349, mov, ref, python
+2025-08-26 11:54:18,007 [INFO] Nutze py4dgeo.read_from_xyz
+[2025-08-26 11:54:18][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 11:54:18,084 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-26 11:54:20][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 11:54:20,364 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 11:54:20,457 [INFO] Mov Points: (709128, 3)
+2025-08-26 11:54:20,457 [INFO] Ref Points: (27711, 3)
+2025-08-26 11:54:20,457 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 11:54:20,457 [INFO] Corepoints: (709128, 3)
+2025-08-26 11:54:20,457 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.439s
+2025-08-26 11:54:22,248 [INFO] [Spacing] avg_spacing=0.000973 (k=6) | 1.794s
+2025-08-26 11:54:22,256 [INFO] [RadiusScan] Subsample: 10000/709128
+2025-08-26 11:54:23,433 [INFO] [Scan] 12 Skalen evaluiert | 1.184s
+2025-08-26 11:54:23,433 [INFO] [Select] normal=0.124559, proj=0.249118 | 0.000s
+2025-08-26 11:54:23,433 [INFO] [Params] gespeichert: data\0342-0349\python_ref_m3c2_params.txt
+[2025-08-26 11:54:23][INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 11:54:23,433 [INFO] Building KDTree structure with leaf parameter 10
+[2025-08-26 11:54:23][INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 11:54:23,605 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 11:56:52,411 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 11:56:52,411 [INFO] Konfigurationen: 1 Jobs
+2025-08-26 11:56:52,411 [INFO] data\0342-0349, mov, ref, python
+2025-08-26 11:56:52,411 [INFO] Nutze py4dgeo.read_from_xyz
+[2025-08-26 11:56:52][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 11:56:52,463 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-26 11:56:54][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 11:56:54,658 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 11:56:54,739 [INFO] Mov Points: (709128, 3)
+2025-08-26 11:56:54,739 [INFO] Ref Points: (27711, 3)
+2025-08-26 11:56:54,739 [INFO] Nutze mov als Corepoints und nutze Subsamling: 100
+2025-08-26 11:56:54,739 [INFO] Corepoints: (7092, 3)
+2025-08-26 11:56:54,739 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(7092, 3) | 2.322s
+2025-08-26 11:56:54,760 [INFO] [Spacing] avg_spacing=0.040010 (k=6) | 0.015s
+2025-08-26 11:57:01,061 [INFO] [Scan] 12 Skalen evaluiert | 6.300s
+2025-08-26 11:57:01,061 [INFO] [Select] normal=0.160042, proj=0.320084 | 0.000s
+2025-08-26 11:57:01,063 [INFO] [Params] gespeichert: data\0342-0349\python_ref_m3c2_params.txt
+[2025-08-26 11:57:01][INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 11:57:01,063 [INFO] Building KDTree structure with leaf parameter 10
+[2025-08-26 11:57:01][INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 11:57:01,238 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 11:57:07,471 [INFO] [Run] Punkte=7092 | NaN=0.00% | Zeit=6.417s
+2025-08-26 11:57:07,486 [INFO] [Run] Distanzen gespeichert: data\0342-0349\python_ref_m3c2_distances.txt (7092 Werte, 0.00% NaN)
+2025-08-26 11:57:07,541 [INFO] [Run] Unsicherheiten gespeichert: data\0342-0349\python_ref_m3c2_uncertainties.txt
+2025-08-26 11:57:07,541 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-26 11:57:07,990 [INFO] [Visual] Histogram gespeichert: data\0342-0349\python_ref_histogram.png
+2025-08-26 11:57:08,014 [INFO] [Visual] Farb-PLY gespeichert: data\0342-0349\python_ref_colored_cloud.ply
+2025-08-26 11:57:08,014 [WARNING] [Visual] Export valid-only übersprungen: boolean index did not match indexed array along axis 0; size of axis is 709128 but size of corresponding boolean axis is 7092
+2025-08-26 11:57:08,014 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-26 11:57:08,558 [INFO] [Job] data\0342-0349 abgeschlossen in 16.136s
+2025-08-26 12:03:23,822 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 12:03:23,822 [INFO] Konfigurationen: 1 Jobs
+2025-08-26 12:03:23,822 [INFO] data\0342-0349, mov, ref, python
+2025-08-26 12:03:23,822 [INFO] Nutze py4dgeo.read_from_xyz
+[2025-08-26 12:03:23][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 12:03:23,874 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-26 12:03:26][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 12:03:26,063 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 12:03:26,145 [INFO] Mov Points: (709128, 3)
+2025-08-26 12:03:26,145 [INFO] Ref Points: (27711, 3)
+2025-08-26 12:03:26,145 [INFO] Nutze mov als Corepoints und nutze Subsamling: 100
+2025-08-26 12:03:26,145 [INFO] Corepoints: (7092, 3)
+2025-08-26 12:03:26,145 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(7092, 3) | 2.317s
+2025-08-26 12:03:26,166 [INFO] [Spacing] avg_spacing=0.040010 (k=6) | 0.015s
+2025-08-26 12:03:32,500 [INFO] [Scan] 12 Skalen evaluiert | 6.333s
+2025-08-26 12:03:32,500 [INFO] [Select] normal=0.160042, proj=0.320084 | 0.000s
+2025-08-26 12:03:32,500 [INFO] [Params] gespeichert: data\0342-0349\python_ref_m3c2_params.txt
+[2025-08-26 12:03:32][INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 12:03:32,500 [INFO] Building KDTree structure with leaf parameter 10
+[2025-08-26 12:03:32][INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 12:03:32,671 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 12:03:38,834 [INFO] [Run] Punkte=7092 | NaN=0.00% | Zeit=6.334s
+2025-08-26 12:03:38,855 [INFO] [Run] Distanzen gespeichert: data\0342-0349\python_ref_m3c2_distances.txt (7092 Werte, 0.00% NaN)
+2025-08-26 12:03:38,891 [INFO] [Run] Unsicherheiten gespeichert: data\0342-0349\python_ref_m3c2_uncertainties.txt
+2025-08-26 12:03:38,891 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-26 12:03:39,243 [INFO] [Visual] Histogram gespeichert: data\0342-0349\python_ref_histogram.png
+2025-08-26 12:03:39,259 [INFO] [Visual] Farb-PLY gespeichert: data\0342-0349\python_ref_colored_cloud.ply
+2025-08-26 12:03:39,259 [WARNING] [Visual] Export valid-only übersprungen: boolean index did not match indexed array along axis 0; size of axis is 709128 but size of corresponding boolean axis is 7092
+2025-08-26 12:03:39,259 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-26 12:03:39,667 [INFO] [Job] data\0342-0349 abgeschlossen in 15.837s
