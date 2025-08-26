@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os.path
 from dataclasses import dataclass, field
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 
 
 @dataclass(frozen=True)
@@ -27,12 +27,15 @@ class PlotOptionsComparedistances:
 class PlotConfig:
     folder_ids: List[str]
     filenames: List[str]
-    versions: List[str]
     project: str
     outdir: str
-    path: os.path.join(outdir, f"{project}_output", f"{project}_plots")
+    versions: List[str] = None
     bins: int = 256
     colors: Dict[str, str] = field(default_factory=dict)
+    path: str = field(init=False)
+
+    def __post_init__(self):
+        self.path = os.path.join(self.outdir, f"{self.project}_output", f"{self.project}_plots")
 
     def labels(self) -> List[str]:
         # Reihenfolge der vier Kurven, z.B. ["python_ref","python_ref_ai","CC_ref","CC_ref_ai"]

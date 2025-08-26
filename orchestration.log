@@ -1732,3 +1732,155 @@ ValueError: TXT-Datei enthält keine Werte: data\1306-1311\python_ref_ai_m3c2_dis
 2025-08-26 18:03:19,715 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_inlier.ply (686622 Punkte)
 2025-08-26 18:03:19,715 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref_ai …
 2025-08-26 18:03:43,148 [INFO] [Job] data\0342-0349 abgeschlossen in 31.234s
+2025-08-26 21:24:11,895 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 21:24:11,896 [INFO] Konfigurationen: 2 Jobs
+2025-08-26 21:24:11,897 [INFO] data\rocks, points_100, points_40, python
+2025-08-26 21:24:11,897 [INFO] Nutze py4dgeo.read_from_las (unterstützt .las und .laz)
+2025-08-26 21:24:11,968 [INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\data\rocks\points_100.laz'
+2025-08-26 21:24:12,097 [INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\data\rocks\points_40.laz'
+2025-08-26 21:24:12,155 [INFO] Mov Points: (474380, 3)
+2025-08-26 21:24:12,156 [INFO] Ref Points: (189752, 3)
+2025-08-26 21:24:12,156 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 21:24:12,156 [INFO] Corepoints: (474380, 3)
+2025-08-26 21:24:12,156 [INFO] [Load] data/data\rocks: mov=(474380, 3), ref=(189752, 3), corepoints=(474380, 3) | 0.259s
+2025-08-26 21:24:13,568 [INFO] [Spacing] avg_spacing=0.191303 (k=6) | 1.412s
+2025-08-26 21:24:13,586 [INFO] [RadiusScan] Subsample: 10000/474380
+2025-08-26 21:24:13,621 [INFO] [RadiusScan] D=0.0239128 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:13,650 [INFO] [RadiusScan] D=0.0478257 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:13,679 [INFO] [RadiusScan] D=0.0956514 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:13,709 [INFO] [RadiusScan] D=0.191303 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:13,738 [INFO] [RadiusScan] D=0.382605 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:13,771 [INFO] [RadiusScan] D=0.765211 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:13,807 [INFO] [RadiusScan] D=1.53042 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:13,905 [INFO] [RadiusScan] D=3.06084 | pop=11.2±1.4 | 97%>15 | valid=1217/10000 (12%) | sigma=0.0931174 | lambda_min=0.0105323 | Sigma/D=0.0304
+2025-08-26 21:24:14,318 [INFO] [RadiusScan] D=6.12169 | pop=22.4±6.2 | 97%>34 | valid=9705/10000 (97%) | sigma=0.158852 | lambda_min=0.0306218 | Sigma/D=0.0259
+2025-08-26 21:24:14,984 [INFO] [RadiusScan] D=12.2434 | pop=82.5±21.3 | 97%>119 | valid=9997/10000 (100%) | sigma=0.268619 | lambda_min=0.0878457 | Sigma/D=0.0219
+2025-08-26 21:24:15,666 [INFO] [RadiusScan] D=24.4868 | pop=311.5±77.5 | 97%>437 | valid=10000/10000 (100%) | sigma=0.500209 | lambda_min=0.306088 | Sigma/D=0.0204
+2025-08-26 21:24:16,712 [INFO] [RadiusScan] D=48.9735 | pop=1122.8±292.3 | 97%>1598 | valid=10000/10000 (100%) | sigma=1.07199 | lambda_min=1.28368 | Sigma/D=0.0219
+2025-08-26 21:24:16,713 [INFO] [Scan] 12 Skalen evaluiert | 3.144s
+2025-08-26 21:24:16,713 [INFO] [Select] normal=3.060844, proj=6.121688 | 0.000s
+2025-08-26 21:24:16,714 [INFO] [Params] gespeichert: data\rocks\python_points_40_m3c2_params.txt
+2025-08-26 21:24:16,714 [ERROR] [Job] Fehler in Job 'data\rocks' (Version points_40)
+Traceback (most recent call last):
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 44, in run_all
+    self._run_single(cfg)
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 84, in _run_single
+    distances, _ = self._run_m3c2(
+                   ^^^^^^^^^^^^^^^
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 168, in _run_m3c2
+    distances, uncertainties = runner.run(mov, ref, corepoints, normal, projection)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: M3C2Runner.run() missing 1 required positional argument: 'project'
+2025-08-26 21:24:16,716 [INFO] data\rocks, points_100, points_80, python
+2025-08-26 21:24:16,717 [INFO] Nutze py4dgeo.read_from_las (unterstützt .las und .laz)
+2025-08-26 21:24:16,773 [INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\data\rocks\points_100.laz'
+2025-08-26 21:24:16,895 [INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\data\rocks\points_80.laz'
+2025-08-26 21:24:16,967 [INFO] Mov Points: (474380, 3)
+2025-08-26 21:24:16,968 [INFO] Ref Points: (379504, 3)
+2025-08-26 21:24:16,968 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 21:24:16,968 [INFO] Corepoints: (474380, 3)
+2025-08-26 21:24:16,968 [INFO] [Load] data/data\rocks: mov=(474380, 3), ref=(379504, 3), corepoints=(474380, 3) | 0.251s
+2025-08-26 21:24:18,376 [INFO] [Spacing] avg_spacing=0.191303 (k=6) | 1.408s
+2025-08-26 21:24:18,387 [INFO] [RadiusScan] Subsample: 10000/474380
+2025-08-26 21:24:18,417 [INFO] [RadiusScan] D=0.0239128 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:18,445 [INFO] [RadiusScan] D=0.0478257 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:18,476 [INFO] [RadiusScan] D=0.0956514 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:18,512 [INFO] [RadiusScan] D=0.191303 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:18,570 [INFO] [RadiusScan] D=0.382605 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:18,604 [INFO] [RadiusScan] D=0.765211 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:18,638 [INFO] [RadiusScan] D=1.53042 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:24:18,715 [INFO] [RadiusScan] D=3.06084 | pop=11.0±1.3 | 97%>14 | valid=1082/10000 (11%) | sigma=0.0877467 | lambda_min=0.00946822 | Sigma/D=0.0287
+2025-08-26 21:24:19,129 [INFO] [RadiusScan] D=6.12169 | pop=22.3±6.2 | 97%>35 | valid=9715/10000 (97%) | sigma=0.158071 | lambda_min=0.0305919 | Sigma/D=0.0258
+2025-08-26 21:24:19,608 [INFO] [RadiusScan] D=12.2434 | pop=82.2±19.9 | 97%>117 | valid=10000/10000 (100%) | sigma=0.268764 | lambda_min=0.0885862 | Sigma/D=0.0220
+2025-08-26 21:24:20,286 [INFO] [RadiusScan] D=24.4868 | pop=308.4±70.5 | 97%>423 | valid=10000/10000 (100%) | sigma=0.502631 | lambda_min=0.310903 | Sigma/D=0.0205
+2025-08-26 21:24:21,432 [INFO] [RadiusScan] D=48.9735 | pop=1108.3±276.3 | 97%>1535 | valid=10000/10000 (100%) | sigma=1.07772 | lambda_min=1.30284 | Sigma/D=0.0220
+2025-08-26 21:24:21,432 [INFO] [Scan] 12 Skalen evaluiert | 3.056s
+2025-08-26 21:24:21,432 [INFO] [Select] normal=3.060844, proj=6.121688 | 0.000s
+2025-08-26 21:24:21,433 [INFO] [Params] gespeichert: data\rocks\python_points_80_m3c2_params.txt
+2025-08-26 21:24:21,434 [ERROR] [Job] Fehler in Job 'data\rocks' (Version points_80)
+Traceback (most recent call last):
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 44, in run_all
+    self._run_single(cfg)
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 84, in _run_single
+    distances, _ = self._run_m3c2(
+                   ^^^^^^^^^^^^^^^
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 168, in _run_m3c2
+    distances, uncertainties = runner.run(mov, ref, corepoints, normal, projection)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: M3C2Runner.run() missing 1 required positional argument: 'project'
+2025-08-26 21:28:37,623 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 21:28:37,624 [INFO] Konfigurationen: 2 Jobs
+2025-08-26 21:28:37,624 [INFO] data\rocks, points_100, points_40, python
+2025-08-26 21:28:37,625 [INFO] Nutze py4dgeo.read_from_las (unterstützt .las und .laz)
+2025-08-26 21:28:37,681 [INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\data\rocks\points_100.laz'
+2025-08-26 21:28:37,833 [INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\data\rocks\points_40.laz'
+2025-08-26 21:28:37,892 [INFO] Mov Points: (474380, 3)
+2025-08-26 21:28:37,893 [INFO] Ref Points: (189752, 3)
+2025-08-26 21:28:37,893 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 21:28:37,893 [INFO] Corepoints: (474380, 3)
+2025-08-26 21:28:37,893 [INFO] [Load] data/data\rocks: mov=(474380, 3), ref=(189752, 3), corepoints=(474380, 3) | 0.270s
+2025-08-26 21:28:39,317 [INFO] [Spacing] avg_spacing=0.191303 (k=6) | 1.423s
+2025-08-26 21:28:39,328 [INFO] [RadiusScan] Subsample: 10000/474380
+2025-08-26 21:28:39,360 [INFO] [RadiusScan] D=0.0239128 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:39,390 [INFO] [RadiusScan] D=0.0478257 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:39,419 [INFO] [RadiusScan] D=0.0956514 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:39,450 [INFO] [RadiusScan] D=0.191303 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:39,480 [INFO] [RadiusScan] D=0.382605 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:39,513 [INFO] [RadiusScan] D=0.765211 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:39,549 [INFO] [RadiusScan] D=1.53042 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:39,636 [INFO] [RadiusScan] D=3.06084 | pop=11.1±1.4 | 97%>15 | valid=1021/10000 (10%) | sigma=0.0918851 | lambda_min=0.01041 | Sigma/D=0.0300
+2025-08-26 21:28:40,091 [INFO] [RadiusScan] D=6.12169 | pop=22.1±6.0 | 97%>34 | valid=9743/10000 (97%) | sigma=0.160326 | lambda_min=0.0313756 | Sigma/D=0.0262
+2025-08-26 21:28:40,657 [INFO] [RadiusScan] D=12.2434 | pop=82.1±20.4 | 97%>116 | valid=10000/10000 (100%) | sigma=0.273808 | lambda_min=0.090566 | Sigma/D=0.0224
+2025-08-26 21:28:41,290 [INFO] [RadiusScan] D=24.4868 | pop=311.1±76.2 | 97%>435 | valid=10000/10000 (100%) | sigma=0.506897 | lambda_min=0.31515 | Sigma/D=0.0207
+2025-08-26 21:28:42,354 [INFO] [RadiusScan] D=48.9735 | pop=1125.4±291.2 | 97%>1602 | valid=10000/10000 (100%) | sigma=1.08122 | lambda_min=1.30647 | Sigma/D=0.0221
+2025-08-26 21:28:42,355 [INFO] [Scan] 12 Skalen evaluiert | 3.037s
+2025-08-26 21:28:42,355 [INFO] [Select] normal=3.060844, proj=6.121688 | 0.000s
+2025-08-26 21:28:42,356 [INFO] [Params] gespeichert: data\rocks\python_points_40_m3c2_params.txt
+2025-08-26 21:28:42,357 [ERROR] [Job] Fehler in Job 'data\rocks' (Version points_40)
+Traceback (most recent call last):
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 44, in run_all
+    self._run_single(cfg)
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 84, in _run_single
+    distances, _ = self._run_m3c2(
+                   ^^^^^^^^^^^^^^^
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 168, in _run_m3c2
+    distances, uncertainties = runner.run(mov, ref, corepoints, normal, projection)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: M3C2Runner.run() missing 1 required positional argument: 'project'
+2025-08-26 21:28:42,359 [INFO] data\rocks, points_100, points_80, python
+2025-08-26 21:28:42,359 [INFO] Nutze py4dgeo.read_from_las (unterstützt .las und .laz)
+2025-08-26 21:28:42,414 [INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\data\rocks\points_100.laz'
+2025-08-26 21:28:42,535 [INFO] Reading point cloud from file 'C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\data\rocks\points_80.laz'
+2025-08-26 21:28:42,615 [INFO] Mov Points: (474380, 3)
+2025-08-26 21:28:42,616 [INFO] Ref Points: (379504, 3)
+2025-08-26 21:28:42,616 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 21:28:42,616 [INFO] Corepoints: (474380, 3)
+2025-08-26 21:28:42,616 [INFO] [Load] data/data\rocks: mov=(474380, 3), ref=(379504, 3), corepoints=(474380, 3) | 0.258s
+2025-08-26 21:28:44,041 [INFO] [Spacing] avg_spacing=0.191303 (k=6) | 1.426s
+2025-08-26 21:28:44,052 [INFO] [RadiusScan] Subsample: 10000/474380
+2025-08-26 21:28:44,081 [INFO] [RadiusScan] D=0.0239128 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:44,110 [INFO] [RadiusScan] D=0.0478257 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:44,140 [INFO] [RadiusScan] D=0.0956514 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:44,170 [INFO] [RadiusScan] D=0.191303 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:44,200 [INFO] [RadiusScan] D=0.382605 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:44,231 [INFO] [RadiusScan] D=0.765211 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:44,265 [INFO] [RadiusScan] D=1.53042 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 21:28:44,363 [INFO] [RadiusScan] D=3.06084 | pop=11.1±1.3 | 97%>14 | valid=1199/10000 (12%) | sigma=0.092414 | lambda_min=0.010332 | Sigma/D=0.0302
+2025-08-26 21:28:44,803 [INFO] [RadiusScan] D=6.12169 | pop=22.6±6.3 | 97%>35 | valid=9660/10000 (97%) | sigma=0.156153 | lambda_min=0.0295344 | Sigma/D=0.0255
+2025-08-26 21:28:45,349 [INFO] [RadiusScan] D=12.2434 | pop=83.0±21.3 | 97%>122 | valid=10000/10000 (100%) | sigma=0.269029 | lambda_min=0.0875934 | Sigma/D=0.0220
+2025-08-26 21:28:45,977 [INFO] [RadiusScan] D=24.4868 | pop=311.2±75.2 | 97%>438 | valid=10000/10000 (100%) | sigma=0.503105 | lambda_min=0.310586 | Sigma/D=0.0205
+2025-08-26 21:28:47,028 [INFO] [RadiusScan] D=48.9735 | pop=1122.2±291.6 | 97%>1588 | valid=10000/10000 (100%) | sigma=1.07546 | lambda_min=1.29307 | Sigma/D=0.0220
+2025-08-26 21:28:47,028 [INFO] [Scan] 12 Skalen evaluiert | 2.986s
+2025-08-26 21:28:47,028 [INFO] [Select] normal=3.060844, proj=6.121688 | 0.000s
+2025-08-26 21:28:47,029 [INFO] [Params] gespeichert: data\rocks\python_points_80_m3c2_params.txt
+2025-08-26 21:28:47,029 [ERROR] [Job] Fehler in Job 'data\rocks' (Version points_80)
+Traceback (most recent call last):
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 44, in run_all
+    self._run_single(cfg)
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 84, in _run_single
+    distances, _ = self._run_m3c2(
+                   ^^^^^^^^^^^^^^^
+  File "C:\Users\siegl\OneDrive\09 Sonstiges\M3C2_Project\orchestration\batch_orchestrator.py", line 168, in _run_m3c2
+    distances, uncertainties = runner.run(mov, ref, corepoints, normal, projection)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: M3C2Runner.run() missing 1 required positional argument: 'project'
