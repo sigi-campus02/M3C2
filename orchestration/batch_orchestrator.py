@@ -6,7 +6,7 @@ import os
 import time
 from typing import List, Tuple
 import numpy as np
-from datasource import DataSource
+from datasource.datasource import DataSource
 from m3c2_runner import M3C2Runner
 from services.param_estimator import ParamEstimator
 from config.pipeline_config import PipelineConfig
