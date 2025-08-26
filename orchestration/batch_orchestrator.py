@@ -15,9 +15,7 @@ from services.visualization_service import VisualizationService
 from orchestration.m3c2_runner import M3C2Runner
 from orchestration.strategies import (
     RadiusScanStrategy,
-    ScaleScan,
-    ScaleStrategy,
-    VoxelScanStrategy,
+    ScaleScan
 )
 
 
@@ -30,25 +28,18 @@ class BatchOrchestrator:
     def __init__(
         self,
         configs: List[PipelineConfig],
-        strategy: str,
         sample_size: int | None = None,
         output_format: str = "excel",
     ) -> None:
         self.configs = configs
-        self.strategy_name = strategy.lower().strip()
         self.sample_size = sample_size
         self.output_format = output_format.lower()
-        self.strategy: ScaleStrategy = self._resolve_strategy(self.strategy_name, self.sample_size)
+        self.strategy = RadiusScanStrategy(sample_size=sample_size)
 
         logger.info("=== BatchOrchestrator initialisiert ===")
         logger.info("Konfigurationen: %d Jobs", len(self.configs))
 
-    def _resolve_strategy(self, name: str, sample_size: int | None) -> ScaleStrategy:
-        if name in ("radius", "radiusbased", "radius-based"):
-            return RadiusScanStrategy(sample_size=sample_size)
-        if name in ("voxel", "voxelbased", "voxel-based"):
-            return VoxelScanStrategy(sample_size=sample_size)
-        raise ValueError(f"Unbekannte Strategie: {name!r}")
+
 
     def run_all(self) -> None:
         """Run the pipeline for each configured dataset."""
@@ -106,17 +97,23 @@ class BatchOrchestrator:
             self._generate_visuals(cfg, mov, distances, out_base)
 
 
-        # Generate distance txts excluding outliers & outliers only for outlier .ply visualisation
-        logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
-        self._exclude_outliers(cfg, ds.folder)
+        try:
+            # Generate distance txts excluding outliers & outliers only for outlier .ply visualisation
+            logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
+            self._exclude_outliers(cfg, ds.folder)
+        except Exception:
+            logger.exception("Fehler beim Entfernen von Ausreißern")
 
-        logger.info("[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …")
-        self._generate_clouds_outliers(cfg, ds.folder)
+        try:
+            logger.info("[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …")
+            self._generate_clouds_outliers(cfg, ds.folder)
+        except Exception:
+            logger.exception("Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier")
 
         try:
             self._compute_statistics(cfg, ref)
         except Exception:
-            logger.exception("Statistik konnte nicht berechnet werden")
+            logger.exception("Fehler bei der Berechnung der Statistik")
         
 
         logger.info("[Job] %s abgeschlossen in %.3fs", cfg.folder_id, time.perf_counter() - start)

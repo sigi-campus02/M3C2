@@ -10,7 +10,6 @@ class PipelineConfig:
     filename_ref: str
     mov_as_corepoints: bool
     use_subsampled_corepoints: int
-    process_python_CC: str
     only_stats: bool
     stats_singleordistance: str
     project: str
@@ -18,4 +17,5 @@ class PipelineConfig:
     proj_override: Optional[float] = None
     use_existing_params: bool = False
     outlier_rmse_multiplicator: float = 3.0 # usual range 3.0 - 5.0 für RMSE Multiplication for Outlier detection and removal
+    process_python_CC: str = "python"
 

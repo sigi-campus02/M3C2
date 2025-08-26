@@ -39,14 +39,17 @@ class VisualizationService:
             raise RuntimeError("PLY-Export nicht verfügbar (pip install plyfile).")
 
         arr = np.loadtxt(txt_path, skiprows=1)
+        # Falls Datei leer ist (keine Werte):
+        if arr.size == 0:
+            raise ValueError(f"TXT-Datei enthält keine Werte: {txt_path}")
+        if arr.ndim == 1:
+            arr = arr.reshape(1, -1)
         if arr.shape[1] != 4:
             raise ValueError(f"TXT-Datei muss 4 Spalten haben: {txt_path}")
         points = arr[:, :3]
         distances = arr[:, 3]
-
         n = len(distances)
         colors = np.zeros((n, 3), dtype=np.uint8)
-
         valid_mask = ~np.isnan(distances)
         if valid_mask.any():
             v = distances[valid_mask]
@@ -56,15 +59,11 @@ class VisualizationService:
             if vmax <= vmin:
                 vmax = vmin + 1e-12
             normed = (np.clip(v, vmin, vmax) - vmin) / (vmax - vmin)
-
             cc_colors = [(0.0, "blue"), (0.33, "green"), (0.66, "yellow"), (1.0, "red")]
             cc_cmap = LinearSegmentedColormap.from_list("CC_Colormap", cc_colors)
-
             colored_valid = (cc_cmap(normed)[:, :3] * 255).astype(np.uint8)
             colors[valid_mask] = colored_valid
-
         colors[~valid_mask] = np.array(nan_color, dtype=np.uint8)
-
         vertex = np.array(
             [(x, y, z, r, g, b) for (x, y, z), (r, g, b) in zip(points, colors)],
             dtype=[("x", "f4"), ("y", "f4"), ("z", "f4"),
@@ -75,7 +74,6 @@ class VisualizationService:
         if d:
             os.makedirs(d, exist_ok=True)
         PlyData([el], text=False).write(outply)
-        
         # Optional: Logging
         import logging
         logger = logging.getLogger(__name__)

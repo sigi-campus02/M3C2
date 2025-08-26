@@ -3,33 +3,55 @@ from config.pipeline_config import PipelineConfig
 import os
 from log_utils.logging_utils import setup_logging
 
-# Variationen
+# folder_ids = ["0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
 
-# TUNSPEKT FOLDERS: "TUNSPEKT_Altone(mov)-Faro(ref)", "TUNSPEKT_Handheld(mov)-Faro(ref)", "TUNSPEKT_Mavic(mov)-Faro(ref)"
-# MARS FOLDERS:     "0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"
-# MARS REF VARIANTS: "ref", "ref_ai"
-# folder_ids = ["TUNSPEKT Labordaten_all"]
-# folder_ids = ["Multi-illumination"]
-
+# folders in folder "data" to be iterated
 folder_ids = ["0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
+
+# names of reference cloud files to be compared
 ref_variants = ["ref", "ref_ai"]
 
-# Fix-Parameter
-filename_mov = "mov"                 # Moving point cloud
-mov_as_corepoints = True              # ACHTUNG TUNSPEKT: Ref als Corepoints!, MARS mov als Corepoints!
-use_subsampled_corepoints = 1        # 1 = kein Subsampling; bsp. 3 -> jeder dritte Punkt
-strategy = "radius"                  # "radius" oder "voxel"
-sample_size = 10000                  # nur für Parameterschätzung, nicht für Algorithmus
-process_python_CC = "python"         # "python" oder "CC"
-only_stats = False                   # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
-                                            # TRUE = Statistiken & Inlier/Outlier .ply Dateien erzeugen
-stats_singleordistance = "distance"  # "single" oder "distance"
-output_format = "excel"              # "excel" oder "json"
-project = "MARS"                     # "TUNSPEKT" "MARS"
+# name of moving point cloud file
+filename_mov = "mov"
+
+# TRUE: use mov point cloud as corepoints
+# FALSE: use ref point cloud as corepoints
+mov_as_corepoints = True         
+
+# run M3C2 distance algorithm on subsampled corepoints
+# 1 = no subsampling; corepoints = complete mov
+# e.g. 5 = every 5. point
+use_subsampled_corepoints = 1
+
+# sample size used for parameter estimation (normal & projection scale)
+sample_size = 10000                  
+
+# TRUE: only statistics are computed based on distance file in folder (no processing of M3C2)
+# FALSE: Runs M3C2 pipeline
+only_stats = True                   
+
+# "single": Only single-cloud statistics 
+# "distance": Distance-based statistics on M3C2 output
+stats_singleordistance = "distance"
+
+# "excel": appends data to excel file
+# "json": appends data to json file
+output_format = "excel" 
+
+# name of project used for file names & folder names
+project = "MARS" 
+
+# specify overrides for M3C2 parameters
 normal_override = None               # Normal Scale Override
 proj_override = None                 # Projection Scale Override
-use_existing_params = True          # ob vorhandene Parameter (in Ordner) genutzt werden (True) oder neu berechnet (False)
-outlier_rmse_multiplicator = 3       # RMSE-Multiplikator für Ausreißer (bsp. 3 * RMSE = Outlier)
+
+# TRUE: use existing parameters (in folder) if available
+# FALSE: compute parameters with param_estimator
+use_existing_params = True
+
+# specify outlier removal parameter 
+# default = 3 (3 * RMSE = Outlier Threshold)
+outlier_rmse_multiplicator = 5
 
 def main() -> None:
     cfgs = []
@@ -43,7 +65,6 @@ def main() -> None:
                     filename_ref,
                     mov_as_corepoints,
                     use_subsampled_corepoints,
-                    process_python_CC,
                     only_stats,
                     stats_singleordistance,
                     project,
@@ -54,7 +75,7 @@ def main() -> None:
                 )
             )
 
-    orchestrator = BatchOrchestrator(cfgs, strategy, sample_size, output_format)
+    orchestrator = BatchOrchestrator(cfgs, sample_size, output_format)
     orchestrator.run_all()
 
 
