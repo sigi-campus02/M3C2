@@ -23,12 +23,64 @@ except Exception:
 
 
 class VisualizationService:
-    """
-    Visualisierungs-Utilities:
-      - histogram(distances, path, bins)
-      - colorize(points, distances, outply) -> colors (Nx3, uint8)
-      - export_valid(points, colors, distances, outply)
-    """
+    @staticmethod
+    def txt_to_ply_with_distance_color(
+        txt_path: str,
+        outply: str,
+        nan_color: Tuple[int, int, int] = (255, 255, 255),
+        percentile_range: Tuple[float, float] = (0.0, 100.0),
+    ) -> None:
+        """
+        Lädt eine TXT-Datei mit x, y, z, distance und exportiert als farbige PLY.
+        - NaN-Distanzen: nan_color
+        - percentile_range: z.B. (1, 99) für robustes Clipping
+        """
+        if PlyData is None or PlyElement is None:
+            raise RuntimeError("PLY-Export nicht verfügbar (pip install plyfile).")
+
+        arr = np.loadtxt(txt_path, skiprows=1)
+        if arr.shape[1] != 4:
+            raise ValueError(f"TXT-Datei muss 4 Spalten haben: {txt_path}")
+        points = arr[:, :3]
+        distances = arr[:, 3]
+
+        n = len(distances)
+        colors = np.zeros((n, 3), dtype=np.uint8)
+
+        valid_mask = ~np.isnan(distances)
+        if valid_mask.any():
+            v = distances[valid_mask]
+            p_lo, p_hi = percentile_range
+            vmin = float(np.percentile(v, p_lo))
+            vmax = float(np.percentile(v, p_hi))
+            if vmax <= vmin:
+                vmax = vmin + 1e-12
+            normed = (np.clip(v, vmin, vmax) - vmin) / (vmax - vmin)
+
+            cc_colors = [(0.0, "blue"), (0.33, "green"), (0.66, "yellow"), (1.0, "red")]
+            cc_cmap = LinearSegmentedColormap.from_list("CC_Colormap", cc_colors)
+
+            colored_valid = (cc_cmap(normed)[:, :3] * 255).astype(np.uint8)
+            colors[valid_mask] = colored_valid
+
+        colors[~valid_mask] = np.array(nan_color, dtype=np.uint8)
+
+        vertex = np.array(
+            [(x, y, z, r, g, b) for (x, y, z), (r, g, b) in zip(points, colors)],
+            dtype=[("x", "f4"), ("y", "f4"), ("z", "f4"),
+                   ("red", "u1"), ("green", "u1"), ("blue", "u1")],
+        )
+        el = PlyElement.describe(vertex, "vertex")
+        d = os.path.dirname(outply)
+        if d:
+            os.makedirs(d, exist_ok=True)
+        PlyData([el], text=False).write(outply)
+        
+        # Optional: Logging
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f"[TXT->PLY] {txt_path} -> {outply} ({n} Punkte)")
+
 
     # ---------- Diagramme ----------
 

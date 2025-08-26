@@ -110,6 +110,9 @@ class BatchOrchestrator:
         logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
         self._exclude_outliers(cfg, ds.folder)
 
+        logger.info("[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …")
+        self._generate_clouds_outliers(cfg, ds.folder)
+
         try:
             self._compute_statistics(cfg, ref)
         except Exception:
@@ -278,11 +281,21 @@ class BatchOrchestrator:
             logger.warning("[Visual] Export valid-only übersprungen: %s", exc)
 
 
-    def _generate_clouds_outliers(self, cfg: PipelineConfig, mov, distances: np.ndarray, out_base: str) -> None:
+    def _generate_clouds_outliers(self, cfg: PipelineConfig, out_base: str) -> None:
         logger.info("[Visual] Erzeuge .ply Dateien für Outliers / Inliers …")
         os.makedirs(out_base, exist_ok=True)
 
         ply_valid_path_outlier = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly_outlier.ply")
         ply_valid_path_inlier = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly_inlier.ply")
+        txt_path_outlier = os.path.join(out_base, f"python_{cfg.filename_ref}_m3c2_distances_coordinates_outlier.txt")
+        txt_path_inlier = os.path.join(out_base, f"python_{cfg.filename_ref}_m3c2_distances_coordinates_inlier.txt")
 
-        
+        VisualizationService.txt_to_ply_with_distance_color(
+            txt_path=txt_path_outlier,
+            outply=ply_valid_path_outlier
+        )
+
+        VisualizationService.txt_to_ply_with_distance_color(
+            txt_path=txt_path_inlier,
+            outply=ply_valid_path_inlier
+        )

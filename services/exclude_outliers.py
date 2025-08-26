@@ -30,6 +30,8 @@ def exclude_outliers(data_folder, ref_variant, outlier_rmse_multiplicator=3):
 	logger.info(f"[Exclude Outliers] Gesamt: {arr.shape[0]}")
 	logger.info(f"[Exclude Outliers] NaN: {(np.isnan(arr[:, 3])).sum()}")
 	logger.info(f"[Exclude Outliers] Valid (ohne NaN): {arr_valid.shape[0]}")
+	logger.info(f"[Exclude Outliers] RMS: {rms:.6f}")
+	logger.info(f"[Exclude Outliers] Outlier-Schwelle: {outlier_rmse_multiplicator} * RMS = {outlier_rmse_multiplicator * rms:.6f}")
 	logger.info(f"[Exclude Outliers] Outlier: {arr_valid[outlier_mask].shape[0]}")
 	logger.info(f"[Exclude Outliers] Inlier: {arr_excl_outlier.shape[0]}")
 	logger.info(f"[Exclude Outliers] Inlier (ohne Outlier) gespeichert: {out_path_inlier}")
