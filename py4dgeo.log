@@ -580,3 +580,15 @@
 2025-08-26 12:03:39,259 [WARNING] [Visual] Export valid-only übersprungen: boolean index did not match indexed array along axis 0; size of axis is 709128 but size of corresponding boolean axis is 7092
 2025-08-26 12:03:39,259 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
 2025-08-26 12:03:39,667 [INFO] [Job] data\0342-0349 abgeschlossen in 15.837s
+[2025-08-26 12:09:57][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-26 12:10:00][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-26 12:10:06][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-26 12:10:06][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-26 12:12:00][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-26 12:12:02][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-26 12:12:08][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-26 12:12:08][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-26 12:19:16][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-26 12:19:19][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-26 12:19:25][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-26 12:19:25][INFO] Building KDTree structure with leaf parameter 10

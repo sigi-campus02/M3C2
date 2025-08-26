@@ -1,0 +1,90 @@
+2025-08-26 12:09:57,735 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 12:09:57,735 [INFO] Konfigurationen: 1 Jobs
+2025-08-26 12:09:57,735 [INFO] data\0342-0349, mov, ref, python
+2025-08-26 12:09:57,735 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 12:09:57,788 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 12:10:00,038 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 12:10:00,128 [INFO] Mov Points: (709128, 3)
+2025-08-26 12:10:00,130 [INFO] Ref Points: (27711, 3)
+2025-08-26 12:10:00,130 [INFO] Nutze mov als Corepoints und nutze Subsamling: 100
+2025-08-26 12:10:00,130 [INFO] Corepoints: (7092, 3)
+2025-08-26 12:10:00,130 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(7092, 3) | 2.383s
+2025-08-26 12:10:00,146 [INFO] [Spacing] avg_spacing=0.040010 (k=6) | 0.016s
+2025-08-26 12:10:06,464 [INFO] [Scan] 12 Skalen evaluiert | 6.317s
+2025-08-26 12:10:06,464 [INFO] [Select] normal=0.160042, proj=0.320084 | 0.000s
+2025-08-26 12:10:06,464 [INFO] [Params] gespeichert: data\0342-0349\python_ref_m3c2_params.txt
+2025-08-26 12:10:06,464 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 12:10:06,636 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 12:10:12,838 [INFO] [Run] Punkte=7092 | NaN=0.00% | Zeit=6.385s
+2025-08-26 12:10:12,869 [INFO] [Run] Distanzen gespeichert: data\0342-0349\python_ref_m3c2_distances.txt (7092 Werte, 0.00% NaN)
+2025-08-26 12:10:12,905 [INFO] [Run] Unsicherheiten gespeichert: data\0342-0349\python_ref_m3c2_uncertainties.txt
+2025-08-26 12:10:12,905 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-26 12:10:13,239 [INFO] [Visual] Histogram gespeichert: data\0342-0349\python_ref_histogram.png
+2025-08-26 12:10:13,259 [INFO] [Visual] Farb-PLY gespeichert: data\0342-0349\python_ref_colored_cloud.ply
+2025-08-26 12:10:13,259 [WARNING] [Visual] Export valid-only übersprungen: boolean index did not match indexed array along axis 0; size of axis is 709128 but size of corresponding boolean axis is 7092
+2025-08-26 12:10:13,259 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-26 12:10:13,702 [INFO] [Job] data\0342-0349 abgeschlossen in 15.958s
+2025-08-26 12:12:00,156 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 12:12:00,156 [INFO] Konfigurationen: 1 Jobs
+2025-08-26 12:12:00,156 [INFO] data\0342-0349, mov, ref, python
+2025-08-26 12:12:00,156 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 12:12:00,210 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 12:12:02,403 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 12:12:02,491 [INFO] Mov Points: (709128, 3)
+2025-08-26 12:12:02,492 [INFO] Ref Points: (27711, 3)
+2025-08-26 12:12:02,492 [INFO] Nutze mov als Corepoints und nutze Subsamling: 100
+2025-08-26 12:12:02,492 [INFO] Corepoints: (7092, 3)
+2025-08-26 12:12:02,493 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(7092, 3) | 2.324s
+2025-08-26 12:12:02,508 [INFO] [Spacing] avg_spacing=0.040010 (k=6) | 0.015s
+2025-08-26 12:12:08,730 [INFO] [Scan] 12 Skalen evaluiert | 6.222s
+2025-08-26 12:12:08,731 [INFO] [Select] normal=0.160042, proj=0.320084 | 0.000s
+2025-08-26 12:12:08,732 [INFO] [Params] gespeichert: data\0342-0349\python_ref_m3c2_params.txt
+2025-08-26 12:12:08,733 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 12:12:08,916 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 12:12:15,057 [INFO] [Run] Punkte=7092 | NaN=0.00% | Zeit=6.324s
+2025-08-26 12:12:15,073 [INFO] [Run] Distanzen gespeichert: data\0342-0349\python_ref_m3c2_distances.txt (7092 Werte, 0.00% NaN)
+2025-08-26 12:12:15,117 [INFO] [Run] Unsicherheiten gespeichert: data\0342-0349\python_ref_m3c2_uncertainties.txt
+2025-08-26 12:12:15,117 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-26 12:12:15,443 [INFO] [Visual] Histogram gespeichert: data\0342-0349\python_ref_histogram.png
+2025-08-26 12:12:15,473 [INFO] [Visual] Farb-PLY gespeichert: data\0342-0349\python_ref_colored_cloud.ply
+2025-08-26 12:12:15,473 [WARNING] [Visual] Export valid-only übersprungen: boolean index did not match indexed array along axis 0; size of axis is 709128 but size of corresponding boolean axis is 7092
+2025-08-26 12:12:15,474 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-26 12:12:15,871 [INFO] [Job] data\0342-0349 abgeschlossen in 15.708s
+2025-08-26 12:19:16,928 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 12:19:16,928 [INFO] Konfigurationen: 1 Jobs
+2025-08-26 12:19:16,928 [INFO] data\0342-0349, mov, ref, python
+2025-08-26 12:19:16,928 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 12:19:16,969 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 12:19:19,183 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 12:19:19,265 [INFO] Mov Points: (709128, 3)
+2025-08-26 12:19:19,272 [INFO] Ref Points: (27711, 3)
+2025-08-26 12:19:19,272 [INFO] Nutze mov als Corepoints und nutze Subsamling: 100
+2025-08-26 12:19:19,272 [INFO] Corepoints: (7092, 3)
+2025-08-26 12:19:19,273 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(7092, 3) | 2.343s
+2025-08-26 12:19:19,288 [INFO] [Spacing] avg_spacing=0.040010 (k=6) | 0.015s
+2025-08-26 12:19:19,309 [INFO] [RadiusScan] D=0.00500131 | pop= 0.0±0.0 | 97%>0 | valid=0/7092 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 12:19:19,327 [INFO] [RadiusScan] D=0.0100026 | pop= 0.0±0.0 | 97%>0 | valid=0/7092 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 12:19:19,351 [INFO] [RadiusScan] D=0.0200052 | pop= 0.0±0.0 | 97%>0 | valid=0/7092 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 12:19:19,376 [INFO] [RadiusScan] D=0.0400105 | pop= 0.0±0.0 | 97%>0 | valid=0/7092 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 12:19:19,410 [INFO] [RadiusScan] D=0.080021 | pop=11.1±1.3 | 97%>14 | valid=238/7092 (3%) | sigma=0.00401866 | lambda_min=2.33626e-05 | Sigma/D=0.0502
+2025-08-26 12:19:19,632 [INFO] [RadiusScan] D=0.160042 | pop=18.7±6.2 | 97%>32 | valid=5510/7092 (78%) | sigma=0.00515714 | lambda_min=5.57013e-05 | Sigma/D=0.0322
+2025-08-26 12:19:19,927 [INFO] [RadiusScan] D=0.320084 | pop=61.7±28.0 | 97%>118 | valid=7015/7092 (99%) | sigma=0.00941714 | lambda_min=0.000190368 | Sigma/D=0.0294
+2025-08-26 12:19:20,303 [INFO] [RadiusScan] D=0.640168 | pop=226.5±101.0 | 97%>404 | valid=7086/7092 (100%) | sigma=0.0162499 | lambda_min=0.000544652 | Sigma/D=0.0254
+2025-08-26 12:19:20,868 [INFO] [RadiusScan] D=1.28034 | pop=782.6±324.2 | 97%>1265 | valid=7092/7092 (100%) | sigma=0.0254149 | lambda_min=0.00113833 | Sigma/D=0.0199
+2025-08-26 12:19:21,857 [INFO] [RadiusScan] D=2.56067 | pop=2404.0±867.7 | 97%>3744 | valid=7092/7092 (100%) | sigma=0.0385207 | lambda_min=0.00200347 | Sigma/D=0.0150
+2025-08-26 12:19:23,489 [INFO] [RadiusScan] D=5.12134 | pop=5459.6±1116.6 | 97%>6859 | valid=7092/7092 (100%) | sigma=0.065488 | lambda_min=0.00457692 | Sigma/D=0.0128
+2025-08-26 12:19:25,453 [INFO] [RadiusScan] D=10.2427 | pop=7089.5±20.9 | 97%>7092 | valid=7092/7092 (100%) | sigma=0.0817703 | lambda_min=0.00668643 | Sigma/D=0.0080
+2025-08-26 12:19:25,453 [INFO] [Scan] 12 Skalen evaluiert | 6.169s
+2025-08-26 12:19:25,453 [INFO] [Select] normal=0.160042, proj=0.320084 | 0.000s
+2025-08-26 12:19:25,453 [INFO] [Params] gespeichert: data\0342-0349\python_ref_m3c2_params.txt
+2025-08-26 12:19:25,453 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 12:19:25,625 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 12:19:31,835 [INFO] [Run] Punkte=7092 | NaN=0.00% | Zeit=6.377s
+2025-08-26 12:19:31,853 [INFO] [Run] Distanzen gespeichert: data\0342-0349\python_ref_m3c2_distances.txt (7092 Werte, 0.00% NaN)
+2025-08-26 12:19:31,889 [INFO] [Run] Unsicherheiten gespeichert: data\0342-0349\python_ref_m3c2_uncertainties.txt
+2025-08-26 12:19:31,889 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-26 12:19:32,230 [INFO] [Visual] Histogram gespeichert: data\0342-0349\python_ref_histogram.png
+2025-08-26 12:19:32,245 [INFO] [Visual] Farb-PLY gespeichert: data\0342-0349\python_ref_colored_cloud.ply
+2025-08-26 12:19:32,245 [WARNING] [Visual] Export valid-only übersprungen: boolean index did not match indexed array along axis 0; size of axis is 709128 but size of corresponding boolean axis is 7092
+2025-08-26 12:19:32,245 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-26 12:19:32,655 [INFO] [Job] data\0342-0349 abgeschlossen in 15.731s

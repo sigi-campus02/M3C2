@@ -196,7 +196,7 @@ class RadiusScanStrategy(ScaleStrategy):
 
             if self.log_each_scale:
                 logging.info(
-                    "[RadiusScan] D=%g | pop=%4.1f±%3.1f | 97%%>%d | valid=%d/%d (%s) | σ=%g | λmin=%g | σ/D=%s",
+                    "[RadiusScan] D=%g | pop=%4.1f±%3.1f | 97%%>%d | valid=%d/%d (%s) | sigma=%g | lambda_min=%g | Sigma/D=%s",
                     D,
                     res["mean_population"],
                     res["std_population"],

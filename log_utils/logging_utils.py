@@ -1,9 +1,10 @@
 import logging
+import sys
 import os
 from logging.handlers import RotatingFileHandler
 
 
-def setup_logging(log_file: str = "py4dgeo.log", level: int = logging.INFO) -> None:
+def setup_logging(log_file: str = "orchestration.log", level: int = logging.INFO) -> None:
     """Configure application wide logging.
 
     All messages are written both to the console and to a central log file.
@@ -29,10 +30,11 @@ def setup_logging(log_file: str = "py4dgeo.log", level: int = logging.INFO) -> N
         root.removeHandler(handler)
         handler.close()
 
-    console_handler = logging.StreamHandler()
+    console_handler = logging.StreamHandler(sys.stdout)
+
     console_handler.setFormatter(formatter)
     root.addHandler(console_handler)
-
+    
     file_handler = RotatingFileHandler(log_file, maxBytes=1_000_000, backupCount=3)
     file_handler.setFormatter(formatter)
     root.addHandler(file_handler)
