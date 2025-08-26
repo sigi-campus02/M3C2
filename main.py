@@ -11,8 +11,8 @@ from log_utils.logging_utils import setup_logging
 # folder_ids = ["TUNSPEKT Labordaten_all"]
 # folder_ids = ["Multi-illumination"]
 
-folder_ids = ["0342-0349"]
-ref_variants = ["ref"]
+folder_ids = ["0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
+ref_variants = ["ref", "ref_ai"]
 
 # Fix-Parameter
 filename_mov = "mov"                 # Moving point cloud
@@ -21,14 +21,14 @@ use_subsampled_corepoints = 1        # 1 = kein Subsampling; bsp. 3 -> jeder dri
 strategy = "radius"                  # "radius" oder "voxel"
 sample_size = 10000                  # nur für Parameterschätzung, nicht für Algorithmus
 process_python_CC = "python"         # "python" oder "CC"
-only_stats = True                       # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
+only_stats = False                   # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
                                             # TRUE = Statistiken & Inlier/Outlier .ply Dateien erzeugen
 stats_singleordistance = "distance"  # "single" oder "distance"
 output_format = "excel"              # "excel" oder "json"
 project = "MARS"                     # "TUNSPEKT" "MARS"
 normal_override = None               # Normal Scale Override
 proj_override = None                 # Projection Scale Override
-use_existing_params = False           # ob vorhandene Parameter (in Ordner) genutzt werden (True) oder neu berechnet (False)
+use_existing_params = True          # ob vorhandene Parameter (in Ordner) genutzt werden (True) oder neu berechnet (False)
 outlier_rmse_multiplicator = 3       # RMSE-Multiplikator für Ausreißer (bsp. 3 * RMSE = Outlier)
 
 def main() -> None:

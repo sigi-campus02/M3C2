@@ -25,6 +25,7 @@ CANONICAL_COLUMNS = [
     "Min", "Max", "Mean", "Median", "RMS", "Std Empirical", "MAE", "NMAD",
     "Min Inlier", "Max Inlier", "Mean Inlier", "Median Inlier", "RMS Inlier",
     "Std Inlier", "MAE Inlier", "NMAD Inlier",
+    "Outlier RMSE Multiplicator", "Outlier Threshold",
     "Inlier Count", "Pos Inlier", "Neg Inlier",
     "Pos Outlier", "Neg Outlier", "Outlier Count",
     "Mean Outlier", "Std Outlier",
@@ -33,7 +34,7 @@ CANONICAL_COLUMNS = [
     "Gauss Mean", "Gauss Std",
     "Weibull a", "Weibull b", "Weibull shift", "Weibull mode", "Weibull skewness",
     "Skewness", "Kurtosis",
-    "Distances Path", "Params Path", "Outlier RMSE Multiplicator"
+    "Distances Path", "Params Path"
 ]
 
 
@@ -120,7 +121,8 @@ class StatisticsService:
         normal_scale, search_scale = StatisticsService._load_params(params_path)
 
         # Outliers
-        outlier_mask = np.abs(clipped) > (outlier_rmse_multiplicator * rms)
+        outlier_threshold = outlier_rmse_multiplicator * rms
+        outlier_mask = np.abs(clipped) > outlier_threshold
         inliers = clipped[~outlier_mask]
         outliers = clipped[outlier_mask]
         outlier_info = StatisticsService._compute_outliers(inliers, outliers)
@@ -220,6 +222,7 @@ class StatisticsService:
             "Pos Inlier": pos_in,
             "Neg Inlier": neg_in,
             "Outlier RMSE Multiplicator": outlier_rmse_multiplicator,
+            "Outlier Threshold": outlier_threshold,
 
             # 4) Quantile
             "Q05": stats_all["Q05"],

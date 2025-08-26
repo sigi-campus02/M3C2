@@ -363,3 +363,101 @@ TypeError: BatchOrchestrator._generate_clouds_outliers() missing 2 required posi
 2025-08-26 14:35:38,233 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_inlier.txt -> data\0342-0349\python_ref_colored_cloud_validonly_inlier.ply (690813 Punkte)
 2025-08-26 14:35:38,233 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
 2025-08-26 14:36:00,628 [INFO] [Job] data\0342-0349 abgeschlossen in 28.345s
+2025-08-26 14:38:39,691 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 14:38:39,691 [INFO] Konfigurationen: 1 Jobs
+2025-08-26 14:38:39,691 [INFO] data\0342-0349, mov, ref, python
+2025-08-26 14:38:39,707 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 14:38:39,746 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 14:38:41,974 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 14:38:42,056 [INFO] Mov Points: (709128, 3)
+2025-08-26 14:38:42,056 [INFO] Ref Points: (27711, 3)
+2025-08-26 14:38:42,056 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 14:38:42,056 [INFO] Corepoints: (709128, 3)
+2025-08-26 14:38:42,056 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.355s
+2025-08-26 14:38:42,056 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-26 14:38:43,821 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-26 14:38:43,823 [INFO] [Exclude Outliers] NaN: 95
+2025-08-26 14:38:43,823 [INFO] [Exclude Outliers] Valid (ohne NaN): 709033
+2025-08-26 14:38:43,824 [INFO] [Exclude Outliers] RMS: 0.014629
+2025-08-26 14:38:43,824 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * RMS = 0.043886
+2025-08-26 14:38:43,825 [INFO] [Exclude Outliers] Outlier: 18220
+2025-08-26 14:38:43,826 [INFO] [Exclude Outliers] Inlier: 690813
+2025-08-26 14:38:43,826 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_inlier.txt
+2025-08-26 14:38:43,827 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_outlier.txt
+2025-08-26 14:38:43,831 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 14:38:43,832 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 14:38:43,872 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_outlier.txt -> data\0342-0349\python_ref_colored_cloud_validonly_outlier.ply (18220 Punkte)
+2025-08-26 14:38:45,313 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_inlier.txt -> data\0342-0349\python_ref_colored_cloud_validonly_inlier.ply (690813 Punkte)
+2025-08-26 14:38:45,316 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-26 14:39:07,584 [INFO] [Job] data\0342-0349 abgeschlossen in 27.881s
+2025-08-26 14:41:34,402 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 14:41:34,403 [INFO] Konfigurationen: 1 Jobs
+2025-08-26 14:41:34,403 [INFO] data\0342-0349, mov, ref, python
+2025-08-26 14:41:34,404 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 14:41:34,443 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 14:41:36,671 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 14:41:36,755 [INFO] Mov Points: (709128, 3)
+2025-08-26 14:41:36,756 [INFO] Ref Points: (27711, 3)
+2025-08-26 14:41:36,756 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 14:41:36,757 [INFO] Corepoints: (709128, 3)
+2025-08-26 14:41:36,757 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.353s
+2025-08-26 14:41:36,757 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-26 14:41:38,517 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-26 14:41:38,525 [INFO] [Exclude Outliers] NaN: 95
+2025-08-26 14:41:38,525 [INFO] [Exclude Outliers] Valid (ohne NaN): 709033
+2025-08-26 14:41:38,525 [INFO] [Exclude Outliers] RMS: 0.014629
+2025-08-26 14:41:38,525 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * RMS = 0.043886
+2025-08-26 14:41:38,525 [INFO] [Exclude Outliers] Outlier: 18220
+2025-08-26 14:41:38,525 [INFO] [Exclude Outliers] Inlier: 690813
+2025-08-26 14:41:38,525 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_inlier.txt
+2025-08-26 14:41:38,525 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_outlier.txt
+2025-08-26 14:41:38,534 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 14:41:38,534 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 14:41:38,561 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_outlier.txt -> data\0342-0349\python_ref_colored_cloud_validonly_outlier.ply (18220 Punkte)
+2025-08-26 14:41:40,015 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_inlier.txt -> data\0342-0349\python_ref_colored_cloud_validonly_inlier.ply (690813 Punkte)
+2025-08-26 14:41:40,015 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-26 14:42:02,127 [INFO] [Job] data\0342-0349 abgeschlossen in 27.724s
+2025-08-26 14:51:50,833 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 14:51:50,835 [INFO] Konfigurationen: 12 Jobs
+2025-08-26 14:51:50,835 [INFO] data\0342-0349, mov, ref, python
+2025-08-26 14:51:50,836 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 14:51:50,866 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 14:51:53,159 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 14:51:53,242 [INFO] Mov Points: (709128, 3)
+2025-08-26 14:51:53,243 [INFO] Ref Points: (27711, 3)
+2025-08-26 14:51:53,243 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 14:51:53,243 [INFO] Corepoints: (709128, 3)
+2025-08-26 14:51:53,243 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.408s
+2025-08-26 14:51:55,074 [INFO] [Spacing] avg_spacing=0.000973 (k=6) | 1.836s
+2025-08-26 14:51:55,084 [INFO] [RadiusScan] Subsample: 10000/709128
+2025-08-26 14:51:55,125 [INFO] [RadiusScan] D=0.000121639 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 14:51:55,155 [INFO] [RadiusScan] D=0.000243279 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 14:51:55,187 [INFO] [RadiusScan] D=0.000486558 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 14:51:55,226 [INFO] [RadiusScan] D=0.000973116 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 14:51:55,259 [INFO] [RadiusScan] D=0.00194623 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 14:51:55,291 [INFO] [RadiusScan] D=0.00389246 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 14:51:55,329 [INFO] [RadiusScan] D=0.00778493 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 14:51:55,362 [INFO] [RadiusScan] D=0.0155699 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 14:51:55,401 [INFO] [RadiusScan] D=0.0311397 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-08-26 14:51:55,454 [INFO] [RadiusScan] D=0.0622794 | pop=11.2±1.4 | 97%>14 | valid=408/10000 (4%) | sigma=0.00247082 | lambda_min=9.87834e-06 | Sigma/D=0.0397
+2025-08-26 14:51:55,748 [INFO] [RadiusScan] D=0.124559 | pop=18.1±5.8 | 97%>31 | valid=7319/10000 (73%) | sigma=0.00375353 | lambda_min=2.99982e-05 | Sigma/D=0.0301
+2025-08-26 14:51:56,170 [INFO] [RadiusScan] D=0.249118 | pop=55.0±24.8 | 97%>102 | valid=9846/10000 (98%) | sigma=0.00719173 | lambda_min=0.000113413 | Sigma/D=0.0289
+2025-08-26 14:51:56,170 [INFO] [Scan] 12 Skalen evaluiert | 1.093s
+2025-08-26 14:51:56,170 [INFO] [Select] normal=0.062279, proj=0.124559 | 0.000s
+2025-08-26 14:51:56,170 [INFO] [Params] gespeichert: data\0342-0349\python_ref_m3c2_params.txt
+2025-08-26 14:51:56,170 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 14:51:56,346 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 14:58:00,040 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 14:58:00,040 [INFO] Konfigurationen: 12 Jobs
+2025-08-26 14:58:00,040 [INFO] data\0342-0349, mov, ref, python
+2025-08-26 14:58:00,040 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 14:58:00,088 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 14:58:02,267 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 14:58:02,354 [INFO] Mov Points: (709128, 3)
+2025-08-26 14:58:02,355 [INFO] Ref Points: (27711, 3)
+2025-08-26 14:58:02,355 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 14:58:02,356 [INFO] Corepoints: (709128, 3)
+2025-08-26 14:58:02,356 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.309s
+2025-08-26 14:58:02,357 [INFO] [Params] geladen: data\0342-0349\python_ref_m3c2_params.txt (NormalScale=0.062279, SearchScale=0.124559)
+2025-08-26 14:58:02,357 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 14:58:02,529 [INFO] Building KDTree structure with leaf parameter 10
