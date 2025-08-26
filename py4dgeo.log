@@ -610,3 +610,7 @@
 [2025-08-26 12:56:58][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
 [2025-08-26 12:57:01][INFO] Building KDTree structure with leaf parameter 10
 [2025-08-26 12:57:01][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-26 14:14:45][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-26 14:14:47][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+[2025-08-26 14:15:49][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+[2025-08-26 14:15:51][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'

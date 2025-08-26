@@ -21,7 +21,8 @@ use_subsampled_corepoints = 1        # 1 = kein Subsampling; bsp. 3 -> jeder dri
 strategy = "radius"                  # "radius" oder "voxel"
 sample_size = 10000                  # nur für Parameterschätzung, nicht für Algorithmus
 process_python_CC = "python"         # "python" oder "CC"
-only_stats = False                       # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
+only_stats = True                       # nur Stats berechnen (True) oder Pipeline laufen lassen (False)
+                                            # TRUE = Statistiken & Inlier/Outlier .ply Dateien erzeugen
 stats_singleordistance = "distance"  # "single" oder "distance"
 output_format = "excel"              # "excel" oder "json"
 project = "MARS"                     # "TUNSPEKT" "MARS"

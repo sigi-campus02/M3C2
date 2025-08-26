@@ -243,3 +243,44 @@
 2025-08-26 13:03:06,270 [INFO] [Visual] Valid-PLY gespeichert: data\0342-0349\python_ref_colored_cloud_validonly.ply
 2025-08-26 13:03:06,270 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
 2025-08-26 13:03:29,569 [INFO] [Job] data\0342-0349 abgeschlossen in 393.144s
+2025-08-26 14:14:45,643 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 14:14:45,643 [INFO] Konfigurationen: 1 Jobs
+2025-08-26 14:14:45,643 [INFO] data\0342-0349, mov, ref, python
+2025-08-26 14:14:45,643 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 14:14:45,690 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 14:14:47,968 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 14:14:48,064 [INFO] Mov Points: (709128, 3)
+2025-08-26 14:14:48,065 [INFO] Ref Points: (27711, 3)
+2025-08-26 14:14:48,065 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 14:14:48,065 [INFO] Corepoints: (709128, 3)
+2025-08-26 14:14:48,066 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.411s
+2025-08-26 14:14:48,066 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-26 14:14:48,066 [ERROR] [Job] Fehler in Job 'data\0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 61, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 110, in _run_single
+    self._exclude_outliers(cfg, out_base)
+                                ^^^^^^^^
+UnboundLocalError: cannot access local variable 'out_base' where it is not associated with a value
+2025-08-26 14:15:49,145 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-26 14:15:49,145 [INFO] Konfigurationen: 1 Jobs
+2025-08-26 14:15:49,145 [INFO] data\0342-0349, mov, ref, python
+2025-08-26 14:15:49,145 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 14:15:49,196 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 14:15:51,430 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-26 14:15:51,515 [INFO] Mov Points: (709128, 3)
+2025-08-26 14:15:51,515 [INFO] Ref Points: (27711, 3)
+2025-08-26 14:15:51,515 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 14:15:51,516 [INFO] Corepoints: (709128, 3)
+2025-08-26 14:15:51,516 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.360s
+2025-08-26 14:15:51,516 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-26 14:15:53,277 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-26 14:15:53,279 [INFO] [Exclude Outliers] NaN: 95
+2025-08-26 14:15:53,279 [INFO] [Exclude Outliers] Valid (ohne NaN): 709033
+2025-08-26 14:15:53,279 [INFO] [Exclude Outliers] Outlier: 18220
+2025-08-26 14:15:53,279 [INFO] [Exclude Outliers] Inlier: 690813
+2025-08-26 14:15:53,279 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_inlier.txt
+2025-08-26 14:15:53,279 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_outlier.txt
+2025-08-26 14:15:53,287 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-26 14:16:15,981 [INFO] [Job] data\0342-0349 abgeschlossen in 26.826s

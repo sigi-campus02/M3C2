@@ -7,17 +7,19 @@ import time
 from typing import List, Tuple
 import numpy as np
 from datasource.datasource import DataSource
-from orchestration.m3c2_runner import M3C2Runner
-from services.param_estimator import ParamEstimator
 from config.pipeline_config import PipelineConfig
+from services.param_estimator import ParamEstimator
 from services.statistics_service import StatisticsService
+from services.exclude_outliers import exclude_outliers
+from services.visualization_service import VisualizationService
+from orchestration.m3c2_runner import M3C2Runner
 from orchestration.strategies import (
     RadiusScanStrategy,
     ScaleScan,
     ScaleStrategy,
     VoxelScanStrategy,
 )
-from services.visualization_service import VisualizationService
+
 
 logger = logging.getLogger(__name__)
 
@@ -71,6 +73,7 @@ class BatchOrchestrator:
         start = time.perf_counter()
 
         ds, mov, ref, corepoints = self._load_data(cfg)
+
         if cfg.process_python_CC == "python" and not cfg.only_stats:
             # Nur ausführen, wenn nicht nur Statistiken berechnet werden sollen
             out_base = ds.folder
@@ -101,6 +104,11 @@ class BatchOrchestrator:
 
             # all distances incl. outliers
             self._generate_visuals(cfg, mov, distances, out_base)
+
+
+        # Generate distance txts excluding outliers & outliers only for outlier .ply visualisation
+        logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
+        self._exclude_outliers(cfg, ds.folder)
 
         try:
             self._compute_statistics(cfg, ref)
@@ -202,6 +210,14 @@ class BatchOrchestrator:
 
         return distances, uncertainties
 
+    def _exclude_outliers(self, cfg: PipelineConfig, out_base: str) -> None:
+        
+        exclude_outliers(
+            data_folder=out_base,
+            ref_variant=cfg.filename_ref,
+            outlier_rmse_multiplicator=cfg.outlier_rmse_multiplicator
+        )
+
     def _compute_statistics(self, cfg: PipelineConfig, ref) -> None:
         if cfg.stats_singleordistance == "distance":
             logger.info(f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …")
@@ -261,3 +277,12 @@ class BatchOrchestrator:
         except Exception as exc:
             logger.warning("[Visual] Export valid-only übersprungen: %s", exc)
 
+
+    def _generate_clouds_outliers(self, cfg: PipelineConfig, mov, distances: np.ndarray, out_base: str) -> None:
+        logger.info("[Visual] Erzeuge .ply Dateien für Outliers / Inliers …")
+        os.makedirs(out_base, exist_ok=True)
+
+        ply_valid_path_outlier = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly_outlier.ply")
+        ply_valid_path_inlier = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly_inlier.ply")
+
+        
