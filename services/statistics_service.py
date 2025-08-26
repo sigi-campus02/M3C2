@@ -45,7 +45,6 @@ class StatisticsService:
     @staticmethod
     def calc_stats(
         distances: np.ndarray,
-        distances_coordinates: np.ndarray,
         params_path: Optional[str] = None,
         bins: int = 256,
         range_override: Optional[Tuple[float, float]] = None,
@@ -297,13 +296,10 @@ class StatisticsService:
             if process_python_CC == "python":
                 py_dist_path   = cls._resolve(fid, f"python_{filename_ref}_m3c2_distances.txt")
                 py_params_path = cls._resolve(fid, f"python_{filename_ref}_m3c2_params.txt")
-                py_dist_path_coordinates = cls._resolve(fid, f"python_{filename_ref}_m3c2_distances_coordinates.txt")
                 if os.path.exists(py_dist_path):
                     values = np.loadtxt(py_dist_path)
-                    values_coordinates = np.loadtxt(py_dist_path_coordinates) if os.path.exists(py_dist_path_coordinates) else None
                     stats = cls.calc_stats(
                         values,
-                        values_coordinates=values_coordinates,
                         params_path=py_params_path if os.path.exists(py_params_path) else None,
                         bins=bins,
                         range_override=range_override,
@@ -323,7 +319,6 @@ class StatisticsService:
             if process_python_CC == "CC":
                 cc_path        = cls._resolve(fid, f"CC_{filename_ref}_m3c2_distances.txt")
                 cc_params_path = cls._resolve(fid, f"CC_{filename_ref}_m3c2_params.txt")
-                cc_dist_path_coordinates = cls._resolve(fid, f"CC_{filename_ref}_m3c2_distances_coordinates.txt")
                 if os.path.exists(cc_path):
                     try:
                         df = pd.read_csv(cc_path, sep=";")
