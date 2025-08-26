@@ -628,3 +628,4 @@ IndexError: tuple index out of range
 2025-08-26 15:14:20,614 [INFO] [Load] data/data\0910-0913: mov=(4760406, 3), ref=(167652, 3), corepoints=(4760406, 3) | 15.229s
 2025-08-26 15:14:20,614 [INFO] [Params] geladen: data\0910-0913\python_ref_m3c2_params.txt (NormalScale=0.035749, SearchScale=0.071498)
 2025-08-26 15:14:20,614 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 15:14:21,900 [INFO] Building KDTree structure with leaf parameter 10
