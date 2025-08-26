@@ -6,19 +6,21 @@ import os
 import time
 from typing import List, Tuple
 import numpy as np
-from datasource import DataSource
+from datasource.datasource import DataSource
 from m3c2_runner import M3C2Runner
-from param_estimator import ParamEstimator
-from pipeline_config import PipelineConfig
-from statistics_service import StatisticsService
+from services.param_estimator import ParamEstimator
+from config.pipeline_config import PipelineConfig
+from services.statistics_service import StatisticsService
 from strategies import (
     RadiusScanStrategy,
     ScaleScan,
     ScaleStrategy,
     VoxelScanStrategy,
 )
-from visualization_service import VisualizationService
+from services.visualization_service import VisualizationService
 
+from logging.logging_utils import setup_logging
+setup_logging(log_file="statistics_analysis.log", level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 

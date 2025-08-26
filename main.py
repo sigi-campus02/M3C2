@@ -1,7 +1,7 @@
-from batch_orchestrator import BatchOrchestrator
-from pipeline_config import PipelineConfig
+from orchestration.batch_orchestrator import BatchOrchestrator
+from config.pipeline_config import PipelineConfig
 import os
-from logging_utils import setup_logging
+from logging.logging_utils import setup_logging
 
 # Variationen
 
