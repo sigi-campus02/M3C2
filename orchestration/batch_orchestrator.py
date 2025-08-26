@@ -19,6 +19,8 @@ from strategies import (
 )
 from services.visualization_service import VisualizationService
 
+from logging.logging_utils import setup_logging
+setup_logging(log_file="statistics_analysis.log", level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
