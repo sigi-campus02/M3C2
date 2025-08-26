@@ -461,3 +461,170 @@ TypeError: BatchOrchestrator._generate_clouds_outliers() missing 2 required posi
 2025-08-26 14:58:02,357 [INFO] [Params] geladen: data\0342-0349\python_ref_m3c2_params.txt (NormalScale=0.062279, SearchScale=0.124559)
 2025-08-26 14:58:02,357 [INFO] Building KDTree structure with leaf parameter 10
 2025-08-26 14:58:02,529 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 15:00:12,455 [INFO] [Run] Punkte=709128 | NaN=1.36% | Zeit=130.103s
+2025-08-26 15:00:13,396 [INFO] [Run] Distanzen gespeichert: data\0342-0349\python_ref_m3c2_distances.txt (709128 Werte, 1.36% NaN)
+2025-08-26 15:00:14,801 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates.txt
+2025-08-26 15:00:17,222 [INFO] [Run] Unsicherheiten gespeichert: data\0342-0349\python_ref_m3c2_uncertainties.txt
+2025-08-26 15:00:17,222 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-26 15:00:17,869 [INFO] [Visual] Histogram gespeichert: data\0342-0349\python_ref_histogram.png
+2025-08-26 15:00:19,010 [INFO] [Visual] Farb-PLY gespeichert: data\0342-0349\python_ref_colored_cloud.ply
+2025-08-26 15:00:20,126 [INFO] [Visual] Valid-PLY gespeichert: data\0342-0349\python_ref_colored_cloud_validonly.ply
+2025-08-26 15:00:20,126 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-26 15:00:21,898 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-26 15:00:21,906 [INFO] [Exclude Outliers] NaN: 9634
+2025-08-26 15:00:21,906 [INFO] [Exclude Outliers] Valid (ohne NaN): 699494
+2025-08-26 15:00:21,906 [INFO] [Exclude Outliers] RMS: 0.014339
+2025-08-26 15:00:21,906 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * RMS = 0.043016
+2025-08-26 15:00:21,909 [INFO] [Exclude Outliers] Outlier: 15636
+2025-08-26 15:00:21,909 [INFO] [Exclude Outliers] Inlier: 683858
+2025-08-26 15:00:21,909 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_inlier.txt
+2025-08-26 15:00:21,909 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_outlier.txt
+2025-08-26 15:00:21,914 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 15:00:21,915 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 15:00:21,944 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_outlier.txt -> data\0342-0349\python_ref_colored_cloud_validonly_outlier.ply (15636 Punkte)
+2025-08-26 15:00:23,412 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_inlier.txt -> data\0342-0349\python_ref_colored_cloud_validonly_inlier.ply (683858 Punkte)
+2025-08-26 15:00:23,412 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-26 15:00:38,548 [INFO] [Job] data\0342-0349 abgeschlossen in 158.506s
+2025-08-26 15:00:38,548 [INFO] data\0342-0349, mov, ref_ai, python
+2025-08-26 15:00:38,548 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 15:00:38,584 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-26 15:00:40,814 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-08-26 15:00:42,988 [INFO] Mov Points: (709128, 3)
+2025-08-26 15:00:42,988 [INFO] Ref Points: (711075, 3)
+2025-08-26 15:00:42,988 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 15:00:42,988 [INFO] Corepoints: (709128, 3)
+2025-08-26 15:00:42,988 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(711075, 3), corepoints=(709128, 3) | 4.433s
+2025-08-26 15:00:42,990 [INFO] [Params] geladen: data\0342-0349\python_ref_ai_m3c2_params.txt (NormalScale=0.062279, SearchScale=0.124559)
+2025-08-26 15:00:42,990 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 15:00:43,154 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 15:02:22,782 [INFO] [Run] Punkte=709128 | NaN=3.17% | Zeit=99.807s
+2025-08-26 15:02:23,774 [INFO] [Run] Distanzen gespeichert: data\0342-0349\python_ref_ai_m3c2_distances.txt (709128 Werte, 3.17% NaN)
+2025-08-26 15:02:25,202 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates.txt
+2025-08-26 15:02:27,635 [INFO] [Run] Unsicherheiten gespeichert: data\0342-0349\python_ref_ai_m3c2_uncertainties.txt
+2025-08-26 15:02:27,635 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-26 15:02:28,149 [INFO] [Visual] Histogram gespeichert: data\0342-0349\python_ref_ai_histogram.png
+2025-08-26 15:02:29,287 [INFO] [Visual] Farb-PLY gespeichert: data\0342-0349\python_ref_ai_colored_cloud.ply
+2025-08-26 15:02:30,398 [INFO] [Visual] Valid-PLY gespeichert: data\0342-0349\python_ref_ai_colored_cloud_validonly.ply
+2025-08-26 15:02:30,398 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-26 15:02:32,131 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-26 15:02:32,134 [INFO] [Exclude Outliers] NaN: 22506
+2025-08-26 15:02:32,134 [INFO] [Exclude Outliers] Valid (ohne NaN): 686622
+2025-08-26 15:02:32,134 [INFO] [Exclude Outliers] RMS: 0.106119
+2025-08-26 15:02:32,134 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * RMS = 0.318358
+2025-08-26 15:02:32,134 [INFO] [Exclude Outliers] Outlier: 0
+2025-08-26 15:02:32,134 [INFO] [Exclude Outliers] Inlier: 686622
+2025-08-26 15:02:32,134 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier.txt
+2025-08-26 15:02:32,134 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier.txt
+2025-08-26 15:02:32,134 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 15:02:32,134 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 15:02:32,142 [ERROR] [Job] Fehler in Job 'data\0342-0349' (Version ref_ai)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 61, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 114, in _run_single
+    self._generate_clouds_outliers(cfg, ds.folder)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 293, in _generate_clouds_outliers
+    VisualizationService.txt_to_ply_with_distance_color(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\services\visualization_service.py", line 42, in txt_to_ply_with_distance_color
+    if arr.shape[1] != 4:
+       ~~~~~~~~~^^^
+IndexError: tuple index out of range
+2025-08-26 15:02:32,152 [INFO] data\0817-0821, mov, ref, python
+2025-08-26 15:02:32,152 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 15:02:32,193 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+2025-08-26 15:02:46,213 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+2025-08-26 15:02:46,275 [INFO] Mov Points: (4524729, 3)
+2025-08-26 15:02:46,275 [INFO] Ref Points: (15777, 3)
+2025-08-26 15:02:46,282 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 15:02:46,282 [INFO] Corepoints: (4524729, 3)
+2025-08-26 15:02:46,282 [INFO] [Load] data/data\0817-0821: mov=(4524729, 3), ref=(15777, 3), corepoints=(4524729, 3) | 14.131s
+2025-08-26 15:02:46,282 [INFO] [Params] geladen: data\0817-0821\python_ref_m3c2_params.txt (NormalScale=0.058214, SearchScale=0.058214)
+2025-08-26 15:02:46,284 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 15:02:47,493 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 15:08:01,981 [INFO] [Run] Punkte=4524729 | NaN=89.72% | Zeit=315.707s
+2025-08-26 15:08:07,332 [INFO] [Run] Distanzen gespeichert: data\0817-0821\python_ref_m3c2_distances.txt (4524729 Werte, 89.72% NaN)
+2025-08-26 15:08:15,869 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\0817-0821\python_ref_m3c2_distances_coordinates.txt
+2025-08-26 15:08:30,560 [INFO] [Run] Unsicherheiten gespeichert: data\0817-0821\python_ref_m3c2_uncertainties.txt
+2025-08-26 15:08:30,568 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-26 15:08:31,097 [INFO] [Visual] Histogram gespeichert: data\0817-0821\python_ref_histogram.png
+2025-08-26 15:08:38,301 [INFO] [Visual] Farb-PLY gespeichert: data\0817-0821\python_ref_colored_cloud.ply
+2025-08-26 15:08:39,070 [INFO] [Visual] Valid-PLY gespeichert: data\0817-0821\python_ref_colored_cloud_validonly.ply
+2025-08-26 15:08:39,070 [INFO] [Outlier] Entferne Ausreißer für data\0817-0821
+2025-08-26 15:08:42,119 [INFO] [Exclude Outliers] Gesamt: 4524729
+2025-08-26 15:08:42,122 [INFO] [Exclude Outliers] NaN: 4059637
+2025-08-26 15:08:42,130 [INFO] [Exclude Outliers] Valid (ohne NaN): 465092
+2025-08-26 15:08:42,130 [INFO] [Exclude Outliers] RMS: 0.031577
+2025-08-26 15:08:42,130 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * RMS = 0.094732
+2025-08-26 15:08:42,131 [INFO] [Exclude Outliers] Outlier: 0
+2025-08-26 15:08:42,131 [INFO] [Exclude Outliers] Inlier: 465092
+2025-08-26 15:08:42,131 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0817-0821\python_ref_m3c2_distances_coordinates_inlier.txt
+2025-08-26 15:08:42,131 [INFO] [Exclude Outliers] Outlier gespeichert: data\0817-0821\python_ref_m3c2_distances_coordinates_outlier.txt
+2025-08-26 15:08:42,140 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 15:08:42,140 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 15:08:42,140 [ERROR] [Job] Fehler in Job 'data\0817-0821' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 61, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 114, in _run_single
+    self._generate_clouds_outliers(cfg, ds.folder)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 293, in _generate_clouds_outliers
+    VisualizationService.txt_to_ply_with_distance_color(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\services\visualization_service.py", line 42, in txt_to_ply_with_distance_color
+    if arr.shape[1] != 4:
+       ~~~~~~~~~^^^
+IndexError: tuple index out of range
+2025-08-26 15:08:42,172 [INFO] data\0817-0821, mov, ref_ai, python
+2025-08-26 15:08:42,173 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 15:08:42,206 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+2025-08-26 15:08:56,055 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref_ai.xyz'
+2025-08-26 15:08:56,112 [INFO] Mov Points: (4524729, 3)
+2025-08-26 15:08:56,112 [INFO] Ref Points: (15444, 3)
+2025-08-26 15:08:56,112 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 15:08:56,112 [INFO] Corepoints: (4524729, 3)
+2025-08-26 15:08:56,112 [INFO] [Load] data/data\0817-0821: mov=(4524729, 3), ref=(15444, 3), corepoints=(4524729, 3) | 13.948s
+2025-08-26 15:08:56,112 [INFO] [Params] geladen: data\0817-0821\python_ref_ai_m3c2_params.txt (NormalScale=0.058214, SearchScale=0.058214)
+2025-08-26 15:08:56,112 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 15:08:57,314 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-26 15:13:24,946 [INFO] [Run] Punkte=4524729 | NaN=89.15% | Zeit=268.827s
+2025-08-26 15:13:30,329 [INFO] [Run] Distanzen gespeichert: data\0817-0821\python_ref_ai_m3c2_distances.txt (4524729 Werte, 89.15% NaN)
+2025-08-26 15:13:38,894 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\0817-0821\python_ref_ai_m3c2_distances_coordinates.txt
+2025-08-26 15:13:53,668 [INFO] [Run] Unsicherheiten gespeichert: data\0817-0821\python_ref_ai_m3c2_uncertainties.txt
+2025-08-26 15:13:53,676 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-26 15:13:54,132 [INFO] [Visual] Histogram gespeichert: data\0817-0821\python_ref_ai_histogram.png
+2025-08-26 15:14:01,471 [INFO] [Visual] Farb-PLY gespeichert: data\0817-0821\python_ref_ai_colored_cloud.ply
+2025-08-26 15:14:02,283 [INFO] [Visual] Valid-PLY gespeichert: data\0817-0821\python_ref_ai_colored_cloud_validonly.ply
+2025-08-26 15:14:02,283 [INFO] [Outlier] Entferne Ausreißer für data\0817-0821
+2025-08-26 15:14:05,334 [INFO] [Exclude Outliers] Gesamt: 4524729
+2025-08-26 15:14:05,342 [INFO] [Exclude Outliers] NaN: 4033600
+2025-08-26 15:14:05,343 [INFO] [Exclude Outliers] Valid (ohne NaN): 491129
+2025-08-26 15:14:05,344 [INFO] [Exclude Outliers] RMS: 0.032779
+2025-08-26 15:14:05,344 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * RMS = 0.098338
+2025-08-26 15:14:05,344 [INFO] [Exclude Outliers] Outlier: 0
+2025-08-26 15:14:05,345 [INFO] [Exclude Outliers] Inlier: 491129
+2025-08-26 15:14:05,345 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0817-0821\python_ref_ai_m3c2_distances_coordinates_inlier.txt
+2025-08-26 15:14:05,345 [INFO] [Exclude Outliers] Outlier gespeichert: data\0817-0821\python_ref_ai_m3c2_distances_coordinates_outlier.txt
+2025-08-26 15:14:05,356 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 15:14:05,356 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-26 15:14:05,358 [ERROR] [Job] Fehler in Job 'data\0817-0821' (Version ref_ai)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 61, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 114, in _run_single
+    self._generate_clouds_outliers(cfg, ds.folder)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 293, in _generate_clouds_outliers
+    VisualizationService.txt_to_ply_with_distance_color(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\services\visualization_service.py", line 42, in txt_to_ply_with_distance_color
+    if arr.shape[1] != 4:
+       ~~~~~~~~~^^^
+IndexError: tuple index out of range
+2025-08-26 15:14:05,386 [INFO] data\0910-0913, mov, ref, python
+2025-08-26 15:14:05,387 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-26 15:14:05,429 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\mov.xyz'
+2025-08-26 15:14:20,078 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\ref.xyz'
+2025-08-26 15:14:20,614 [INFO] Mov Points: (4760406, 3)
+2025-08-26 15:14:20,614 [INFO] Ref Points: (167652, 3)
+2025-08-26 15:14:20,614 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-26 15:14:20,614 [INFO] Corepoints: (4760406, 3)
+2025-08-26 15:14:20,614 [INFO] [Load] data/data\0910-0913: mov=(4760406, 3), ref=(167652, 3), corepoints=(4760406, 3) | 15.229s
+2025-08-26 15:14:20,614 [INFO] [Params] geladen: data\0910-0913\python_ref_m3c2_params.txt (NormalScale=0.035749, SearchScale=0.071498)
+2025-08-26 15:14:20,614 [INFO] Building KDTree structure with leaf parameter 10
