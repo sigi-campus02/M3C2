@@ -1,16 +1,27 @@
 from __future__ import annotations
 import logging
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
 import os
 from typing import List
-
 import matplotlib.pyplot as plt
 import numpy as np
+from config.plot_config import PlotOptionsComparedistances, PlotConfig
+
+logger = logging.getLogger(__name__)
 
 
-class StatisticsCompareDistances:
-    """Service class generating comparison plots for distance files."""
+class PlotServiceCompareDistances:
+    @classmethod
+    def overlay_plots(cls, config: PlotConfig, options: PlotOptionsComparedistances) -> None:
+        os.makedirs(config.outdir, exist_ok=True)
+        folder_ids = config.folder_ids
+        ref_variants = config.filenames
+
+        if options.plot_blandaltman:
+            cls._bland_altman_plot(folder_ids, ref_variants, outdir=config.outdir)
+        if options.plot_passingbablok:
+            cls._passing_bablok_plot(folder_ids, ref_variants, outdir=config.outdir)
+        if options.plot_linearregression:
+            cls._linear_regression_plot(folder_ids, ref_variants, outdir=config.outdir)
 
     @staticmethod
     def _resolve(fid: str, filename: str) -> str:
@@ -25,25 +36,41 @@ class StatisticsCompareDistances:
             return p1
         return os.path.join("data", fid, filename)
 
+    @staticmethod
+    def _load_ref_variant_data(fid: str, variant: str) -> np.ndarray | None:
+        basename = f"python_{variant}_m3c2_distances.txt"
+        path = PlotServiceCompareDistances._resolve(fid, basename)
+        if not os.path.exists(path):
+            logger.warning(f"File not found: {path}")
+            return None
+        try:
+            return np.loadtxt(path)
+        except Exception as e:
+            logger.error(f"Failed to load {path}: {e}")
+            return None
+
+    @staticmethod
+    def _load_and_mask(fid: str, ref_variants: List[str]) -> tuple[np.ndarray, np.ndarray] | None:
+        """Loads and masks the two reference variant arrays for a folder."""
+        data = [PlotServiceCompareDistances._load_ref_variant_data(fid, v) for v in ref_variants]
+        if any(d is None for d in data):
+            return None
+        a_raw, b_raw = data
+        mask = ~np.isnan(a_raw) & ~np.isnan(b_raw)
+        a = np.asarray(a_raw[mask], dtype=float)
+        b = np.asarray(b_raw[mask], dtype=float)
+        if a.size == 0 or b.size == 0:
+            logger.warning(f"Empty values in {fid}, skipped")
+            return None
+        return a, b
+
     @classmethod
-    def bland_altman_plot(
+    def _bland_altman_plot(
         cls,
         folder_ids: List[str],
         ref_variants: List[str],
         outdir: str = "BlandAltman",
     ) -> None:
-        """Create Bland–Altman plots for the given folder IDs.
-
-        Parameters
-        ----------
-        folder_ids:
-            List of folder identifiers or ranges (e.g. ``"0001-0003"``).
-        ref_variants:
-            Exactly two variants that form the file name pattern
-            ``python_{variant}_m3c2_distances.txt``.
-        outdir:
-            Directory in which the PNG plots will be stored.
-        """
 
         if len(ref_variants) != 2:
             raise ValueError("ref_variants must contain exactly two entries")
@@ -51,26 +78,10 @@ class StatisticsCompareDistances:
         os.makedirs(outdir, exist_ok=True)
 
         for fid in folder_ids:
-            paths = []
-            for variant in ref_variants:
-                basename = f"python_{variant}_m3c2_distances.txt"
-                path = cls._resolve(fid, basename)
-                if not os.path.exists(path):
-                    print(f"[BlandAltman] Datei nicht gefunden: {path}")
-                    path = None
-                paths.append(path)
-
-            if None in paths:
-                # At least one file is missing -> skip this folder
+            result = cls._load_and_mask(fid, ref_variants)
+            if result is None:
                 continue
-
-            data = [np.loadtxt(p) for p in paths]
-            
-            a_raw, b_raw = data
-            mask = ~np.isnan(a_raw) & ~np.isnan(b_raw)
-            a = a_raw[mask]
-            b = b_raw[mask]
-
+            a, b = result
 
             if a.size == 0 or b.size == 0:
                 print(f"[BlandAltman] Leere Distanzwerte in {fid}, übersprungen")
@@ -112,9 +123,8 @@ class StatisticsCompareDistances:
             plt.savefig(outpath, dpi=300)
             plt.close()
 
-
     @classmethod
-    def passing_bablok_plot(
+    def _passing_bablok_plot(
         cls,
         folder_ids: List[str],
         ref_variants: List[str],
@@ -129,25 +139,10 @@ class StatisticsCompareDistances:
 
         for fid in folder_ids:
             logger.info(f"[PassingBablok] Processing folder: {fid}")
-            paths = []
-            for variant in ref_variants:
-                basename = f"python_{variant}_m3c2_distances.txt"
-                path = cls._resolve(fid, basename)
-                if not os.path.exists(path):
-                    logger.warning(f"[PassingBablok] Datei nicht gefunden: {path}")
-                    path = None
-                paths.append(path)
-
-            if None in paths:
+            result = cls._load_and_mask(fid, ref_variants)
+            if result is None:
                 continue
-
-            x_raw = np.loadtxt(paths[0])
-            y_raw = np.loadtxt(paths[1])
-
-            # Nur gültige Werte
-            mask = ~np.isnan(x_raw) & ~np.isnan(y_raw)
-            x = np.asarray(x_raw[mask], dtype=float)
-            y = np.asarray(y_raw[mask], dtype=float)
+            x, y = result
 
             # Optionales Downsampling (nur zur Plot-Ästhetik; Regression bleibt robust)
             max_n = 1000
@@ -302,7 +297,7 @@ class StatisticsCompareDistances:
             )
 
     @classmethod
-    def linear_regression_plot(
+    def _linear_regression_plot(
         cls,
         folder_ids: List[str],
         ref_variants: List[str],
@@ -322,25 +317,10 @@ class StatisticsCompareDistances:
 
         for fid in folder_ids:
             logger.info(f"[OLS] Processing folder: {fid}")
-            paths = []
-            for variant in ref_variants:
-                basename = f"python_{variant}_m3c2_distances.txt"
-                path = cls._resolve(fid, basename)
-                if not os.path.exists(path):
-                    logger.warning(f"[OLS] Datei nicht gefunden: {path}")
-                    path = None
-                paths.append(path)
-
-            if None in paths:
+            result = cls._load_and_mask(fid, ref_variants)
+            if result is None:
                 continue
-
-            x_raw = np.loadtxt(paths[0])
-            y_raw = np.loadtxt(paths[1])
-
-            # Gültige Werte
-            mask = ~np.isnan(x_raw) & ~np.isnan(y_raw)
-            x = np.asarray(x_raw[mask], dtype=float)
-            y = np.asarray(y_raw[mask], dtype=float)
+            x, y = result
 
             # Optionales Downsampling (nur fürs Plotten)
             max_n = 1000

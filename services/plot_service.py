@@ -1,75 +1,25 @@
-# plot_service.py
 from __future__ import annotations
-
 import os
 import logging
 from dataclasses import dataclass, field
 from typing import Dict, List, Tuple
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from matplotlib.backends.backend_pdf import PdfPages
 from scipy.stats import norm, weibull_min, probplot
+from config.plot_config import PlotConfig, PlotOptions
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
-# =========================
-# Konfiguration & Optionen
-# =========================
-
-@dataclass(frozen=True)
-class PlotOptions:
-    plot_hist: bool = True
-    plot_gauss: bool = True
-    plot_weibull: bool = True
-    plot_box: bool = True
-    plot_qq: bool = True
-    plot_grouped_bar: bool = True
-    plot_violin: bool = True
-
-
-@dataclass
-class PlotConfig:
-    folder_ids: List[str]
-    filenames: List[str]
-    versions: List[str] = field(default_factory=lambda: ["python", "CC"])
-    bins: int = 256
-    colors: Dict[str, str] = field(default_factory=dict)
-    outdir: str = "Plots"
-
-    def labels(self) -> List[str]:
-        # Reihenfolge der vier Kurven, z.B. ["python_ref","python_ref_ai","CC_ref","CC_ref_ai"]
-        return [f"{v}_{f}" for v in self.versions for f in self.filenames]
-    
-
-    def ensure_colors(self) -> Dict[str, str]:
-        if self.colors:
-            return dict(self.colors)
-        default_palette = [
-            "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
-            "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf",
-        ]
-        lbls = self.labels()
-        return {lbls[i]: default_palette[i % len(default_palette)] for i in range(len(lbls))}
-
-# =========================
-# Plot-Service
-# =========================
 
 class PlotService:
-    # ------- Public API -------------------------------------
-
     @classmethod
     def overlay_plots(cls, config: PlotConfig, options: PlotOptions) -> None:
-        """
-        Erzeugt pro filename alle gewünschten Overlay-Plots (PNG).
-        Für jeden filename werden die in config.versions angegebenen
-        Versionen (z.B. 'python' und 'CC') gemeinsam geplottet.
-        """
         colors = config.ensure_colors()
-        os.makedirs(config.outdir, exist_ok=True)
+
+        os.makedirs(config.path, exist_ok=True)
 
         for fid in config.folder_ids:
             data, gauss_params = cls._load_data(fid, config.filenames, config.versions)
@@ -80,33 +30,32 @@ class PlotService:
             data_min, data_max, x = cls._get_common_range(data)
 
             if options.plot_hist:
-                cls._plot_overlay_histogram(fid, "ALL", data, config.bins, data_min, data_max, colors, config.outdir)
+                cls._plot_overlay_histogram(fid, "ALL", data, config.bins, data_min, data_max, colors, config.path)
 
             if options.plot_gauss:
-                cls._plot_overlay_gauss(fid, "ALL", data, gauss_params, x, colors, config.outdir)
+                cls._plot_overlay_gauss(fid, "ALL", data, gauss_params, x, colors, config.path)
 
             if options.plot_weibull:
-                cls._plot_overlay_weibull(fid, "ALL", data, x, colors, config.outdir)
+                cls._plot_overlay_weibull(fid, "ALL", data, x, colors, config.path)
 
             if options.plot_box:
-                cls._plot_overlay_boxplot(fid, "ALL", data, colors, config.outdir)
+                cls._plot_overlay_boxplot(fid, "ALL", data, colors, config.path)
 
             if options.plot_qq:
-                cls._plot_overlay_qq(fid, "ALL", data, colors, config.outdir)
+                cls._plot_overlay_qq(fid, "ALL", data, colors, config.path)
 
             if options.plot_grouped_bar:
-                cls._plot_grouped_bar_means_stds(fid, "ALL", data, colors, config.outdir)
+                cls._plot_grouped_bar_means_stds(fid, "ALL", data, colors, config.path)
 
             if options.plot_violin:
-                cls._plot_overlay_violin(fid, "ALL", data, colors, config.outdir)
+                cls._plot_overlay_violin(fid, "ALL", data, colors, config.path)
 
             logging.info(f"[Report] PNGs für {fid} erzeugt.")
 
     @classmethod
-    def summary_pdf(cls, config: PlotConfig, pdf_name: str = "Plot_Vergleich.pdf") -> None:
-        """
-        Baut pro filename eine Seite mit allen Plots.
-        """
+    def summary_pdf(cls, config: PlotConfig) -> None:
+        pdf_name = f"{config.project}_comparison_report.pdf"
+
         plot_types = [
             ("OverlayHistogramm", "Histogramm", (0, 0)),
             ("Boxplot", "Boxplot", (0, 1)),
@@ -121,7 +70,7 @@ class PlotService:
                 fig, axs = plt.subplots(2, 3, figsize=(24, 16))
                 for suffix, title, (row, col) in plot_types:
                     ax = axs[row, col]
-                    png = os.path.join(config.outdir, f"{fid}_ALL_{suffix}.png")
+                    png = os.path.join(config.path, f"{fid}_ALL_{suffix}.png")
                     if os.path.exists(png):
                         img = mpimg.imread(png)
                         ax.imshow(img)

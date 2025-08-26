@@ -1,13 +1,6 @@
-# ParamEstimator
-# +estimate_avg_spacing(points, k=6) : : float
-# +scan_scales(points, strategy, avg_spacing, ...) : : list
-# +select_scales(results):(normal, projection)
-
-# param_estimator.py
 from __future__ import annotations
 import numpy as np
 from typing import List, Tuple
-
 from sklearn.neighbors import NearestNeighbors
 from orchestration.strategies import ScaleScan
 
@@ -27,7 +20,6 @@ class ParamEstimator:
     def scan_scales(points: np.ndarray, strategy, avg_spacing: float) -> List[ScaleScan]:
         scans = strategy.scan(points, avg_spacing)
         return scans
-
 
     @staticmethod
     def select_scales(scans: List[ScaleScan]) -> Tuple[float, float]:

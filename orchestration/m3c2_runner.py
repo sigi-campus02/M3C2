@@ -5,6 +5,7 @@ from typing import Tuple
 
 
 class M3C2Runner:
+    @staticmethod
     def run(
         self,
         mov: py4dgeo.Epoch,
@@ -16,8 +17,8 @@ class M3C2Runner:
         m3c2 = py4dgeo.M3C2(
             epochs=(mov, ref),
             corepoints=corepoints,
-            cyl_radius=project,     
-            normal_radii=[normal], 
+            cyl_radius=project,
+            normal_radii=[normal],
         )
         distances, uncertainties = m3c2.run()
         return distances, uncertainties

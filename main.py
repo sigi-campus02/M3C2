@@ -53,6 +53,7 @@ use_existing_params = True
 # default = 3 (3 * RMSE = Outlier Threshold)
 outlier_rmse_multiplicator = 2.5
 
+
 def main() -> None:
     cfgs = []
     for fid in folder_ids:

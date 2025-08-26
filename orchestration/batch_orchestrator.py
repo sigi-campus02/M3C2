@@ -1,5 +1,3 @@
-"""Batch orchestration for the M3C2 pipeline."""
-
 from __future__ import annotations
 import logging
 import os
@@ -13,11 +11,7 @@ from services.statistics_service import StatisticsService
 from services.exclude_outliers import exclude_outliers
 from services.visualization_service import VisualizationService
 from orchestration.m3c2_runner import M3C2Runner
-from orchestration.strategies import (
-    RadiusScanStrategy,
-    ScaleScan
-)
-
+from orchestration.strategies import (RadiusScanStrategy, ScaleScan)
 
 logger = logging.getLogger(__name__)
 
@@ -38,8 +32,6 @@ class BatchOrchestrator:
 
         logger.info("=== BatchOrchestrator initialisiert ===")
         logger.info("Konfigurationen: %d Jobs", len(self.configs))
-
-
 
     def run_all(self) -> None:
         """Run the pipeline for each configured dataset."""
@@ -96,7 +88,6 @@ class BatchOrchestrator:
             # all distances incl. outliers
             self._generate_visuals(cfg, mov, distances, out_base)
 
-
         try:
             # Generate distance txts excluding outliers & outliers only for outlier .ply visualisation
             logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
@@ -114,7 +105,6 @@ class BatchOrchestrator:
             self._compute_statistics(cfg, ref)
         except Exception:
             logger.exception("Fehler bei der Berechnung der Statistik")
-        
 
         logger.info("[Job] %s abgeschlossen in %.3fs", cfg.folder_id, time.perf_counter() - start)
 
@@ -222,10 +212,12 @@ class BatchOrchestrator:
         if cfg.stats_singleordistance == "distance":
             logger.info(f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …")
 
-            if cfg.project == "MARS":
-                out_path = os.path.join(f"outputs/MARS_output/{cfg.project}_m3c2_stats_distances.xlsx") if self.output_format == "excel" else os.path.join(f"outputs/MARS_output/{cfg.project}_m3c2_stats_distances.json")
-            if cfg.project == "TUNSPEKT":
-                out_path = os.path.join(f"outputs/TUNSPEKT_output/{cfg.project}_m3c2_stats_distances.xlsx") if self.output_format == "excel" else os.path.join(f"outputs/TUNSPEKT_output/{cfg.project}_m3c2_stats_distances.json")
+            if self.output_format == "excel":
+                out_path = os.path.join(f"outputs/{cfg.project}_output/{cfg.project}_m3c2_stats_distances.xlsx")
+            elif self.output_format == "json":
+                out_path = os.path.join(f"outputs/{cfg.project}_output/{cfg.project}_m3c2_stats_distances.json")
+            else:
+                raise ValueError("Ungültiges Ausgabeformat. Verwenden Sie 'excel' oder 'json'.")
 
             StatisticsService.compute_m3c2_statistics(
                 folder_ids=[cfg.folder_id],
@@ -242,10 +234,12 @@ class BatchOrchestrator:
                 f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …"
             )
 
-            if cfg.project == "MARS":
-                out_path = os.path.join(f"outputs/MARS_output/{cfg.project}_m3c2_stats_clouds.xlsx") if self.output_format == "excel" else os.path.join(f"outputs/MARS_output/{cfg.project}_m3c2_stats_clouds.json")
-            if cfg.project == "TUNSPEKT":
-                out_path = os.path.join(f"outputs/TUNSPEKT_output/{cfg.project}_m3c2_stats_clouds.xlsx") if self.output_format == "excel" else os.path.join(f"outputs/TUNSPEKT_output/{cfg.project}_m3c2_stats_clouds.json")
+            if self.output_format == "excel":
+                out_path = os.path.join(f"outputs/{cfg.project}_output/{cfg.project}_m3c2_stats_clouds.xlsx")
+            elif self.output_format == "json":
+                out_path = os.path.join(f"outputs/{cfg.project}_output/{cfg.project}_m3c2_stats_clouds.json")
+            else:
+                raise ValueError("Ungültiges Ausgabeformat. Verwenden Sie 'excel' oder 'json'.")
 
             StatisticsService.calc_single_cloud_stats(
                 folder_ids=[cfg.folder_id],
@@ -253,8 +247,7 @@ class BatchOrchestrator:
                 filename_ref=cfg.filename_ref,
                 out_path=out_path,
                 sheet_name="CloudStats",
-                output_format=self.output_format,
-                outlier_rmse_multiplicator=cfg.outlier_rmse_multiplicator
+                output_format=self.output_format
             )
 
     def _generate_visuals(self, cfg: PipelineConfig, mov, distances: np.ndarray, out_base: str) -> None:
@@ -276,7 +269,6 @@ class BatchOrchestrator:
             logger.info("[Visual] Valid-PLY gespeichert: %s", ply_valid_path)
         except Exception as exc:
             logger.warning("[Visual] Export valid-only übersprungen: %s", exc)
-
 
     def _generate_clouds_outliers(self, cfg: PipelineConfig, out_base: str) -> None:
         logger.info("[Visual] Erzeuge .ply Dateien für Outliers / Inliers …")

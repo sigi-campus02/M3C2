@@ -267,7 +267,6 @@ class StatisticsService:
             # "Dice Coefficient Inlier": dice_in
         }
 
-
     @classmethod
     def compute_m3c2_statistics(
         cls,

@@ -1,18 +1,10 @@
-# strategies.py
 from __future__ import annotations
-
 import logging
 from dataclasses import dataclass
 from typing import List, Optional, Protocol, Dict
-
 import numpy as np
-from sklearn.decomposition import PCA
-from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import NearestNeighbors
 
-# ============================================================
-# Gemeinsame Dataklasse für Scan-Ergebnisse
-# ============================================================
 
 @dataclass
 class ScaleScan:
@@ -30,11 +22,9 @@ class ScaleScan:
     relative_roughness: Optional[float] = None
     total_voxels: Optional[int] = None
 
-
 # ============================================================
 # Radius-basierte Strategie
 # ============================================================
-
 
 def _fit_plane_pca(points: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray, float]:
     """
@@ -73,7 +63,7 @@ def _fit_plane_pca(points: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarr
     return centroid, normal_vector, eigenvalues, sigma
 
 
-class RadiusScanStrategy():
+class RadiusScanStrategy:
     """
     Radius-basierter Scan (paper-/CC-nah):
     - Nachbarschaften per KD-Tree im Kugelradius D/2
