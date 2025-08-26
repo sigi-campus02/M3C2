@@ -1,4 +1,4 @@
-from statistics_service import StatisticsService
+from services.statistics_service import StatisticsService
 
 folder_ids = ["data/TUNSPEKT Labordaten_all"]
 filename_mov = "HandheldRoi"
@@ -8,7 +8,7 @@ radius = 1.0
 k = 6
 sample_size = 100_000
 use_convex_hull = True
-out_path = "outputs/TUNSPEKT_output/TUNSPEKT_m3c2_stats_clouds.xlsx"
+out_path = "../outputs/TUNSPEKT_output/TUNSPEKT_m3c2_stats_clouds.xlsx"
 sheet_name = "CloudStats"
 output_format = "excel"
 

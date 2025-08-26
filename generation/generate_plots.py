@@ -1,5 +1,5 @@
 # example_report.py
-from plot_service import PlotService, PlotConfig, PlotOptions
+from services.plot_service import PlotService, PlotConfig, PlotOptions
 
 # TUNSPEKT FOLDERS: "TUNSPEKT_Altone(mov)-Faro(ref)", "TUNSPEKT_Handheld(mov)-Faro(ref)", "TUNSPEKT_Mavic(mov)-Faro(ref)"
 # MARS FOLDERS:     "0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"

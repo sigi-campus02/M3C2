@@ -1,8 +1,7 @@
-from statistics_service_comparedistances import StatisticsCompareDistances
+from services.statistics_service_comparedistances import StatisticsCompareDistances
 import logging
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
-import numpy as np
 
 # TUNSPEKT FOLDERS: "TUNSPEKT_Altone(mov)-Faro(ref)", "TUNSPEKT_Handheld(mov)-Faro(ref)", "TUNSPEKT_Mavic(mov)-Faro(ref)"
 # MARS FOLDERS:     "0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"

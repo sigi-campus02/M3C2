@@ -9,7 +9,7 @@ import numpy as np
 from typing import List, Tuple
 
 from sklearn.neighbors import NearestNeighbors
-from strategies import ScaleScan, ScaleStrategy
+from orchestration.strategies import ScaleScan, ScaleStrategy
 
 
 class ParamEstimator:
