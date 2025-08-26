@@ -7,14 +7,14 @@ logger = logging.getLogger(__name__)
 # ref_variants = ["ref", "ref_ai"]
 
 folder_ids = ["rocks"]
-ref_variants = ["ref", "ref_ai"]
+ref_variants = ["points_40", "points_80"]
 
 cfg = PlotConfig(
     folder_ids=folder_ids,
     filenames=ref_variants,
     bins=256,
     outdir="outputs",
-    project="MARS"
+    project="ROCKS"
 )
 
 opts = PlotOptionsComparedistances(

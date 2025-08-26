@@ -642,6 +642,12 @@ class StatisticsService:
         extra_cols = [c for c in original_cols if c not in CANONICAL_COLUMNS]
         df_new = df_new[CANONICAL_COLUMNS + extra_cols]
 
+        # Ensure output directory exists
+        out_dir = os.path.dirname(out_xlsx)
+        if out_dir:
+            os.makedirs(out_dir, exist_ok=True)
+
+
         if os.path.exists(out_xlsx):
             wb = load_workbook(out_xlsx)
             ws = wb[sheet_name] if sheet_name in wb.sheetnames else wb.create_sheet(sheet_name)
@@ -685,6 +691,11 @@ class StatisticsService:
         ts = StatisticsService._now_timestamp()
         df_new = df_new.copy()
         df_new.insert(0, "Timestamp", ts)
+
+        # Ensure output directory exists
+        out_dir = os.path.dirname(out_json)
+        if out_dir:
+            os.makedirs(out_dir, exist_ok=True)
 
         if os.path.exists(out_json):
             try:

@@ -40,6 +40,7 @@ class PlotServiceCompareDistances:
     def _load_ref_variant_data(fid: str, variant: str) -> np.ndarray | None:
         basename = f"python_{variant}_m3c2_distances.txt"
         path = PlotServiceCompareDistances._resolve(fid, basename)
+        print("Current working directory:", os.getcwd())
         if not os.path.exists(path):
             logger.warning(f"File not found: {path}")
             return None
