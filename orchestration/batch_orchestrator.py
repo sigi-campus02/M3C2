@@ -287,12 +287,18 @@ class BatchOrchestrator:
         txt_path_outlier = os.path.join(out_base, f"python_{cfg.filename_ref}_m3c2_distances_coordinates_outlier.txt")
         txt_path_inlier = os.path.join(out_base, f"python_{cfg.filename_ref}_m3c2_distances_coordinates_inlier.txt")
 
-        VisualizationService.txt_to_ply_with_distance_color(
-            txt_path=txt_path_outlier,
-            outply=ply_valid_path_outlier
-        )
+        try:
+            VisualizationService.txt_to_ply_with_distance_color(
+                txt_path=txt_path_outlier,
+                outply=ply_valid_path_outlier
+            )
+        except Exception as exc:
+            logger.warning("[Visual] Export valid-only übersprungen: %s", exc)
 
-        VisualizationService.txt_to_ply_with_distance_color(
-            txt_path=txt_path_inlier,
-            outply=ply_valid_path_inlier
-        )
+        try:
+            VisualizationService.txt_to_ply_with_distance_color(
+                txt_path=txt_path_inlier,
+                outply=ply_valid_path_inlier
+            )
+        except Exception as exc:
+            logger.warning("[Visual] Export valid-only übersprungen: %s", exc)

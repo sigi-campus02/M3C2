@@ -14,8 +14,9 @@ def exclude_outliers(data_folder, ref_variant, outlier_rmse_multiplicator=3):
 	distances_valid = arr_valid[:, 3]
 
 	rms = np.sqrt(np.mean(distances_valid ** 2))
+	std_empirical = np.std(distances_valid)
 	outlier_mask = np.abs(distances_valid) > (outlier_rmse_multiplicator * rms)
-	
+
 	arr_excl_outlier = arr_valid[~outlier_mask]
 
 	# Exportiere die Inlier (ohne Outlier) als TXT

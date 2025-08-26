@@ -9,7 +9,7 @@ import numpy as np
 from typing import List, Tuple
 
 from sklearn.neighbors import NearestNeighbors
-from orchestration.strategies import ScaleScan, ScaleStrategy
+from orchestration.strategies import ScaleScan
 
 
 class ParamEstimator:
@@ -24,7 +24,7 @@ class ParamEstimator:
         return min_spacing
 
     @staticmethod
-    def scan_scales(points: np.ndarray, strategy: ScaleStrategy, avg_spacing: float) -> List[ScaleScan]:
+    def scan_scales(points: np.ndarray, strategy, avg_spacing: float) -> List[ScaleScan]:
         scans = strategy.scan(points, avg_spacing)
         return scans
 
