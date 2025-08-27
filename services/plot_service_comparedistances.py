@@ -17,10 +17,13 @@ class PlotServiceCompareDistances:
         ref_variants = config.filenames
 
         if options.plot_blandaltman:
+            logging.info("Generating Bland-Altman plots...")
             cls._bland_altman_plot(folder_ids, ref_variants, outdir=config.path)
         if options.plot_passingbablok:
+            logging.info("Generating Passing-Bablok plots...")
             cls._passing_bablok_plot(folder_ids, ref_variants, outdir=config.path)
         if options.plot_linearregression:
+            logging.info("Generating Linear Regression plots...")
             cls._linear_regression_plot(folder_ids, ref_variants, outdir=config.path)
 
     @staticmethod
@@ -34,7 +37,7 @@ class PlotServiceCompareDistances:
         p1 = os.path.join(fid, filename)
         if os.path.exists(p1):
             return p1
-        return os.path.join("../data", fid, filename)
+        return os.path.join("data", fid, filename)
 
     @staticmethod
     def _load_ref_variant_data(fid: str, variant: str) -> np.ndarray | None:

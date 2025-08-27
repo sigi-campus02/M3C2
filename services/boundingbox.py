@@ -98,14 +98,12 @@ def clip_obbf_aligned_many(in_paths: List[str], out_paths: List[str], pad: float
 if __name__ == "__main__":
     # === HIER deine drei (oder mehr) Dateien eintragen ===
     in_paths  = [
-        r"data\1130-1133\ref.ply",
-        r"data\1130-1133\ref_ai.ply",
-        r"data\1130-1133\mov.ply",
+        r"data\Multi-illumination\Job_0378_8400-110\1-1\Job_0378_8400-110-rad-1-1_cloud.ply",
+        r"data\Multi-illumination\Job_0378_8400-110\1-1\Job_0378_8400-110-rad-1-1-AI_cloud.ply",
     ]
     out_paths = [
-        r"data\1130-1133\ref_overlap.ply",
-        r"data\1130-1133\ref_ai_overlap.ply",
-        r"data\1130-1133\mov_overlap.ply",
+        r"data\Multi-illumination\Job_0378_8400-110\1-1\Job_0378_8400-110-rad-1-1_cloud_overlap.ply",
+        r"data\Multi-illumination\Job_0378_8400-110\1-1\Job_0378_8400-110-rad-1-1-AI_cloud_overlap.ply",
     ]
 
     # Kleines numerisches Polster (optional), z.B. 1e-6 oder 1e-4 je nach Maßstab
