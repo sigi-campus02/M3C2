@@ -2412,3 +2412,479 @@ Traceback (most recent call last):
               ^^^^^^^^^^^^^^^^^^^^^^^
 PermissionError: [Errno 13] Permission denied: 'outputs/MARS_output/MARS_m3c2_stats_distances.xlsx'
 2025-08-27 08:54:38,291 [INFO] [Job] data\1130-1133 abgeschlossen in 2.001s
+2025-08-27 10:05:24,055 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 10:05:24,055 [INFO] Konfigurationen: 2 Jobs
+2025-08-27 10:05:24,055 [INFO] data\1130-1133, mov, ref, python
+2025-08-27 10:05:24,056 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:05:24,103 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\mov.xyz'
+2025-08-27 10:05:24,491 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\ref.xyz'
+2025-08-27 10:05:24,614 [INFO] Mov Points: (107169, 3)
+2025-08-27 10:05:24,614 [INFO] Ref Points: (40647, 3)
+2025-08-27 10:05:24,614 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:05:24,614 [INFO] Corepoints: (107169, 3)
+2025-08-27 10:05:24,614 [INFO] [Load] data/data\1130-1133: mov=(107169, 3), ref=(40647, 3), corepoints=(107169, 3) | 0.563s
+2025-08-27 10:05:24,614 [INFO] [Outlier] Entferne Ausreißer für data\1130-1133
+2025-08-27 10:05:24,679 [INFO] [Exclude Outliers] STD: 0.050110
+2025-08-27 10:05:24,679 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.150330
+2025-08-27 10:05:24,894 [INFO] [Exclude Outliers] Gesamt: 107169
+2025-08-27 10:05:24,894 [INFO] [Exclude Outliers] NaN: 6481
+2025-08-27 10:05:24,895 [INFO] [Exclude Outliers] Valid (ohne NaN): 100688
+2025-08-27 10:05:24,895 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 10:05:24,896 [INFO] [Exclude Outliers] Outlier: 1071
+2025-08-27 10:05:24,896 [INFO] [Exclude Outliers] Inlier: 99617
+2025-08-27 10:05:24,896 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\1130-1133\python_ref_m3c2_distances_coordinates_inlier.txt
+2025-08-27 10:05:24,897 [INFO] [Exclude Outliers] Outlier gespeichert: data\1130-1133\python_ref_m3c2_distances_coordinates_outlier.txt
+2025-08-27 10:05:24,898 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:05:24,898 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:05:24,903 [INFO] [TXT->PLY] data\1130-1133\python_ref_m3c2_distances_coordinates_outlier.txt -> data\1130-1133\python_ref_colored_cloud_validonly_outlier.ply (1071 Punkte)
+2025-08-27 10:05:25,111 [INFO] [TXT->PLY] data\1130-1133\python_ref_m3c2_distances_coordinates_inlier.txt -> data\1130-1133\python_ref_colored_cloud_validonly_inlier.ply (99617 Punkte)
+2025-08-27 10:05:25,112 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\1130-1133,ref …
+2025-08-27 10:05:25,112 [ERROR] Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 105, in _run_single
+    self._compute_statistics(cfg, ref)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 230, in _compute_statistics
+    outlier_rmse_multiplicator=cfg.outlier_rmse_multiplicator
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PipelineConfig' object has no attribute 'outlier_rmse_multiplicator'. Did you mean: 'outlier_multiplicator'?
+2025-08-27 10:05:25,114 [INFO] [Job] data\1130-1133 abgeschlossen in 1.058s
+2025-08-27 10:05:25,114 [INFO] data\1130-1133, mov, ref_ai, python
+2025-08-27 10:05:25,115 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:05:25,153 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\mov.xyz'
+2025-08-27 10:05:25,503 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\ref_ai.xyz'
+2025-08-27 10:05:25,616 [INFO] Mov Points: (107169, 3)
+2025-08-27 10:05:25,616 [INFO] Ref Points: (37584, 3)
+2025-08-27 10:05:25,616 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:05:25,617 [INFO] Corepoints: (107169, 3)
+2025-08-27 10:05:25,617 [INFO] [Load] data/data\1130-1133: mov=(107169, 3), ref=(37584, 3), corepoints=(107169, 3) | 0.502s
+2025-08-27 10:05:25,617 [INFO] [Outlier] Entferne Ausreißer für data\1130-1133
+2025-08-27 10:05:25,676 [INFO] [Exclude Outliers] STD: 0.050471
+2025-08-27 10:05:25,676 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.151413
+2025-08-27 10:05:25,912 [INFO] [Exclude Outliers] Gesamt: 107169
+2025-08-27 10:05:25,912 [INFO] [Exclude Outliers] NaN: 173
+2025-08-27 10:05:25,913 [INFO] [Exclude Outliers] Valid (ohne NaN): 106996
+2025-08-27 10:05:25,913 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 10:05:25,913 [INFO] [Exclude Outliers] Outlier: 1028
+2025-08-27 10:05:25,913 [INFO] [Exclude Outliers] Inlier: 105968
+2025-08-27 10:05:25,914 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\1130-1133\python_ref_ai_m3c2_distances_coordinates_inlier.txt
+2025-08-27 10:05:25,914 [INFO] [Exclude Outliers] Outlier gespeichert: data\1130-1133\python_ref_ai_m3c2_distances_coordinates_outlier.txt
+2025-08-27 10:05:25,915 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:05:25,915 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:05:25,920 [INFO] [TXT->PLY] data\1130-1133\python_ref_ai_m3c2_distances_coordinates_outlier.txt -> data\1130-1133\python_ref_ai_colored_cloud_validonly_outlier.ply (1028 Punkte)
+2025-08-27 10:05:26,141 [INFO] [TXT->PLY] data\1130-1133\python_ref_ai_m3c2_distances_coordinates_inlier.txt -> data\1130-1133\python_ref_ai_colored_cloud_validonly_inlier.ply (105968 Punkte)
+2025-08-27 10:05:26,141 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\1130-1133,ref_ai …
+2025-08-27 10:05:26,141 [ERROR] Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 105, in _run_single
+    self._compute_statistics(cfg, ref)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 230, in _compute_statistics
+    outlier_rmse_multiplicator=cfg.outlier_rmse_multiplicator
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PipelineConfig' object has no attribute 'outlier_rmse_multiplicator'. Did you mean: 'outlier_multiplicator'?
+2025-08-27 10:05:26,141 [INFO] [Job] data\1130-1133 abgeschlossen in 1.032s
+2025-08-27 10:22:31,984 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 10:22:31,985 [INFO] Konfigurationen: 2 Jobs
+2025-08-27 10:22:31,985 [INFO] data\0342-0349, mov, ref, python
+2025-08-27 10:22:31,986 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:22:32,030 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:22:34,311 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-27 10:22:34,392 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:22:34,398 [INFO] Ref Points: (27711, 3)
+2025-08-27 10:22:34,398 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:22:34,398 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:22:34,398 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.414s
+2025-08-27 10:22:34,398 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:22:34,782 [INFO] [Exclude Outliers] STD: 0.014311
+2025-08-27 10:22:34,782 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.042933
+2025-08-27 10:22:36,267 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:22:36,269 [INFO] [Exclude Outliers] NaN: 9634
+2025-08-27 10:22:36,269 [INFO] [Exclude Outliers] Valid (ohne NaN): 699494
+2025-08-27 10:22:36,269 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 10:22:36,271 [INFO] [Exclude Outliers] Outlier: 16248
+2025-08-27 10:22:36,271 [INFO] [Exclude Outliers] Inlier: 683246
+2025-08-27 10:22:36,271 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_inlier.txt
+2025-08-27 10:22:36,271 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_outlier.txt
+2025-08-27 10:22:36,276 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:22:36,276 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:22:36,313 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_outlier.txt -> data\0342-0349\python_ref_colored_cloud_validonly_outlier.ply (16248 Punkte)
+2025-08-27 10:22:37,761 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_inlier.txt -> data\0342-0349\python_ref_colored_cloud_validonly_inlier.ply (683246 Punkte)
+2025-08-27 10:22:37,769 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-27 10:22:52,780 [INFO] [Job] data\0342-0349 abgeschlossen in 20.797s
+2025-08-27 10:22:52,780 [INFO] data\0342-0349, mov, ref_ai, python
+2025-08-27 10:22:52,780 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:22:52,825 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:22:55,050 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-08-27 10:22:57,231 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:22:57,231 [INFO] Ref Points: (711075, 3)
+2025-08-27 10:22:57,232 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:22:57,232 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:22:57,232 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(711075, 3), corepoints=(709128, 3) | 4.449s
+2025-08-27 10:22:57,233 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:22:57,599 [INFO] [Exclude Outliers] STD: 0.029939
+2025-08-27 10:22:57,599 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.089818
+2025-08-27 10:22:59,111 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:22:59,113 [INFO] [Exclude Outliers] NaN: 22506
+2025-08-27 10:22:59,113 [INFO] [Exclude Outliers] Valid (ohne NaN): 686622
+2025-08-27 10:22:59,114 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 10:22:59,115 [INFO] [Exclude Outliers] Outlier: 18112
+2025-08-27 10:22:59,116 [INFO] [Exclude Outliers] Inlier: 668510
+2025-08-27 10:22:59,116 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier.txt
+2025-08-27 10:22:59,117 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier.txt
+2025-08-27 10:22:59,121 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:22:59,121 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:22:59,155 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_outlier.ply (18112 Punkte)
+2025-08-27 10:23:00,590 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_inlier.ply (668510 Punkte)
+2025-08-27 10:23:00,598 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref_ai …
+2025-08-27 10:23:23,214 [INFO] [Job] data\0342-0349 abgeschlossen in 30.431s
+2025-08-27 10:26:18,311 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 10:26:18,327 [INFO] Konfigurationen: 2 Jobs
+2025-08-27 10:26:18,327 [INFO] data\0342-0349, mov, ref, python
+2025-08-27 10:26:18,327 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:26:18,368 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:26:20,606 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-27 10:26:20,700 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:26:20,700 [INFO] Ref Points: (27711, 3)
+2025-08-27 10:26:20,700 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:26:20,700 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:26:20,700 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.374s
+2025-08-27 10:26:20,700 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:26:21,078 [INFO] [Exclude Outliers] STD: 0.014311
+2025-08-27 10:26:21,079 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.042933
+2025-08-27 10:26:22,505 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:26:22,507 [INFO] [Exclude Outliers] NaN: 9634
+2025-08-27 10:26:22,507 [INFO] [Exclude Outliers] Valid (ohne NaN): 699494
+2025-08-27 10:26:22,507 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 10:26:22,507 [INFO] [Exclude Outliers] Outlier: 16248
+2025-08-27 10:26:22,507 [INFO] [Exclude Outliers] Inlier: 683246
+2025-08-27 10:26:22,507 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_inlier_std.txt
+2025-08-27 10:26:22,512 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_outlier_std.txt
+2025-08-27 10:26:22,516 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:26:22,516 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:26:22,554 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_outlier_std.txt -> data\0342-0349\python_ref_colored_cloud_validonly_outlier_std.ply (16248 Punkte)
+2025-08-27 10:26:24,040 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_inlier_std.txt -> data\0342-0349\python_ref_colored_cloud_validonly_inlier.ply (683246 Punkte)
+2025-08-27 10:26:24,040 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-27 10:26:38,784 [INFO] [Job] data\0342-0349 abgeschlossen in 20.460s
+2025-08-27 10:26:38,784 [INFO] data\0342-0349, mov, ref_ai, python
+2025-08-27 10:26:38,784 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:26:38,829 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:26:41,010 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-08-27 10:26:43,183 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:26:43,183 [INFO] Ref Points: (711075, 3)
+2025-08-27 10:26:43,183 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:26:43,183 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:26:43,183 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(711075, 3), corepoints=(709128, 3) | 4.398s
+2025-08-27 10:26:43,183 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:26:43,553 [INFO] [Exclude Outliers] STD: 0.029939
+2025-08-27 10:26:43,553 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.089818
+2025-08-27 10:26:44,906 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:26:44,906 [INFO] [Exclude Outliers] NaN: 22506
+2025-08-27 10:26:44,914 [INFO] [Exclude Outliers] Valid (ohne NaN): 686622
+2025-08-27 10:26:44,914 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 10:26:44,916 [INFO] [Exclude Outliers] Outlier: 18112
+2025-08-27 10:26:44,916 [INFO] [Exclude Outliers] Inlier: 668510
+2025-08-27 10:26:44,917 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier_std.txt
+2025-08-27 10:26:44,917 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier_std.txt
+2025-08-27 10:26:44,922 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:26:44,922 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:26:44,962 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier_std.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_outlier_std.ply (18112 Punkte)
+2025-08-27 10:26:46,376 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier_std.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_inlier.ply (668510 Punkte)
+2025-08-27 10:26:46,376 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref_ai …
+2025-08-27 10:27:09,334 [INFO] [Job] data\0342-0349 abgeschlossen in 30.545s
+2025-08-27 10:29:26,080 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 10:29:26,080 [INFO] Konfigurationen: 2 Jobs
+2025-08-27 10:29:26,081 [INFO] data\0342-0349, mov, ref, python
+2025-08-27 10:29:26,081 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:29:26,118 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:29:28,460 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-27 10:29:28,544 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:29:28,544 [INFO] Ref Points: (27711, 3)
+2025-08-27 10:29:28,545 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:29:28,545 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:29:28,546 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.464s
+2025-08-27 10:29:28,546 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:29:28,910 [INFO] [Exclude Outliers] STD: 0.014311
+2025-08-27 10:29:28,910 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.042933
+2025-08-27 10:29:30,300 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:29:30,301 [INFO] [Exclude Outliers] NaN: 9634
+2025-08-27 10:29:30,302 [INFO] [Exclude Outliers] Valid (ohne NaN): 699494
+2025-08-27 10:29:30,302 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 10:29:30,304 [INFO] [Exclude Outliers] Outlier: 16248
+2025-08-27 10:29:30,304 [INFO] [Exclude Outliers] Inlier: 683246
+2025-08-27 10:29:30,304 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_inlier_std.txt
+2025-08-27 10:29:30,304 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_outlier_std.txt
+2025-08-27 10:29:30,309 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:29:30,309 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:29:30,345 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_outlier_std.txt -> data\0342-0349\python_ref_colored_cloud_validonly_outlier_std.ply (16248 Punkte)
+2025-08-27 10:29:31,803 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_inlier_std.txt -> data\0342-0349\python_ref_colored_cloud_validonly_inlier.ply (683246 Punkte)
+2025-08-27 10:29:31,803 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-27 10:29:46,776 [INFO] [Job] data\0342-0349 abgeschlossen in 20.697s
+2025-08-27 10:29:46,776 [INFO] data\0342-0349, mov, ref_ai, python
+2025-08-27 10:29:46,776 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:29:46,821 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:29:49,102 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-08-27 10:29:51,281 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:29:51,281 [INFO] Ref Points: (711075, 3)
+2025-08-27 10:29:51,289 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:29:51,289 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:29:51,289 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(711075, 3), corepoints=(709128, 3) | 4.510s
+2025-08-27 10:29:51,289 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:29:51,651 [INFO] [Exclude Outliers] STD: 0.029939
+2025-08-27 10:29:51,651 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.089818
+2025-08-27 10:29:53,031 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:29:53,033 [INFO] [Exclude Outliers] NaN: 22506
+2025-08-27 10:29:53,033 [INFO] [Exclude Outliers] Valid (ohne NaN): 686622
+2025-08-27 10:29:53,034 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 10:29:53,035 [INFO] [Exclude Outliers] Outlier: 18112
+2025-08-27 10:29:53,036 [INFO] [Exclude Outliers] Inlier: 668510
+2025-08-27 10:29:53,036 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier_std.txt
+2025-08-27 10:29:53,036 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier_std.txt
+2025-08-27 10:29:53,041 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:29:53,041 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:29:53,079 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier_std.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_outlier_std.ply (18112 Punkte)
+2025-08-27 10:29:54,492 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier_std.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_inlier.ply (668510 Punkte)
+2025-08-27 10:29:54,500 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref_ai …
+2025-08-27 10:30:17,573 [INFO] [Job] data\0342-0349 abgeschlossen in 30.801s
+2025-08-27 10:30:55,062 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 10:30:55,063 [INFO] Konfigurationen: 2 Jobs
+2025-08-27 10:30:55,063 [INFO] data\0342-0349, mov, ref, python
+2025-08-27 10:30:55,064 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:30:55,098 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:30:57,312 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-27 10:30:57,394 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:30:57,394 [INFO] Ref Points: (27711, 3)
+2025-08-27 10:30:57,394 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:30:57,394 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:30:57,394 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.335s
+2025-08-27 10:30:57,394 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:30:57,761 [INFO] [Exclude Outliers] RMS: 0.014339
+2025-08-27 10:30:57,762 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * RMSE = 0.043016
+2025-08-27 10:30:59,145 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:30:59,147 [INFO] [Exclude Outliers] NaN: 9634
+2025-08-27 10:30:59,148 [INFO] [Exclude Outliers] Valid (ohne NaN): 699494
+2025-08-27 10:30:59,148 [INFO] [Exclude Outliers] Methode: rmse
+2025-08-27 10:30:59,149 [INFO] [Exclude Outliers] Outlier: 15636
+2025-08-27 10:30:59,150 [INFO] [Exclude Outliers] Inlier: 683858
+2025-08-27 10:30:59,150 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_inlier_rmse.txt
+2025-08-27 10:30:59,150 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_outlier_rmse.txt
+2025-08-27 10:30:59,154 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:30:59,155 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:30:59,184 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_outlier_rmse.txt -> data\0342-0349\python_ref_colored_cloud_validonly_outlier_rmse.ply (15636 Punkte)
+2025-08-27 10:31:00,658 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_ref_colored_cloud_validonly_inlier_rmse.ply (683858 Punkte)
+2025-08-27 10:31:00,668 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-27 10:31:15,416 [INFO] [Job] data\0342-0349 abgeschlossen in 20.355s
+2025-08-27 10:31:15,416 [INFO] data\0342-0349, mov, ref_ai, python
+2025-08-27 10:31:15,416 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:31:15,460 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:31:17,695 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-08-27 10:31:19,859 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:31:19,859 [INFO] Ref Points: (711075, 3)
+2025-08-27 10:31:19,859 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:31:19,859 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:31:19,859 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(711075, 3), corepoints=(709128, 3) | 4.441s
+2025-08-27 10:31:19,861 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:31:20,226 [INFO] [Exclude Outliers] RMS: 0.106119
+2025-08-27 10:31:20,226 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * RMSE = 0.318358
+2025-08-27 10:31:21,584 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:31:21,585 [INFO] [Exclude Outliers] NaN: 22506
+2025-08-27 10:31:21,586 [INFO] [Exclude Outliers] Valid (ohne NaN): 686622
+2025-08-27 10:31:21,586 [INFO] [Exclude Outliers] Methode: rmse
+2025-08-27 10:31:21,587 [INFO] [Exclude Outliers] Outlier: 0
+2025-08-27 10:31:21,587 [INFO] [Exclude Outliers] Inlier: 686622
+2025-08-27 10:31:21,587 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier_rmse.txt
+2025-08-27 10:31:21,588 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier_rmse.txt
+2025-08-27 10:31:21,592 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:31:21,592 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:31:21,593 [WARNING] [Visual] Export valid-only übersprungen: TXT-Datei enthält keine Werte: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier_rmse.txt
+2025-08-27 10:31:23,063 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_inlier_rmse.ply (686622 Punkte)
+2025-08-27 10:31:23,063 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref_ai …
+2025-08-27 10:31:46,163 [INFO] [Job] data\0342-0349 abgeschlossen in 30.745s
+2025-08-27 10:31:49,194 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 10:31:49,194 [INFO] Konfigurationen: 2 Jobs
+2025-08-27 10:31:49,194 [INFO] data\0342-0349, mov, ref, python
+2025-08-27 10:31:49,194 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:31:49,238 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:31:51,440 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-27 10:31:51,522 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:31:51,522 [INFO] Ref Points: (27711, 3)
+2025-08-27 10:31:51,522 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:31:51,522 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:31:51,522 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.316s
+2025-08-27 10:31:51,522 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:31:51,882 [INFO] [Exclude Outliers] IQR: 0.011352
+2025-08-27 10:31:51,882 [INFO] [Exclude Outliers] Outlier-Schwellen: -0.024876 bis 0.020532
+2025-08-27 10:31:53,284 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:31:53,286 [INFO] [Exclude Outliers] NaN: 9634
+2025-08-27 10:31:53,286 [INFO] [Exclude Outliers] Valid (ohne NaN): 699494
+2025-08-27 10:31:53,286 [INFO] [Exclude Outliers] Methode: iqr
+2025-08-27 10:31:53,288 [INFO] [Exclude Outliers] Outlier: 61239
+2025-08-27 10:31:53,289 [INFO] [Exclude Outliers] Inlier: 638255
+2025-08-27 10:31:53,290 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_inlier_iqr.txt
+2025-08-27 10:31:53,290 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_outlier_iqr.txt
+2025-08-27 10:31:53,293 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:31:53,294 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:31:53,424 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_outlier_iqr.txt -> data\0342-0349\python_ref_colored_cloud_validonly_outlier_iqr.ply (61239 Punkte)
+2025-08-27 10:31:54,775 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_inlier_iqr.txt -> data\0342-0349\python_ref_colored_cloud_validonly_inlier_iqr.ply (638255 Punkte)
+2025-08-27 10:31:54,778 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-27 10:32:09,213 [ERROR] Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 105, in _run_single
+    self._compute_statistics(cfg, ref)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 223, in _compute_statistics
+    StatisticsService.compute_m3c2_statistics(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\services\statistics_service.py", line 301, in compute_m3c2_statistics
+    stats = cls.calc_stats(
+            ^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\services\statistics_service.py", line 121, in calc_stats
+    outlier_mask, outlier_threshold = StatisticsService.get_outlier_mask(clipped, outlier_method, outlier_multiplicator)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\services\statistics_service.py", line 408, in get_outlier_mask
+    return outlier_mask, outlier_threshold
+                         ^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'outlier_threshold' where it is not associated with a value
+2025-08-27 10:32:09,213 [INFO] [Job] data\0342-0349 abgeschlossen in 20.013s
+2025-08-27 10:32:09,221 [INFO] data\0342-0349, mov, ref_ai, python
+2025-08-27 10:32:09,221 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:32:09,262 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:32:11,483 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-08-27 10:32:13,630 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:32:13,630 [INFO] Ref Points: (711075, 3)
+2025-08-27 10:32:13,630 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:32:13,630 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:32:13,630 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(711075, 3), corepoints=(709128, 3) | 4.409s
+2025-08-27 10:32:13,630 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:32:13,995 [INFO] [Exclude Outliers] IQR: 0.015857
+2025-08-27 10:32:13,995 [INFO] [Exclude Outliers] Outlier-Schwellen: 0.076879 bis 0.140307
+2025-08-27 10:32:15,356 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:32:15,358 [INFO] [Exclude Outliers] NaN: 22506
+2025-08-27 10:32:15,358 [INFO] [Exclude Outliers] Valid (ohne NaN): 686622
+2025-08-27 10:32:15,358 [INFO] [Exclude Outliers] Methode: iqr
+2025-08-27 10:32:15,361 [INFO] [Exclude Outliers] Outlier: 74946
+2025-08-27 10:32:15,361 [INFO] [Exclude Outliers] Inlier: 611676
+2025-08-27 10:32:15,362 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier_iqr.txt
+2025-08-27 10:32:15,362 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier_iqr.txt
+2025-08-27 10:32:15,366 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:32:15,366 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:32:15,524 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier_iqr.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_outlier_iqr.ply (74946 Punkte)
+2025-08-27 10:32:16,814 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier_iqr.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_inlier_iqr.ply (611676 Punkte)
+2025-08-27 10:32:16,822 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref_ai …
+2025-08-27 10:32:39,289 [ERROR] Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 105, in _run_single
+    self._compute_statistics(cfg, ref)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 223, in _compute_statistics
+    StatisticsService.compute_m3c2_statistics(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\services\statistics_service.py", line 301, in compute_m3c2_statistics
+    stats = cls.calc_stats(
+            ^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\services\statistics_service.py", line 121, in calc_stats
+    outlier_mask, outlier_threshold = StatisticsService.get_outlier_mask(clipped, outlier_method, outlier_multiplicator)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\services\statistics_service.py", line 408, in get_outlier_mask
+    return outlier_mask, outlier_threshold
+                         ^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'outlier_threshold' where it is not associated with a value
+2025-08-27 10:32:39,289 [INFO] [Job] data\0342-0349 abgeschlossen in 30.073s
+2025-08-27 10:34:05,640 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 10:34:05,640 [INFO] Konfigurationen: 2 Jobs
+2025-08-27 10:34:05,641 [INFO] data\0342-0349, mov, ref, python
+2025-08-27 10:34:05,641 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:34:05,671 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:34:07,911 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-27 10:34:07,993 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:34:07,993 [INFO] Ref Points: (27711, 3)
+2025-08-27 10:34:07,993 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:34:07,995 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:34:07,995 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.355s
+2025-08-27 10:34:07,995 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:34:08,361 [INFO] [Exclude Outliers] IQR: 0.011352
+2025-08-27 10:34:08,361 [INFO] [Exclude Outliers] Outlier-Schwellen: -0.024876 bis 0.020532
+2025-08-27 10:34:09,754 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:34:09,756 [INFO] [Exclude Outliers] NaN: 9634
+2025-08-27 10:34:09,756 [INFO] [Exclude Outliers] Valid (ohne NaN): 699494
+2025-08-27 10:34:09,756 [INFO] [Exclude Outliers] Methode: iqr
+2025-08-27 10:34:09,758 [INFO] [Exclude Outliers] Outlier: 61239
+2025-08-27 10:34:09,759 [INFO] [Exclude Outliers] Inlier: 638255
+2025-08-27 10:34:09,759 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_inlier_iqr.txt
+2025-08-27 10:34:09,759 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_outlier_iqr.txt
+2025-08-27 10:34:09,763 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:34:09,764 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:34:09,896 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_outlier_iqr.txt -> data\0342-0349\python_ref_colored_cloud_validonly_outlier_iqr.ply (61239 Punkte)
+2025-08-27 10:34:11,241 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_inlier_iqr.txt -> data\0342-0349\python_ref_colored_cloud_validonly_inlier_iqr.ply (638255 Punkte)
+2025-08-27 10:34:11,244 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-27 10:34:26,293 [INFO] [Job] data\0342-0349 abgeschlossen in 20.653s
+2025-08-27 10:34:26,293 [INFO] data\0342-0349, mov, ref_ai, python
+2025-08-27 10:34:26,293 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:34:26,335 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:34:28,560 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-08-27 10:34:30,731 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:34:30,731 [INFO] Ref Points: (711075, 3)
+2025-08-27 10:34:30,739 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:34:30,739 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:34:30,739 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(711075, 3), corepoints=(709128, 3) | 4.444s
+2025-08-27 10:34:30,739 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:34:31,106 [INFO] [Exclude Outliers] IQR: 0.015857
+2025-08-27 10:34:31,107 [INFO] [Exclude Outliers] Outlier-Schwellen: 0.076879 bis 0.140307
+2025-08-27 10:34:32,474 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:34:32,476 [INFO] [Exclude Outliers] NaN: 22506
+2025-08-27 10:34:32,477 [INFO] [Exclude Outliers] Valid (ohne NaN): 686622
+2025-08-27 10:34:32,477 [INFO] [Exclude Outliers] Methode: iqr
+2025-08-27 10:34:32,479 [INFO] [Exclude Outliers] Outlier: 74946
+2025-08-27 10:34:32,479 [INFO] [Exclude Outliers] Inlier: 611676
+2025-08-27 10:34:32,480 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier_iqr.txt
+2025-08-27 10:34:32,480 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier_iqr.txt
+2025-08-27 10:34:32,484 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:34:32,485 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:34:32,638 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier_iqr.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_outlier_iqr.ply (74946 Punkte)
+2025-08-27 10:34:33,947 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier_iqr.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_inlier_iqr.ply (611676 Punkte)
+2025-08-27 10:34:33,957 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref_ai …
+2025-08-27 10:34:56,779 [INFO] [Job] data\0342-0349 abgeschlossen in 30.484s
+2025-08-27 10:35:55,108 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 10:35:55,108 [INFO] Konfigurationen: 2 Jobs
+2025-08-27 10:35:55,108 [INFO] data\0342-0349, mov, ref, python
+2025-08-27 10:35:55,108 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:35:55,147 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:35:57,409 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-08-27 10:35:57,498 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:35:57,498 [INFO] Ref Points: (27711, 3)
+2025-08-27 10:35:57,499 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:35:57,499 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:35:57,499 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.386s
+2025-08-27 10:35:57,499 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:35:59,292 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:35:59,292 [INFO] [Exclude Outliers] NaN: 9634
+2025-08-27 10:35:59,292 [INFO] [Exclude Outliers] Valid (ohne NaN): 699494
+2025-08-27 10:35:59,292 [INFO] [Exclude Outliers] Methode: nmad
+2025-08-27 10:35:59,300 [INFO] [Exclude Outliers] Outlier: 51158
+2025-08-27 10:35:59,300 [INFO] [Exclude Outliers] Inlier: 648336
+2025-08-27 10:35:59,300 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_inlier_nmad.txt
+2025-08-27 10:35:59,302 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_m3c2_distances_coordinates_outlier_nmad.txt
+2025-08-27 10:35:59,306 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:35:59,307 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:35:59,416 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_outlier_nmad.txt -> data\0342-0349\python_ref_colored_cloud_validonly_outlier_nmad.ply (51158 Punkte)
+2025-08-27 10:36:00,796 [INFO] [TXT->PLY] data\0342-0349\python_ref_m3c2_distances_coordinates_inlier_nmad.txt -> data\0342-0349\python_ref_colored_cloud_validonly_inlier_nmad.ply (648336 Punkte)
+2025-08-27 10:36:00,799 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref …
+2025-08-27 10:36:15,893 [INFO] [Job] data\0342-0349 abgeschlossen in 20.786s
+2025-08-27 10:36:15,893 [INFO] data\0342-0349, mov, ref_ai, python
+2025-08-27 10:36:15,901 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 10:36:15,937 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-08-27 10:36:18,133 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-08-27 10:36:20,343 [INFO] Mov Points: (709128, 3)
+2025-08-27 10:36:20,343 [INFO] Ref Points: (711075, 3)
+2025-08-27 10:36:20,343 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 10:36:20,343 [INFO] Corepoints: (709128, 3)
+2025-08-27 10:36:20,343 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(711075, 3), corepoints=(709128, 3) | 4.444s
+2025-08-27 10:36:20,343 [INFO] [Outlier] Entferne Ausreißer für data\0342-0349
+2025-08-27 10:36:22,072 [INFO] [Exclude Outliers] Gesamt: 709128
+2025-08-27 10:36:22,072 [INFO] [Exclude Outliers] NaN: 22506
+2025-08-27 10:36:22,072 [INFO] [Exclude Outliers] Valid (ohne NaN): 686622
+2025-08-27 10:36:22,072 [INFO] [Exclude Outliers] Methode: nmad
+2025-08-27 10:36:22,072 [INFO] [Exclude Outliers] Outlier: 77186
+2025-08-27 10:36:22,072 [INFO] [Exclude Outliers] Inlier: 609436
+2025-08-27 10:36:22,072 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier_nmad.txt
+2025-08-27 10:36:22,079 [INFO] [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier_nmad.txt
+2025-08-27 10:36:22,083 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:36:22,084 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 10:36:22,248 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_outlier_nmad.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_outlier_nmad.ply (77186 Punkte)
+2025-08-27 10:36:23,549 [INFO] [TXT->PLY] data\0342-0349\python_ref_ai_m3c2_distances_coordinates_inlier_nmad.txt -> data\0342-0349\python_ref_ai_colored_cloud_validonly_inlier_nmad.ply (609436 Punkte)
+2025-08-27 10:36:23,549 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\0342-0349,ref_ai …
+2025-08-27 10:36:46,337 [INFO] [Job] data\0342-0349 abgeschlossen in 30.437s

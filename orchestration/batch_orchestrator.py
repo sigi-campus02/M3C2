@@ -205,8 +205,8 @@ class BatchOrchestrator:
         exclude_outliers(
             data_folder=out_base,
             ref_variant=cfg.filename_ref,
-            outlier_rmse_multiplicator=cfg.outlier_rmse_multiplicator,
-            method="nmad"
+            method=cfg.outlier_detection_method,
+            outlier_multiplicator=cfg.outlier_multiplicator
         )
 
     def _compute_statistics(self, cfg: PipelineConfig, ref) -> None:
@@ -227,7 +227,8 @@ class BatchOrchestrator:
                 out_path=out_path,
                 sheet_name="Results",
                 output_format=self.output_format,
-                outlier_rmse_multiplicator=cfg.outlier_rmse_multiplicator
+                outlier_multiplicator=cfg.outlier_multiplicator,
+                outlier_method=cfg.outlier_detection_method
             )
 
         if cfg.stats_singleordistance == "single":
@@ -275,10 +276,10 @@ class BatchOrchestrator:
         logger.info("[Visual] Erzeuge .ply Dateien für Outliers / Inliers …")
         os.makedirs(out_base, exist_ok=True)
 
-        ply_valid_path_outlier = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly_outlier.ply")
-        ply_valid_path_inlier = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly_inlier.ply")
-        txt_path_outlier = os.path.join(out_base, f"python_{cfg.filename_ref}_m3c2_distances_coordinates_outlier.txt")
-        txt_path_inlier = os.path.join(out_base, f"python_{cfg.filename_ref}_m3c2_distances_coordinates_inlier.txt")
+        ply_valid_path_outlier = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly_outlier_{cfg.outlier_detection_method}.ply")
+        ply_valid_path_inlier = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly_inlier_{cfg.outlier_detection_method}.ply")
+        txt_path_outlier = os.path.join(out_base, f"python_{cfg.filename_ref}_m3c2_distances_coordinates_outlier_{cfg.outlier_detection_method}.txt")
+        txt_path_inlier = os.path.join(out_base, f"python_{cfg.filename_ref}_m3c2_distances_coordinates_inlier_{cfg.outlier_detection_method}.txt")
 
         try:
             VisualizationService.txt_to_ply_with_distance_color(

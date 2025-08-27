@@ -6,7 +6,7 @@ from log_utils.logging_utils import setup_logging
 # folder_ids = ["0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
 
 # folders in folder "data" to be iterated
-folder_ids = ["1130-1133"]
+folder_ids = ["0342-0349"]
 
 # names of reference cloud files to be compared
 ref_variants = ["ref", "ref_ai"]
@@ -49,10 +49,31 @@ proj_override = None                 # Projection Scale Override
 # FALSE: compute parameters with param_estimator
 use_existing_params = False
 
+#-------------------------------------------
 # specify outlier removal parameter 
-# default = 3 (3 * RMSE = Outlier Threshold)
-outlier_rmse_multiplicator = 3
 
+# rmse = np.sqrt(np.mean(distances_valid ** 2)) 
+        # outlier_mask = np.abs(distances_valid) > (outlier_multiplicator * rmse)
+# iqr = q3 - q1; 
+        # lower_bound = q1 - 1.5 * iqr; 
+        # upper_bound = q3 + 1.5 * iqr
+        # outlier_mask = (distances_valid < lower_bound) | (distances_valid > upper_bound)
+# std = np.std(distances_valid)
+        # mu = np.mean(distances_valid)
+        # std = np.std(distances_valid)
+        # outlier_mask = np.abs(distances_valid - mu) > (outlier_multiplicator * std)
+# nmad = 1.4826 * np.median(np.abs(distances_valid - med))
+        # med  = np.median(distances_valid)
+        # outlier_mask = np.abs(distances_valid - med) > (outlier_multiplicator * nmad)
+
+# Default = RMSE
+outlier_detection_method = "nmad"  # Options: "rmse", "iqr", "std", "nmad"
+
+# Multiplikator used for methods rmse, std, nmad
+# default = 3 (e.g. 3 * RMSE = Outlier Threshold)
+outlier_multiplicator = 3
+
+#-------------------------------------------
 
 def main() -> None:
     cfgs = []
@@ -72,7 +93,8 @@ def main() -> None:
                     normal_override,
                     proj_override,
                     use_existing_params,
-                    outlier_rmse_multiplicator
+                    outlier_multiplicator,
+                    outlier_detection_method
                 )
             )
 

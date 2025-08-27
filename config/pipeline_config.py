@@ -17,6 +17,7 @@ class PipelineConfig:
     normal_override: Optional[float] = None
     proj_override: Optional[float] = None
     use_existing_params: bool = False
-    outlier_rmse_multiplicator: float = 3.0 # usual range 3.0 - 5.0 für RMSE Multiplication for Outlier detection and removal
+    outlier_multiplicator: float = 3.0 # usual range 3.0 - 5.0 für RMSE Multiplication for Outlier detection and removal
+    outlier_detection_method: str = "rmse"
     process_python_CC: str = "python"
 
