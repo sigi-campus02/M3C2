@@ -15,7 +15,6 @@ class PlotOptions:
     plot_grouped_bar: bool = True
     plot_violin: bool = True
 
-
 @dataclass(frozen=True)
 class PlotOptionsComparedistances:
     plot_blandaltman: bool = True

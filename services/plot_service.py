@@ -20,50 +20,85 @@ class PlotService:
         colors = config.ensure_colors()
         os.makedirs(config.path, exist_ok=True)
 
-        all_data: Dict[str, np.ndarray] = {}
-        all_gauss: Dict[str, Tuple[float, float]] = {}
-
+        # ---- WITH (inkl. Outlier) sammeln ----
+        data_with_all: Dict[str, np.ndarray] = {}
         for fid in config.folder_ids:
-            data, gauss_params = cls._load_data(fid, config.filenames, config.versions)
-            if not data:
-                logging.warning(f"[Report] Keine Daten für {fid} gefunden.")
+            data_with, _ = cls._load_data(fid, config.filenames, config.versions)
+            if not data_with:
+                logging.warning(f"[Report] Keine WITH-Daten für {fid} gefunden.")
                 continue
-            
-            all_data.update(data)
-            all_gauss.update(gauss_params)
+            data_with_all.update(data_with)
 
-        if not all_data:
+        if not data_with_all:
             logging.warning("[Report] Keine Daten gefunden – keine Plots erzeugt.")
             return
 
-        data_min, data_max, x = cls._get_common_range(all_data)
+        # ---- INLIER (aus *_coordinates_inlier_std.txt) sammeln ----
+        data_inlier_all: Dict[str, np.ndarray] = {}
+        for fid in config.folder_ids:
+            for v in config.versions:
+                label = f"{v}_{fid}"
+                base_inl = f"{v}_Job_0378_8400-110-rad-{fid}-AI_cloud_m3c2_distances_coordinates_inlier_std.txt"
+                path_inl = cls._resolve(fid, base_inl)
+                logging.info(f"[Report] Lade INLIER: {path_inl}")
+                if not os.path.exists(path_inl):
+                    logging.warning(f"[Report] Datei fehlt (INLIER): {path_inl}")
+                    continue
+                try:
+                    arr = cls._load_coordinates_inlier_distances(path_inl)
+                except Exception as e:
+                    logging.error(f"[Report] Laden fehlgeschlagen (INLIER: {path_inl}): {e}")
+                    continue
+                if arr.size:
+                    data_inlier_all[label] = arr
+
+        # Gemeinsamer Range (über WITH, damit Seiten vergleichbar sind)
+        data_min, data_max, x = cls._get_common_range(data_with_all)
 
         # EIN Satz Overlays für ALLE Folder gemeinsam
         fid = "ALLFOLDERS"
-        fname = "ALL"
 
+        # -------- Seite 1: WITH --------
+        fname = "ALL_WITH"
+        gauss_with = {k: norm.fit(v) for k, v in data_with_all.items() if v.size}
         if options.plot_hist:
-            cls._plot_overlay_histogram(fid, fname, all_data, config.bins, data_min, data_max, colors, config.path)
-
+            cls._plot_overlay_histogram(fid, fname, data_with_all, config.bins, data_min, data_max, colors, config.path)
         if options.plot_gauss:
-            cls._plot_overlay_gauss(fid, fname, all_data, all_gauss, x, colors, config.path)
-
+            cls._plot_overlay_gauss(fid, fname, data_with_all, gauss_with, x, colors, config.path)
         if options.plot_weibull:
-            cls._plot_overlay_weibull(fid, fname, all_data, x, colors, config.path)
-
+            cls._plot_overlay_weibull(fid, fname, data_with_all, x, colors, config.path)
         if options.plot_box:
-            cls._plot_overlay_boxplot(fid, fname, all_data, colors, config.path)
-
+            cls._plot_overlay_boxplot(fid, fname, data_with_all, colors, config.path)
         if options.plot_qq:
-            cls._plot_overlay_qq(fid, fname, all_data, colors, config.path)
-
+            cls._plot_overlay_qq(fid, fname, data_with_all, colors, config.path)
         if options.plot_grouped_bar:
-            cls._plot_grouped_bar_means_stds(fid, fname, all_data, colors, config.path)
-
+            cls._plot_grouped_bar_means_stds(fid, fname, data_with_all, colors, config.path)
         if options.plot_violin:
-            cls._plot_overlay_violin(fid, fname, all_data, colors, config.path)
+            cls._plot_overlay_violin(fid, fname, data_with_all, colors, config.path)
+        logging.info(f"[Report] PNGs für {fid} (WITH) erzeugt.")
 
-        logging.info(f"[Report] PNGs für {fid} erzeugt.")
+        # -------- Seite 2: INLIER --------
+        fname = "ALL_INLIER"
+        if data_inlier_all:
+            gauss_inl = {k: norm.fit(v) for k, v in data_inlier_all.items() if v.size}
+            if options.plot_hist:
+                cls._plot_overlay_histogram(fid, fname, data_inlier_all, config.bins, data_min, data_max, colors, config.path)
+            if options.plot_gauss:
+                cls._plot_overlay_gauss(fid, fname, data_inlier_all, gauss_inl, x, colors, config.path)
+            if options.plot_weibull:
+                cls._plot_overlay_weibull(fid, fname, data_inlier_all, x, colors, config.path)
+            if options.plot_box:
+                cls._plot_overlay_boxplot(fid, fname, data_inlier_all, colors, config.path)
+            if options.plot_qq:
+                cls._plot_overlay_qq(fid, fname, data_inlier_all, colors, config.path)
+            if options.plot_grouped_bar:
+                cls._plot_grouped_bar_means_stds(fid, fname, data_inlier_all, colors, config.path)
+            if options.plot_violin:
+                cls._plot_overlay_violin(fid, fname, data_inlier_all, colors, config.path)
+            logging.info(f"[Report] PNGs für {fid} (INLIER) erzeugt.")
+        else:
+            logging.warning("[Report] Keine INLIER-Daten gefunden – zweite Seite bleibt leer.")
+
 
     @classmethod
     def summary_pdf(cls, config: PlotConfig) -> None:
@@ -76,28 +111,37 @@ class PlotService:
             ("GroupedBar_Mean_Std", "Mittelwert & Std Dev", (1, 2)),
         ]
 
-        # Für das globale Overlay:
         fid = "ALLFOLDERS"
-        fig, axs = plt.subplots(2, 3, figsize=(24, 16))
-        for suffix, title, (row, col) in plot_types:
-            ax = axs[row, col]
-            png = os.path.join(config.path, f"{fid}_ALL_{suffix}.png")
-            if os.path.exists(png):
-                img = mpimg.imread(png)
-                ax.imshow(img)
-                ax.axis("off")
-                ax.set_title(title, fontsize=22)
-            else:
-                ax.axis("off")
-                ax.set_title(f"{title}\n(nicht gefunden)", fontsize=18)
-
-        plt.suptitle(f"{fid} – Vergleichsplots", fontsize=28)
-        plt.subplots_adjust(left=0.03, right=0.97, top=0.92, bottom=0.08, wspace=0.08, hspace=0.15)
         outfile = os.path.join(config.path, f"{fid}_comparison_report.pdf")
-        plt.savefig(outfile)
-        plt.close(fig)
+        pdf = PdfPages(outfile)
 
+        def _add_page(suffix_label: str, title_suffix: str):
+            fig, axs = plt.subplots(2, 3, figsize=(24, 16))
+            for suffix, title, (row, col) in plot_types:
+                ax = axs[row, col]
+                png = os.path.join(config.path, f"{fid}_{suffix_label}_{suffix}.png")
+                if os.path.exists(png):
+                    img = mpimg.imread(png)
+                    ax.imshow(img)
+                    ax.axis("off")
+                    ax.set_title(title, fontsize=22)
+                else:
+                    ax.axis("off")
+                    ax.set_title(f"{title}\n(nicht gefunden)", fontsize=18)
+            plt.suptitle(f"{fid} – Vergleichsplots ({title_suffix})", fontsize=28)
+            plt.subplots_adjust(left=0.03, right=0.97, top=0.92, bottom=0.08, wspace=0.08, hspace=0.15)
+            pdf.savefig(fig)
+            plt.close(fig)
+
+        # Seite 1: WITH
+        _add_page("ALL_WITH", "inkl. Outlier")
+
+        # Seite 2: INLIER
+        _add_page("ALL_INLIER", "ohne Outlier (Inlier)")
+
+        pdf.close()
         logging.info(f"[Report] Zusammenfassung gespeichert: {outfile}")
+
 
     # ------- Loader & Helpers --------------------------------
 
@@ -111,56 +155,73 @@ class PlotService:
             return p1
         return os.path.join("data","Multi-illumination", "Job_0378_8400-110", fid, filename)
 
+    @staticmethod
+    def _load_1col_distances(path: str) -> np.ndarray:
+        """Lädt 1-Spalten Distanzdatei ohne Header."""
+        arr = np.loadtxt(path, ndmin=2)        # shape (N,1)
+        vals = arr[:, 0].astype(float)
+        return vals[np.isfinite(vals)]
+
+    @staticmethod
+    def _load_coordinates_inlier_distances(path: str) -> np.ndarray:
+        """Lädt 4-Spalten coordinates_inlier_* mit Header; nimmt letzte Spalte als Distanz."""
+        # Header vorhanden -> skiprows=1
+        arr = np.loadtxt(path, ndmin=2, skiprows=1)  # shape (N,4) erwartet
+        if arr.shape[1] < 4:
+            raise ValueError(f"Erwarte 4 Spalten (x y z distance) in: {path}")
+        vals = arr[:, -1].astype(float)
+        return vals[np.isfinite(vals)]
+
+
     @classmethod
-    def _load_data(cls, fid: str, filenames: List[str], versions: List[str]) -> Tuple[Dict[str, np.ndarray], Dict[str, Tuple[float, float]]]:
+    def _load_data(cls, fid: str, filenames: List[str], versions: List[str]) -> Tuple[
+        Dict[str, np.ndarray], Dict[str, Tuple[float, float]]
+    ]:
         """
-        Lädt alle Kombinationen (version x filename) und legt sie als
-        separate Serien in einem einzigen Dictionary ab.
-        Key = '<version>_<filename>' (z.B. 'python_ref').
-        Erwartete Dateien: '<version>_<filename>_m3c2_distances.txt'
-          - CC: CSV mit ';' und Spalte 'M3C2 distance' (oder erste numerische Spalte)
-          - python: whitespace-getrennte Liste (np.loadtxt)
+        Rückwärts-kompatibel: liefert weiterhin 'WITH' (inkl. Outlier).
+        Für INLIER wird separat in overlay_plots geladen (siehe unten).
         """
-        data: Dict[str, np.ndarray] = {}
-        gauss_params: Dict[str, Tuple[float, float]] = {}
+        data_with: Dict[str, np.ndarray] = {}
+        gauss_with: Dict[str, Tuple[float, float]] = {}
 
         for v in versions:
-            for fname in filenames:
+            # Deine Dateinamen-Patterns:
+            base_with = f"{v}_Job_0378_8400-110-rad-{fid}-AI_cloud_m3c2_distances.txt"
+            path_with = cls._resolve(fid, base_with)
+            logging.info(f"[Report] Lade WITH: {path_with}")
+
+            if not os.path.exists(path_with):
+                logging.warning(f"[Report] Datei fehlt (WITH): {path_with}")
+                continue
+
+            try:
+                # CC könnte auch Semikolon-CSV sein; deine Angabe oben sagt 1 Spalte ohne Header.
+                if v.lower() == "cc":
+                    # Fallback: zuerst versuchen wir einfach als 1-Spalten-Text:
+                    try:
+                        arr = cls._load_1col_distances(path_with)
+                    except Exception:
+                        # Falls es doch CSV ist:
+                        df = pd.read_csv(path_with, sep=";")
+                        num_cols = df.select_dtypes(include=[np.number]).columns
+                        if len(num_cols) == 0:
+                            raise ValueError("Keine numerische Spalte gefunden (CC).")
+                        arr = df[num_cols[0]].astype(float).to_numpy()
+                        arr = arr[np.isfinite(arr)]
+                else:
+                    arr = cls._load_1col_distances(path_with)
+            except Exception as e:
+                logging.error(f"[Report] Laden fehlgeschlagen (WITH: {path_with}): {e}")
+                continue
+
+            if arr.size:
                 label = f"{v}_{fid}"
-                basename = f"{v}_Job_0378_8400-110-rad-{fid}-AI_cloud_m3c2_distances.txt"
-                path = cls._resolve(fid, basename)
-                logging.info(f"[Report] Lade Daten: {path}")
+                data_with[label] = arr
+                mu, std = norm.fit(arr)
+                gauss_with[label] = (float(mu), float(std))
 
-                if not os.path.exists(path):
-                    logging.warning(f"[Report] Datei fehlt: {path}")
-                    continue
+        return data_with, gauss_with
 
-                try:
-                    if v.lower() == "cc":
-                        df = pd.read_csv(path, sep=";")
-                        cand = [c for c in df.columns if "m3c2" in c.lower() and "distance" in c.lower()]
-                        if cand:
-                            col = cand[0]
-                        else:
-                            # Fallback: erste numerische Spalte
-                            num_cols = df.select_dtypes(include=[np.number]).columns
-                            if len(num_cols) == 0:
-                                raise ValueError("Keine numerische Spalte gefunden.")
-                            col = num_cols[0]
-                        arr = df[col].astype(float).to_numpy()
-                    else:
-                        arr = np.loadtxt(path)
-                except Exception as e:
-                    logging.error(f"[Report] Laden fehlgeschlagen ({path}): {e}")
-                    continue
-
-                arr = arr[~np.isnan(arr)]
-                if arr.size:
-                    data[label] = arr
-                    mu, std = norm.fit(arr)
-                    gauss_params[label] = (float(mu), float(std))
-
-        return data, gauss_params
 
     @staticmethod
     def _get_common_range(data: Dict[str, np.ndarray]) -> Tuple[float, float, np.ndarray]:
