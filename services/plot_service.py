@@ -18,39 +18,52 @@ class PlotService:
     @classmethod
     def overlay_plots(cls, config: PlotConfig, options: PlotOptions) -> None:
         colors = config.ensure_colors()
-
         os.makedirs(config.path, exist_ok=True)
+
+        all_data: Dict[str, np.ndarray] = {}
+        all_gauss: Dict[str, Tuple[float, float]] = {}
 
         for fid in config.folder_ids:
             data, gauss_params = cls._load_data(fid, config.filenames, config.versions)
             if not data:
                 logging.warning(f"[Report] Keine Daten für {fid} gefunden.")
                 continue
+            
+            all_data.update(data)
+            all_gauss.update(gauss_params)
 
-            data_min, data_max, x = cls._get_common_range(data)
+        if not all_data:
+            logging.warning("[Report] Keine Daten gefunden – keine Plots erzeugt.")
+            return
 
-            if options.plot_hist:
-                cls._plot_overlay_histogram(fid, "ALL", data, config.bins, data_min, data_max, colors, config.path)
+        data_min, data_max, x = cls._get_common_range(all_data)
 
-            if options.plot_gauss:
-                cls._plot_overlay_gauss(fid, "ALL", data, gauss_params, x, colors, config.path)
+        # EIN Satz Overlays für ALLE Folder gemeinsam
+        fid = "ALLFOLDERS"
+        fname = "ALL"
 
-            if options.plot_weibull:
-                cls._plot_overlay_weibull(fid, "ALL", data, x, colors, config.path)
+        if options.plot_hist:
+            cls._plot_overlay_histogram(fid, fname, all_data, config.bins, data_min, data_max, colors, config.path)
 
-            if options.plot_box:
-                cls._plot_overlay_boxplot(fid, "ALL", data, colors, config.path)
+        if options.plot_gauss:
+            cls._plot_overlay_gauss(fid, fname, all_data, all_gauss, x, colors, config.path)
 
-            if options.plot_qq:
-                cls._plot_overlay_qq(fid, "ALL", data, colors, config.path)
+        if options.plot_weibull:
+            cls._plot_overlay_weibull(fid, fname, all_data, x, colors, config.path)
 
-            if options.plot_grouped_bar:
-                cls._plot_grouped_bar_means_stds(fid, "ALL", data, colors, config.path)
+        if options.plot_box:
+            cls._plot_overlay_boxplot(fid, fname, all_data, colors, config.path)
 
-            if options.plot_violin:
-                cls._plot_overlay_violin(fid, "ALL", data, colors, config.path)
+        if options.plot_qq:
+            cls._plot_overlay_qq(fid, fname, all_data, colors, config.path)
 
-            logging.info(f"[Report] PNGs für {fid} erzeugt.")
+        if options.plot_grouped_bar:
+            cls._plot_grouped_bar_means_stds(fid, fname, all_data, colors, config.path)
+
+        if options.plot_violin:
+            cls._plot_overlay_violin(fid, fname, all_data, colors, config.path)
+
+        logging.info(f"[Report] PNGs für {fid} erzeugt.")
 
     @classmethod
     def summary_pdf(cls, config: PlotConfig) -> None:
@@ -63,25 +76,28 @@ class PlotService:
             ("GroupedBar_Mean_Std", "Mittelwert & Std Dev", (1, 2)),
         ]
 
-        for fid in config.folder_ids:
-            fig, axs = plt.subplots(2, 3, figsize=(24, 16))
-            for suffix, title, (row, col) in plot_types:
-                ax = axs[row, col]
-                png = os.path.join(config.path, f"{fid}_ALL_{suffix}.png")
-                if os.path.exists(png):
-                    img = mpimg.imread(png)
-                    ax.imshow(img)
-                    ax.axis("off")
-                    ax.set_title(title, fontsize=22)
-                else:
-                    ax.axis("off")
-                    ax.set_title(f"{title}\n(nicht gefunden)", fontsize=18)
-            plt.suptitle(f"{fid} – Vergleichsplots", fontsize=28)
-            plt.subplots_adjust(left=0.03, right=0.97, top=0.92, bottom=0.08, wspace=0.08, hspace=0.15)
-            plt.savefig(config.path + f"_comparison_report.pdf")
-            plt.close(fig)
+        # Für das globale Overlay:
+        fid = "ALLFOLDERS"
+        fig, axs = plt.subplots(2, 3, figsize=(24, 16))
+        for suffix, title, (row, col) in plot_types:
+            ax = axs[row, col]
+            png = os.path.join(config.path, f"{fid}_ALL_{suffix}.png")
+            if os.path.exists(png):
+                img = mpimg.imread(png)
+                ax.imshow(img)
+                ax.axis("off")
+                ax.set_title(title, fontsize=22)
+            else:
+                ax.axis("off")
+                ax.set_title(f"{title}\n(nicht gefunden)", fontsize=18)
 
-        logging.info(f"[Report] Zusammenfassung gespeichert")
+        plt.suptitle(f"{fid} – Vergleichsplots", fontsize=28)
+        plt.subplots_adjust(left=0.03, right=0.97, top=0.92, bottom=0.08, wspace=0.08, hspace=0.15)
+        outfile = os.path.join(config.path, f"{fid}_comparison_report.pdf")
+        plt.savefig(outfile)
+        plt.close(fig)
+
+        logging.info(f"[Report] Zusammenfassung gespeichert: {outfile}")
 
     # ------- Loader & Helpers --------------------------------
 
@@ -93,7 +109,7 @@ class PlotService:
         p1 = os.path.join(fid, filename)
         if os.path.exists(p1):
             return p1
-        return os.path.join("../data", fid, filename)
+        return os.path.join("data","Multi-illumination", "Job_0378_8400-110", fid, filename)
 
     @classmethod
     def _load_data(cls, fid: str, filenames: List[str], versions: List[str]) -> Tuple[Dict[str, np.ndarray], Dict[str, Tuple[float, float]]]:
@@ -110,8 +126,8 @@ class PlotService:
 
         for v in versions:
             for fname in filenames:
-                label = f"{v}_{fname}"
-                basename = f"{v}_{fname}_m3c2_distances.txt"
+                label = f"{v}_{fid}"
+                basename = f"{v}_Job_0378_8400-110-rad-{fid}-AI_cloud_m3c2_distances.txt"
                 path = cls._resolve(fid, basename)
                 logging.info(f"[Report] Lade Daten: {path}")
 

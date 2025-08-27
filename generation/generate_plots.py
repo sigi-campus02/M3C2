@@ -1,19 +1,23 @@
-from services.plot_service import PlotService, PlotConfig, PlotOptions
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from services.plot_service import PlotConfig, PlotOptions, PlotService
+
 
 # Mehrere Folder: jeder Folder wird eine Seite im PDF
-folder_ids = ["rocks"]  # , "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
+folder_ids = ["1-1", "1-2", "1-3", "1-4", "1-5", "1-6", "1-7"]
 
 # Vier Kurven insgesamt: je Version x je filename -> python_ref, python_ref_ai, CC_ref, CC_ref_ai
 versions = ["python"]
-filenames = ["points_40", "points_80"]
+filenames = ["Job_0378_8400-110-rad-1-1-AI_cloud"]
 
 cfg = PlotConfig(
     folder_ids=folder_ids,
     filenames=filenames,
     versions=versions,
     bins=256,
-    outdir="../outputs",
-    project="ROCKS"
+    outdir="outputs",
+    project="MARS_Multi_Illumination"
 )
 
 opts = PlotOptions(
