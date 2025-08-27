@@ -6,13 +6,13 @@ from log_utils.logging_utils import setup_logging
 # folder_ids = ["0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
 
 # folders in folder "data" to be iterated
-folder_ids = ["rocks"]
+folder_ids = ["1130-1133"]
 
 # names of reference cloud files to be compared
-ref_variants = ["points_40", "points_80"]
+ref_variants = ["ref", "ref_ai"]
 
 # name of moving point cloud file
-filename_mov = "points_100"
+filename_mov = "mov"
 
 # TRUE: use mov point cloud as corepoints
 # FALSE: use ref point cloud as corepoints
@@ -28,7 +28,7 @@ sample_size = 10000
 
 # TRUE: only statistics are computed based on distance file in folder (no processing of M3C2)
 # FALSE: Runs M3C2 pipeline
-only_stats = False
+only_stats = True
 
 # "single": Only single-cloud statistics 
 # "distance": Distance-based statistics on M3C2 output
@@ -39,7 +39,7 @@ stats_singleordistance = "distance"
 output_format = "excel" 
 
 # name of project used for file names & folder names
-project = "ROCKS"
+project = "MARS"
 
 # specify overrides for M3C2 parameters
 normal_override = None               # Normal Scale Override

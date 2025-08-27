@@ -205,7 +205,8 @@ class BatchOrchestrator:
         exclude_outliers(
             data_folder=out_base,
             ref_variant=cfg.filename_ref,
-            outlier_rmse_multiplicator=cfg.outlier_rmse_multiplicator
+            outlier_rmse_multiplicator=cfg.outlier_rmse_multiplicator,
+            method="nmad"
         )
 
     def _compute_statistics(self, cfg: PipelineConfig, ref) -> None:
