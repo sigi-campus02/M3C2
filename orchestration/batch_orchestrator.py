@@ -33,6 +33,13 @@ class BatchOrchestrator:
         logger.info("=== BatchOrchestrator initialisiert ===")
         logger.info("Konfigurationen: %d Jobs", len(self.configs))
 
+
+    # Kleiner Helfer für konsistente Dateinamen
+    @staticmethod
+    def _run_tag(cfg: PipelineConfig) -> str:
+        # z.B. "1-1_cloud-2-1-AI_cloud"
+        return f"{cfg.filename_mov}-{cfg.filename_ref}"
+    
     def run_all(self) -> None:
         """Run the pipeline for each configured dataset."""
         if not self.configs:
@@ -60,13 +67,12 @@ class BatchOrchestrator:
         if cfg.process_python_CC == "python" and not cfg.only_stats:
             # Nur ausführen, wenn nicht nur Statistiken berechnet werden sollen
             out_base = ds.folder
+            tag = self._run_tag(cfg)
             normal = projection = np.nan
             if cfg.use_existing_params:
-                params_path = os.path.join(
-                    out_base,
-                    f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_params.txt",
-                )
+                params_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt")
                 normal, projection = StatisticsService._load_params(params_path)
+
                 if not np.isnan(normal) and not np.isnan(projection):
                     logger.info(
                         "[Params] geladen: %s (NormalScale=%.6f, SearchScale=%.6f)",
@@ -155,13 +161,16 @@ class BatchOrchestrator:
 
     def _save_params(self, cfg: PipelineConfig, normal: float, projection: float, out_base: str) -> None:
         os.makedirs(out_base, exist_ok=True)
-        params_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_params.txt")
+        tag = self._run_tag(cfg)
+        params_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt")
         with open(params_path, "w") as f:
             f.write(f"NormalScale={normal}\nSearchScale={projection}\n")
         logger.info("[Params] gespeichert: %s", params_path)
 
     def _run_m3c2(self, cfg: PipelineConfig, mov, ref, corepoints, normal: float, projection: float, out_base: str,
     ) -> Tuple[np.ndarray, np.ndarray]:
+        
+        tag = self._run_tag(cfg)
 
         t0 = time.perf_counter()
         runner = M3C2Runner()
@@ -171,7 +180,7 @@ class BatchOrchestrator:
         nan_share = float(np.isnan(distances).sum()) / n if n else 0.0
         logger.info("[Run] Punkte=%d | NaN=%.2f%% | Zeit=%.3fs", n, 100.0 * nan_share, duration)
 
-        dists_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_distances.txt")
+        dists_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances.txt")
         np.savetxt(dists_path, distances, fmt="%.6f")
         logger.info("[Run] Distanzen gespeichert: %s (%d Werte, %.2f%% NaN)", dists_path, n, 100.0 * nan_share)
 
@@ -179,7 +188,8 @@ class BatchOrchestrator:
         # NEU: Speichere XYZ-Koordinaten + Distanz in einer Datei
 
 
-        coords_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_distances_coordinates.txt")
+        coords_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances_coordinates.txt")
+
         if hasattr(mov, "cloud"):
             xyz = np.asarray(mov.cloud)
         else:
@@ -194,22 +204,23 @@ class BatchOrchestrator:
 
 
 
-        uncert_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_m3c2_uncertainties.txt")
+        uncert_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_uncertainties.txt")
         np.savetxt(uncert_path, uncertainties, fmt="%.6f")
         logger.info("[Run] Unsicherheiten gespeichert: %s", uncert_path)
 
         return distances, uncertainties
 
     def _exclude_outliers(self, cfg: PipelineConfig, out_base: str) -> None:
-        
+        tag = self._run_tag(cfg)
         exclude_outliers(
             data_folder=out_base,
-            ref_variant=cfg.filename_ref,
+            ref_variant=tag,
             method=cfg.outlier_detection_method,
             outlier_multiplicator=cfg.outlier_multiplicator
         )
 
     def _compute_statistics(self, cfg: PipelineConfig, ref) -> None:
+        tag = self._run_tag(cfg)
         if cfg.stats_singleordistance == "distance":
             logger.info(f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …")
 
@@ -222,7 +233,7 @@ class BatchOrchestrator:
 
             StatisticsService.compute_m3c2_statistics(
                 folder_ids=[cfg.folder_id],
-                filename_ref=cfg.filename_ref,
+                filename_ref=tag,
                 process_python_CC=cfg.process_python_CC,
                 out_path=out_path,
                 sheet_name="Results",
@@ -254,11 +265,12 @@ class BatchOrchestrator:
 
     def _generate_visuals(self, cfg: PipelineConfig, mov, distances: np.ndarray, out_base: str) -> None:
         logger.info("[Visual] Erzeuge Visualisierungen …")
+        tag = self._run_tag(cfg)
         os.makedirs(out_base, exist_ok=True)
 
-        hist_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_histogram.png")
-        ply_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud.ply")
-        ply_valid_path = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly.ply")
+        hist_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_histogram.png")
+        ply_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_colored_cloud.ply")
+        ply_valid_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_colored_cloud_validonly.ply")
 
         VisualizationService.histogram(distances, path=hist_path)
         logger.info("[Visual] Histogram gespeichert: %s", hist_path)
@@ -275,11 +287,12 @@ class BatchOrchestrator:
     def _generate_clouds_outliers(self, cfg: PipelineConfig, out_base: str) -> None:
         logger.info("[Visual] Erzeuge .ply Dateien für Outliers / Inliers …")
         os.makedirs(out_base, exist_ok=True)
+        tag = self._run_tag(cfg)
 
-        ply_valid_path_outlier = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly_outlier_{cfg.outlier_detection_method}.ply")
-        ply_valid_path_inlier = os.path.join(out_base, f"{cfg.process_python_CC}_{cfg.filename_ref}_colored_cloud_validonly_inlier_{cfg.outlier_detection_method}.ply")
-        txt_path_outlier = os.path.join(out_base, f"python_{cfg.filename_ref}_m3c2_distances_coordinates_outlier_{cfg.outlier_detection_method}.txt")
-        txt_path_inlier = os.path.join(out_base, f"python_{cfg.filename_ref}_m3c2_distances_coordinates_inlier_{cfg.outlier_detection_method}.txt")
+        ply_valid_path_outlier = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_colored_cloud_validonly_outlier_{cfg.outlier_detection_method}.ply")
+        ply_valid_path_inlier = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_colored_cloud_validonly_inlier_{cfg.outlier_detection_method}.ply")
+        txt_path_outlier = os.path.join(out_base, f"python_{tag}_m3c2_distances_coordinates_outlier_{cfg.outlier_detection_method}.txt")
+        txt_path_inlier = os.path.join(out_base, f"python_{tag}_m3c2_distances_coordinates_inlier_{cfg.outlier_detection_method}.txt")
 
         try:
             VisualizationService.txt_to_ply_with_distance_color(
