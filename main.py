@@ -1,108 +1,87 @@
+import os, re
 from orchestration.batch_orchestrator import BatchOrchestrator
 from config.pipeline_config import PipelineConfig
-import os
 from log_utils.logging_utils import setup_logging
 
-# folder_ids = ["0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
-
-# folders in folder "data" to be iterated
-folder_ids = ["1-5_2-5"]
-
-# names of reference cloud files to be compared
-ref_variants = ["Job_0378_8400-110-rad-1-5_2-5_cloud_moved"]
-
-# name of moving point cloud file
-filename_mov = "Job_0378_8400-110-rad-1-5_2-5_cloud_moved"
-
-# TRUE: use mov point cloud as corepoints
-# FALSE: use ref point cloud as corepoints
-mov_as_corepoints = True         
-
-# run M3C2 distance algorithm on subsampled corepoints
-# 1 = no subsampling; corepoints = complete mov
-# e.g. 5 = every 5. point
+# --- deine bestehenden Settings ---
+base_data_dir = "data"
+folder_ids = ["Multi-Illumination"]  # enthält die Files 1-1_cloud, 1-1-AI_cloud, ...
+mov_as_corepoints = True
 use_subsampled_corepoints = 1
-
-# sample size used for parameter estimation (normal & projection scale)
-sample_size = 10000                  
-
-# TRUE: only statistics are computed based on distance file in folder (no processing of M3C2)
-# FALSE: Runs M3C2 pipeline
-only_stats = True
-
-# "single": Only single-cloud statistics 
-# "distance": Distance-based statistics on M3C2 output
+sample_size = 10000
+only_stats = False
 stats_singleordistance = "distance"
-
-# "excel": appends data to excel file
-# "json": appends data to json file
-output_format = "excel" 
-
-# name of project used for file names & folder names
+output_format = "excel"
 project = "MARS_Multi_Illumination"
-
-# specify overrides for M3C2 parameters
-normal_override = 0.002               # Normal Scale Override
-proj_override = 0.004                 # Projection Scale Override
-
-# TRUE: use existing parameters (in folder) if available
-# FALSE: compute parameters with param_estimator
+normal_override = 0.002
+proj_override = 0.004
 use_existing_params = False
-
-#-------------------------------------------
-# specify outlier removal parameter 
-
-# rmse = np.sqrt(np.mean(distances_valid ** 2)) 
-        # outlier_mask = np.abs(distances_valid) > (outlier_multiplicator * rmse)
-# iqr = q3 - q1; 
-        # lower_bound = q1 - 1.5 * iqr; 
-        # upper_bound = q3 + 1.5 * iqr
-        # outlier_mask = (distances_valid < lower_bound) | (distances_valid > upper_bound)
-# std = np.std(distances_valid)
-        # mu = np.mean(distances_valid)
-        # std = np.std(distances_valid)
-        # outlier_mask = np.abs(distances_valid - mu) > (outlier_multiplicator * std)
-# nmad = 1.4826 * np.median(np.abs(distances_valid - med))
-        # med  = np.median(distances_valid)
-        # outlier_mask = np.abs(distances_valid - med) > (outlier_multiplicator * nmad)
-
-# Default = RMSE
-outlier_detection_method = "std"  # Options: "rmse", "iqr", "std", "nmad"
-
-# Multiplikator used for methods rmse, std, nmad
-# default = 3 (e.g. 3 * RMSE = Outlier Threshold)
+outlier_detection_method = "rmse"
 outlier_multiplicator = 3
+# ----------------------------------
 
-#-------------------------------------------
+def parse_files(dirpath: str):
+    """Liest Dateinamen und baut Dicts: {idx: name} für 1-* / 2-* jeweils plain & AI."""
+    re_pat = re.compile(r'^(?Pgrp>[12])-(?Pidx>\d+)(?Pai>-AI)?_cloud$')
+    one_plain, one_ai, two_plain, two_ai = {}, {}, {}, {}
+    for fn in os.listdir(dirpath):
+        m = re_pat.match(fn)
+        if not m: 
+            continue
+        grp = m.group('grp')
+        idx = int(m.group('idx'))
+        ai  = bool(m.group('ai'))
+        if grp == '1':
+            (one_ai if ai else one_plain)[idx] = fn
+        else:
+            (two_ai if ai else two_plain)[idx] = fn
+    return one_plain, one_ai, two_plain, two_ai
 
 def main() -> None:
     cfgs = []
+
     for fid in folder_ids:
-        folder = os.path.join("data", "Multi-illumination", "Job_0378_8400-110", "1-5_2-5",fid) # angepasst wenn es Unterordner in Data gibt ansonsten "data"
-        for filename_ref in ref_variants:
-            # filename_ref = f"Job_0378_8400-110-rad-{fid}-AI_cloud"
-            # filename_mov = f"Job_0378_8400-110-rad-{fid}_cloud"
-            cfgs.append(
-                PipelineConfig(
-                    folder,
-                    filename_mov,
-                    filename_ref,
-                    mov_as_corepoints,
-                    use_subsampled_corepoints,
-                    only_stats,
-                    stats_singleordistance,
-                    project,
-                    normal_override,
-                    proj_override,
-                    use_existing_params,
-                    outlier_multiplicator,
-                    outlier_detection_method
-                )
-            )
+        folder = os.path.join(base_data_dir, fid)
+        one_plain, one_ai, two_plain, two_ai = parse_files(folder)
+
+        # 1) 1-i_cloud  vs 2-i_cloud
+        for i in sorted(set(one_plain) & set(two_plain)):
+            mov_name = one_plain[i]
+            ref_name = two_plain[i]
+            cfgs.append(PipelineConfig(
+                folder, mov_name, ref_name,
+                mov_as_corepoints, use_subsampled_corepoints,
+                only_stats, stats_singleordistance,
+                project, normal_override, proj_override,
+                use_existing_params, outlier_multiplicator, outlier_detection_method
+            ))
+
+        # 2) 1-i_cloud  vs 2-i-AI_cloud
+        for i in sorted(set(one_plain) & set(two_ai)):
+            mov_name = one_plain[i]
+            ref_name = two_ai[i]
+            cfgs.append(PipelineConfig(
+                folder, mov_name, ref_name,
+                mov_as_corepoints, use_subsampled_corepoints,
+                only_stats, stats_singleordistance,
+                project, normal_override, proj_override,
+                use_existing_params, outlier_multiplicator, outlier_detection_method
+            ))
+
+        # 3) 1-i-AI_cloud vs 2-i_cloud
+        for i in sorted(set(one_ai) & set(two_plain)):
+            mov_name = one_ai[i]
+            ref_name = two_plain[i]
+            cfgs.append(PipelineConfig(
+                folder, mov_name, ref_name,
+                mov_as_corepoints, use_subsampled_corepoints,
+                only_stats, stats_singleordistance,
+                project, normal_override, proj_override,
+                use_existing_params, outlier_multiplicator, outlier_detection_method
+            ))
 
     orchestrator = BatchOrchestrator(cfgs, sample_size, output_format)
     orchestrator.run_all()
-
 
 if __name__ == "__main__":
     setup_logging()
