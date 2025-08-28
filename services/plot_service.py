@@ -38,7 +38,7 @@ class PlotService:
         for fid in config.folder_ids:
             for v in config.versions:
                 label = f"{v}_{fid}"
-                base_inl = f"{v}_Job_0378_8400-110-rad-{fid}-AI_cloud_m3c2_distances_coordinates_inlier_std.txt"
+                base_inl = f"{v}_Job_0378_8400-110-rad-{fid}_cloud_moved_m3c2_distances_coordinates_inlier_std.txt"
                 path_inl = cls._resolve(fid, base_inl)
                 logging.info(f"[Report] Lade INLIER: {path_inl}")
                 if not os.path.exists(path_inl):
@@ -72,7 +72,7 @@ class PlotService:
         if options.plot_qq:
             cls._plot_overlay_qq(fid, fname, data_with_all, colors, config.path)
         if options.plot_grouped_bar:
-            cls._plot_grouped_bar_means_stds(fid, fname, data_with_all, colors, config.path)
+            cls._plot_grouped_bar_means_stds_dual(fid, fname, data_with_all, data_inlier_all, colors, config.path)
         if options.plot_violin:
             cls._plot_overlay_violin(fid, fname, data_with_all, colors, config.path)
         logging.info(f"[Report] PNGs für {fid} (WITH) erzeugt.")
@@ -92,7 +92,7 @@ class PlotService:
             if options.plot_qq:
                 cls._plot_overlay_qq(fid, fname, data_inlier_all, colors, config.path)
             if options.plot_grouped_bar:
-                cls._plot_grouped_bar_means_stds(fid, fname, data_inlier_all, colors, config.path)
+                cls._plot_grouped_bar_means_stds_dual(fid, fname, data_with_all, data_inlier_all, colors, config.path)
             if options.plot_violin:
                 cls._plot_overlay_violin(fid, fname, data_inlier_all, colors, config.path)
             logging.info(f"[Report] PNGs für {fid} (INLIER) erzeugt.")
@@ -153,7 +153,7 @@ class PlotService:
         p1 = os.path.join(fid, filename)
         if os.path.exists(p1):
             return p1
-        return os.path.join("data","Multi-illumination", "Job_0378_8400-110", fid, filename)
+        return os.path.join("data","Multi-illumination", "Job_0378_8400-110", "1-3_2-3", fid, filename)
 
     @staticmethod
     def _load_1col_distances(path: str) -> np.ndarray:
@@ -186,7 +186,7 @@ class PlotService:
 
         for v in versions:
             # Deine Dateinamen-Patterns:
-            base_with = f"{v}_Job_0378_8400-110-rad-{fid}-AI_cloud_m3c2_distances.txt"
+            base_with = f"{v}_Job_0378_8400-110-rad-{fid}_cloud_moved_m3c2_distances.txt"
             path_with = cls._resolve(fid, base_with)
             logging.info(f"[Report] Lade WITH: {path_with}")
 
@@ -346,36 +346,86 @@ class PlotService:
         plt.close()
 
     @staticmethod
-    def _plot_grouped_bar_means_stds(fid: str, fname: str, data: Dict[str, np.ndarray],
-                                     colors: Dict[str, str], outdir: str) -> None:
-        xlabels, mean, mean_no_out, std, std_no_out = [], [], [], [], []
+    def _plot_grouped_bar_means_stds_dual(
+        fid: str,
+        fname: str,
+        data_with: Dict[str, np.ndarray],
+        data_inlier: Dict[str, np.ndarray],
+        colors: Dict[str, str],
+        outdir: str,
+    ) -> None:
+        """
+        Pro FOLDER (aus keys wie 'python_1-1') nebeneinander:
+        - Balken 'WITH' (mit Outlier)
+        - Balken 'INLIER' (ohne Outlier)
+        Aggregation: concat über alle Versionen eines Folders.
+        """
+        # Hilfsfunktion: FOLDER-ID aus Label "version_folder"
+        def _folder_of(label: str) -> str:
+            # label ist "version_fid" -> wir wollen die komplette fid, auch wenn sie Unterstriche enthält
+            return label.split("_", 1)[1] if "_" in label else label
 
-        for v, arr in data.items():
-            xlabels.append(v)
-            mean.append(float(np.mean(arr)))
-            std.append(float(np.std(arr)))
-            rms = float(np.sqrt(np.mean(arr**2))) if arr.size else 0.0
-            non_outlier = arr[np.abs(arr) <= (3 * rms)] if arr.size else np.array([])
-            mean_no_out.append(float(np.mean(non_outlier)) if non_outlier.size else np.nan)
-            std_no_out.append(float(np.std(non_outlier)) if non_outlier.size else np.nan)
+        # Ordne Werte je Folder (concat über Versionen)
+        folder_to_with: Dict[str, np.ndarray] = {}
+        folder_to_inl: Dict[str, np.ndarray] = {}
 
-        x = np.arange(len(xlabels))
-        width = 0.35
-        fig, ax = plt.subplots(2, 1, figsize=(max(8, len(xlabels) * 2), 7), sharex=True)
+        for k, arr in data_with.items():
+            f = _folder_of(k)
+            folder_to_with.setdefault(f, [])
+            folder_to_with[f].append(arr)
+        for k, arr in data_inlier.items():
+            f = _folder_of(k)
+            folder_to_inl.setdefault(f, [])
+            folder_to_inl[f].append(arr)
 
-        cols = [colors.get(v, "#aaaaaa") for v in xlabels]
-        ax[0].bar(x - width / 2, mean, width, label="mit Outlier", color=cols)
-        ax[0].bar(x + width / 2, mean_no_out, width, label="ohne Outlier", color=cols, alpha=0.5)
-        ax[0].set_ylabel("Mittelwert")
-        ax[0].set_title(f"Mittelwert mit/ohne Outlier – {fid}/{fname}")
+        # Einheitliche Folder-Reihenfolge
+        all_folders = sorted(set(folder_to_with.keys()) | set(folder_to_inl.keys()))
+
+        # Kennzahlen je Folder
+        means_with, means_inl, stds_with, stds_inl, xlabels, bar_colors = [], [], [], [], [], []
+        for f in all_folders:
+            arr_with = np.concatenate(folder_to_with.get(f, [])) if f in folder_to_with else np.array([])
+            arr_inl  = np.concatenate(folder_to_inl.get(f, [])) if f in folder_to_inl  else np.array([])
+
+            mean_w_signed = float(np.mean(arr_with)) if arr_with.size else np.nan
+            std_w         = float(np.std(arr_with))  if arr_with.size else np.nan
+            mean_i_signed = float(np.mean(arr_inl))  if arr_inl.size  else np.nan
+            std_i         = float(np.std(arr_inl))   if arr_inl.size  else np.nan
+
+            xlabels.append(f)
+            mean_w = float(np.abs(mean_w_signed)) if np.isfinite(mean_w_signed) else np.nan
+            mean_i = float(np.abs(mean_i_signed)) if np.isfinite(mean_i_signed) else np.nan
+            
+            means_with.append(mean_w); stds_with.append(std_w)
+            means_inl.append(mean_i);  stds_inl.append(std_i)
+
+            # Farbe pro Folder (nimm erste passende Serie, sonst Default)
+            # Versuche label "{irgendeine_version}_{folder}" zu finden:
+            candidate_label = next((k for k in data_with.keys() if k.endswith("_" + f)), None)
+            c = colors.get(candidate_label, "#8aa2ff")
+            bar_colors.append(c)
+
+        x = np.arange(len(all_folders))
+        width = 0.4
+
+        fig, ax = plt.subplots(2, 1, figsize=(max(10, len(all_folders) * 1.8), 8), sharex=True)
+
+        # Mittelwerte
+        ax[0].bar(x - width/2, means_with, width, label="mit Outlier (WITH)", color=bar_colors)
+        ax[0].bar(x + width/2, means_inl,  width, label="ohne Outlier (INLIER)", color=bar_colors, alpha=0.55)
+        ax[0].set_ylabel("Mittelwert (|μ|)")      # optional klarstellen
+        ax[0].set_title(f"Mittelwert je Folder – {fid}/{fname}")
+        ax[0].set_ylim(bottom=0)                  # NEU: nie unter 0
         ax[0].legend()
 
-        ax[1].bar(x - width / 2, std, width, label="mit Outlier", color=cols)
-        ax[1].bar(x + width / 2, std_no_out, width, label="ohne Outlier", color=cols, alpha=0.5)
-        ax[1].set_ylabel("Standardabweichung")
-        ax[1].set_title(f"Standardabweichung mit/ohne Outlier – {fid}/{fname}")
+        # Standardabweichungen
+        ax[1].bar(x - width/2, stds_with, width, label="mit Outlier (WITH)", color=bar_colors)
+        ax[1].bar(x + width/2, stds_inl,  width, label="ohne Outlier (INLIER)", color=bar_colors, alpha=0.55)
+        ax[1].set_ylabel("Standardabweichung (σ)")
+        ax[1].set_title(f"Standardabweichung je Folder – {fid}/{fname}")
         ax[1].set_xticks(x)
         ax[1].set_xticklabels(xlabels, rotation=30, ha="right")
+        ax[1].set_ylim(bottom=0)                  # NEU: nie unter 0
         ax[1].legend()
 
         plt.tight_layout()
@@ -383,6 +433,7 @@ class PlotService:
         plt.savefig(out)
         plt.close()
         logging.info(f"[Report] Plot gespeichert: {out}")
+
 
 
     @staticmethod

@@ -3299,3 +3299,321 @@ OSError: [WinError 123] Die Syntax für den Dateinamen, Verzeichnisnamen oder die
 2025-08-27 13:39:19,339 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-7\python_Job_0378_8400-110-rad-1-7-AI_cloud_m3c2_distances_coordinates_inlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-7\python_Job_0378_8400-110-rad-1-7-AI_cloud_colored_cloud_validonly_inlier_std.ply (1765379 Punkte)
 2025-08-27 13:39:19,350 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-illumination\Job_0378_8400-110\1-7,Job_0378_8400-110-rad-1-7-AI_cloud …
 2025-08-27 13:39:41,985 [INFO] [Job] data\Multi-illumination\Job_0378_8400-110\1-7 abgeschlossen in 213.334s
+2025-08-27 15:44:21,581 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 15:44:21,581 [INFO] Konfigurationen: 1 Jobs
+2025-08-27 15:44:21,581 [INFO] data\Multi-illumination\Job_0378_8400-110\1-5_2-5, Job_0378_8400-110-rad-1-5_cloud_moved, Job_0378_8400-110-rad-1-5-AI_cloud_moved, python
+2025-08-27 15:45:12,781 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-5_2-5\Job_0378_8400-110-rad-1-5_cloud_moved.xyz'
+2025-08-27 15:45:18,429 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-5_2-5\Job_0378_8400-110-rad-1-5-AI_cloud_moved.xyz'
+2025-08-27 15:45:24,760 [INFO] Mov Points: (1838147, 3)
+2025-08-27 15:45:24,760 [INFO] Ref Points: (2117896, 3)
+2025-08-27 15:45:24,760 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 15:45:24,760 [INFO] Corepoints: (1838147, 3)
+2025-08-27 15:45:24,760 [INFO] [Load] data/data\Multi-illumination\Job_0378_8400-110\1-5_2-5: mov=(1838147, 3), ref=(2117896, 3), corepoints=(1838147, 3) | 63.174s
+2025-08-27 15:45:24,760 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-08-27 15:45:24,768 [INFO] [Params] gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_m3c2_params.txt
+2025-08-27 15:45:24,768 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 15:45:25,208 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 15:46:51,788 [INFO] [Run] Punkte=1838147 | NaN=0.15% | Zeit=87.018s
+2025-08-27 15:46:54,227 [INFO] [Run] Distanzen gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_m3c2_distances.txt (1838147 Werte, 0.15% NaN)
+2025-08-27 15:46:57,847 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_m3c2_distances_coordinates.txt
+2025-08-27 15:47:04,141 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_m3c2_uncertainties.txt
+2025-08-27 15:47:04,151 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-27 15:47:05,173 [INFO] [Visual] Histogram gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_histogram.png
+2025-08-27 15:47:08,204 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_colored_cloud.ply
+2025-08-27 15:47:11,116 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_colored_cloud_validonly.ply
+2025-08-27 15:47:11,116 [INFO] [Outlier] Entferne Ausreißer für data\Multi-illumination\Job_0378_8400-110\1-5_2-5
+2025-08-27 15:47:12,032 [INFO] [Exclude Outliers] STD: 0.000864
+2025-08-27 15:47:12,032 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.002593
+2025-08-27 15:47:15,703 [INFO] [Exclude Outliers] Gesamt: 1838147
+2025-08-27 15:47:15,703 [INFO] [Exclude Outliers] NaN: 2713
+2025-08-27 15:47:15,703 [INFO] [Exclude Outliers] Valid (ohne NaN): 1835434
+2025-08-27 15:47:15,703 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 15:47:15,712 [INFO] [Exclude Outliers] Outlier: 20395
+2025-08-27 15:47:15,713 [INFO] [Exclude Outliers] Inlier: 1815039
+2025-08-27 15:47:15,713 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_m3c2_distances_coordinates_inlier_std.txt
+2025-08-27 15:47:15,713 [INFO] [Exclude Outliers] Outlier gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_m3c2_distances_coordinates_outlier_std.txt
+2025-08-27 15:47:15,721 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 15:47:15,721 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 15:47:15,765 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_m3c2_distances_coordinates_outlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_colored_cloud_validonly_outlier_std.ply (20395 Punkte)
+2025-08-27 15:47:19,520 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_m3c2_distances_coordinates_inlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5-AI_cloud_moved_colored_cloud_validonly_inlier_std.ply (1815039 Punkte)
+2025-08-27 15:47:19,528 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-illumination\Job_0378_8400-110\1-5_2-5,Job_0378_8400-110-rad-1-5-AI_cloud_moved …
+2025-08-27 15:47:41,271 [INFO] [Job] data\Multi-illumination\Job_0378_8400-110\1-5_2-5 abgeschlossen in 199.680s
+2025-08-27 15:49:02,028 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 15:49:02,028 [INFO] Konfigurationen: 1 Jobs
+2025-08-27 15:49:02,028 [INFO] data\Multi-illumination\Job_0378_8400-110\1-5_2-5, Job_0378_8400-110-rad-2-5_cloud_moved, Job_0378_8400-110-rad-2-5-AI_cloud_moved, python
+2025-08-27 15:49:52,618 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-5_2-5\Job_0378_8400-110-rad-2-5_cloud_moved.xyz'
+2025-08-27 15:49:58,159 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-5_2-5\Job_0378_8400-110-rad-2-5-AI_cloud_moved.xyz'
+2025-08-27 15:50:04,495 [INFO] Mov Points: (1836691, 3)
+2025-08-27 15:50:04,495 [INFO] Ref Points: (2115873, 3)
+2025-08-27 15:50:04,495 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 15:50:04,495 [INFO] Corepoints: (1836691, 3)
+2025-08-27 15:50:04,495 [INFO] [Load] data/data\Multi-illumination\Job_0378_8400-110\1-5_2-5: mov=(1836691, 3), ref=(2115873, 3), corepoints=(1836691, 3) | 62.469s
+2025-08-27 15:50:04,495 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-08-27 15:50:04,503 [INFO] [Params] gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_m3c2_params.txt
+2025-08-27 15:50:04,503 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 15:50:04,945 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 15:51:25,726 [INFO] [Run] Punkte=1836691 | NaN=0.10% | Zeit=81.234s
+2025-08-27 15:51:28,155 [INFO] [Run] Distanzen gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_m3c2_distances.txt (1836691 Werte, 0.10% NaN)
+2025-08-27 15:51:31,770 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_m3c2_distances_coordinates.txt
+2025-08-27 15:51:38,127 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_m3c2_uncertainties.txt
+2025-08-27 15:51:38,135 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-27 15:51:39,124 [INFO] [Visual] Histogram gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_histogram.png
+2025-08-27 15:51:42,081 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_colored_cloud.ply
+2025-08-27 15:51:45,018 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_colored_cloud_validonly.ply
+2025-08-27 15:51:45,018 [INFO] [Outlier] Entferne Ausreißer für data\Multi-illumination\Job_0378_8400-110\1-5_2-5
+2025-08-27 15:51:45,957 [INFO] [Exclude Outliers] STD: 0.000808
+2025-08-27 15:51:45,957 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.002425
+2025-08-27 15:51:49,557 [INFO] [Exclude Outliers] Gesamt: 1836691
+2025-08-27 15:51:49,567 [INFO] [Exclude Outliers] NaN: 1825
+2025-08-27 15:51:49,567 [INFO] [Exclude Outliers] Valid (ohne NaN): 1834866
+2025-08-27 15:51:49,567 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 15:51:49,572 [INFO] [Exclude Outliers] Outlier: 19268
+2025-08-27 15:51:49,573 [INFO] [Exclude Outliers] Inlier: 1815598
+2025-08-27 15:51:49,573 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_m3c2_distances_coordinates_inlier_std.txt
+2025-08-27 15:51:49,574 [INFO] [Exclude Outliers] Outlier gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_m3c2_distances_coordinates_outlier_std.txt
+2025-08-27 15:51:49,578 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 15:51:49,578 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 15:51:49,626 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_m3c2_distances_coordinates_outlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_colored_cloud_validonly_outlier_std.ply (19268 Punkte)
+2025-08-27 15:51:53,452 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_m3c2_distances_coordinates_inlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5-AI_cloud_moved_colored_cloud_validonly_inlier_std.ply (1815598 Punkte)
+2025-08-27 15:51:53,460 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-illumination\Job_0378_8400-110\1-5_2-5,Job_0378_8400-110-rad-2-5-AI_cloud_moved …
+2025-08-27 15:52:08,286 [INFO] [Job] data\Multi-illumination\Job_0378_8400-110\1-5_2-5 abgeschlossen in 186.256s
+2025-08-27 15:52:59,492 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 15:52:59,492 [INFO] Konfigurationen: 1 Jobs
+2025-08-27 15:52:59,492 [INFO] data\Multi-illumination\Job_0378_8400-110\1-5_2-5, Job_0378_8400-110-rad-1-5_cloud_moved, Job_0378_8400-110-rad-1-5_cloud_moved, python
+2025-08-27 15:52:59,492 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 15:52:59,535 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-5_2-5\Job_0378_8400-110-rad-1-5_cloud_moved.xyz'
+2025-08-27 15:53:14,029 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 15:53:14,029 [INFO] Konfigurationen: 1 Jobs
+2025-08-27 15:53:14,030 [INFO] data\Multi-illumination\Job_0378_8400-110\1-5_2-5, Job_0378_8400-110-rad-2-5_cloud_moved, Job_0378_8400-110-rad-1-5_cloud_moved, python
+2025-08-27 15:53:14,030 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 15:53:14,070 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-5_2-5\Job_0378_8400-110-rad-2-5_cloud_moved.xyz'
+2025-08-27 15:53:19,699 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-5_2-5\Job_0378_8400-110-rad-1-5_cloud_moved.xyz'
+2025-08-27 15:53:25,285 [INFO] Mov Points: (1836691, 3)
+2025-08-27 15:53:25,286 [INFO] Ref Points: (1838147, 3)
+2025-08-27 15:53:25,286 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 15:53:25,287 [INFO] Corepoints: (1836691, 3)
+2025-08-27 15:53:25,287 [INFO] [Load] data/data\Multi-illumination\Job_0378_8400-110\1-5_2-5: mov=(1836691, 3), ref=(1838147, 3), corepoints=(1836691, 3) | 11.258s
+2025-08-27 15:53:25,288 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-08-27 15:53:25,289 [INFO] [Params] gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_m3c2_params.txt
+2025-08-27 15:53:25,289 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 15:53:25,744 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 15:55:07,392 [INFO] [Run] Punkte=1836691 | NaN=2.78% | Zeit=102.112s
+2025-08-27 15:55:09,791 [INFO] [Run] Distanzen gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_m3c2_distances.txt (1836691 Werte, 2.78% NaN)
+2025-08-27 15:55:13,393 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_m3c2_distances_coordinates.txt
+2025-08-27 15:55:19,738 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_m3c2_uncertainties.txt
+2025-08-27 15:55:19,742 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-27 15:55:20,725 [INFO] [Visual] Histogram gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_histogram.png
+2025-08-27 15:55:23,769 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_colored_cloud.ply
+2025-08-27 15:55:26,651 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_colored_cloud_validonly.ply
+2025-08-27 15:55:26,651 [INFO] [Outlier] Entferne Ausreißer für data\Multi-illumination\Job_0378_8400-110\1-5_2-5
+2025-08-27 15:55:27,584 [INFO] [Exclude Outliers] STD: 0.000253
+2025-08-27 15:55:27,584 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.000760
+2025-08-27 15:55:31,093 [INFO] [Exclude Outliers] Gesamt: 1836691
+2025-08-27 15:55:31,101 [INFO] [Exclude Outliers] NaN: 51076
+2025-08-27 15:55:31,101 [INFO] [Exclude Outliers] Valid (ohne NaN): 1785615
+2025-08-27 15:55:31,101 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 15:55:31,107 [INFO] [Exclude Outliers] Outlier: 17355
+2025-08-27 15:55:31,108 [INFO] [Exclude Outliers] Inlier: 1768260
+2025-08-27 15:55:31,109 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_m3c2_distances_coordinates_inlier_std.txt
+2025-08-27 15:55:31,109 [INFO] [Exclude Outliers] Outlier gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_m3c2_distances_coordinates_outlier_std.txt
+2025-08-27 15:55:31,112 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 15:55:31,112 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 15:55:31,151 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_m3c2_distances_coordinates_outlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_colored_cloud_validonly_outlier_std.ply (17355 Punkte)
+2025-08-27 15:55:34,869 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_m3c2_distances_coordinates_inlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-1-5_cloud_moved_colored_cloud_validonly_inlier_std.ply (1768260 Punkte)
+2025-08-27 15:55:34,878 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-illumination\Job_0378_8400-110\1-5_2-5,Job_0378_8400-110-rad-1-5_cloud_moved …
+2025-08-27 15:56:34,436 [INFO] [Job] data\Multi-illumination\Job_0378_8400-110\1-5_2-5 abgeschlossen in 200.414s
+2025-08-27 15:58:33,736 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 15:58:33,736 [INFO] Konfigurationen: 1 Jobs
+2025-08-27 15:58:33,737 [INFO] data\Multi-illumination\Job_0378_8400-110\1-5_2-5, Job_0378_8400-110-rad-1-5_cloud_moved, Job_0378_8400-110-rad-2-5_cloud_moved, python
+2025-08-27 15:58:33,737 [INFO] Nutze py4dgeo.read_from_xyz
+2025-08-27 15:58:33,763 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-5_2-5\Job_0378_8400-110-rad-1-5_cloud_moved.xyz'
+2025-08-27 15:58:39,405 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-5_2-5\Job_0378_8400-110-rad-2-5_cloud_moved.xyz'
+2025-08-27 15:58:44,936 [INFO] Mov Points: (1838147, 3)
+2025-08-27 15:58:44,936 [INFO] Ref Points: (1836691, 3)
+2025-08-27 15:58:44,936 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 15:58:44,936 [INFO] Corepoints: (1838147, 3)
+2025-08-27 15:58:44,936 [INFO] [Load] data/data\Multi-illumination\Job_0378_8400-110\1-5_2-5: mov=(1838147, 3), ref=(1836691, 3), corepoints=(1838147, 3) | 11.201s
+2025-08-27 15:58:44,936 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-08-27 15:58:44,936 [INFO] [Params] gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_m3c2_params.txt
+2025-08-27 15:58:44,936 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 15:58:45,393 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 15:59:59,466 [INFO] [Run] Punkte=1838147 | NaN=2.80% | Zeit=74.526s
+2025-08-27 16:00:01,937 [INFO] [Run] Distanzen gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_m3c2_distances.txt (1838147 Werte, 2.80% NaN)
+2025-08-27 16:00:05,658 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_m3c2_distances_coordinates.txt
+2025-08-27 16:00:12,203 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_m3c2_uncertainties.txt
+2025-08-27 16:00:12,203 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-27 16:00:13,249 [INFO] [Visual] Histogram gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_histogram.png
+2025-08-27 16:00:16,289 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_colored_cloud.ply
+2025-08-27 16:00:19,264 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_colored_cloud_validonly.ply
+2025-08-27 16:00:19,264 [INFO] [Outlier] Entferne Ausreißer für data\Multi-illumination\Job_0378_8400-110\1-5_2-5
+2025-08-27 16:00:20,252 [INFO] [Exclude Outliers] STD: 0.000243
+2025-08-27 16:00:20,254 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.000730
+2025-08-27 16:00:23,922 [INFO] [Exclude Outliers] Gesamt: 1838147
+2025-08-27 16:00:23,929 [INFO] [Exclude Outliers] NaN: 51530
+2025-08-27 16:00:23,929 [INFO] [Exclude Outliers] Valid (ohne NaN): 1786617
+2025-08-27 16:00:23,929 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 16:00:23,936 [INFO] [Exclude Outliers] Outlier: 17881
+2025-08-27 16:00:23,936 [INFO] [Exclude Outliers] Inlier: 1768736
+2025-08-27 16:00:23,936 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_m3c2_distances_coordinates_inlier_std.txt
+2025-08-27 16:00:23,937 [INFO] [Exclude Outliers] Outlier gespeichert: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_m3c2_distances_coordinates_outlier_std.txt
+2025-08-27 16:00:23,947 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 16:00:23,947 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 16:00:23,991 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_m3c2_distances_coordinates_outlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_colored_cloud_validonly_outlier_std.ply (17881 Punkte)
+2025-08-27 16:00:27,736 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_m3c2_distances_coordinates_inlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-5_2-5\python_Job_0378_8400-110-rad-2-5_cloud_moved_colored_cloud_validonly_inlier_std.ply (1768736 Punkte)
+2025-08-27 16:00:27,744 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-illumination\Job_0378_8400-110\1-5_2-5,Job_0378_8400-110-rad-2-5_cloud_moved …
+2025-08-27 16:01:25,926 [INFO] [Job] data\Multi-illumination\Job_0378_8400-110\1-5_2-5 abgeschlossen in 172.190s
+2025-08-27 16:34:46,590 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 16:34:46,590 [INFO] Konfigurationen: 1 Jobs
+2025-08-27 16:34:46,590 [INFO] data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI, Job_0378_8400-110-rad-1-3_cloud_moved, Job_0378_8400-110-rad-1-3-AI_cloud_moved, python
+2025-08-27 16:35:41,977 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\Job_0378_8400-110-rad-1-3_cloud_moved.xyz'
+2025-08-27 16:35:47,815 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\Job_0378_8400-110-rad-1-3-AI_cloud_moved.xyz'
+2025-08-27 16:35:54,574 [INFO] Mov Points: (1900069, 3)
+2025-08-27 16:35:54,574 [INFO] Ref Points: (2205244, 3)
+2025-08-27 16:35:54,574 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 16:35:54,577 [INFO] Corepoints: (1900069, 3)
+2025-08-27 16:35:54,577 [INFO] [Load] data/data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI: mov=(1900069, 3), ref=(2205244, 3), corepoints=(1900069, 3) | 67.986s
+2025-08-27 16:35:54,577 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-08-27 16:35:54,577 [INFO] [Params] gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_m3c2_params.txt
+2025-08-27 16:35:54,577 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 16:35:55,033 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 16:36:44,300 [INFO] [Run] Punkte=1900069 | NaN=0.31% | Zeit=49.732s
+2025-08-27 16:36:47,002 [INFO] [Run] Distanzen gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_m3c2_distances.txt (1900069 Werte, 0.31% NaN)
+2025-08-27 16:36:50,954 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_m3c2_distances_coordinates.txt
+2025-08-27 16:36:57,983 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_m3c2_uncertainties.txt
+2025-08-27 16:36:57,983 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-27 16:36:59,012 [INFO] [Visual] Histogram gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_histogram.png
+2025-08-27 16:37:02,321 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_colored_cloud.ply
+2025-08-27 16:37:05,625 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_colored_cloud_validonly.ply
+2025-08-27 16:37:05,625 [INFO] [Outlier] Entferne Ausreißer für data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI
+2025-08-27 16:37:06,584 [INFO] [Exclude Outliers] STD: 0.000918
+2025-08-27 16:37:06,584 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.002753
+2025-08-27 16:37:10,548 [INFO] [Exclude Outliers] Gesamt: 1900069
+2025-08-27 16:37:10,556 [INFO] [Exclude Outliers] NaN: 5914
+2025-08-27 16:37:10,556 [INFO] [Exclude Outliers] Valid (ohne NaN): 1894155
+2025-08-27 16:37:10,556 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 16:37:10,562 [INFO] [Exclude Outliers] Outlier: 29814
+2025-08-27 16:37:10,563 [INFO] [Exclude Outliers] Inlier: 1864341
+2025-08-27 16:37:10,563 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_m3c2_distances_coordinates_inlier_std.txt
+2025-08-27 16:37:10,563 [INFO] [Exclude Outliers] Outlier gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_m3c2_distances_coordinates_outlier_std.txt
+2025-08-27 16:37:10,566 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 16:37:10,566 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 16:37:10,632 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_m3c2_distances_coordinates_outlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_colored_cloud_validonly_outlier_std.ply (29814 Punkte)
+2025-08-27 16:37:14,750 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_m3c2_distances_coordinates_inlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI\python_Job_0378_8400-110-rad-1-3-AI_cloud_moved_colored_cloud_validonly_inlier_std.ply (1864341 Punkte)
+2025-08-27 16:37:14,763 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI,Job_0378_8400-110-rad-1-3-AI_cloud_moved …
+2025-08-27 16:37:38,322 [INFO] [Job] data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_1-3_AI abgeschlossen in 171.731s
+2025-08-27 16:37:41,513 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 16:37:41,513 [INFO] Konfigurationen: 1 Jobs
+2025-08-27 16:37:41,513 [INFO] data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3, Job_0378_8400-110-rad-2-3_cloud_moved, Job_0378_8400-110-rad-1-3_cloud_moved, python
+2025-08-27 16:38:04,861 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\Job_0378_8400-110-rad-2-3_cloud_moved.xyz'
+2025-08-27 16:38:10,598 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\Job_0378_8400-110-rad-1-3_cloud_moved.xyz'
+2025-08-27 16:38:16,405 [INFO] Mov Points: (1903097, 3)
+2025-08-27 16:38:16,405 [INFO] Ref Points: (1900069, 3)
+2025-08-27 16:38:16,405 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 16:38:16,405 [INFO] Corepoints: (1903097, 3)
+2025-08-27 16:38:16,405 [INFO] [Load] data/data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3: mov=(1903097, 3), ref=(1900069, 3), corepoints=(1903097, 3) | 34.896s
+2025-08-27 16:38:16,405 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-08-27 16:38:16,405 [INFO] [Params] gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_m3c2_params.txt
+2025-08-27 16:38:16,405 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 16:38:16,874 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 16:39:00,396 [INFO] [Run] Punkte=1903097 | NaN=0.42% | Zeit=43.982s
+2025-08-27 16:39:03,172 [INFO] [Run] Distanzen gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_m3c2_distances.txt (1903097 Werte, 0.42% NaN)
+2025-08-27 16:39:07,189 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_m3c2_distances_coordinates.txt
+2025-08-27 16:39:14,195 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_m3c2_uncertainties.txt
+2025-08-27 16:39:14,206 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-27 16:39:15,274 [INFO] [Visual] Histogram gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_histogram.png
+2025-08-27 16:39:18,753 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_colored_cloud.ply
+2025-08-27 16:39:22,048 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_colored_cloud_validonly.ply
+2025-08-27 16:39:22,048 [INFO] [Outlier] Entferne Ausreißer für data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3
+2025-08-27 16:39:23,015 [INFO] [Exclude Outliers] STD: 0.000260
+2025-08-27 16:39:23,017 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.000781
+2025-08-27 16:39:27,022 [INFO] [Exclude Outliers] Gesamt: 1903097
+2025-08-27 16:39:27,026 [INFO] [Exclude Outliers] NaN: 8085
+2025-08-27 16:39:27,026 [INFO] [Exclude Outliers] Valid (ohne NaN): 1895012
+2025-08-27 16:39:27,027 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 16:39:27,028 [INFO] [Exclude Outliers] Outlier: 22495
+2025-08-27 16:39:27,028 [INFO] [Exclude Outliers] Inlier: 1872517
+2025-08-27 16:39:27,028 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_m3c2_distances_coordinates_inlier_std.txt
+2025-08-27 16:39:27,028 [INFO] [Exclude Outliers] Outlier gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_m3c2_distances_coordinates_outlier_std.txt
+2025-08-27 16:39:27,042 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 16:39:27,042 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 16:39:27,079 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_m3c2_distances_coordinates_outlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_colored_cloud_validonly_outlier_std.ply (22495 Punkte)
+2025-08-27 16:39:31,325 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_m3c2_distances_coordinates_inlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3\python_Job_0378_8400-110-rad-1-3_cloud_moved_colored_cloud_validonly_inlier_std.ply (1872517 Punkte)
+2025-08-27 16:39:31,325 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3,Job_0378_8400-110-rad-1-3_cloud_moved …
+2025-08-27 16:40:33,811 [INFO] [Job] data\Multi-illumination\Job_0378_8400-110\1-3_2-3\1-3_2-3 abgeschlossen in 172.300s
+2025-08-27 16:40:36,900 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 16:40:36,900 [INFO] Konfigurationen: 1 Jobs
+2025-08-27 16:40:36,900 [INFO] data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI, Job_0378_8400-110-rad-2-3-AI_cloud_moved, Job_0378_8400-110-rad-2-3_cloud_moved, python
+2025-08-27 16:41:30,215 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\Job_0378_8400-110-rad-2-3-AI_cloud_moved.xyz'
+2025-08-27 16:41:36,981 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\Job_0378_8400-110-rad-2-3_cloud_moved.xyz'
+2025-08-27 16:41:42,771 [INFO] Mov Points: (2207118, 3)
+2025-08-27 16:41:42,771 [INFO] Ref Points: (1903097, 3)
+2025-08-27 16:41:42,773 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-08-27 16:41:42,773 [INFO] Corepoints: (2207118, 3)
+2025-08-27 16:41:42,773 [INFO] [Load] data/data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI: mov=(2207118, 3), ref=(1903097, 3), corepoints=(2207118, 3) | 65.863s
+2025-08-27 16:41:42,773 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-08-27 16:41:42,773 [INFO] [Params] gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_m3c2_params.txt
+2025-08-27 16:41:42,773 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 16:41:43,372 [INFO] Building KDTree structure with leaf parameter 10
+2025-08-27 16:42:35,817 [INFO] [Run] Punkte=2207118 | NaN=11.60% | Zeit=53.039s
+2025-08-27 16:42:38,664 [INFO] [Run] Distanzen gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_m3c2_distances.txt (2207118 Werte, 11.60% NaN)
+2025-08-27 16:42:42,983 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_m3c2_distances_coordinates.txt
+2025-08-27 16:42:51,002 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_m3c2_uncertainties.txt
+2025-08-27 16:42:51,002 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-08-27 16:42:52,088 [INFO] [Visual] Histogram gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_histogram.png
+2025-08-27 16:42:55,733 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_colored_cloud.ply
+2025-08-27 16:42:59,081 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_colored_cloud_validonly.ply
+2025-08-27 16:42:59,082 [INFO] [Outlier] Entferne Ausreißer für data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI
+2025-08-27 16:43:00,213 [INFO] [Exclude Outliers] STD: 0.000831
+2025-08-27 16:43:00,214 [INFO] [Exclude Outliers] Outlier-Schwelle: 3 * STD = 0.002492
+2025-08-27 16:43:04,116 [INFO] [Exclude Outliers] Gesamt: 2207118
+2025-08-27 16:43:04,125 [INFO] [Exclude Outliers] NaN: 256109
+2025-08-27 16:43:04,125 [INFO] [Exclude Outliers] Valid (ohne NaN): 1951009
+2025-08-27 16:43:04,125 [INFO] [Exclude Outliers] Methode: std
+2025-08-27 16:43:04,130 [INFO] [Exclude Outliers] Outlier: 33336
+2025-08-27 16:43:04,131 [INFO] [Exclude Outliers] Inlier: 1917673
+2025-08-27 16:43:04,131 [INFO] [Exclude Outliers] Inlier (ohne Outlier) gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_m3c2_distances_coordinates_inlier_std.txt
+2025-08-27 16:43:04,131 [INFO] [Exclude Outliers] Outlier gespeichert: data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_m3c2_distances_coordinates_outlier_std.txt
+2025-08-27 16:43:04,136 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 16:43:04,136 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-08-27 16:43:04,211 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_m3c2_distances_coordinates_outlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_colored_cloud_validonly_outlier_std.ply (33336 Punkte)
+2025-08-27 16:43:08,298 [INFO] [TXT->PLY] data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_m3c2_distances_coordinates_inlier_std.txt -> data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI\python_Job_0378_8400-110-rad-2-3_cloud_moved_colored_cloud_validonly_inlier_std.ply (1917673 Punkte)
+2025-08-27 16:43:08,305 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI,Job_0378_8400-110-rad-2-3_cloud_moved …
+2025-08-27 16:43:47,839 [INFO] [Job] data\Multi-illumination\Job_0378_8400-110\1-3_2-3\2-3_2-3_AI abgeschlossen in 190.942s
+2025-08-27 17:00:47,616 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 17:00:47,616 [INFO] Konfigurationen: 1 Jobs
+2025-08-27 17:00:47,616 [INFO] data\Multi-illumination\Job_0378_8400-110\1-5_2-5\1-5_2-5, Job_0378_8400-110-rad-1-5_2-5-AI_cloud_moved, Job_0378_8400-110-rad-1-5_2-5_cloud_moved, python
+2025-08-27 17:00:47,616 [ERROR] [Job] Fehler in Job 'data\Multi-illumination\Job_0378_8400-110\1-5_2-5\1-5_2-5' (Version Job_0378_8400-110-rad-1-5_2-5_cloud_moved)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 44, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 58, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 120, in _load_data
+    mov, ref, corepoints = ds.load_points()
+                           ^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 147, in load_points
+    m_xyz = self._ensure_xyz(self.mov_base, (m_kind, m_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 118, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\1-5_2-5\Job_0378_8400-110-rad-1-5_2-5-AI_cloud_moved.xyz/.las/.laz/.ply/.obj/.gpc
+2025-08-27 17:01:08,394 [INFO] === BatchOrchestrator initialisiert ===
+2025-08-27 17:01:08,394 [INFO] Konfigurationen: 1 Jobs
+2025-08-27 17:01:08,394 [INFO] data\Multi-illumination\Job_0378_8400-110\1-5_2-5\1-5_2-5, Job_0378_8400-110-rad-1-5_2-5_cloud_moved, Job_0378_8400-110-rad-1-5_2-5_cloud_moved, python
+2025-08-27 17:01:08,394 [ERROR] [Job] Fehler in Job 'data\Multi-illumination\Job_0378_8400-110\1-5_2-5\1-5_2-5' (Version Job_0378_8400-110-rad-1-5_2-5_cloud_moved)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 44, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 58, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 120, in _load_data
+    mov, ref, corepoints = ds.load_points()
+                           ^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 147, in load_points
+    m_xyz = self._ensure_xyz(self.mov_base, (m_kind, m_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 118, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\1-5_2-5\Job_0378_8400-110-rad-1-5_2-5_cloud_moved.xyz/.las/.laz/.ply/.obj/.gpc

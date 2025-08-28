@@ -5,11 +5,12 @@ from services.plot_service import PlotConfig, PlotOptions, PlotService
 
 
 # Mehrere Folder: jeder Folder wird eine Seite im PDF
-folder_ids = ["1-1", "1-2", "1-3", "1-4", "1-5", "1-6", "1-7"]
+# folder_ids = ["1-1", "1-2", "1-3", "1-4", "1-5", "1-6", "1-7"]
+folder_ids = ["1-3_1-3_AI", "2-3_2-3_AI", "1-3_2-3"]
 
 # Vier Kurven insgesamt: je Version x je filename -> python_ref, python_ref_ai, CC_ref, CC_ref_ai
 versions = ["python"]
-filenames = ["Job_0378_8400-110-rad-1-1-AI_cloud"]
+filenames = ["Job_0378_8400-110-rad-"]
 
 cfg = PlotConfig(
     folder_ids=folder_ids,
@@ -22,7 +23,7 @@ cfg = PlotConfig(
 
 opts = PlotOptions(
     plot_hist=True, plot_gauss=True, plot_weibull=True,
-    plot_box=True, plot_qq=True, plot_grouped_bar=True, plot_violin=True
+    plot_box=True, plot_qq=True, plot_grouped_bar=True, plot_violin=False
 )
 
 # erzeugt ALLE Plots für alle filenames; Python & CC werden je filename überlagert

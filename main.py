@@ -6,13 +6,13 @@ from log_utils.logging_utils import setup_logging
 # folder_ids = ["0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
 
 # folders in folder "data" to be iterated
-folder_ids = ["1-1", "1-2", "1-3", "1-4", "1-5", "1-6", "1-7"]
+folder_ids = ["1-5_2-5"]
 
 # names of reference cloud files to be compared
-ref_variants = ["Job_0378_8400-110-rad-1-1-AI_cloud"]
+ref_variants = ["Job_0378_8400-110-rad-1-5_2-5_cloud_moved"]
 
 # name of moving point cloud file
-filename_mov = "Job_0378_8400-110-rad-1-1_cloud"
+filename_mov = "Job_0378_8400-110-rad-1-5_2-5_cloud_moved"
 
 # TRUE: use mov point cloud as corepoints
 # FALSE: use ref point cloud as corepoints
@@ -28,7 +28,7 @@ sample_size = 10000
 
 # TRUE: only statistics are computed based on distance file in folder (no processing of M3C2)
 # FALSE: Runs M3C2 pipeline
-only_stats = False
+only_stats = True
 
 # "single": Only single-cloud statistics 
 # "distance": Distance-based statistics on M3C2 output
@@ -78,10 +78,10 @@ outlier_multiplicator = 3
 def main() -> None:
     cfgs = []
     for fid in folder_ids:
-        folder = os.path.join("data", "Multi-illumination", "Job_0378_8400-110", fid) # angepasst wenn es Unterordner in Data gibt ansonsten "data"
+        folder = os.path.join("data", "Multi-illumination", "Job_0378_8400-110", "1-5_2-5",fid) # angepasst wenn es Unterordner in Data gibt ansonsten "data"
         for filename_ref in ref_variants:
-            filename_ref = f"Job_0378_8400-110-rad-{fid}-AI_cloud"
-            filename_mov = f"Job_0378_8400-110-rad-{fid}_cloud"
+            # filename_ref = f"Job_0378_8400-110-rad-{fid}-AI_cloud"
+            # filename_mov = f"Job_0378_8400-110-rad-{fid}_cloud"
             cfgs.append(
                 PipelineConfig(
                     folder,
