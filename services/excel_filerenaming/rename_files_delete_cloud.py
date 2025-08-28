@@ -4,8 +4,8 @@ import argparse, os
 from pathlib import Path
 
 def transform(name: str) -> str:
-    # Entfernt ALLE Vorkommen von "_colored" im Namen (inkl. vor der Extension)
-    return name.replace("_colored", "")
+    # Entfernt ALLE Vorkommen von "_validonly" im Namen (inkl. vor der Extension)
+    return name.replace("python_", "")
 
 def iter_paths(base: Path, recursive: bool, include_dirs: bool):
     """Liefer Pfade: Dateien immer, Ordner nur wenn include_dirs=True. Bottom-up bei Rekursion."""

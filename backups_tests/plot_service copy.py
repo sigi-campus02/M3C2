@@ -11,7 +11,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 from scipy.stats import norm, weibull_min, probplot
 from config.plot_config import PlotConfig, PlotOptions
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logger = logging.getLogger(__name__)
 
 
 class PlotService:
@@ -25,12 +25,12 @@ class PlotService:
         for fid in config.folder_ids:
             data_with, _ = cls._load_data(fid, config.filenames, config.versions)
             if not data_with:
-                logging.warning(f"[Report] Keine WITH-Daten für {fid} gefunden.")
+                logger.warning(f"[Report] Keine WITH-Daten für {fid} gefunden.")
                 continue
             data_with_all.update(data_with)
 
         if not data_with_all:
-            logging.warning("[Report] Keine Daten gefunden – keine Plots erzeugt.")
+            logger.warning("[Report] Keine Daten gefunden – keine Plots erzeugt.")
             return
 
         # ---- INLIER (aus *_coordinates_inlier_std.txt) sammeln ----
@@ -40,14 +40,14 @@ class PlotService:
                 label = f"{v}_{fid}"
                 base_inl = f"{v}_Job_0378_8400-110-rad-{fid}_cloud_moved_m3c2_distances_coordinates_inlier_std.txt"
                 path_inl = cls._resolve(fid, base_inl)
-                logging.info(f"[Report] Lade INLIER: {path_inl}")
+                logger.info(f"[Report] Lade INLIER: {path_inl}")
                 if not os.path.exists(path_inl):
-                    logging.warning(f"[Report] Datei fehlt (INLIER): {path_inl}")
+                    logger.warning(f"[Report] Datei fehlt (INLIER): {path_inl}")
                     continue
                 try:
                     arr = cls._load_coordinates_inlier_distances(path_inl)
                 except Exception as e:
-                    logging.error(f"[Report] Laden fehlgeschlagen (INLIER: {path_inl}): {e}")
+                    logger.error(f"[Report] Laden fehlgeschlagen (INLIER: {path_inl}): {e}")
                     continue
                 if arr.size:
                     data_inlier_all[label] = arr
@@ -75,7 +75,7 @@ class PlotService:
             cls._plot_grouped_bar_means_stds_dual(fid, fname, data_with_all, data_inlier_all, colors, config.path)
         if options.plot_violin:
             cls._plot_overlay_violin(fid, fname, data_with_all, colors, config.path)
-        logging.info(f"[Report] PNGs für {fid} (WITH) erzeugt.")
+        logger.info(f"[Report] PNGs für {fid} (WITH) erzeugt.")
 
         # -------- Seite 2: INLIER --------
         fname = "ALL_INLIER"
@@ -95,9 +95,9 @@ class PlotService:
                 cls._plot_grouped_bar_means_stds_dual(fid, fname, data_with_all, data_inlier_all, colors, config.path)
             if options.plot_violin:
                 cls._plot_overlay_violin(fid, fname, data_inlier_all, colors, config.path)
-            logging.info(f"[Report] PNGs für {fid} (INLIER) erzeugt.")
+            logger.info(f"[Report] PNGs für {fid} (INLIER) erzeugt.")
         else:
-            logging.warning("[Report] Keine INLIER-Daten gefunden – zweite Seite bleibt leer.")
+            logger.warning("[Report] Keine INLIER-Daten gefunden – zweite Seite bleibt leer.")
 
 
     @classmethod
@@ -140,7 +140,7 @@ class PlotService:
         _add_page("ALL_INLIER", "ohne Outlier (Inlier)")
 
         pdf.close()
-        logging.info(f"[Report] Zusammenfassung gespeichert: {outfile}")
+        logger.info(f"[Report] Zusammenfassung gespeichert: {outfile}")
 
 
     # ------- Loader & Helpers --------------------------------
@@ -188,10 +188,10 @@ class PlotService:
             # Deine Dateinamen-Patterns:
             base_with = f"{v}_Job_0378_8400-110-rad-{fid}_cloud_moved_m3c2_distances.txt"
             path_with = cls._resolve(fid, base_with)
-            logging.info(f"[Report] Lade WITH: {path_with}")
+            logger.info(f"[Report] Lade WITH: {path_with}")
 
             if not os.path.exists(path_with):
-                logging.warning(f"[Report] Datei fehlt (WITH): {path_with}")
+                logger.warning(f"[Report] Datei fehlt (WITH): {path_with}")
                 continue
 
             try:
@@ -211,7 +211,7 @@ class PlotService:
                 else:
                     arr = cls._load_1col_distances(path_with)
             except Exception as e:
-                logging.error(f"[Report] Laden fehlgeschlagen (WITH: {path_with}): {e}")
+                logger.error(f"[Report] Laden fehlgeschlagen (WITH: {path_with}): {e}")
                 continue
 
             if arr.size:
@@ -279,7 +279,7 @@ class PlotService:
                 a, loc, b = weibull_min.fit(arr)
                 weibull_params[v] = (float(a), float(loc), float(b))
             except Exception as e:
-                logging.warning(f"[Report] Weibull-Fit fehlgeschlagen ({fid}/{fname}, {v}): {e}")
+                logger.warning(f"[Report] Weibull-Fit fehlgeschlagen ({fid}/{fname}, {v}): {e}")
 
         plt.figure(figsize=(10, 6))
         for v, (a, loc, b) in weibull_params.items():
@@ -432,7 +432,7 @@ class PlotService:
         out = os.path.join(outdir, f"{fid}_{fname}_GroupedBar_Mean_Std.png")
         plt.savefig(out)
         plt.close()
-        logging.info(f"[Report] Plot gespeichert: {out}")
+        logger.info(f"[Report] Plot gespeichert: {out}")
 
 
 
@@ -456,4 +456,4 @@ class PlotService:
             plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Violinplot.png"))
             plt.close()
         except Exception as e:
-            logging.warning(f"[Report] Violinplot fehlgeschlagen ({fid}/{fname}): {e}")
+            logger.warning(f"[Report] Violinplot fehlgeschlagen ({fid}/{fname}): {e}")

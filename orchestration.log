@@ -4413,3 +4413,48 @@ FileNotFoundError: Fehlt: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\1-5_
 2025-08-28 10:55:13,006 [INFO] [TXT->PLY] data\Multi-Illumination\python_1-7-AI_cloud-2-7_cloud_m3c2_distances_coordinates_inlier_rmse.txt -> data\Multi-Illumination\python_1-7-AI_cloud-2-7_cloud_colored_cloud_validonly_inlier_rmse.ply (1834386 Punkte)
 2025-08-28 10:55:13,017 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-Illumination,2-7_cloud …
 2025-08-28 10:55:31,512 [INFO] [Job] data\Multi-Illumination abgeschlossen in 299.620s
+2025-08-28 12:23:07,274 [INFO] [Scan] Scanne Distanzdateien in c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination für Versionen: ('python',)
+2025-08-28 12:23:31,338 [INFO] [Report] Gefundene Indices: [1, 2, 3, 4, 5, 6, 7]
+2025-08-28 12:24:59,757 [INFO] [Report] Part 1: WITH-Plots erzeugt.
+2025-08-28 12:26:03,551 [INFO] [Report] Part 1: INLIER-Plots erzeugt.
+2025-08-28 12:28:45,909 [INFO] [Report] Part 2: WITH-Plots erzeugt.
+2025-08-28 12:30:07,708 [INFO] [Report] Part 2: INLIER-Plots erzeugt.
+2025-08-28 12:32:15,019 [INFO] [Report] Part 3: WITH-Plots erzeugt.
+2025-08-28 12:33:16,843 [INFO] [Report] Part 3: INLIER-Plots erzeugt.
+2025-08-28 12:36:08,688 [INFO] [Report] Part 4: WITH-Plots erzeugt.
+2025-08-28 12:37:36,106 [INFO] [Report] Part 4: INLIER-Plots erzeugt.
+2025-08-28 12:39:30,301 [INFO] [Report] Part 5: WITH-Plots erzeugt.
+2025-08-28 12:40:30,437 [INFO] [Report] Part 5: INLIER-Plots erzeugt.
+2025-08-28 12:42:48,029 [INFO] [Report] Part 6: WITH-Plots erzeugt.
+2025-08-28 12:44:02,267 [INFO] [Report] Part 6: INLIER-Plots erzeugt.
+2025-08-28 12:45:21,917 [INFO] [Report] Part 7: WITH-Plots erzeugt.
+2025-08-28 12:46:21,166 [INFO] [Report] Part 7: INLIER-Plots erzeugt.
+2025-08-28 12:52:22,241 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary.pdf
+2025-08-28 12:55:07,101 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_incl_outliers.pdf
+2025-08-28 12:55:10,365 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_excl_outliers.pdf
+2025-08-28 13:07:49,836 [INFO] [Scan] Scanne Distanzdateien in c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination für Versionen: ('python',)
+2025-08-28 13:08:14,198 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_1_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 13:08:14,421 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_2_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 13:08:14,653 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_3_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 13:08:14,878 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_4_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 13:08:15,116 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_5_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 13:08:15,342 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_6_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 13:08:15,562 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_7_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 13:08:19,498 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_incl_outliers.pdf
+2025-08-28 13:08:23,328 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_excl_outliers.pdf
+2025-08-28 13:17:50,305 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_incl_outliers.pdf
+2025-08-28 13:17:54,844 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_excl_outliers.pdf
+2025-08-28 13:22:45,531 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_incl_outliers.pdf
+2025-08-28 13:22:48,843 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_excl_outliers.pdf
+2025-08-28 13:28:54,970 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_incl_outliers.pdf
+2025-08-28 13:28:59,772 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_excl_outliers.pdf
+2025-08-28 13:40:11,324 [INFO] [Scan] Scanne Distanzdateien in c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination für Versionen: ('python',)
+2025-08-28 13:43:05,731 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_1_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 13:47:03,727 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_2_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 13:50:07,292 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_3_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 13:54:37,762 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_4_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 13:57:29,208 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_5_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 14:00:58,082 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_6_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 14:03:13,349 [INFO] [Report] Saved grouped bar: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\Part_7_DUAL_GroupedBar_Mean_Std.png
+2025-08-28 14:03:18,225 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_incl_outliers.pdf
+2025-08-28 14:03:23,042 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_excl_outliers.pdf
