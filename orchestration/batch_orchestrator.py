@@ -269,8 +269,8 @@ class BatchOrchestrator:
         os.makedirs(out_base, exist_ok=True)
 
         hist_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_histogram.png")
-        ply_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}.ply")
-        ply_valid_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_validonly.ply")
+        ply_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_includenonvalid.ply")
+        ply_valid_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}.ply")
 
         VisualizationService.histogram(distances, path=hist_path)
         logger.info("[Visual] Histogram gespeichert: %s", hist_path)
@@ -289,8 +289,8 @@ class BatchOrchestrator:
         os.makedirs(out_base, exist_ok=True)
         tag = self._run_tag(cfg)
 
-        ply_valid_path_outlier = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_validonly_outlier_{cfg.outlier_detection_method}.ply")
-        ply_valid_path_inlier = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_validonly_inlier_{cfg.outlier_detection_method}.ply")
+        ply_valid_path_outlier = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_outlier_{cfg.outlier_detection_method}.ply")
+        ply_valid_path_inlier = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_inlier_{cfg.outlier_detection_method}.ply")
         txt_path_outlier = os.path.join(out_base, f"python_{tag}_m3c2_distances_coordinates_outlier_{cfg.outlier_detection_method}.txt")
         txt_path_inlier = os.path.join(out_base, f"python_{tag}_m3c2_distances_coordinates_inlier_{cfg.outlier_detection_method}.txt")
 
