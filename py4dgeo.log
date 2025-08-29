@@ -962,3 +962,27 @@
 [2025-08-28 10:51:04][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\2-7_cloud.xyz'
 [2025-08-28 10:51:09][INFO] Building KDTree structure with leaf parameter 10
 [2025-08-28 10:51:10][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-29 08:40:40][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1.xyz'
+[2025-08-29 08:40:46][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1.xyz'
+[2025-08-29 08:40:51][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-29 08:40:52][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-29 08:45:20][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1.xyz'
+[2025-08-29 08:45:26][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1.xyz'
+[2025-08-29 08:45:31][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-29 08:45:32][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-29 08:47:13][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1.xyz'
+[2025-08-29 08:47:19][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1-AI.xyz'
+[2025-08-29 08:47:26][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-29 08:47:26][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-29 08:48:48][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1-AI.xyz'
+[2025-08-29 08:48:55][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1.xyz'
+[2025-08-29 08:49:00][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-29 08:49:01][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-29 08:50:41][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1-AI.xyz'
+[2025-08-29 08:50:48][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1-AI.xyz'
+[2025-08-29 08:50:55][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-29 08:50:55][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-29 09:51:29][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1.xyz'
+[2025-08-29 09:51:35][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1.xyz'
+[2025-08-29 09:51:41][INFO] Building KDTree structure with leaf parameter 10
+[2025-08-29 09:51:42][INFO] Building KDTree structure with leaf parameter 10

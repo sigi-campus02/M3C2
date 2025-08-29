@@ -14,18 +14,18 @@ OUT_DIR  = os.path.join(ROOT, "outputs", "MARS_Multi_Illumination", "plots")
 if __name__ == "__main__":
     setup_logging()
 
-    only_grouped = PlotOptions(
-        plot_hist=True, plot_gauss=True, plot_weibull=True,
-        plot_box=True, plot_qq=True, plot_grouped_bar=True, plot_violin=False,
-    )
+    # only_grouped = PlotOptions(
+    #     plot_hist=True, plot_gauss=True, plot_weibull=True,
+    #     plot_box=True, plot_qq=True, plot_grouped_bar=True, plot_violin=False,
+    # )
 
-    PlotService.overlay_by_index(
-        DATA_DIR, OUT_DIR,
-        versions=("python",),
-        bins=256,
-        options=only_grouped,
-        skip_existing=True,   # vorhandene PNGs nicht überschreiben
-    )
+    # PlotService.overlay_by_index(
+    #     DATA_DIR, OUT_DIR,
+    #     versions=("python",),
+    #     bins=256,
+    #     options=only_grouped,
+    #     skip_existing=True,   # vorhandene PNGs nicht überschreiben
+    # )
 
     pdf_incl = PlotService.build_parts_pdf(
         OUT_DIR,

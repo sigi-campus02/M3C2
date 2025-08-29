@@ -82,7 +82,8 @@ class PlotService:
                 return "CASE2", f"a-{i} vs b-{i}-AI"
             if mov_ai and not ref_ai:
                 return "CASE3", f"a-{i}-AI vs b-{i}"
-            return "CASE4", f"a-{i}-AI vs b-{i}-AI"
+            if mov_ai and ref_ai:
+                return "CASE4", f"a-{i}-AI vs b-{i}-AI"
 
         # Struktur: pro i -> WITH/INLIER (label -> array) + CASE maps (label -> CASEX)
         per_index = defaultdict(lambda: {"WITH": {}, "INLIER": {}, "CASE_WITH": {}, "CASE_INLIER": {}})

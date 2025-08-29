@@ -37,7 +37,6 @@ class BatchOrchestrator:
     # Kleiner Helfer für konsistente Dateinamen
     @staticmethod
     def _run_tag(cfg: PipelineConfig) -> str:
-        # z.B. "1-1_cloud-2-1-AI_cloud"
         return f"{cfg.filename_mov}-{cfg.filename_ref}"
     
     def run_all(self) -> None:
