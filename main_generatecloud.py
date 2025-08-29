@@ -1,4 +1,3 @@
-# make_plys_from_distances.py
 from __future__ import annotations
 import os
 import re
