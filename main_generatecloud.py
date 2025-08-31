@@ -1,4 +1,7 @@
+"""Convert M3C2 distance text files to colored PLY point clouds."""
+
 from __future__ import annotations
+
 import os
 import re
 import sys
@@ -28,7 +31,18 @@ except Exception as e:
 # - Clipping: optional via Prozentilen, damit Ausreißer nicht alles dominieren
 # ------------------------------------------------------------
 def _colormap_blue_white_red(values: np.ndarray) -> np.ndarray:
-    """Gibt uint8 RGB zurück. Erwartet Input in [-1, 1] (schon normalisiert & geclippt)."""
+    """Return an RGB colormap ranging from blue to red.
+
+    Parameters
+    ----------
+    values:
+        Normalised and clipped values within ``[-1, 1]``.
+
+    Returns
+    -------
+    numpy.ndarray
+        Array of shape ``(n, 3)`` with ``uint8`` RGB values.
+    """
     v = values.clip(-1, 1)
     # Map: -1 -> blau(0,0,255), 0 -> weiß(255,255,255), +1 -> rot(255,0,0)
     r = np.where(v >= 0, 255, (1 + v) * 255)         # v in [-1,0] -> r: 0..255, v in [0,1] -> 255
@@ -41,6 +55,18 @@ def _colormap_blue_white_red(values: np.ndarray) -> np.ndarray:
     return np.stack([r, g, b], axis=1)
 
 def _write_ply_ascii_xyzrgb(xyz: np.ndarray, rgb: np.ndarray, outpath: str) -> None:
+    """Write XYZ coordinates with RGB colors to an ASCII PLY file.
+
+    Parameters
+    ----------
+    xyz:
+        Array of point coordinates with shape ``(n, 3)``.
+    rgb:
+        Array of color values with shape ``(n, 3)`` in ``uint8`` format.
+    outpath:
+        Path where the PLY file will be written.
+    """
+
     assert xyz.shape[0] == rgb.shape[0]
     n = xyz.shape[0]
     header = (
@@ -57,9 +83,22 @@ def _write_ply_ascii_xyzrgb(xyz: np.ndarray, rgb: np.ndarray, outpath: str) -> N
             f.write(f"{x:.6f} {y:.6f} {z:.6f} {int(r)} {int(g)} {int(b)}\n")
 
 def _txt_to_ply_standalone(txt_path: str, outply: str, clip_percentile: float = 98.0) -> None:
-    """
-    Liest TXT (x y z distance), färbt nach Distanz und schreibt ASCII .ply.
-    'clip_percentile' steuert symmetrisches Clipping (z.B. 98 => +/- P98 vom Absolutwert).
+    """Convert a distance text file to a colored PLY using a simple colormap.
+
+    Parameters
+    ----------
+    txt_path:
+        Path to the input text file containing ``x y z distance`` columns.
+    outply:
+        Destination path for the generated PLY file.
+    clip_percentile:
+        Symmetric clipping percentile applied to the absolute distances
+        to suppress outliers (e.g. ``98`` results in ±P98).
+
+    Raises
+    ------
+    ValueError
+        If the text file does not contain the expected columns.
     """
     data = np.loadtxt(txt_path, comments="#")
     if data.ndim != 2 or data.shape[1] < 4:
@@ -90,14 +129,20 @@ PATTERNS = [
 ]
 
 def find_distance_txts(root: str) -> Iterable[str]:
+    """Yield all distance text files under ``root`` matching known patterns."""
+
     for pat in PATTERNS:
         yield from glob.iglob(os.path.join(root, "**", pat), recursive=True)
 
 def outply_name(txt_path: str) -> str:
+    """Return the output PLY name corresponding to ``txt_path``."""
+
     stem, _ = os.path.splitext(txt_path)
     return stem + ".ply"
 
 def convert_one(txt_path: str, overwrite: bool = False) -> Optional[str]:
+    """Convert a single distance file to PLY, optionally skipping existing outputs."""
+
     outply = outply_name(txt_path)
     if not overwrite and os.path.exists(outply):
         logger.info("Überspringe (bereits vorhanden): %s", outply)
@@ -111,6 +156,8 @@ def convert_one(txt_path: str, overwrite: bool = False) -> Optional[str]:
     return outply
 
 def convert_all(roots: list[str], overwrite: bool = False) -> None:
+    """Convert all matching distance files below the given roots."""
+
     total = 0
     for root in roots:
         for txt in find_distance_txts(root):
