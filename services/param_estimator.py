@@ -1,49 +1,51 @@
+"""Parameter estimation utilities for M3C2 scans."""
+
 from __future__ import annotations
-import numpy as np
+
+from dataclasses import dataclass
 from typing import List, Tuple
+
+import numpy as np
 from sklearn.neighbors import NearestNeighbors
+
 from orchestration.strategies import ScaleScan
 
 
+@dataclass
 class ParamEstimator:
-    """
-    Kapselt Spacing-Schätzung + Scale-Scan + finale Auswahl.
-    """
-    @staticmethod
-    def estimate_min_spacing(points: np.ndarray, k: int = 6) -> float:
-        nbrs = NearestNeighbors(n_neighbors=k + 1).fit(points)
-        distances, _ = nbrs.kneighbors(points)
-        min_spacing = float(np.mean(distances[:, 1:]))
-        return min_spacing
+    """Combine spacing estimation, scale scanning and final selection."""
 
-    @staticmethod
-    def scan_scales(points: np.ndarray, strategy, avg_spacing: float) -> List[ScaleScan]:
-        scans = strategy.scan(points, avg_spacing)
-        return scans
+    strategy: object
+    k_neighbors: int = 6
+
+    def estimate_min_spacing(self, points: np.ndarray) -> float:
+        nbrs = NearestNeighbors(n_neighbors=self.k_neighbors + 1).fit(points)
+        distances, _ = nbrs.kneighbors(points)
+        return float(np.mean(distances[:, 1:]))
+
+    def scan_scales(self, points: np.ndarray, avg_spacing: float) -> List[ScaleScan]:
+        return self.strategy.scan(points, avg_spacing)
 
     @staticmethod
     def select_scales(scans: List[ScaleScan]) -> Tuple[float, float]:
-        """
-        Paper-nahe Auswahl:
-        - Primär: minimale mittlere λ_min (Planarität), dann hohe Abdeckung, dann geringe σ(D)
-        - D/σ-Regel: bevorzuge ersten Kandidaten mit D/sigma >= 25
-        - Normal D = gewählte Stufe
-        - Projektion d = exakt die nächsthöhere getestete Stufe (> D); Fallback: d = D
-        """
+        """Select normal and projection scales from scan results."""
+
         if not scans:
             raise ValueError("Keine Scales gefunden.")
 
-        # Nur valide Scans verwenden
         valid = [
-            s for s in scans
+            s
+            for s in scans
             if (
-                s.roughness is not None and not np.isnan(s.roughness)
-                and s.mean_lambda3 is not None and not np.isnan(s.mean_lambda3)
-                and s.valid_normals is not None and s.valid_normals > 0
+                s.roughness is not None
+                and not np.isnan(s.roughness)
+                and s.mean_lambda3 is not None
+                and not np.isnan(s.mean_lambda3)
+                and s.valid_normals is not None
+                and s.valid_normals > 0
             )
         ]
 
-        # Fallback (keine validen Scans): nimm Median als D, nächsthöhere Stufe als d
         if not valid:
             ladder = sorted({float(s.scale) for s in scans})
             mid_idx = len(ladder) // 2
@@ -51,30 +53,23 @@ class ParamEstimator:
             projection = ladder[mid_idx + 1] if mid_idx + 1 < len(ladder) else ladder[mid_idx]
             return float(normal), float(projection)
 
-        # Primär Planarität (λ_min), dann Abdeckung, dann geringe σ(D)
         valid.sort(key=lambda s: (float(s.mean_lambda3), -int(s.valid_normals), float(s.roughness)))
 
-        # D/σ-Regel: ersten Kandidaten nehmen, der sie erfüllt; sonst bestes λ_min
         chosen = None
-        for s in valid:
-            if s.roughness > 0 and (float(s.scale) / float(s.roughness)) >= 25.0:
-                chosen = s
+        for scan in valid:
+            if scan.roughness > 0 and (float(scan.scale) / float(scan.roughness)) >= 25.0:
+                chosen = scan
                 break
         if chosen is None:
             chosen = valid[0]
 
-        # Leiter (einmalig aus den getesteten Skalen)
         ladder = sorted({float(s.scale) for s in scans})
-
-        # Index der gewählten Stufe (tolerant „snappen“)
-        EPS = 1e-12
+        eps = 1e-12
         try:
-            idx = next(i for i, v in enumerate(ladder) if abs(v - float(chosen.scale)) <= EPS)
+            idx = next(i for i, v in enumerate(ladder) if abs(v - float(chosen.scale)) <= eps)
         except StopIteration:
             idx = min(range(len(ladder)), key=lambda i: abs(ladder[i] - float(chosen.scale)))
 
-        # Normal = gewählte Stufe, Projektion = exakt die nächsthöhere Stufe (eins drüber)
         normal = ladder[idx]
-        projection = ladder[idx + 1] if (idx + 1) < len(ladder) else ladder[idx]  # am oberen Rand: d = D
-
+        projection = ladder[idx + 1] if (idx + 1) < len(ladder) else ladder[idx]
         return float(normal), float(projection)
