@@ -1,3 +1,5 @@
+"""Strategies for scanning M3C2 normal and projection scales."""
+
 from __future__ import annotations
 import logging
 from dataclasses import dataclass
@@ -8,14 +10,35 @@ from sklearn.neighbors import NearestNeighbors
 
 @dataclass
 class ScaleScan:
-    # 'scale' ist D (Normalskala, nicht der Nachbarschaftsradius)
+    """Container for statistics gathered during a scale scan.
+
+    Parameters
+    ----------
+    scale : float
+        The tested normal scale ``D``.
+    valid_normals : int
+        Number of neighbourhoods with sufficient points to compute a normal.
+    mean_population : float
+        Average number of neighbours per core point.
+    roughness : float
+        Mean roughness :math:`\sigma(D)` of the neighbourhoods.
+    coverage : float
+        Fraction of core points that produced a valid normal.
+    mean_lambda3 : float
+        Average smallest eigenvalue, used as a planarity measure.
+    total_points, std_population, perc97_population, relative_roughness,
+    total_voxels : optional
+        Additional diagnostic metrics recorded during the scan.
+    """
+
+    # 'scale' is D (normal scale, not the neighbourhood radius)
     scale: float
     valid_normals: int
     mean_population: float
-    roughness: float              # mean σ(D): StdAbw orthogonaler Residuen
+    roughness: float              # mean σ(D): standard deviation of orthogonal residuals
     coverage: float
-    mean_lambda3: float           # mittleres λ_min (Planaritätsmaß)
-    # optionale Zusatzmetriken
+    mean_lambda3: float           # mean λ_min (planarity measure)
+    # optional additional metrics
     total_points: Optional[int] = None
     std_population: Optional[float] = None
     perc97_population: Optional[int] = None
@@ -23,66 +46,84 @@ class ScaleScan:
     total_voxels: Optional[int] = None
 
 # ============================================================
-# Radius-basierte Strategie
+# Radius-based strategy
 # ============================================================
 
 def _fit_plane_pca(points: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray, float]:
-    """
-    Bestimmt die Best-Fit-Ebene einer 3D-Punktnachbarschaft per PCA und gibt
-    Schwerpunkt, (einheitsnormierte) Ebenennormale, Eigenwerte der Kovarianz
-    sowie die orthogonale Rauigkeit σ(D) zurück.
+    """Derive a best-fit plane for a set of 3‑D points using PCA.
 
     Parameters
     ----------
     points : (N, 3) ndarray of float
-        3D-Punktmenge der Nachbarschaft (z. B. Kugel mit Radius D/2 um den Core-Point). N >= 3.
+        Neighbourhood points (e.g., a sphere around the core point). ``N`` must
+        be at least three.
 
     Returns
     -------
     centroid : (3,) ndarray
-        Schwerpunkt der Punktnachbarschaft.
+        Centroid of the neighbourhood.
     normal : (3,) ndarray
-        Einheitsnormale der Best-Fit-Ebene (Eigenvektor zur kleinsten Eigenvalue).
+        Unit normal vector of the fitted plane.
     eigenvalues : (3,) ndarray
-        Aufsteigend sortierte Eigenwerte der Kovarianzmatrix (λ_min, λ_mid, λ_max).
+        Ascending eigenvalues of the covariance matrix.
     sigma : float
-        Orthogonale Rauigkeit σ(D): StdAbw der senkrechten Abstände aller Punkte zur Ebene.
+        Orthogonal roughness :math:`\sigma(D)` based on point-to-plane
+        distances.
     """
     centroid = points.mean(axis=0)
     centered_points = points - centroid
+    # Determine principal directions via covariance eigen-decomposition
     covariance = (centered_points.T @ centered_points) / max(len(points) - 1, 1)
     eigenvalues, eigenvectors = np.linalg.eigh(covariance)
 
+    # The smallest eigenvalue corresponds to the normal direction
     normal_vector = eigenvectors[:, 0]
     norm = np.linalg.norm(normal_vector)
     if norm > 0:
         normal_vector = normal_vector / norm
 
+    # Compute distances of points to the plane for the roughness metric
     ortho = centered_points @ normal_vector
     sigma = float(np.std(ortho, ddof=1))
     return centroid, normal_vector, eigenvalues, sigma
 
 
 class RadiusScanStrategy:
-    """
-    Radius-basierter Scan (paper-/CC-nah):
-    - Nachbarschaften per KD-Tree im Kugelradius D/2
-    - PCA-Ebene pro Nachbarschaft; Normale = Eigenvektor zur kleinsten Eigenvalue
-    - Roughness σ(D) = StdAbw der orthogonalen Abstände ALLER Nachbarn zur PCA-Ebene
-    - Aggregation (λ_min, σ, Populationsgrößen, Coverage) über alle Nachbarschaften
-    - Skalen: D_i = min_spacing * 2^i  für i in [i_min, i_max]
+    """Scan a range of scales using radius-based neighbourhoods.
+
+    The strategy evaluates multiple normal scales by constructing radius
+    neighbourhoods and fitting planes via PCA.  Collected metrics help
+    determine optimal parameters for the M3C2 algorithm.
     """
 
     def __init__(
         self,
-        i_min: int = -3,           # z.B. 2^-3 = 1/8
-        i_max: int = 8,            # z.B. 2^8  = 256
+        i_min: int = -3,           # e.g. 2^-3 = 1/8
+        i_max: int = 8,            # e.g. 2^8  = 256
         sample_size: Optional[int] = None,
         min_points: int = 10,
         log_each_scale: bool = True,
         signed: bool = False,
         up_dir: np.ndarray | None = None,
     ) -> None:
+        """Initialize the scanning strategy.
+
+        Parameters
+        ----------
+        i_min, i_max : int
+            Power range used to derive scanned scales
+            ``D = min_spacing * 2**i``.
+        sample_size : int, optional
+            Randomly subsample the input cloud to this size if provided.
+        min_points : int
+            Minimum number of neighbours required for a valid normal.
+        log_each_scale : bool
+            Whether to log statistics for every evaluated scale.
+        signed : bool
+            If ``True``, orient normals relative to ``up_dir``.
+        up_dir : ndarray, optional
+            Reference direction used for normal orientation.
+        """
         self.i_min = i_min
         self.i_max = i_max
         self.sample_size = sample_size
@@ -91,14 +132,26 @@ class RadiusScanStrategy:
         self.signed = signed
         self.up_dir = up_dir
 
-    # 1) Einzel-Skala evaluieren (D via neighborhood_radius = D/2)
+    # 1) Evaluate a single scale (D via neighborhood_radius = D/2)
     def evaluate_radius_scale(self, point_cloud: np.ndarray, neighborhood_radius: float) -> Dict:
-        """
-        Bewertet eine einzelne Normalskala D anhand eines Nachbarschaftsradius D/2 (M3C2, Schritt 1).
+        """Evaluate one normal scale using a given neighbourhood radius.
+
+        Parameters
+        ----------
+        point_cloud : ndarray
+            Input point cloud where normals are evaluated.
+        neighborhood_radius : float
+            Radius used for neighbour searches corresponding to ``D/2``.
+
+        Returns
+        -------
+        dict
+            Collected statistics such as roughness and coverage for the scale.
         """
         if point_cloud.dtype != np.float64:
             point_cloud = point_cloud.astype(np.float64, copy=False)
 
+        # Build a KD-tree for radius-based neighbour searches
         neighbor_search = NearestNeighbors(radius=neighborhood_radius, algorithm="kd_tree")
         neighbor_search.fit(point_cloud)
         neighbor_indices_list = neighbor_search.radius_neighbors(point_cloud, return_distance=False)
@@ -115,7 +168,7 @@ class RadiusScanStrategy:
             neighbor_points = point_cloud[neighbor_indices]
             _, normal_vec, eigenvalues, sigma = _fit_plane_pca(neighbor_points)
 
-            lambda_min = float(eigenvalues[0])  # kleinster Eigenwert (Planarität)
+            lambda_min = float(eigenvalues[0])  # smallest eigenvalue (planarity)
 
             sigma_values.append(float(sigma))
             lambda_min_values.append(lambda_min)
@@ -142,15 +195,30 @@ class RadiusScanStrategy:
             "std_population":      std_population,
             "perc97_population":   perc97_population,
             "roughness":           mean_sigma,          # mean σ(D)
-            "mean_lambda3":        mean_lambda3,        # Planaritätsmaß
+            "mean_lambda3":        mean_lambda3,        # planarity measure
             "relative_roughness":  relative_roughness,  # σ(D)/D
             "coverage":            coverage,
         }
 
-    # 2) Mehrere Skalen scannen (D_i = min_spacing * 2^i)
+    # 2) Scan multiple scales (D_i = min_spacing * 2^i)
     def scan(self, points: np.ndarray, min_spacing: float) -> List[ScaleScan]:
+        """Scan a sequence of scales and collect statistics for each.
+
+        Parameters
+        ----------
+        points : ndarray
+            Point cloud to analyse.
+        min_spacing : float
+            Minimal point spacing used as the base scale.
+
+        Returns
+        -------
+        list of :class:`ScaleScan`
+            Statistics for each evaluated scale.
+        """
         pts = points
         if self.sample_size and len(pts) > self.sample_size:
+            # Randomly subsample the cloud to speed up evaluation
             idx = np.random.choice(len(pts), size=self.sample_size, replace=False)
             pts = pts[idx]
             logging.info(f"[RadiusScan] Subsample: {self.sample_size}/{len(points)}")
@@ -159,6 +227,7 @@ class RadiusScanStrategy:
         for level in range(self.i_min, self.i_max + 1):
             D = float(min_spacing) * (2.0 ** float(level))
             radius = D / 2.0
+            # Evaluate quality metrics for this scale
             res = self.evaluate_radius_scale(pts, radius)
 
             scans.append(
@@ -168,7 +237,7 @@ class RadiusScanStrategy:
                     mean_population=res["mean_population"],
                     roughness=res["roughness"],           # mean σ(D)
                     coverage=res["coverage"],
-                    mean_lambda3=res["mean_lambda3"],     # Planaritätsmaß
+                    mean_lambda3=res["mean_lambda3"],     # planarity measure
                     total_points=res["total_points"],
                     std_population=res["std_population"],
                     perc97_population=res["perc97_population"],
