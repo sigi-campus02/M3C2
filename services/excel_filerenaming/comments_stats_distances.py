@@ -1,7 +1,13 @@
+"""Add descriptive comments to headers in distance statistics worksheets.
+
+This module maps known column headers to comment texts and provides
+:func:`add_header_comments` to annotate a worksheet with these descriptions.
+"""
 
 from openpyxl import load_workbook
 from openpyxl.comments import Comment
 
+# Mapping of column headers to comment texts (German language).
 HEADER_COMMENTS = {
     "Timestamp": "Zeitpunkt der Auswertung.",
     "Folder": "Ordner/Datensatz-ID.",
@@ -75,12 +81,40 @@ def add_header_comments(
     box_width: float = 300,
     box_height: float = 160
 ):
+    """Attach descriptive comments to the header row of a distance statistics sheet.
+
+    Parameters
+    ----------
+    xlsx_path: str
+        Path to the Excel workbook to modify.
+    sheet_name: str, optional
+        Name of the worksheet to annotate.
+    header_row: int, optional
+        One-based index of the header row.
+    author: str, optional
+        Name recorded as the comment author.
+    overwrite: bool, optional
+        Replace existing comments if ``True``.
+    box_width: float, optional
+        Width of the comment box in points.
+    box_height: float, optional
+        Height of the comment box in points.
+
+    Returns
+    -------
+    None
+
+    Raises
+    ------
+    ValueError
+        If ``sheet_name`` is not found in the workbook.
+    """
     wb = load_workbook(xlsx_path)
     if sheet_name not in wb.sheetnames:
         raise ValueError(f"Sheet '{sheet_name}' nicht gefunden in {xlsx_path}")
     ws = wb[sheet_name]
 
-    # Lese die Überschriftenzeile
+    # Read the header row to identify cells to annotate.
     headers = [cell.value for cell in ws[header_row]]
 
     for col_idx, header in enumerate(headers, start=1):
@@ -91,6 +125,7 @@ def add_header_comments(
         cell = ws.cell(row=header_row, column=col_idx)
         if (cell.comment is not None) and not overwrite:
             continue
+        # Create the comment box and attach it to the cell.
         c = Comment(HEADER_COMMENTS[header], author)
         c.visible = False
         c.width = box_width
@@ -100,4 +135,5 @@ def add_header_comments(
     wb.save(xlsx_path)
 
 if __name__ == "__main__":
+    # Example invocation for manual testing
     add_header_comments("m3c2_stats_all.xlsx", sheet_name="Results")

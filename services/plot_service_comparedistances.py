@@ -1,3 +1,5 @@
+"""Specialised plots comparing distance measurements between variants."""
+
 from __future__ import annotations
 import logging
 import os
@@ -10,8 +12,14 @@ logger = logging.getLogger(__name__)
 
 
 class PlotServiceCompareDistances:
+    """Generate comparison plots for paired distance data sets."""
+
     @classmethod
-    def overlay_plots(cls, config: PlotConfig, options: PlotOptionsComparedistances) -> None:
+    def overlay_plots(
+        cls, config: PlotConfig, options: PlotOptionsComparedistances
+    ) -> None:
+        """Create the selected comparison plots for all folders in ``config``."""
+
         os.makedirs(config.path, exist_ok=True)
         folder_ids = config.folder_ids
         ref_variants = config.filenames
@@ -41,9 +49,12 @@ class PlotServiceCompareDistances:
 
     @staticmethod
     def _load_ref_variant_data(fid: str, variant: str) -> np.ndarray | None:
+        """Load distance array for a given reference variant."""
+
         basename = f"python_{variant}_m3c2_distances.txt"
         path = PlotServiceCompareDistances._resolve(fid, basename)
-        print("Current working directory:", os.getcwd())
+        # Debug log for unexpected resolution issues during development
+        logger.debug("Working directory: %s", os.getcwd())
         if not os.path.exists(path):
             logger.warning(f"File not found: {path}")
             return None
@@ -55,7 +66,7 @@ class PlotServiceCompareDistances:
 
     @staticmethod
     def _load_and_mask(fid: str, ref_variants: List[str]) -> tuple[np.ndarray, np.ndarray] | None:
-        """Loads and masks the two reference variant arrays for a folder."""
+        """Load two variant arrays and mask invalid values."""
         data = [PlotServiceCompareDistances._load_ref_variant_data(fid, v) for v in ref_variants]
         if any(d is None for d in data):
             return None
@@ -75,6 +86,7 @@ class PlotServiceCompareDistances:
         ref_variants: List[str],
         outdir: str = "BlandAltman",
     ) -> None:
+        """Create Bland–Altman plots for all ``folder_ids``."""
 
         if len(ref_variants) != 2:
             raise ValueError("ref_variants must contain exactly two entries")
@@ -134,7 +146,7 @@ class PlotServiceCompareDistances:
         ref_variants: List[str],
         outdir: str = "PassingBablok",
     ) -> None:
-        """Create Passing–Bablok regression plots (nach Rowannicholls-Tutorial)."""
+        """Create Passing–Bablok regression plots."""
 
         if len(ref_variants) != 2:
             raise ValueError("ref_variants must contain exactly two entries")
@@ -307,12 +319,7 @@ class PlotServiceCompareDistances:
         ref_variants: List[str],
         outdir: str = "LinearRegression",
     ) -> None:
-        """
-        Erzeugt OLS-Linearregressionsplots (y = a + b x) für alle folder_ids.
-        - gleiche Figurgröße wie beim PB-Plot
-        - quadratische Achsenlimits mit _square_limits
-        - 95%-CIs für a und b (t-Verteilung)
-        """
+        """Create ordinary least squares regression plots for all folders."""
 
         if len(ref_variants) != 2:
             raise ValueError("ref_variants must contain exactly two entries")
@@ -404,22 +411,31 @@ class PlotServiceCompareDistances:
             )
 
 
+
 def _square_limits(x: np.ndarray, y: np.ndarray, pad: float = 0.05):
+    """Return square axis limits covering all points.
+
+    Parameters
+    ----------
+    x, y:
+        Arrays of coordinates.
+    pad:
+        Additional relative padding added to each side.
+
+    Returns
+    -------
+    tuple
+        ``((xmin, xmax), (ymin, ymax))`` limits.
     """
-    Liefert quadratische Achsenlimits, die alle Punkte abdecken
-    und den Plotbereich maximal ausnutzen.
-    pad = 5% Rand.
-    """
+
     x_min, x_max = float(np.min(x)), float(np.max(x))
     y_min, y_max = float(np.min(y)), float(np.max(y))
 
-    # Gemeinsamer Min/Max-Bereich über beide Achsen
     v_min = min(x_min, y_min)
     v_max = max(x_max, y_max)
 
-    # Quadratischer Bereich um das Zentrum
     cx = cy = (v_min + v_max) / 2.0
     half = max((x_max - x_min), (y_max - y_min)) / 2.0
-    half = half * (1.0 + pad) if half > 0 else 1.0  # fallback falls alle Punkte identisch
+    half = half * (1.0 + pad) if half > 0 else 1.0
 
     return (cx - half, cx + half), (cy - half, cy + half)

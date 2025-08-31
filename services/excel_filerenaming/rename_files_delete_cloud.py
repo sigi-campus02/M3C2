@@ -1,14 +1,25 @@
 #!/usr/bin/env python3
 # remove_cloud_token.py
+"""Remove the ``python_`` token from file and directory names.
+
+This script provides a command-line utility to strip a specific token from
+filenames. It can optionally traverse directories recursively and rename
+folders as well as files.
+"""
+
 import argparse, os
 from pathlib import Path
 
 def transform(name: str) -> str:
-    # Entfernt ALLE Vorkommen von "_validonly" im Namen (inkl. vor der Extension)
+    """Remove all occurrences of ``python_`` from a filename or directory name."""
     return name.replace("python_", "")
 
 def iter_paths(base: Path, recursive: bool, include_dirs: bool):
-    """Liefer Pfade: Dateien immer, Ordner nur wenn include_dirs=True. Bottom-up bei Rekursion."""
+    """Yield paths to files and optionally directories under ``base``.
+
+    Traverses bottom-up when ``recursive`` is ``True`` so directory renames
+    remain valid while iterating.
+    """
     if recursive:
         for root, dirs, files in os.walk(base, topdown=False):
             for f in files:
@@ -22,6 +33,7 @@ def iter_paths(base: Path, recursive: bool, include_dirs: bool):
                 yield p
 
 def main():
+    """Command-line interface for removing ``python_`` tokens from names."""
     ap = argparse.ArgumentParser(
         description='Entfernt alle Vorkommen von "_cloud" aus Datei-/Ordnernamen.'
     )
@@ -34,6 +46,7 @@ def main():
     base = Path(args.path).resolve()
     changed = skipped = 0
 
+    # Iterate over collected paths and rename them as needed.
     for p in iter_paths(base, args.recursive, args.include_dirs):
         new_name = transform(p.name)
         if new_name == p.name or not new_name:
@@ -51,4 +64,5 @@ def main():
     print(f"Fertig. {'(Dry-Run) ' if args.dry_run else ''}Umbenannt: {changed}, Übersprungen: {skipped}")
 
 if __name__ == "__main__":
+    # Execute the CLI when run as a script.
     main()

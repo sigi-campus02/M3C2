@@ -20,20 +20,63 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class OutlierResult:
-    """Container holding split distance rows."""
+    """Container holding separated inlier and outlier rows.
+
+    Attributes
+    ----------
+    inliers:
+        Distance rows considered valid according to the chosen metric.
+    outliers:
+        Distance rows that exceeded the outlier threshold.
+    """
 
     inliers: np.ndarray
     outliers: np.ndarray
 
 
 def _load_distances(file_path: str) -> np.ndarray:
-    """Load distance rows ignoring the first header line."""
+    """Load distance rows from a text file.
+
+    Parameters
+    ----------
+    file_path:
+        Path to the ``*_m3c2_distances_coordinates.txt`` file.
+
+    Returns
+    -------
+    np.ndarray
+        Array of distance rows excluding the header.
+    """
 
     return np.loadtxt(file_path, skiprows=1)
 
 
-def _detect_outlier_mask(distances: np.ndarray, method: str, factor: float) -> Tuple[np.ndarray, float]:
-    """Return a boolean mask of outliers and the threshold used."""
+def _detect_outlier_mask(
+    distances: np.ndarray, method: str, factor: float
+) -> Tuple[np.ndarray, float]:
+    """Return a boolean mask of detected outliers and the threshold.
+
+    Parameters
+    ----------
+    distances:
+        One-dimensional array of distance values.
+    method:
+        Name of the outlier detection method (``rmse``, ``iqr``, ``std`` or
+        ``nmad``).
+    factor:
+        Multiplicative factor applied to the respective metric.
+
+    Returns
+    -------
+    Tuple[np.ndarray, float]
+        A tuple containing the boolean mask marking outliers and the
+        numeric threshold that was applied.
+
+    Raises
+    ------
+    ValueError
+        If an unknown detection ``method`` is given.
+    """
 
     if method == "rmse":
         metric = float(np.sqrt(np.mean(distances**2)))
@@ -83,15 +126,26 @@ def exclude_outliers(
         Outlier detection method (``rmse``, ``iqr``, ``std`` or ``nmad``).
     outlier_multiplicator:
         Factor applied to the respective metric.
+
+    Returns
+    -------
+    OutlierResult
+        Dataclass with arrays of inliers and outliers.
     """
 
+    # Load the raw distance rows and drop entries with NaN distances
     distances_all = _load_distances(file_path)
     valid_mask = ~np.isnan(distances_all[:, 3])
     distances_valid = distances_all[valid_mask]
-    mask, _ = _detect_outlier_mask(distances_valid[:, 3], method, outlier_multiplicator)
+
+    # Determine which distances are outliers according to the selected method
+    mask, _ = _detect_outlier_mask(
+        distances_valid[:, 3], method, outlier_multiplicator
+    )
 
     result = OutlierResult(inliers=distances_valid[~mask], outliers=distances_valid[mask])
 
+    # Persist the split results next to the input file
     base = Path(file_path).with_suffix("")
     inlier_path = f"{base}_inlier_{method}.txt"
     outlier_path = f"{base}_outlier_{method}.txt"

@@ -1,8 +1,14 @@
+"""Attach explanatory comments to headers in single-cloud statistics worksheets.
+
+The module defines mappings from expected column names to comment texts and
+provides :func:`add_cloud_header_comments` to annotate a workbook.
+"""
+
 from openpyxl import load_workbook
 from openpyxl.comments import Comment
 import re
 
-# ---- feste (exakte) Header-Kommentare für Single-Cloud-Stats ----
+# ---- fixed header comments for single-cloud statistics ----
 CLOUD_HEADER_COMMENTS = {
     "Timestamp": "Zeitpunkt der Auswertung.",
     "File/Folder": "Quelle der Punktwolke (Dateipfad oder Ordner).",
@@ -53,7 +59,7 @@ CLOUD_HEADER_COMMENTS = {
     "Sampled Points": "Anzahl Punkte im Subsample S für lokale Auswertungen.",
 }
 
-# ---- optionale / zukünftige Spalten (werden kommentiert, falls vorhanden) ----
+# ---- optional or future columns (commented if present) ----
 CLOUD_HEADER_COMMENTS_OPTIONAL = {
     # Falls du detrended-Z einführst:
     "Z(detrended) Min": "Min der Höhen relativ zur globalen Best-Fit-Ebene.",
@@ -87,7 +93,7 @@ CLOUD_HEADER_COMMENTS_OPTIONAL = {
     "Spherical Variance of Normals": "1−R (Resultantenlänge); 0=perfekt konsistent, 1=zufällig.",
 }
 
-# ---- Muster (regex) für dynamische Header ----
+# ---- regex patterns for dynamic headers ----
 CLOUD_PATTERN_COMMENTS = [
     # "Mean NN Dist (1..k)"
     (re.compile(r"^Mean NN Dist \(1\.\.\d+\)$"),
@@ -104,15 +110,40 @@ def add_cloud_header_comments(xlsx_path: str,
                               overwrite: bool = True,
                               box_width: float = 300,
                               box_height: float = 160) -> None:
-    """
-    Hängt erklärende Kommentare an die Header der Single-Cloud-Statistik an.
-    Unterstützt exakte Header und dynamische (regex-basierte) Header.
+    """Insert explanatory comments into the header row of a cloud statistics sheet.
+
+    Parameters
+    ----------
+    xlsx_path: str
+        Path to the Excel workbook to update.
+    sheet_name: str, optional
+        Name of the worksheet containing the statistics table.
+    header_row: int, optional
+        One-based index of the row with header cells.
+    author: str, optional
+        Name recorded as the comment author.
+    overwrite: bool, optional
+        Replace existing comments if ``True``.
+    box_width: float, optional
+        Width of the comment box in points.
+    box_height: float, optional
+        Height of the comment box in points.
+
+    Returns
+    -------
+    None
+
+    Raises
+    ------
+    ValueError
+        If ``sheet_name`` does not exist in the workbook.
     """
     wb = load_workbook(xlsx_path)
     if sheet_name not in wb.sheetnames:
         raise ValueError(f"Sheet '{sheet_name}' nicht gefunden in {xlsx_path}")
     ws = wb[sheet_name]
 
+    # Extract the header row to determine which cells require comments.
     headers = [cell.value for cell in ws[header_row]]
     for col_idx, header in enumerate(headers, start=1):
         if not header or not isinstance(header, str):
@@ -120,13 +151,13 @@ def add_cloud_header_comments(xlsx_path: str,
 
         comment_text = None
 
-        # exakte Treffer prüfen
+        # Check for exact header matches first.
         if header in CLOUD_HEADER_COMMENTS:
             comment_text = CLOUD_HEADER_COMMENTS[header]
         elif header in CLOUD_HEADER_COMMENTS_OPTIONAL:
             comment_text = CLOUD_HEADER_COMMENTS_OPTIONAL[header]
         else:
-            # Muster prüfen
+            # Fall back to regex-based patterns for dynamic headers.
             for pattern, text in CLOUD_PATTERN_COMMENTS:
                 if pattern.match(header):
                     comment_text = text
@@ -139,6 +170,7 @@ def add_cloud_header_comments(xlsx_path: str,
         if (cell.comment is not None) and not overwrite:
             continue
 
+        # Insert the comment box and configure its appearance.
         c = Comment(comment_text, author)
         c.visible = False
         c.width = box_width
@@ -147,5 +179,5 @@ def add_cloud_header_comments(xlsx_path: str,
 
     wb.save(xlsx_path)
 
-# Beispielaufruf:
+# Example call executed on import
 add_cloud_header_comments("cloud_stats.xlsx", sheet_name="CloudStats")

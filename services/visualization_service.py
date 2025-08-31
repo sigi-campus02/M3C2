@@ -1,4 +1,9 @@
-# visualization_service.py
+"""Visualisation utilities for point cloud distance data.
+
+This module contains helpers to colour point clouds based on distance values,
+export them as PLY files and create basic plots for exploratory analysis.
+"""
+
 from __future__ import annotations
 
 from typing import Optional, Tuple
@@ -7,14 +12,14 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 import os
 
-# seaborn optional
+# seaborn is optional; fall back to matplotlib if unavailable
 try:
     import seaborn as sns  # type: ignore
     _HAS_SNS = True
 except Exception:
     _HAS_SNS = False
 
-# plyfile optional
+# plyfile is optional; only required for exporting PLY files
 try:
     from plyfile import PlyData, PlyElement  # type: ignore
 except Exception:
@@ -23,8 +28,9 @@ except Exception:
 
 
 class VisualizationService:
+    """Functions for colouring point clouds and creating simple plots."""
 
-    # --- ÄNDERN: txt_to_ply_with_distance_color(...) so anpassen, dass 'distance' als Scalar mitgeschrieben wird ---
+    # Export helpers -----------------------------------------------------
     @staticmethod
     def txt_to_ply_with_distance_color(
         txt_path: str,
@@ -34,28 +40,47 @@ class VisualizationService:
         scalar_name: str = "distance",              # <— NEU: frei benennbar
         write_binary: bool = True,                  # <— optional
     ) -> None:
+        """Convert a TXT point cloud to a coloured PLY file.
+
+        Parameters
+        ----------
+        txt_path:
+            Path to a text file containing columns ``x y z distance``.
+        outply:
+            Output path for the generated PLY file.
+        nan_color:
+            RGB colour used for points with undefined distance values.
+        percentile_range:
+            Percentile range used to clip distances for colour mapping.
+        scalar_name:
+            Name of the scalar field to store the distance values under.
+        write_binary:
+            Whether to write the PLY file in binary format.
+
+        Raises
+        ------
+        RuntimeError
+            If the optional ``plyfile`` dependency is not installed.
+        ValueError
+            If the input file does not contain four columns.
         """
-        Lädt eine TXT-Datei mit x, y, z, distance und exportiert als farbige PLY.
-        - NaN-Distanzen: nan_color
-        - percentile_range: z.B. (1, 99) für robustes Clipping
-        - Schreibt 'distance' zusätzlich als Scalar Field in die PLY.
-        """
+
         if PlyData is None or PlyElement is None:
-            raise RuntimeError("PLY-Export nicht verfügbar (pip install plyfile).")
+            raise RuntimeError("PLY export requires the 'plyfile' package.")
 
         arr = np.loadtxt(txt_path, skiprows=1)
         if arr.size == 0:
-            raise ValueError(f"TXT-Datei enthält keine Werte: {txt_path}")
+            raise ValueError(f"TXT file contains no values: {txt_path}")
         if arr.ndim == 1:
             arr = arr.reshape(1, -1)
         if arr.shape[1] != 4:
-            raise ValueError(f"TXT-Datei muss 4 Spalten haben: {txt_path}")
+            raise ValueError(f"TXT file must have 4 columns: {txt_path}")
 
         points = arr[:, :3]
         distances = arr[:, 3]
         n = len(distances)
 
-        # Farben berechnen (wie bisher)
+        # Compute colours based on distance values
         colors = np.zeros((n, 3), dtype=np.uint8)
         valid_mask = ~np.isnan(distances)
         if valid_mask.any():
@@ -67,14 +92,16 @@ class VisualizationService:
                 vmax = vmin + 1e-12
             normed = (np.clip(v, vmin, vmax) - vmin) / (vmax - vmin)
 
+            # Colour ramp similar to CloudCompare: blue → green → yellow → red
             cc_colors = [(0.0, "blue"), (0.33, "green"), (0.66, "yellow"), (1.0, "red")]
             cc_cmap = LinearSegmentedColormap.from_list("CC_Colormap", cc_colors)
             colored_valid = (cc_cmap(normed)[:, :3] * 255).astype(np.uint8)
             colors[valid_mask] = colored_valid
 
+        # Uncoloured points (NaN distances) appear as the specified nan_color
         colors[~valid_mask] = np.array(nan_color, dtype=np.uint8)
 
-        # --- HIER: PLY mit zusätzlichem Float-Property 'distance' schreiben ---
+        # Write PLY file including distance as an additional scalar property
         _write_ply_xyzrgb(
             points=points,
             colors=colors,
@@ -83,10 +110,11 @@ class VisualizationService:
             scalar_name=scalar_name,
             binary=write_binary,
         )
-
         import logging
         logger = logging.getLogger(__name__)
-        logger.info(f"[TXT->PLY] {txt_path} -> {outply} ({n} Punkte, SF='{scalar_name}')")
+        logger.info(
+            f"[TXT->PLY] {txt_path} -> {outply} ({n} points, scalar='{scalar_name}')"
+        )
 
 
 
@@ -97,9 +125,23 @@ class VisualizationService:
         distances: np.ndarray,
         path: Optional[str] = None,
         bins: int = 256,
-        title: str = "Verteilung der M3C2-Distanzen",
+        title: str = "Distribution of M3C2 distances",
     ) -> None:
-        """Speichert (oder zeigt) ein Histogramm der gültigen Distanzen."""
+        """Plot and optionally save a histogram of valid distance values.
+
+        Parameters
+        ----------
+        distances:
+            Array containing distance values with possible NaNs.
+        path:
+            Optional path to save the figure; if omitted the plot is only
+            displayed.
+        bins:
+            Number of histogram bins to use.
+        title:
+            Title for the plot.
+        """
+
         vals = distances[~np.isnan(distances)]
         plt.figure(figsize=(10, 6))
         if _HAS_SNS:
@@ -107,8 +149,8 @@ class VisualizationService:
         else:
             plt.hist(vals, bins=bins)
         plt.title(title)
-        plt.xlabel("M3C2-Distanz")
-        plt.ylabel("Anzahl Punkte")
+        plt.xlabel("M3C2 distance")
+        plt.ylabel("Number of points")
         plt.grid(True)
         plt.tight_layout()
         if path:
@@ -128,14 +170,34 @@ class VisualizationService:
         nan_color: Tuple[int, int, int] = (255, 255, 255),
         percentile_range: Tuple[float, float] = (0.0, 100.0),
     ) -> np.ndarray:
+        """Colour a point cloud by distance and export it as a PLY file.
+
+        Parameters
+        ----------
+        points:
+            ``(N,3)`` array of point coordinates.
+        distances:
+            ``(N,)`` array of distance values used for colouring.
+        outply:
+            Output path for the coloured PLY file.
+        nan_color:
+            Colour assigned to points with NaN distances.
+        percentile_range:
+            Percentile range to clip distances for colour mapping.
+
+        Returns
+        -------
+        numpy.ndarray
+            Array of RGB colours used for each point.
+
+        Raises
+        ------
+        RuntimeError
+            If the optional ``plyfile`` dependency is missing.
         """
-        Punktwolke anhand Distanz einfärben und als PLY speichern.
-        - NaN-Distanzen: nan_color
-        - percentile_range: z.B. (1, 99) für robustes Clipping
-        Rückgabe: colors (uint8, Nx3)
-        """
+
         if PlyData is None or PlyElement is None:
-            raise RuntimeError("PLY-Export nicht verfügbar (pip install plyfile).")
+            raise RuntimeError("PLY export requires the 'plyfile' package.")
 
         n = len(distances)
         colors = np.zeros((n, 3), dtype=np.uint8)
@@ -150,17 +212,17 @@ class VisualizationService:
                 vmax = vmin + 1e-12
             normed = (np.clip(v, vmin, vmax) - vmin) / (vmax - vmin)
 
-            # CC-ähnliche Farbskala: blau → grün → gelb → rot
+            # Colour ramp similar to CloudCompare
             cc_colors = [(0.0, "blue"), (0.33, "green"), (0.66, "yellow"), (1.0, "red")]
             cc_cmap = LinearSegmentedColormap.from_list("CC_Colormap", cc_colors)
 
             colored_valid = (cc_cmap(normed)[:, :3] * 255).astype(np.uint8)
             colors[valid_mask] = colored_valid
 
-        # NaNs als weiß (oder nan_color)
+        # Assign default colour to NaN distances
         colors[~valid_mask] = np.array(nan_color, dtype=np.uint8)
 
-        # -> PLY schreiben
+        # Write the coloured points to a PLY file
         vertex = np.array(
             [(x, y, z, r, g, b) for (x, y, z), (r, g, b) in zip(points, colors)],
             dtype=[("x", "f4"), ("y", "f4"), ("z", "f4"),
@@ -170,11 +232,11 @@ class VisualizationService:
 
         d = os.path.dirname(outply)
         if d:
-            os.makedirs(d, exist_ok=True)   
+            os.makedirs(d, exist_ok=True)
         PlyData([el], text=False).write(outply)
         return colors
 
-    # --- OPTIONAL: export_valid(...) gleich mit Scalar schreiben (nur wenn du willst) ---
+    # Optional helper to export only valid points while writing distances as a scalar
     @staticmethod
     def export_valid(
         points: np.ndarray,
@@ -184,7 +246,24 @@ class VisualizationService:
         scalar_name: str = "distance",     # <— NEU
         write_binary: bool = True,         # <— NEU
     ) -> None:
-        """Nur gültige Punkte (non-NaN) mit Farben als PLY exportieren – inkl. 'distance' als Scalar Field."""
+        """Export only valid (non-NaN) points as a coloured PLY file.
+
+        Parameters
+        ----------
+        points:
+            ``(N,3)`` point coordinates.
+        colors:
+            ``(N,3)`` colour array matching ``points``.
+        distances:
+            Distance values used to filter valid points and written as a
+            scalar field.
+        outply:
+            Output path for the PLY file.
+        scalar_name:
+            Name of the stored scalar field.
+        write_binary:
+            Write the PLY in binary format when ``True``.
+        """
         if PlyData is None or PlyElement is None:
             raise RuntimeError("PLY-Export nicht verfügbar (pip install plyfile).")
 
@@ -212,18 +291,37 @@ def _write_ply_xyzrgb(
     scalar_name: str = "distance",
     binary: bool = True,
 ) -> None:
-    """
-    Schreibt eine PLY mit x,y,z + r,g,b und optional einem zusätzlichen
-    Float-Property als Scalar Field (z.B. 'distance').
+    """Write a PLY file with geometry, colour and optional scalar values.
 
-    CloudCompare interpretiert zusätzliche Float-Vertex-Properties als Scalar Fields.
+    Parameters
+    ----------
+    points:
+        ``(N,3)`` array of point coordinates.
+    colors:
+        ``(N,3)`` array of uint8 RGB colours.
+    outply:
+        Destination path for the PLY file.
+    scalar:
+        Optional ``(N,)`` array to write as an additional float property.
+    scalar_name:
+        Name of the scalar field stored for each vertex.
+    binary:
+        Write binary PLY when ``True`` for smaller files.
+
+    Raises
+    ------
+    RuntimeError
+        If the ``plyfile`` dependency is not available.
+    ValueError
+        If the array sizes do not match.
     """
+
     if PlyData is None or PlyElement is None:
-        raise RuntimeError("PLY-Export nicht verfügbar (pip install plyfile).")
+        raise RuntimeError("PLY export requires the 'plyfile' package.")
 
     n = points.shape[0]
     if colors.shape[0] != n:
-        raise ValueError("Anzahl colors != Anzahl Punkte")
+        raise ValueError("colors array must match points length")
 
     base_dtype = [
         ("x", "f4"), ("y", "f4"), ("z", "f4"),
@@ -231,7 +329,7 @@ def _write_ply_xyzrgb(
     ]
     if scalar is not None:
         if scalar.shape[0] != n:
-            raise ValueError("Anzahl scalar != Anzahl Punkte")
+            raise ValueError("scalar array must match points length")
         base_dtype.append((scalar_name, "f4"))
 
     if scalar is None:
@@ -249,5 +347,5 @@ def _write_ply_xyzrgb(
     d = os.path.dirname(outply)
     if d:
         os.makedirs(d, exist_ok=True)
-    # binary=True => kleinere Dateien; CloudCompare kann beides
+    # binary=True yields smaller files; CloudCompare understands both formats
     PlyData([el], text=not binary).write(outply)

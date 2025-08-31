@@ -1,21 +1,44 @@
 #!/usr/bin/env python3
 # rename_group_prefixes.py
+"""Rename numeric group prefixes in file and directory names to alphabetic ones.
+
+The script scans file or directory names containing patterns like
+``1-<index>_cloud`` or ``2-<index>_cloud`` and converts them to
+``a-<index>_cloud`` and ``b-<index>_cloud`` respectively.
+"""
+
 import re, argparse, os
 from pathlib import Path
 
-# Matcht einen "Cloud-Block":  (_|^-)(1|2)-<idx>(-AI)?_cloud
+# Match a "cloud" block:  (_|^-)(1|2)-<idx>(-AI)?_cloud
 BLOCK = re.compile(
     r'(?P<pre>(^|[_-]))(?P<grp>[12])-(?P<idx>\d+)(?P<ai>-AI)?(?P<cloud>_cloud)'
 )
 
 def transform(name: str) -> str:
+    """Replace numeric group prefixes with alphabetic ones in a name.
+
+    Parameters
+    ----------
+    name: str
+        Original file or directory name.
+
+    Returns
+    -------
+    str
+        Name with group identifiers converted.
+    """
     def repl(m):
         mapped = 'a' if m.group('grp') == '1' else 'b'
         return f"{m.group('pre')}{mapped}-{m.group('idx')}{m.group('ai') or ''}{m.group('cloud')}"
     return BLOCK.sub(repl, name)
 
 def iter_paths(base: Path, recursive: bool):
-    """Liefert Dateien und Ordner. Bei Rekursion bottom-up (sicher für Ordner-Renames)."""
+    """Yield files and directories from ``base`` respecting recursion.
+
+    Traverses bottom-up when ``recursive`` is ``True`` so that directory
+    renames do not invalidate child paths.
+    """
     if recursive:
         for root, dirs, files in os.walk(base, topdown=False):
             for f in files:
@@ -24,9 +47,10 @@ def iter_paths(base: Path, recursive: bool):
                 yield Path(root) / d
     else:
         for p in base.iterdir():
-            yield p  # Dateien und Ordner
+            yield p  # files and directories
 
 def main():
+    """Command-line interface for batch renaming of group prefixes."""
     ap = argparse.ArgumentParser(
         description="Ersetzt in *_cloud-Blöcken die Gruppenkennung: 1-* -> a-*, 2-* -> b-* (in Dateien und Ordnern)."
     )
@@ -38,6 +62,7 @@ def main():
     base = Path(args.path).resolve()
     changed = skipped = 0
 
+    # Iterate through all candidate paths and apply the renaming.
     for p in iter_paths(base, args.recursive):
         new_name = transform(p.name)
         if new_name == p.name:
