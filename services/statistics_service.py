@@ -1,3 +1,9 @@
+"""Statistical utilities for M3C2 distance measurements.
+
+The module provides helpers to compute descriptive statistics, handle outliers
+and persist results for further analysis.
+"""
+
 from __future__ import annotations
 import os
 from typing import Dict, List, Optional, Tuple
@@ -10,7 +16,7 @@ from sklearn.neighbors import NearestNeighbors
 from datasource.datasource import DataSource
 
 
-# Kanonische Spaltenreihenfolge für Statistik-Exports
+# Canonical column order for statistics exports
 CANONICAL_COLUMNS = [
     "Timestamp", "Folder", "Version", "Total Points",
     "Normal Scale", "Search Scale",
@@ -34,6 +40,8 @@ CANONICAL_COLUMNS = [
 
 
 class StatisticsService:
+    """High level operations for computing and exporting statistics."""
+
     # =============================
     # Public API
     # =============================
@@ -50,22 +58,41 @@ class StatisticsService:
         outlier_method: str = "rmse"
 
     ) -> Dict:
-        """Berechne diverse Metriken aus den gegebenen Distanzwerten.
+        """Compute descriptive metrics for a set of distances.
 
         Parameters
         ----------
         distances:
-            Array mit Distanzwerten, das NaN enthalten kann.
+            Array of distance values that may contain ``NaN`` entries.
         params_path:
-            Optionaler Pfad zu einer Datei mit ``NormalScale`` und ``SearchScale`` Parametern.
+            Optional path to a file containing ``NormalScale`` and ``SearchScale``
+            parameters.
         bins:
-            Anzahl der Bins für das Histogramm.
+            Number of histogram bins.
         range_override:
-            Optionales Tupel zur expliziten Festlegung des Wertebereichs.
+            Explicit ``(min, max)`` range used for clipping before statistics
+            are computed.
         min_expected:
-            Mindestanzahl erwarteter Werte pro Bin für die Chi²-Berechnung.
+            Minimum expected count per bin for the chi-squared fit quality
+            checks.
         tolerance:
-            Toleranzschwelle zur Bewertung der Distanzwerte.
+            Threshold used when evaluating distances against zero.
+        outlier_multiplicator:
+            Multiplier controlling the outlier cut-off based on the selected
+            ``outlier_method``.
+        outlier_method:
+            Method for computing the outlier threshold (``rmse`` or ``std``).
+
+        Returns
+        -------
+        dict
+            Dictionary containing metrics such as count, mean, RMS and
+            distribution fit parameters.
+
+        Raises
+        ------
+        ValueError
+            If no valid distances remain after filtering or clipping.
         """
 
         total_count = len(distances)
@@ -74,18 +101,18 @@ class StatisticsService:
         if valid.size == 0:
             raise ValueError("No valid distances")
 
-        # Range wie in CC
+        # Use CloudCompare-style range if none is provided
         if range_override is None:
             data_min, data_max = float(np.min(valid)), float(np.max(valid))
         else:
             data_min, data_max = map(float, range_override)
 
-        # Clip (wie CC) für Histogramm + Fits
+        # Clip values to the selected range for histogram and distribution fits
         clipped = valid[(valid >= data_min) & (valid <= data_max)]
         if clipped.size == 0:
             raise ValueError("All values fall outside the selected range")
 
-        # Basis-Statistiken für alle Werte (inkl. Outlier)
+        # Basic statistics for all values including potential outliers
         stats_all = StatisticsService._basic_stats(clipped, tolerance)
         valid_sum = stats_all["Valid Sum"]
         valid_squared_sum = stats_all["Valid Squared Sum"]
@@ -96,11 +123,11 @@ class StatisticsService:
         mae = stats_all["MAE"]
         nmad = stats_all["NMAD"]
 
-        # Histogramm
+        # Histogram of the clipped values
         hist, bin_edges = np.histogram(clipped, bins=bins, range=(data_min, data_max))
         hist = hist.astype(float)
 
-        # Fits (Gauss & Weibull)
+        # Fit Gaussian and Weibull distributions
         fit_results = StatisticsService._fit_distributions(
             clipped, hist, bin_edges, min_expected
         )
@@ -249,14 +276,14 @@ class StatisticsService:
             "Kurtosis": stats_all["Kurtosis"],
             # "Skewness Inlier": skew_in,
             # "Kurtosis Inlier": kurt_in,
-            # "Anteil |Distanz| > 0.01": stats_all["Anteil |Distanz| > 0.01"], # 1. Anteil |Distanz| > 0.01 (1 cm-Grenze)
-            # "Anteil [-2Std,2Std]": stats_all["Anteil [-2Std,2Std]"], # 2. Anteil innerhalb ±2·Std
-            # "Anteil |Distanz| > 0.01 Inlier": share_abs_gt_in,
-            # "Anteil [-2Std,2Std] Inlier": share_2std_in,
-            # "Max |Distanz|": stats_all["Max |Distanz|"], # 3. Maximaler Absolutwert (Extremabweichung)
+            # "Share |distance| > 0.01": stats_all["Anteil |Distanz| > 0.01"], # 1. share |dist| > 0.01 (1 cm limit)
+            # "Share [-2Std,2Std]": stats_all["Anteil [-2Std,2Std]"], # 2. share within ±2·Std
+            # "Share |distance| > 0.01 Inlier": share_abs_gt_in,
+            # "Share [-2Std,2Std] Inlier": share_2std_in,
+            # "Max |distance|": stats_all["Max |Distanz|"], # 3. maximum absolute deviation
             # "Bias": bias,
-            # "Within-Tolerance": within_tolerance, # 4. Within-Tolerance (default: ±1 cm)
-            # "Max |Distanz| Inlier": max_abs_in,
+            # "Within-Tolerance": within_tolerance, # 4. within tolerance (default ±1 cm)
+            # "Max |distance| Inlier": max_abs_in,
             # "Bias Inlier": bias_in,
             # "Within-Tolerance Inlier": within_tolerance_in,
             # "ICC": icc,
@@ -284,10 +311,37 @@ class StatisticsService:
         outlier_multiplicator: float = 3.0,
         outlier_method: str = "rmse"
     ) -> pd.DataFrame:
-        """
-        Liest je Folder {version}_m3c2_distances.txt (Python) und optional CloudCompare
-        und hängt die Ergebnisse an eine Datei (Excel oder JSON) an.
-        Spalten: Folder | Version | Typ | ... (Metriken)
+        """Compute statistics for each folder and append them to a table.
+
+        Parameters
+        ----------
+        folder_ids:
+            List of folder identifiers to process.
+        filename_ref:
+            Base name of the distance files without version prefixes.
+        process_python_CC:
+            Selects the source of distance files (``"python"`` or ``"CC"``).
+        bins:
+            Number of histogram bins.
+        range_override:
+            Optional ``(min, max)`` range for clipping values.
+        min_expected:
+            Minimum expected bin count for chi-squared tests.
+        out_path:
+            Destination file for the aggregated results.
+        sheet_name:
+            Sheet name used when writing to Excel.
+        output_format:
+            Either ``"excel"`` or ``"json"`` for the output format.
+        outlier_multiplicator:
+            Multiplier controlling outlier filtering.
+        outlier_method:
+            Method for outlier threshold calculation.
+
+        Returns
+        -------
+        pandas.DataFrame
+            Data frame with one row per processed folder.
         """
         rows: List[Dict] = []
 
@@ -346,7 +400,7 @@ class StatisticsService:
                         else:
                             print(f"[Stats] Spalte '{col}' fehlt in: {cc_path}")
                     except Exception as e:
-                        print(f"[Stats] Konnte CC-Datei nicht lesen für {fid}: {e}")
+                            print(f"[Stats] Could not read CC file for {fid}: {e}")
 
         df_result = pd.DataFrame(rows)
 
@@ -366,6 +420,20 @@ class StatisticsService:
         sheet_name: str = "Results",
         output_format: str = "excel",
     ) -> None:
+        """Persist a list of result rows to Excel or JSON.
+
+        Parameters
+        ----------
+        rows:
+            List of dictionaries produced by :func:`calc_stats`.
+        out_path:
+            Target file for the aggregated results.
+        sheet_name:
+            Sheet name used when writing to Excel.
+        output_format:
+            Output format; either ``"excel"`` or ``"json"``.
+        """
+
         df = pd.DataFrame(rows)
         if df.empty:
             return
@@ -382,6 +450,28 @@ class StatisticsService:
 
     @staticmethod
     def get_outlier_mask(clipped, method, outlier_multiplicator):
+        """Return a boolean mask marking outliers in ``clipped`` values.
+
+        Parameters
+        ----------
+        clipped:
+            Array of distances already restricted to the analysis range.
+        method:
+            Outlier detection strategy (``rmse``, ``iqr``, ``std`` or ``nmad``).
+        outlier_multiplicator:
+            Multiplier defining the cutoff threshold.
+
+        Returns
+        -------
+        tuple[np.ndarray, float | str]
+            Boolean mask of outliers and the threshold value.
+
+        Raises
+        ------
+        ValueError
+            If an unknown method is supplied.
+        """
+
         if method == "rmse":
             rmse = np.sqrt(np.mean(clipped ** 2))
             outlier_threshold = (outlier_multiplicator * rmse)
@@ -405,7 +495,7 @@ class StatisticsService:
             outlier_threshold = (outlier_multiplicator * nmad)
             outlier_mask = np.abs(clipped - med) > outlier_threshold
         else:
-            raise ValueError("Unbekannte Methode für Ausreißer-Erkennung: 'rmse', 'iqr', 'std', 'nmad'")
+            raise ValueError("Unknown method for outlier detection: 'rmse', 'iqr', 'std', 'nmad'")
         return outlier_mask, outlier_threshold
     
     @staticmethod
@@ -420,16 +510,16 @@ class StatisticsService:
         Parameters
         ----------
         clipped:
-            Werte, die innerhalb des gewählten Bereichs liegen.
+            Values within the selected range.
         hist, bin_edges:
-            Histogramm der ``clipped`` Werte und die zugehörigen Grenzen.
+            Histogram of ``clipped`` values and the corresponding edges.
         min_expected:
-            Mindestanzahl erwarteter Werte pro Bin für die Chi²-Berechnung.
+            Minimum expected count per bin for the chi-squared test.
 
         Returns
         -------
         dict
-            Kennzahlen der Fits, inklusive Parameter und Chi²-Werten.
+            Fit parameters and chi-squared metrics for both distributions.
         """
 
         N = int(hist.sum())
@@ -442,7 +532,7 @@ class StatisticsService:
         cdfL = norm.cdf(bin_edges[:-1], mu, std)  # CDF am linken Rand jedes Bins
         cdfR = norm.cdf(bin_edges[1:], mu, std)   # CDF am rechten Rand jedes Bins
 
-        # Erwartete Häufigkeiten unter der Gauß-Verteilung
+        # Expected frequencies under the Gaussian distribution
         expected_gauss = N * (cdfR - cdfL)
 
         # Kleine erwartete Werte aussortieren, um Division durch 0 zu vermeiden
@@ -450,7 +540,7 @@ class StatisticsService:
         thr = min_expected if min_expected is not None else eps
         maskG = expected_gauss > thr
 
-        # Pearson-Chi²
+        # Pearson chi-squared
         pearson_gauss = float(
             np.sum((hist[maskG] - expected_gauss[maskG]) ** 2 / expected_gauss[maskG])
         )
@@ -460,16 +550,16 @@ class StatisticsService:
         # Fit der Weibull-Verteilung
         a, loc, b = weibull_min.fit(clipped) # Shape, Scale, Location
 
-        # Erwartete Häufigkeiten unter der Weibull-Verteilung
+        # Expected frequencies under the Weibull distribution
         cdfL = weibull_min.cdf(bin_edges[:-1], a, loc=loc, scale=b)
         cdfR = weibull_min.cdf(bin_edges[1:], a, loc=loc, scale=b)
 
         expected_weib = N * (cdfR - cdfL)
 
-        # Kleine erwartete Klassen ausschließen
+        # Exclude bins with very low expected counts
         maskW = expected_weib > thr
 
-        # Pearson-Chi² für Weibull
+        # Pearson chi-squared for the Weibull fit
         pearson_weib = float(
             np.sum((hist[maskW] - expected_weib[maskW]) ** 2 / expected_weib[maskW])
         )
@@ -494,9 +584,17 @@ class StatisticsService:
     def _compute_outliers(
         inliers: np.ndarray, outliers: np.ndarray
     ) -> Dict[str, float]:
-        """Bestimme Kennzahlen zu Inliern und Outliern.
+        """Compute summary statistics for inliers and outliers.
 
-        Erwartet bereits separierte Arrays ``inliers`` und ``outliers``.
+        Parameters
+        ----------
+        inliers, outliers:
+            Arrays containing values classified as inliers or outliers.
+
+        Returns
+        -------
+        dict
+            Counts and basic metrics for both groups.
         """
 
         mean_out = float(np.mean(outliers)) if outliers.size else np.nan
@@ -520,10 +618,10 @@ class StatisticsService:
 
     @staticmethod
     def _basic_stats(values: np.ndarray, tolerance: float) -> Dict[str, float]:
-        """Berechne Grundkennzahlen für ein Werte-Array.
+        """Compute basic statistics for an array of values.
 
-        Gibt ein Dictionary mit Summen, Momenten und weiteren Kennzahlen
-        zurück. Bei leeren Arrays werden ``np.nan`` bzw. 0 geliefert.
+        Returns a dictionary with sums, moments and other metrics. ``NaN`` or
+        zero is used for missing values.
         """
 
         if values.size == 0:
@@ -614,10 +712,10 @@ class StatisticsService:
 
     @staticmethod
     def _load_params(params_path: Optional[str]) -> Tuple[float, float]:
-        """Lese ``NormalScale`` und ``SearchScale`` aus einer Parameterdatei.
+        """Read ``NormalScale`` and ``SearchScale`` from a parameter file.
 
-        Returns ``(np.nan, np.nan)`` falls die Datei nicht existiert oder die
-        Werte fehlen.
+        Returns ``(np.nan, np.nan)`` if the file is missing or the values are
+        not present.
         """
 
         normal_scale = np.nan
@@ -633,6 +731,8 @@ class StatisticsService:
 
     @staticmethod
     def _resolve(fid: str, filename: str) -> str:
+        """Resolve a relative file path for a folder identifier."""
+
         p1 = os.path.join(fid, filename)
         if os.path.exists(p1):
             return p1
@@ -640,20 +740,22 @@ class StatisticsService:
 
     @staticmethod
     def _now_timestamp() -> str:
+        """Return the current timestamp as formatted string."""
+
         return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
     @staticmethod
     def _append_df_to_excel(df_new: pd.DataFrame, out_xlsx: str, sheet_name: str = "Results") -> None:
-        """
-        Hängt ``df_new`` an eine bestehende Excel-Datei an (oder erzeugt sie),
-        sorgt für ``Timestamp`` als erste Spalte und harmonisiert Spalten.
+        """Append ``df_new`` to an Excel file creating it when necessary.
+
+        Ensures a ``Timestamp`` column is inserted and harmonises columns.
         """
 
         if df_new is None or df_new.empty:
             return
 
-        # Timestamp-Spalte einfügen (erste Spalte)
+        # Insert timestamp column as first field
         ts = StatisticsService._now_timestamp()
         df_new = df_new.copy()
         df_new.insert(0, "Timestamp", ts)
@@ -663,11 +765,10 @@ class StatisticsService:
             from openpyxl.utils.dataframe import dataframe_to_rows
         except ModuleNotFoundError as e:
             raise ModuleNotFoundError(
-                "Zum Schreiben nach Excel wird 'openpyxl' benötigt. Bitte installieren: pip install openpyxl"
+                "Writing to Excel requires 'openpyxl'. Install with: pip install openpyxl"
             ) from e
 
-        # Daten in kanonische Reihenfolge bringen, fehlende Spalten mit NaN auffüllen,
-        # aber zusätzliche Spalten behalten (kommen am Ende).
+        # Reorder to canonical columns and fill missing ones with NaN while keeping extras
         original_cols = list(df_new.columns)
         for c in CANONICAL_COLUMNS:
             if c not in df_new.columns:
@@ -685,9 +786,7 @@ class StatisticsService:
             wb = load_workbook(out_xlsx)
             ws = wb[sheet_name] if sheet_name in wb.sheetnames else wb.create_sheet(sheet_name)
 
-            # In manchen Workbooks enthält die erste Zeile gruppierte Überschriften
-            # (teilweise mit zusammengeführten Zellen). Die echten Spaltennamen
-            # stehen in Zeile 2.
+            # Some workbooks have grouped headers; the actual column names are in row 2
             header_row = 2 if ws.max_row >= 2 else 1
             existing_cols = [cell.value for cell in ws[header_row] if cell.value is not None]
             if not existing_cols:
@@ -696,7 +795,7 @@ class StatisticsService:
                     ws.cell(row=header_row, column=idx, value=col)
                 existing_cols = CANONICAL_COLUMNS.copy()
 
-            # Neue Spalten, die noch nicht im Sheet existieren, anhängen
+            # Append new columns not present in the sheet
             for c in df_new.columns:
                 if c not in existing_cols:
                     existing_cols.append(c)
@@ -717,7 +816,7 @@ class StatisticsService:
 
     @staticmethod
     def _append_df_to_json(df_new: pd.DataFrame, out_json: str) -> None:
-        """Wie ``_append_df_to_excel``, aber schreibt eine JSON-Datei."""
+        """Append ``df_new`` to a JSON file similar to :func:`_append_df_to_excel`."""
         if df_new is None or df_new.empty:
             return
 
@@ -770,12 +869,12 @@ class StatisticsService:
         sample_size: Optional[int] = 100_000,
         use_convex_hull: bool = True,
     ) -> Dict:
-        """Berechne Qualitätsmetriken für eine Punktwolke.
+        """Compute quality metrics for a point cloud.
 
-        Diese interne Funktion erwartet bereits geladene Punkte und liefert die
-        statistischen Kennzahlen zurück. Die öffentliche Variante
-        :meth:`calc_single_cloud_stats` kümmert sich zusätzlich um das Laden der
-        Daten sowie das Schreiben in die Ergebnisdatei.
+        This internal helper expects the points to be loaded already and
+        returns a dictionary of statistics. The public method
+        :meth:`calc_single_cloud_stats` also handles loading data and writing
+        results.
         """
         if points is None or len(points) == 0:
             raise ValueError("Points array is empty")
@@ -783,7 +882,7 @@ class StatisticsService:
         if P.ndim != 2 or P.shape[1] != 3:
             raise ValueError("points must be of shape (N, 3)")
 
-        # Globale Z-Statistik
+        # Global statistics for the Z coordinate
         z = P[:, 2]
         num = len(P)
         z_min, z_max = float(np.min(z)), float(np.max(z))
@@ -792,7 +891,7 @@ class StatisticsService:
         z_std = float(np.std(z))
         z_q05, z_q25, z_q75, z_q95 = map(float, np.percentile(z, [5, 25, 75, 95]))
 
-        # XY-Fläche
+        # XY surface area
         xy = P[:, :2]
         if area_m2 is None:
             area_bbox = StatisticsService._bbox_area_xy(xy)
@@ -804,22 +903,22 @@ class StatisticsService:
             area_used = float(area_m2)
             area_src = "given"
 
-        # Globale Dichte
+        # Global point density
         density_global = float(num / area_used) if area_used > 0 else np.nan
 
-        # Subsample für lokale Metriken
+        # Subsample for local metrics
         idx = np.arange(num)
         if sample_size and num > sample_size:
             idx = np.random.choice(num, size=sample_size, replace=False)
         S = P[idx]
 
-        # kNN-Abstände
+        # k-nearest neighbour distances
         nn = NearestNeighbors(n_neighbors=min(k + 1, len(S))).fit(S)
         dists_knn, _ = nn.kneighbors(S)
         mean_nn_all = float(np.mean(dists_knn[:, 1:]))
         mean_nn_kth = float(np.mean(dists_knn[:, min(k, dists_knn.shape[1]-1)]))
 
-        # Radius-Nachbarschaften
+        # Radius-based neighbourhoods
         nbrs = NearestNeighbors(radius=radius).fit(S)
         ind_list = nbrs.radius_neighbors(S, return_distance=False)
         vol = 4.0 / 3.0 * np.pi * (radius ** 3)
@@ -961,12 +1060,16 @@ class StatisticsService:
 
     @staticmethod
     def _bbox_area_xy(xy: np.ndarray) -> float:
+        """Return area of the axis-aligned bounding box in the XY-plane."""
+
         x_min, y_min = np.min(xy[:, 0]), np.min(xy[:, 1])
         x_max, y_max = np.max(xy[:, 0]), np.max(xy[:, 1])
         return float((x_max - x_min) * (y_max - y_min))
 
     @staticmethod
     def _convex_hull_area_xy(xy: np.ndarray) -> float:
+        """Return area of the convex hull projected to the XY-plane."""
+
         try:
             from scipy.spatial import ConvexHull
         except Exception:
@@ -975,7 +1078,7 @@ class StatisticsService:
         return float(hull.volume)
 
     # --------------------------------------------- #
-    # High-Level API für Single-Cloud-Statistiken
+    # High-level API for single-cloud statistics
     # --------------------------------------------- #
 
     @classmethod
@@ -993,18 +1096,18 @@ class StatisticsService:
         sheet_name: str = "CloudStats",
         output_format: str = "excel",
     ) -> pd.DataFrame:
-        """Berechne Single-Cloud-Kennzahlen und speichere sie.
+        """Compute and optionally store per-cloud statistics.
 
         Parameters
         ----------
         folder_ids:
-            Liste von Ordnern, in denen die Punktwolken liegen.
+            Folders containing the point clouds.
         filename_mov, filename_ref:
-            Basisnamen der bewegten und Referenzwolke.
+            Base names of moving and reference clouds.
         area_m2, radius, k, sample_size, use_convex_hull:
-            Parameter, die an :func:`_calc_single_cloud_stats` weitergereicht werden.
+            Parameters forwarded to :func:`_calc_single_cloud_stats`.
         out_path, sheet_name, output_format:
-            Ziel-Datei und Format für die Ausgabe.
+            Target file and format for persistence.
         """
 
         rows: List[Dict] = []
@@ -1042,6 +1145,20 @@ class StatisticsService:
         sheet_name: str = "CloudStats",
         output_format: str = "excel",
     ) -> None:
+        """Write cloud statistics to JSON or Excel.
+
+        Parameters
+        ----------
+        rows:
+            List of per-cloud statistic dictionaries.
+        out_path:
+            Destination file for the aggregated results.
+        sheet_name:
+            Sheet name used when writing Excel output.
+        output_format:
+            Either ``"excel"`` or ``"json"``.
+        """
+
         df = pd.DataFrame(rows)
         if df.empty:
             return

@@ -53,7 +53,8 @@ class PlotServiceCompareDistances:
 
         basename = f"python_{variant}_m3c2_distances.txt"
         path = PlotServiceCompareDistances._resolve(fid, basename)
-        print("Current working directory:", os.getcwd())
+        # Debug log for unexpected resolution issues during development
+        logger.debug("Working directory: %s", os.getcwd())
         if not os.path.exists(path):
             logger.warning(f"File not found: {path}")
             return None
