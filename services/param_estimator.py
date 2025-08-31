@@ -1,4 +1,10 @@
-"""Parameter estimation utilities for M3C2 scans."""
+"""Parameter estimation utilities for M3C2 scans.
+
+The :class:`ParamEstimator` combines neighbourhood spacing estimation
+with a pluggable scanning strategy that evaluates candidate scale
+parameters.  The chosen scales are returned for use in downstream
+processing.
+"""
 
 from __future__ import annotations
 
@@ -13,22 +19,79 @@ from orchestration.strategies import ScaleScan
 
 @dataclass
 class ParamEstimator:
-    """Combine spacing estimation, scale scanning and final selection."""
+    """Combine spacing estimation, scale scanning and final selection.
+
+    Attributes
+    ----------
+    strategy:
+        Object providing a ``scan`` method returning :class:`ScaleScan`
+        instances.
+    k_neighbors:
+        Number of neighbours used when estimating average point spacing.
+    """
 
     strategy: object
     k_neighbors: int = 6
 
     def estimate_min_spacing(self, points: np.ndarray) -> float:
+        """Estimate the mean spacing between points.
+
+        Parameters
+        ----------
+        points:
+            ``(N,3)`` array of point coordinates.
+
+        Returns
+        -------
+        float
+            Average nearest-neighbour distance.
+        """
+
         nbrs = NearestNeighbors(n_neighbors=self.k_neighbors + 1).fit(points)
         distances, _ = nbrs.kneighbors(points)
         return float(np.mean(distances[:, 1:]))
 
-    def scan_scales(self, points: np.ndarray, avg_spacing: float) -> List[ScaleScan]:
+    def scan_scales(
+        self, points: np.ndarray, avg_spacing: float
+    ) -> List[ScaleScan]:
+        """Run the configured strategy to evaluate candidate scales.
+
+        Parameters
+        ----------
+        points:
+            Point cloud coordinates used for the scan.
+        avg_spacing:
+            Average spacing between points as returned by
+            :meth:`estimate_min_spacing`.
+
+        Returns
+        -------
+        list[ScaleScan]
+            Results of the scan performed by ``strategy``.
+        """
+
         return self.strategy.scan(points, avg_spacing)
 
     @staticmethod
     def select_scales(scans: List[ScaleScan]) -> Tuple[float, float]:
-        """Select normal and projection scales from scan results."""
+        """Select normal and projection scales from scan results.
+
+        Parameters
+        ----------
+        scans:
+            List of :class:`ScaleScan` results returned by
+            :meth:`scan_scales`.
+
+        Returns
+        -------
+        tuple[float, float]
+            The selected normal and projection scale.
+
+        Raises
+        ------
+        ValueError
+            If the list of ``scans`` is empty.
+        """
 
         if not scans:
             raise ValueError("Keine Scales gefunden.")

@@ -1,3 +1,12 @@
+"""Plotting utilities for distance distributions and comparisons.
+
+The :class:`PlotService` class bundles a collection of static methods
+that load M3C2 distance files and generate a variety of visualisations
+such as histograms, distribution fits and regression plots.  Many of the
+helper functions are shared between reports to keep behaviour consistent
+across the project.
+"""
+
 from __future__ import annotations
 import os
 import logging
@@ -16,43 +25,82 @@ from collections import OrderedDict
 
 logger = logging.getLogger(__name__)
 
+
 class PlotService:
+    """Service providing a high level interface for plot generation."""
+
     CASE_ORDER = ("CASE1", "CASE2", "CASE3", "CASE4")
 
     @staticmethod
-    def _labels_by_case_map(case_map: Dict[str, str], case_order: Tuple[str, ...] | None = None) -> List[str]:
-        """Stabile Labels: erst CASE1, dann CASE2, ...; innerhalb eines CASE in eingelesener Reihenfolge."""
+    def _labels_by_case_map(
+        case_map: Dict[str, str], case_order: Tuple[str, ...] | None = None
+    ) -> List[str]:
+        """Return labels grouped by case in a stable order.
+
+        Parameters
+        ----------
+        case_map:
+            Mapping of label to case name.
+        case_order:
+            Optional tuple describing the desired case ordering.  Defaults
+            to :data:`CASE_ORDER`.
+
+        Returns
+        -------
+        list[str]
+            Labels sorted first by case and then by appearance order.
+        """
+
         order = case_order or PlotService.CASE_ORDER
         labels: List[str] = []
         for c in order:
             labels.extend([lbl for lbl, cas in case_map.items() if cas == c])
         return labels
-    
 
     @staticmethod
-    def _reorder_data(data: Dict[str, np.ndarray], labels_order: List[str]) -> "OrderedDict[str, np.ndarray]":
-        """Daten in gewünschter Label-Reihenfolge anordnen."""
+    def _reorder_data(
+        data: Dict[str, np.ndarray], labels_order: List[str]
+    ) -> "OrderedDict[str, np.ndarray]":
+        """Return ``data`` ordered according to ``labels_order``."""
+
         return OrderedDict((lbl, data[lbl]) for lbl in labels_order if lbl in data)
 
     @staticmethod
-    def _colors_by_case(labels_order: List[str], label_to_case: Dict[str, str], case_colors: Dict[str, str]) -> Dict[str, str]:
-        """Case → Farbe, stabil pro Label in labels_order."""
-        return {lbl: case_colors.get(label_to_case.get(lbl, "CASE1"), "#777777") for lbl in labels_order}
-    
+    def _colors_by_case(
+        labels_order: List[str],
+        label_to_case: Dict[str, str],
+        case_colors: Dict[str, str],
+    ) -> Dict[str, str]:
+        """Map each label to a colour derived from its case."""
+
+        return {
+            lbl: case_colors.get(label_to_case.get(lbl, "CASE1"), "#777777")
+            for lbl in labels_order
+        }
+
     @staticmethod
     def _scan_distance_files_by_index(data_dir: str, versions=("python", "CC")):
+        """Scan *data_dir* and group distance files by part index.
+
+        Parameters
+        ----------
+        data_dir:
+            Directory containing distance files.
+        versions:
+            Iterable of version prefixes (e.g. ``python`` or ``CC``).
+
+        Returns
+        -------
+        tuple
+            ``(per_index, case_colors)`` where *per_index* holds the found
+            distances grouped by part index and *case_colors* provides a
+            colour for each case.
         """
-        Findet Dateien wie:
-        {ver}_a-<i>[-AI]-b-<i>[-AI]_m3c2_distances.txt
-        {ver}_a-<i>[-AI]-b-<i>[-AI]_m3c2_distances_coordinates_inlier_*.txt
-        Gruppiert pro Index i.
-        Labels: nur 'a-<i>[-AI] vs b-<i>[-AI]'
-        Cases: CASE1=a-i vs b-i, CASE2=a-i vs b-i-AI, CASE3=a-i-AI vs b-i, CASE4=beide AI (falls vorhanden)
-        """
+
         import re, os
         from collections import defaultdict
 
-        logger.info(f"[Scan] Scanne Distanzdateien in {data_dir} für Versionen: {versions}")
+        logger.info(f"[Scan] Scanning distance files in {data_dir} for versions: {versions}")
 
         pat_with = re.compile(
             r'^(?P<ver>(?:' + "|".join(versions) + r'))_'
@@ -70,10 +118,14 @@ class PlotService:
         )
 
         def idx_of(tag: str) -> int:
+            """Extract the numeric part index from a tag like ``a-1``."""
+
             m = re.match(r'^[ab]-(\d+)(?:-AI)?$', tag, re.IGNORECASE)
             return int(m.group(1)) if m else -1
 
         def to_case_and_label(mov: str, ref: str, i: int) -> tuple[str, str]:
+            """Return case identifier and human readable label."""
+
             mov_ai = "-AI" in mov
             ref_ai = "-AI" in ref
             if not mov_ai and not ref_ai:
@@ -142,16 +194,38 @@ class PlotService:
         bins: int = 256,
         options: PlotOptions | None = None,
         skip_existing: bool = True,
-    ):
-        options = options or PlotOptions()  # alle True als Default (wie früher)
+    ) -> None:
+        """Create overlay plots for every part index in ``data_dir``.
+
+        Parameters
+        ----------
+        data_dir:
+            Directory containing distance files organised by part index.
+        outdir:
+            Destination directory for generated plots.
+        versions:
+            Iterable of version prefixes to consider.
+        bins:
+            Number of histogram bins used in several plots.
+        options:
+            Configuration object selecting which plot types to generate.
+        skip_existing:
+            If ``True``, existing output files will not be overwritten.
+        """
+
+        options = options or PlotOptions()  # all options True by default
         os.makedirs(outdir, exist_ok=True)
-        per_index, case_colors = cls._scan_distance_files_by_index(data_dir, versions=versions)
+        per_index, case_colors = cls._scan_distance_files_by_index(
+            data_dir, versions=versions
+        )
 
         def _png(fid: str, mode: str, suffix: str) -> str:
+            """Construct an output path for a plot image."""
+
             return os.path.join(outdir, f"{fid}_{mode}_{suffix}.png")
 
         if not per_index:
-            logger.warning("[Report] Keine Distanzdateien gefunden in %s.", data_dir)
+            logger.warning("[Report] No distance files found in %s.", data_dir)
             return
 
         for i in sorted(per_index.keys()):
@@ -233,15 +307,22 @@ class PlotService:
 
     @classmethod
     def overlay_plots(cls, config: PlotConfig, options: PlotOptions) -> None:
+        """Create overlay plots summarising all folders in ``config``.
+
+        The method loads the requested WITH and INLIER data sets and
+        produces a suite of plots (histograms, distribution fits, box
+        plots, …) aggregated over all folders.
+        """
+
         colors = config.ensure_colors()
         os.makedirs(config.path, exist_ok=True)
 
-        # ---- WITH (inkl. Outlier) sammeln ----
+        # ---- WITH (including outliers) ----
         data_with_all: Dict[str, np.ndarray] = {}
         for fid in config.folder_ids:
             data_with, _ = cls._load_data(fid, config.filenames, config.versions)
             if not data_with:
-                logger.warning(f"[Report] Keine WITH-Daten für {fid} gefunden.")
+                logger.warning(f"[Report] No WITH data found for {fid}.")
                 continue
             data_with_all.update(data_with)
 
@@ -249,7 +330,7 @@ class PlotService:
             logger.warning("[Report] Keine Daten gefunden – keine Plots erzeugt.")
             return
 
-        # ---- INLIER (aus *_coordinates_inlier_std.txt) sammeln ----
+        # ---- INLIER data from *_coordinates_inlier_std.txt ----
         data_inlier_all: Dict[str, np.ndarray] = {}
         for fid in config.folder_ids:
             for v in config.versions:
@@ -268,10 +349,10 @@ class PlotService:
                 if arr.size:
                     data_inlier_all[label] = arr
 
-        # Gemeinsamer Range (über WITH, damit Seiten vergleichbar sind)
+        # Determine a common range over WITH data to keep pages comparable
         data_min, data_max, x = cls._get_common_range(data_with_all)
 
-        # EIN Satz Overlays für ALLE Folder gemeinsam
+        # Generate a single set of overlays for all folders combined
         fid = "ALLFOLDERS"
 
         # -------- Seite 1: WITH --------
@@ -318,20 +399,24 @@ class PlotService:
 
     @classmethod
     def summary_pdf(cls, config: PlotConfig) -> None:
+        """Build a two-page PDF summarising all generated plots."""
+
         plot_types = [
-            ("OverlayHistogramm", "Histogramm", (0, 0)),
+            ("OverlayHistogramm", "Histogram", (0, 0)),
             ("Boxplot", "Boxplot", (0, 1)),
-            ("OverlayGaussFits", "Gauss-Fit", (0, 2)),
-            ("OverlayWeibullFits", "Weibull-Fit", (1, 0)),
-            ("QQPlot", "Q-Q-Plot", (1, 1)),
-            ("GroupedBar_Mean_Std", "Mittelwert & Std Dev", (1, 2)),
+            ("OverlayGaussFits", "Gauss fit", (0, 2)),
+            ("OverlayWeibullFits", "Weibull fit", (1, 0)),
+            ("QQPlot", "Q-Q plot", (1, 1)),
+            ("GroupedBar_Mean_Std", "Mean & Std", (1, 2)),
         ]
 
         fid = "ALLFOLDERS"
         outfile = os.path.join(config.path, f"{fid}_comparison_report.pdf")
         pdf = PdfPages(outfile)
 
-        def _add_page(suffix_label: str, title_suffix: str):
+        def _add_page(suffix_label: str, title_suffix: str) -> None:
+            """Embed six plot images on a PDF page."""
+
             fig, axs = plt.subplots(2, 3, figsize=(24, 16))
             for suffix, title, (row, col) in plot_types:
                 ax = axs[row, col]
@@ -343,8 +428,8 @@ class PlotService:
                     ax.set_title(title, fontsize=22)
                 else:
                     ax.axis("off")
-                    ax.set_title(f"{title}\n(nicht gefunden)", fontsize=18)
-            plt.suptitle(f"{fid} – Vergleichsplots ({title_suffix})", fontsize=28)
+                    ax.set_title(f"{title}\n(not found)", fontsize=18)
+            plt.suptitle(f"{fid} – Comparison plots ({title_suffix})", fontsize=28)
             plt.subplots_adjust(left=0.03, right=0.97, top=0.92, bottom=0.08, wspace=0.08, hspace=0.15)
             pdf.savefig(fig)
             plt.close(fig)
@@ -367,16 +452,15 @@ class PlotService:
         include_with: bool = True,
         include_inlier: bool = True,
     ) -> str:
+        """Create a multi-page PDF, one page per part.
+
+        Each page contains six plots arranged in a 2×3 grid.  Depending on
+        the flags either the WITH or the INLIER set is shown.
         """
-        Erzeugt eine PDF, pro Part genau EINE Seite.
-        Layout pro Seite: 2 Zeilen × 3 Spalten = 6 Plots:
-        Zeile 1: Histogramm | Gaussian fit | Weibull fit
-        Zeile 2: Box plot   | Q–Q plot     | Means & Std (DUAL)
-        WICHTIG: Diese PDF enthält ENTWEDER WITH ODER INLIER Plots (nicht beide).
-        """
-        # --- genau einen Modus zulassen ---
+
+        # --- allow exactly one mode ---
         if include_with == include_inlier:
-            raise ValueError("Bitte genau einen Modus wählen: include_with XOR include_inlier.")
+            raise ValueError("Choose exactly one mode: include_with XOR include_inlier.")
         mode = "WITH" if include_with else "INLIER"
         subtitle = "incl. outliers" if include_with else "excl. outliers"
 
@@ -447,28 +531,30 @@ class PlotService:
 
     @staticmethod
     def _resolve(fid: str, filename: str) -> str:
-        """
-        Unterstützt sowohl '<fid>/<file>' als auch 'data/<fid>/<file>'.
-        """
+        """Resolve ``filename`` for folder ``fid`` in various locations."""
+
         p1 = os.path.join(fid, filename)
         if os.path.exists(p1):
             return p1
-        return os.path.join("data","Multi-illumination", "Job_0378_8400-110", "1-3_2-3", fid, filename)
+        return os.path.join(
+            "data", "Multi-illumination", "Job_0378_8400-110", "1-3_2-3", fid, filename
+        )
 
     @staticmethod
     def _load_1col_distances(path: str) -> np.ndarray:
-        """Lädt 1-Spalten Distanzdatei ohne Header."""
-        arr = np.loadtxt(path, ndmin=2)        # shape (N,1)
+        """Load a single-column distance file without a header."""
+
+        arr = np.loadtxt(path, ndmin=2)  # shape (N,1)
         vals = arr[:, 0].astype(float)
         return vals[np.isfinite(vals)]
 
     @staticmethod
     def _load_coordinates_inlier_distances(path: str) -> np.ndarray:
-        """Lädt 4-Spalten coordinates_inlier_* mit Header; nimmt letzte Spalte als Distanz."""
-        # Header vorhanden -> skiprows=1
-        arr = np.loadtxt(path, ndmin=2, skiprows=1)  # shape (N,4) erwartet
+        """Load ``*_coordinates_inlier_*`` file and return the distance column."""
+
+        arr = np.loadtxt(path, ndmin=2, skiprows=1)  # shape (N,4) expected
         if arr.shape[1] < 4:
-            raise ValueError(f"Erwarte 4 Spalten (x y z distance) in: {path}")
+            raise ValueError(f"Expected 4 columns (x y z distance) in: {path}")
         vals = arr[:, -1].astype(float)
         return vals[np.isfinite(vals)]
 
@@ -477,10 +563,7 @@ class PlotService:
     def _load_data(cls, fid: str, filenames: List[str], versions: List[str]) -> Tuple[
         Dict[str, np.ndarray], Dict[str, Tuple[float, float]]
     ]:
-        """
-        Rückwärts-kompatibel: liefert weiterhin 'WITH' (inkl. Outlier).
-        Für INLIER wird separat in overlay_plots geladen (siehe unten).
-        """
+        """Load distance data for a folder ``fid`` and a list of versions."""
         data_with: Dict[str, np.ndarray] = {}
         gauss_with: Dict[str, Tuple[float, float]] = {}
 
@@ -525,8 +608,12 @@ class PlotService:
 
     @staticmethod
     def _get_common_range(data: Dict[str, np.ndarray]) -> Tuple[float, float, np.ndarray]:
+        """Compute a shared numeric range for all values in ``data``."""
+
         all_vals = np.concatenate(list(data.values())) if data else np.array([])
-        data_min, data_max = (float(np.min(all_vals)), float(np.max(all_vals))) if all_vals.size else (0.0, 1.0)
+        data_min, data_max = (
+            (float(np.min(all_vals)), float(np.max(all_vals))) if all_vals.size else (0.0, 1.0)
+        )
         x = np.linspace(data_min, data_max, 500)
         return data_min, data_max, x
 
@@ -534,6 +621,8 @@ class PlotService:
 
     @staticmethod
     def _plot_overlay_histogram(fid, fname, data, bins, data_min, data_max, colors, outdir, title_text=None, labels_order=None):
+        """Plot histogram overlays for multiple labelled data series."""
+
         plt.figure(figsize=(10, 6))
         labels = labels_order or list(data.keys())
         for v in labels:
@@ -550,6 +639,8 @@ class PlotService:
 
     @staticmethod
     def _plot_overlay_gauss(fid, fname, data, gauss_params, x, colors, outdir, title_text=None, labels_order=None):
+        """Plot Gaussian probability density functions for each label."""
+
         plt.figure(figsize=(10, 6))
         labels = labels_order or list(data.keys())
         for v in labels:
@@ -568,6 +659,8 @@ class PlotService:
 
     @staticmethod
     def _plot_overlay_weibull(fid, fname, data, x, colors, outdir, title_text=None, labels_order=None):
+        """Plot Weibull fits for each data series."""
+
         weibull_params = {}
         for v, arr in data.items():
             try:
@@ -594,6 +687,8 @@ class PlotService:
 
     @staticmethod
     def _plot_overlay_boxplot(fid, fname, data, colors, outdir, title_text=None, labels_order=None):
+        """Create box plots for all labelled data series."""
+
         try:
             import seaborn as sns
             records = [pd.DataFrame({"Version": v, "Distanz": arr}) for v, arr in data.items()]
@@ -628,6 +723,8 @@ class PlotService:
 
     @staticmethod
     def _plot_overlay_qq(fid, fname, data, colors, outdir, title_text=None, labels_order=None):
+        """Generate Q–Q plots for each label against a normal distribution."""
+
         plt.figure(figsize=(10, 6))
         labels = labels_order or list(data.keys())
         for v in labels:
@@ -652,15 +749,11 @@ class PlotService:
         colors: Dict[str, str],
         outdir: str,
     ) -> None:
-        """
-        Pro FOLDER (aus keys wie 'python_1-1') nebeneinander:
-        - Balken 'WITH' (mit Outlier)
-        - Balken 'INLIER' (ohne Outlier)
-        Aggregation: concat über alle Versionen eines Folders.
-        """
-        # Hilfsfunktion: FOLDER-ID aus Label "version_folder"
+        """Grouped bars comparing WITH and INLIER metrics per folder."""
+
         def _folder_of(label: str) -> str:
-            # label ist "version_fid" -> wir wollen die komplette fid, auch wenn sie Unterstriche enthält
+            """Extract folder id from ``version_folder`` label."""
+
             return label.split("_", 1)[1] if "_" in label else label
 
         # Ordne Werte je Folder (concat über Versionen)
@@ -737,6 +830,8 @@ class PlotService:
     def _plot_grouped_bar_means_stds_dual_by_case(
         fid, data_with, data_inlier, colors, outdir, title_text="Means & Std – Incl. vs. Excl. Outliers", labels_order=None
     ):
+        """Grouped bar chart comparing WITH and INLIER values per case."""
+
         labels = labels_order or list(dict.fromkeys(list(data_with.keys()) + list(data_inlier.keys())))
 
         means_with, stds_with, means_inl, stds_inl, bar_colors = [], [], [], [], []
@@ -784,6 +879,8 @@ class PlotService:
     @staticmethod
     def _plot_overlay_violin(fid: str, fname: str, data: Dict[str, np.ndarray],
                              colors: Dict[str, str], outdir: str) -> None:
+        """Render a violin plot for the supplied data sets."""
+
         try:
             import seaborn as sns
             records = [pd.DataFrame({"Version": v, "Distanz": arr}) for v, arr in data.items()]
