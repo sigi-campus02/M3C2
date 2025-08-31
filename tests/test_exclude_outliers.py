@@ -1,6 +1,11 @@
 import numpy as np
 
-from services.exclude_outliers import OutlierResult, exclude_outliers
+from services.exclude_outliers import (
+    OutlierConfig,
+    OutlierDetector,
+    OutlierResult,
+    exclude_outliers,
+)
 
 
 def _write_distances(path):
@@ -38,4 +43,16 @@ def test_exclude_outliers_methods(tmp_path):
         outlier_file = tmp_path / f"distances_outlier_{method}.txt"
         assert inlier_file.exists()
         assert outlier_file.exists()
+
+
+def test_outlier_detector_class(tmp_path):
+    file_path = tmp_path / "distances.txt"
+    _write_distances(file_path)
+
+    config = OutlierConfig(
+        file_path=str(file_path), method="rmse", outlier_multiplicator=1.0
+    )
+    detector = OutlierDetector(config)
+    res = detector.run()
+    _assert_result(res)
 
