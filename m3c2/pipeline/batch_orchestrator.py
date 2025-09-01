@@ -17,7 +17,7 @@ from m3c2.core.statistics import StatisticsService
 from m3c2.core.exclude_outliers import exclude_outliers
 from m3c2.visualization.visualization_service import VisualizationService
 from m3c2.core.m3c2_runner import M3C2Runner
-from m3c2.pipeline.strategies import (RadiusScanStrategy, ScaleScan)
+from m3c2.pipeline.strategies import ScaleScan, STRATEGIES
 from m3c2.config.datasource_config import DataSourceConfig
 
 logger = logging.getLogger(__name__)
@@ -36,19 +36,24 @@ class BatchOrchestrator:
         Format for statistical outputs, ``"excel"`` or ``"json"``.
     """
 
-    def __init__(
-        self,
-        configs: List[PipelineConfig]
-    ) -> None:
+    def __init__(self, configs: List[PipelineConfig], strategy: str = "radius") -> None:
         """Create a new orchestrator instance.
 
         Parameters
         ----------
         configs : list[PipelineConfig]
             Configurations describing each job to run.
+        strategy : str, optional
+            Name of the scale-scanning strategy to use.  Currently only
+            ``"radius"`` is implemented but the parameter allows an easy
+            extension in the future.
         """
+
         self.configs = configs
-        self.strategy = RadiusScanStrategy(sample_size=configs.sample_size)
+        self.strategy_name = strategy
+        # The output format is identical for all configs; take it from the
+        # first configuration for convenience.
+        self.output_format = configs[0].output_format if configs else "excel"
 
         # Log basic information about the incoming batch
         logger.info("=== BatchOrchestrator initialisiert ===")
@@ -236,11 +241,23 @@ class BatchOrchestrator:
             return normal, projection
 
         t0 = time.perf_counter()
-        avg = ParamEstimator.estimate_min_spacing(corepoints)
+        # Instantiate the desired scanning strategy for the current
+        # configuration.  ``STRATEGIES`` maps a user-facing name to the
+        # corresponding class.  This design keeps the orchestrator agnostic of
+        # concrete strategy implementations.
+        try:
+            strategy_cls = STRATEGIES[self.strategy_name]
+        except KeyError as exc:
+            raise ValueError(f"Unbekannte Strategie: {self.strategy_name}") from exc
+
+        strategy = strategy_cls(sample_size=cfg.sample_size)
+        estimator = ParamEstimator(strategy=strategy)
+
+        avg = estimator.estimate_min_spacing(corepoints)
         logger.info("[Spacing] avg_spacing=%.6f (k=6) | %.3fs", avg, time.perf_counter() - t0)
 
         t0 = time.perf_counter()
-        scans: List[ScaleScan] = ParamEstimator.scan_scales(corepoints, self.strategy, avg)
+        scans: List[ScaleScan] = estimator.scan_scales(corepoints, avg)
         logger.info("[Scan] %d Skalen evaluiert | %.3fs", len(scans), time.perf_counter() - t0)
 
         if scans:

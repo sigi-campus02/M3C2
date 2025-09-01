@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from typing import List, Tuple
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
-from m3c2.pipeline.strategies import ScaleScan
+from m3c2.pipeline.strategies import ScaleScan, ScanStrategy
 
 
 @dataclass
@@ -36,7 +36,7 @@ class ParamEstimator:
         neighbourhood in a regular grid.
     """
 
-    strategy: object
+    strategy: ScanStrategy
     k_neighbors: int = 6
 
     def estimate_min_spacing(self, points: np.ndarray) -> float:
