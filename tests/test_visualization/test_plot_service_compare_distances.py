@@ -1,0 +1,32 @@
+from m3c2.config.plot_config import PlotConfig, PlotOptionsComparedistances
+from m3c2.visualization import plot_comparedistances_service
+from m3c2.visualization.plot_comparedistances_service import PlotServiceCompareDistances
+
+
+class CallRecorder:
+    def __init__(self):
+        self.calls = []
+
+    def __call__(self, folder_ids, ref_variants, outdir):
+        self.calls.append((tuple(folder_ids), tuple(ref_variants), outdir))
+
+
+def test_overlay_plots_delegates(monkeypatch, tmp_path):
+    ba = CallRecorder()
+    pb = CallRecorder()
+    lr = CallRecorder()
+
+    monkeypatch.setattr(plot_comparedistances_service, "bland_altman_plot", ba)
+    monkeypatch.setattr(plot_comparedistances_service, "passing_bablok_plot", pb)
+    monkeypatch.setattr(plot_comparedistances_service, "linear_regression_plot", lr)
+
+    cfg = PlotConfig(folder_ids=["f1"], filenames=["ref", "ref_ai"], bins=10, outdir=str(tmp_path), project="P")
+    opts = PlotOptionsComparedistances(plot_blandaltman=True, plot_passingbablok=False, plot_linearregression=True)
+
+    PlotServiceCompareDistances.overlay_plots(cfg, opts)
+
+    assert len(ba.calls) == 1
+    assert len(pb.calls) == 0
+    assert len(lr.calls) == 1
+    assert ba.calls[0][0] == ("f1",)
+    assert lr.calls[0][0] == ("f1",)
