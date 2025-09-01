@@ -57,3 +57,25 @@ FileNotFoundError: Fehlt: 0342-0349\mov.ply.xyz/.las/.laz/.ply/.obj/.gpc
 2025-09-01 15:59:53,585 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
 2025-09-01 15:59:53,586 [INFO] CLIApp: Reference filename for processing: ref.ply
 2025-09-01 15:59:53,586 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 16:40:51,886 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 16:40:51,886 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 16:40:51,886 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 16:40:51,886 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 16:40:51,886 [INFO] m3c2.pipeline.batch_orchestrator: === BatchOrchestrator initialisiert ===
+2025-09-01 16:40:51,886 [INFO] m3c2.pipeline.batch_orchestrator: Konfigurationen: 1 Jobs
+2025-09-01 16:40:51,886 [INFO] m3c2.pipeline.batch_orchestrator: 0342-0349, mov.ply, ref.ply, python
+2025-09-01 16:40:51,886 [ERROR] m3c2.pipeline.batch_orchestrator: [Job] Fehler in Job '0342-0349' (Version ref.ply)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 99, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 130, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 210, in _load_data
+    mov, ref, corepoints = DataSource.load_points(ds)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 140, in load_points
+    mov, ref = self._load_epochs()
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'DataSourceConfig' object has no attribute '_load_epochs'
+2025-09-01 16:40:51,886 [INFO] CLIApp: Processing completed successfully.
