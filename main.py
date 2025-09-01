@@ -13,7 +13,7 @@ Run Pipeline using the command line:
                 --project MARS 
                 --output_format excel 
                 --outlier_detection_method rmse 
-                --outlier_rmse_multiplicator 3.0
+                --outlier_multiplicator 3.0
                 --log_level INFO
 """
 

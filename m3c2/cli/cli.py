@@ -18,7 +18,7 @@ class CLIApp:
         self.config_path = (
             Path(config_path)
             if config_path is not None
-            else Path(__file__).resolve().parent.parent / "config.json"
+            else Path(__file__).resolve().parents[2] / "config.json"
         )
 
     # ------------------------------------------------------------------
@@ -120,7 +120,7 @@ class CLIApp:
             help="Method for outlier detection.",
         )
         parser.add_argument(
-            "--outlier_rmse_multiplicator",
+            "--outlier_multiplicator",
             type=float,
             default=3.0,
             help="Outlier removal threshold as a multiple of used detection method.",
@@ -179,7 +179,7 @@ class CLIApp:
                 proj_override=args.proj_override,
                 use_existing_params=args.use_existing_params,
                 outlier_detection_method=args.outlier_detection_method,
-                outlier_rmse_multiplicator=args.outlier_rmse_multiplicator,
+                outlier_multiplicator=args.outlier_multiplicator,
                 output_format=args.output_format,
                 log_level=args.log_level,
             )
@@ -201,7 +201,12 @@ class CLIApp:
             self.logger.error("The specified data directory does not exist or is not a directory: %s", base_dir)
             return 1
         
+        if not arg.folders:
+            self.logger.error("No folders specified. Use --folders or provide them in the configuration file.")
+            return 1
+        
         missing_folders = [f for f in arg.folders if not (base_dir / f).is_dir()]
+
         if missing_folders:
             self.logger.error("The following folders are missing in the data directory: %s", missing_folders)
             return 1
@@ -229,7 +234,7 @@ class CLIApp:
         orchestrator = BatchOrchestrator(configs, arg.sample_size, arg.output_format)
 
         try:
-            orchestrator.run()
+            orchestrator.run_all()
         except Exception as e:
             self.logger.error("Error occurred while running orchestrator: %s", e)
             return 1

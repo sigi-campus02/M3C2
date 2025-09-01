@@ -1,0 +1,51 @@
+2025-09-01 13:21:11,564 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 13:21:11,564 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 13:21:11,564 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 13:21:11,564 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 13:21:57,558 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 13:21:57,558 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 13:21:57,558 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 13:21:57,558 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 13:22:35,388 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 13:22:35,388 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 13:22:35,388 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 13:22:35,388 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 13:23:25,794 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 13:23:25,794 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 13:23:25,794 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 13:23:25,794 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 13:23:45,166 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 13:23:45,166 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 13:23:45,166 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 13:23:45,166 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 13:23:56,608 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 13:23:56,608 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 13:23:56,608 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 13:23:56,608 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 13:23:56,624 [INFO] m3c2.pipeline.batch_orchestrator: === BatchOrchestrator initialisiert ===
+2025-09-01 13:23:56,624 [INFO] m3c2.pipeline.batch_orchestrator: Konfigurationen: 1 Jobs
+2025-09-01 13:23:56,624 [ERROR] CLIApp: Error occurred while running orchestrator: 'BatchOrchestrator' object has no attribute 'run'
+2025-09-01 13:28:33,684 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 13:28:33,684 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 13:28:33,684 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 13:28:33,684 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 13:28:33,684 [INFO] m3c2.pipeline.batch_orchestrator: === BatchOrchestrator initialisiert ===
+2025-09-01 13:28:33,684 [INFO] m3c2.pipeline.batch_orchestrator: Konfigurationen: 1 Jobs
+2025-09-01 13:28:33,684 [INFO] m3c2.pipeline.batch_orchestrator: 0342-0349, mov.ply, ref.ply, python
+2025-09-01 13:28:33,684 [ERROR] m3c2.pipeline.batch_orchestrator: [Job] Fehler in Job '0342-0349' (Version ref.ply)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 133, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 212, in _load_data
+    mov, ref, corepoints = ds.load_points()
+                           ^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 299, in load_points
+    m_xyz = self._ensure_xyz(self.mov_base, (m_kind, m_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 258, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: 0342-0349\mov.ply.xyz/.las/.laz/.ply/.obj/.gpc
+2025-09-01 13:28:33,684 [INFO] CLIApp: Processing completed successfully.

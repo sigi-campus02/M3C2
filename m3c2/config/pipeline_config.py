@@ -43,6 +43,7 @@ class PipelineConfig:
         Backend implementation to use: ``"python"`` or ``"CC"``.
     """
 
+    data_dir: str
     folder_id: str
     filename_mov: str
     filename_ref: str
@@ -50,6 +51,7 @@ class PipelineConfig:
     use_subsampled_corepoints: int
     only_stats: bool
     stats_singleordistance: str
+    sample_size: int
     project: str
     normal_override: Optional[float] = None
     proj_override: Optional[float] = None
@@ -57,5 +59,7 @@ class PipelineConfig:
     outlier_multiplicator: float = 3.0
     outlier_detection_method: str = "rmse"
     process_python_CC: str = "python"
+    output_format: str = "excel"
+    log_level: str = "INFO"
 
 
