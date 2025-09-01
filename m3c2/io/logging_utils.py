@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import json
 import logging
+import os
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -18,19 +20,38 @@ logging._nameToLevel["FATAL"] = logging.CRITICAL
 _FORMAT = "%(asctime)s [%(levelname)s] %(name)s - %(message)s"
 
 
-def setup_logging(level: str = "INFO", log_file: str | None = None) -> None:
+def resolve_log_level(level: str | None = None) -> str:
+    """Determine the logging level using config defaults and ``LOG_LEVEL``."""
+    if level is not None:
+        return level
+
+    config_level = "INFO"
+    config_path = Path(__file__).resolve().parents[2] / "config.json"
+    try:
+        with config_path.open("r", encoding="utf-8") as handle:
+            data = json.load(handle)
+        config_level = data.get("logging", {}).get("level", config_level)
+    except Exception:
+        pass
+
+    return os.getenv("LOG_LEVEL", config_level)
+
+
+def setup_logging(level: str | None = None, log_file: str | None = None) -> None:
     """Configure the root logger.
 
     Parameters
     ----------
     level:
-        Logging level name to use (e.g. ``"INFO"`` or ``"DEBUG"``).
+        Logging level name to use. When ``None`` the level from ``config.json``
+        is used, and the ``LOG_LEVEL`` environment variable can override it.
     log_file:
         Optional path to a log file.  When provided, a file handler is added in
         addition to the console handler.  Repeated calls update the existing
         handlers rather than adding duplicates.
     """
 
+    level = resolve_log_level(level)
     numeric_level = logging.getLevelName(level.upper())
     if isinstance(numeric_level, str):  # unknown level names return a string
         numeric_level = logging.INFO

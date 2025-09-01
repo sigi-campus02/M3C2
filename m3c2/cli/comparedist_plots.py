@@ -8,6 +8,8 @@ import logging
 import sys
 import os
 
+from m3c2.io.logging_utils import resolve_log_level, setup_logging
+
 logger = logging.getLogger(__name__)
 
 # Allow absolute imports when the script is executed directly.
@@ -24,6 +26,8 @@ def main(
     outdir: str = "outputs",
 ) -> None:
     """Configure and create distance comparison plots."""
+
+    setup_logging(level=resolve_log_level())
 
     folder_ids = folder_ids or ["0342-0349"]
     ref_variants = ref_variants or ["ref", "ref_ai"]

@@ -18,16 +18,15 @@ Run Pipeline using the command line:
 """
 
 import logging
-import os
 
-from m3c2.io.logging_utils import setup_logging
+from m3c2.io.logging_utils import resolve_log_level, setup_logging
 
 logger = logging.getLogger(__name__)
 
 
 def main() -> None:
     """Execute the command line application."""
-    setup_logging(level=os.getenv("LOG_LEVEL", "INFO"))
+    setup_logging(level=resolve_log_level())
     logger.info("Starting CLI application")
 
     from m3c2.cli.cli import CLIApp

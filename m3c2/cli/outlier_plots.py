@@ -1,11 +1,15 @@
 """Visualize distance distributions including various outlier filtering methods.
 
 The script reads distance files for different processing variants and produces
-boxplots comparing all distances with several inlier-selection techniques.
-"""
+boxplots comparing all distances with several inlier-selection techniques."""
+import logging
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+
+from m3c2.io.logging_utils import resolve_log_level, setup_logging
+
+logger = logging.getLogger(__name__)
 
 
 def main(
@@ -15,6 +19,8 @@ def main(
     outdir: str | None = None,
 ) -> None:
     """Create boxplots comparing full and inlier-filtered distances."""
+
+    setup_logging(level=resolve_log_level())
 
     variants = variants or [
         ("ref", "python_ref_m3c2_distances.txt"),
