@@ -4,10 +4,10 @@ from __future__ import annotations
 import argparse
 import logging
 import json
-import os
 from pathlib import Path
 from typing import Any, List, Optional
-from m3c2.io.logging_utils import setup_logging
+
+from m3c2.io.logging_utils import resolve_log_level, setup_logging
 from m3c2.pipeline.batch_orchestrator import BatchOrchestrator
 from m3c2.config.pipeline_config import PipelineConfig
 
@@ -156,12 +156,10 @@ class CLIApp:
                 data = {}
             defaults = data.get("arguments", data)
             if isinstance(defaults, dict):
+                defaults.pop("log_level", None)
                 parser.set_defaults(**defaults)
 
         args = parser.parse_args(argv)
-
-        if args.log_level is None:
-            args.log_level = os.getenv("LOG_LEVEL", "INFO")
 
         return args
 
@@ -204,7 +202,7 @@ class CLIApp:
         arg = self.parse_args(argv)
 
         log_file = "logs/orchestration.log"
-        setup_logging(level=arg.log_level, log_file=log_file)
+        setup_logging(level=resolve_log_level(arg.log_level), log_file=log_file)
 
         base_dir = Path(arg.data_dir).expanduser().resolve()
         

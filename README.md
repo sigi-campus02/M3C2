@@ -27,14 +27,17 @@ Outputs, statistics, and logs are written to dataset folders and the `outputs/` 
 
 ## Logging
 
-Control verbosity with the `--log_level` option or by setting the `LOG_LEVEL` environment variable. For example:
+Control verbosity with the `--log_level` option or by setting the `LOG_LEVEL`
+environment variable, which takes precedence over the value in `config.json`.
+For example:
 
 ```bash
 export LOG_LEVEL=DEBUG
 python main.py
 ```
 
-If neither is provided, the log level defaults to `INFO`.
+If neither is provided, the log level defaults to the `logging.level` entry in
+`config.json`.
 
 ## Repository Structure
 - `config/` – dataclasses and plotting configuration

@@ -15,7 +15,7 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 from m3c2.visualization.plot_service import PlotService
-from m3c2.io.logging_utils import setup_logging
+from m3c2.io.logging_utils import resolve_log_level, setup_logging
 from m3c2.config.plot_config import PlotOptions
 
 # Input and output directories for the Multi-Illumination dataset.
@@ -26,7 +26,7 @@ OUT_DIR = os.path.join(ROOT, "outputs", "MARS_Multi_Illumination", "plots")
 def main(data_dir: str = DATA_DIR, out_dir: str = OUT_DIR) -> tuple[str, str]:
     """Generate summary PDF reports for already generated plots."""
 
-    setup_logging(level=os.getenv("LOG_LEVEL", "INFO"))
+    setup_logging(level=resolve_log_level())
     logger.info("Generating summary PDF reports from %s to %s", data_dir, out_dir)
 
     # Example configuration for generating additional grouped plots.
