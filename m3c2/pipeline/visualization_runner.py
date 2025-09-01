@@ -24,12 +24,16 @@ class VisualizationRunner:
 
         VisualizationService.histogram(distances, path=hist_path)
         logger.info("[Visual] Histogram gespeichert: %s", hist_path)
+        cloud = getattr(mov, "cloud", None)
+        if cloud is None:
+            logger.warning("[Visual] mov besitzt kein 'cloud'-Attribut; Visualisierung übersprungen")
+            return
 
-        colors = VisualizationService.colorize(mov.cloud, distances, outply=ply_path)
+        colors = VisualizationService.colorize(cloud, distances, outply=ply_path)
         logger.info("[Visual] Farb-PLY gespeichert: %s", ply_path)
 
         try:
-            VisualizationService.export_valid(mov.cloud, colors, distances, outply=ply_valid_path)
+            VisualizationService.export_valid(cloud, colors, distances, outply=ply_valid_path)
             logger.info("[Visual] Valid-PLY gespeichert: %s", ply_valid_path)
         except Exception as exc:
             logger.warning("[Visual] Export valid-only übersprungen: %s", exc)
