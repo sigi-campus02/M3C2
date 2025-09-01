@@ -5,38 +5,45 @@ statistical plots (Bland–Altman, Passing–Bablok, and linear regression) for 
 specified folders and reference variants.
 """
 import logging
-logger = logging.getLogger(__name__)
-
 import sys
 import os
+
+logger = logging.getLogger(__name__)
+
 # Allow absolute imports when the script is executed directly.
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from m3c2.visualization.plot_comparedistances_service import PlotServiceCompareDistances
+from m3c2.visualization.plot_comparedistances_service import (
+    PlotServiceCompareDistances,
+)
 from m3c2.config.plot_config import PlotConfig, PlotOptionsComparedistances
 
-# Select the folders and reference data variants to compare.
-# folder_ids = ["0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
-# ref_variants = ["ref", "ref_ai"]
 
-folder_ids = ["0342-0349"]
-ref_variants = ["ref", "ref_ai"]
+def main(
+    folder_ids: list[str] | None = None,
+    ref_variants: list[str] | None = None,
+    outdir: str = "outputs",
+) -> None:
+    """Configure and create distance comparison plots."""
 
-# Configuration object describing input files and output location.
-cfg = PlotConfig(
-    folder_ids=folder_ids,
-    filenames=ref_variants,
-    bins=256,
-    outdir="outputs",
-    project="MARS",
-)
+    folder_ids = folder_ids or ["0342-0349"]
+    ref_variants = ref_variants or ["ref", "ref_ai"]
 
-# Options specifying which statistical comparison plots to create.
-opts = PlotOptionsComparedistances(
-    plot_blandaltman=True,
-    plot_passingbablok=True,
-    plot_linearregression=True,
-)
+    cfg = PlotConfig(
+        folder_ids=folder_ids,
+        filenames=ref_variants,
+        bins=256,
+        outdir=outdir,
+        project="MARS",
+    )
+    opts = PlotOptionsComparedistances(
+        plot_blandaltman=True,
+        plot_passingbablok=True,
+        plot_linearregression=True,
+    )
 
-logging.info(f"Starting plot generation {cfg}, {opts}")
-# Generate the overlay plots according to the configuration and options.
-PlotServiceCompareDistances.overlay_plots(cfg, opts)
+    logging.info("Starting plot generation %s, %s", cfg, opts)
+    PlotServiceCompareDistances.overlay_plots(cfg, opts)
+
+
+if __name__ == "__main__":
+    main()
