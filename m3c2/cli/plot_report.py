@@ -7,6 +7,8 @@ using only inlier data. The heavy lifting is delegated to :class:`PlotService`.
 """
 import os, sys, logging
 
+logger = logging.getLogger(__name__)
+
 # Determine repository root so that package imports work when executed directly.
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if ROOT not in sys.path:
@@ -25,6 +27,7 @@ def main(data_dir: str = DATA_DIR, out_dir: str = OUT_DIR) -> tuple[str, str]:
     """Generate summary PDF reports for already generated plots."""
 
     setup_logging()
+    logger.info("Generating summary PDF reports from %s to %s", data_dir, out_dir)
 
     # Example configuration for generating additional grouped plots.
     # only_grouped = PlotOptions(
@@ -42,22 +45,26 @@ def main(data_dir: str = DATA_DIR, out_dir: str = OUT_DIR) -> tuple[str, str]:
     #     skip_existing=True,
     # )
 
-    pdf_incl = PlotService.build_parts_pdf(
-        out_dir,
-        pdf_path=os.path.join(out_dir, "parts_summary_incl_outliers.pdf"),
-        include_with=True,
-        include_inlier=False,
-    )
-    pdf_excl = PlotService.build_parts_pdf(
-        out_dir,
-        pdf_path=os.path.join(out_dir, "parts_summary_excl_outliers.pdf"),
-        include_with=False,
-        include_inlier=True,
-    )
+    try:
+        pdf_incl = PlotService.build_parts_pdf(
+            out_dir,
+            pdf_path=os.path.join(out_dir, "parts_summary_incl_outliers.pdf"),
+            include_with=True,
+            include_inlier=False,
+        )
+        pdf_excl = PlotService.build_parts_pdf(
+            out_dir,
+            pdf_path=os.path.join(out_dir, "parts_summary_excl_outliers.pdf"),
+            include_with=False,
+            include_inlier=True,
+        )
 
-    print(f"PDF (incl. outliers): {pdf_incl}")
-    print(f"PDF (excl. outliers): {pdf_excl}")
-    return pdf_incl, pdf_excl
+        logger.info("PDF (incl. outliers): %s", pdf_incl)
+        logger.info("PDF (excl. outliers): %s", pdf_excl)
+        return pdf_incl, pdf_excl
+    except Exception as exc:
+        logger.error("Failed to generate summary PDFs: %s", exc, exc_info=True)
+        raise
 
 
 if __name__ == "__main__":
