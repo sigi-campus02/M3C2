@@ -231,7 +231,7 @@ class CLIApp:
         
         # Running orchestrator
 
-        orchestrator = BatchOrchestrator(configs, arg.sample_size, arg.output_format)
+        orchestrator = BatchOrchestrator(configs)
 
         try:
             orchestrator.run_all()

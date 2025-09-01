@@ -49,3 +49,11 @@ Traceback (most recent call last):
     raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
 FileNotFoundError: Fehlt: 0342-0349\mov.ply.xyz/.las/.laz/.ply/.obj/.gpc
 2025-09-01 13:28:33,684 [INFO] CLIApp: Processing completed successfully.
+2025-09-01 15:59:20,548 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 15:59:20,548 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 15:59:20,548 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 15:59:20,548 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 15:59:53,585 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 15:59:53,585 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 15:59:53,586 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 15:59:53,586 [INFO] CLIApp: Moving filename for processing: mov.ply
