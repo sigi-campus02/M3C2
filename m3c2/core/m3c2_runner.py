@@ -7,9 +7,15 @@ code.
 """
 
 from __future__ import annotations
-import numpy as np
+
 import importlib
+import logging
 from typing import Tuple
+
+import numpy as np
+
+
+logger = logging.getLogger(__name__)
 
 
 class M3C2Runner:
@@ -48,14 +54,30 @@ class M3C2Runner:
         Exception
             Propagated from :mod:`py4dgeo` if the computation fails.
         """
+        logger.info(
+            "Starting M3C2 run with normal=%s and projection=%s", normal, projection
+        )
+
         # Import py4dgeo lazily to ease testing and optional dependency handling
         py4dgeo = importlib.import_module("py4dgeo")
-        # Create the py4dgeo object that performs the actual computation
-        m3c2 = py4dgeo.M3C2(
-            epochs=(mov, ref),
-            corepoints=corepoints,
-            cyl_radius=projection,
-            normal_radii=[normal],
+
+        try:
+            # Create the py4dgeo object that performs the actual computation
+            m3c2 = py4dgeo.M3C2(
+                epochs=(mov, ref),
+                corepoints=corepoints,
+                cyl_radius=projection,
+                normal_radii=[normal],
+            )
+            distances, uncertainties = m3c2.run()
+        except Exception:  # pragma: no cover - py4dgeo exceptions
+            logger.exception("M3C2 run failed")
+            raise
+
+        nan_ratio = float(np.isnan(distances).mean()) if distances.size else 0.0
+        logger.info(
+            "Completed M3C2 run: %d distances (NaN ratio %.2f%%)",
+            distances.size,
+            nan_ratio * 100,
         )
-        distances, uncertainties = m3c2.run()
         return distances, uncertainties
