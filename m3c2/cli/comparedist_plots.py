@@ -11,11 +11,8 @@ import sys
 import os
 # Allow absolute imports when the script is executed directly.
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from m3c2.visualization.plot_comparedistances_service import (
-    PlotServiceCompareDistances,
-    PlotConfig,
-    PlotOptionsComparedistances,
-)
+from m3c2.visualization.plot_comparedistances_service import PlotServiceCompareDistances
+from m3c2.config.plot_config import PlotConfig, PlotOptionsComparedistances
 
 # Select the folders and reference data variants to compare.
 # folder_ids = ["0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
@@ -43,4 +40,3 @@ opts = PlotOptionsComparedistances(
 logging.info(f"Starting plot generation {cfg}, {opts}")
 # Generate the overlay plots according to the configuration and options.
 PlotServiceCompareDistances.overlay_plots(cfg, opts)
-
