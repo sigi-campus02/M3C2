@@ -1,7 +1,7 @@
-from orchestration.batch_orchestrator import BatchOrchestrator
-from config.pipeline_config import PipelineConfig
+from m3c2.pipeline.batch_orchestrator import BatchOrchestrator
+from m3c2.config.pipeline_config import PipelineConfig
 import os
-from log_utils.logging_utils import setup_logging
+from m3c2.io.logging_utils import setup_logging
 
 # folder_ids = ["0342-0349", "0817-0821", "0910-0913", "1130-1133", "1203-1206", "1306-1311"]
 

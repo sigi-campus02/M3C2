@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from matplotlib.backends.backend_pdf import PdfPages
 from scipy.stats import norm, weibull_min, probplot
-from config.plot_config import PlotConfig, PlotOptions
+from m3c2.config.plot_config import PlotConfig, PlotOptions
 import re
 from collections import defaultdict
 from collections import OrderedDict

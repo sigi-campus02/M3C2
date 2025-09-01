@@ -8,7 +8,7 @@ import sys
 import numpy as np
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
-import datasource.datasource as ds_module
+import m3c2.io.datasource as ds_module
 
 
 class DummyEpoch:

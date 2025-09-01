@@ -1,3 +1,5 @@
+# JetBrains IDE project folder
+.idea/
 **/__pycache__/
 *.py[cod]
 *$py.class

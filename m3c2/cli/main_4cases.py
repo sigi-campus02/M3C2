@@ -9,9 +9,9 @@ objects and delegates execution to the
 import os
 import re
 import logging
-from orchestration.batch_orchestrator import BatchOrchestrator
-from config.pipeline_config import PipelineConfig
-from log_utils.logging_utils import setup_logging
+from m3c2.pipeline.batch_orchestrator import BatchOrchestrator
+from m3c2.config.pipeline_config import PipelineConfig
+from m3c2.io.logging_utils import setup_logging
 
 # --- Settings ---
 base_data_dir = "data"

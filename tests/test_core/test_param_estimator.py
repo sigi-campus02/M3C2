@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 
-from orchestration.strategies import ScaleScan
-from services.param_estimator_service import ParamEstimator
+from m3c2.pipeline.strategies import ScaleScan
+from m3c2.core.param_estimator import ParamEstimator
 
 
 class DummyStrategy:

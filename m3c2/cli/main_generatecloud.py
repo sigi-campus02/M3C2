@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 # ------------------------------------------------------------
 _USE_VIS_SERVICE = False
 try:
-    from services.visualization_service import VisualizationService  # type: ignore
+    from m3c2.visualization.visualization_service import VisualizationService  # type: ignore
     if hasattr(VisualizationService, "txt_to_ply_with_distance_color"):
         _USE_VIS_SERVICE = True
         logger.info("VisualizationService gefunden – verwende txt_to_ply_with_distance_color().")

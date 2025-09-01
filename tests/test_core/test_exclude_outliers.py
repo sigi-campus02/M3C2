@@ -1,6 +1,6 @@
 import numpy as np
 
-from services.exclude_outliers_service import (
+from m3c2.core.exclude_outliers import (
     OutlierConfig,
     OutlierDetector,
     OutlierResult,

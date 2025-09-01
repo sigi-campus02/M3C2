@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from typing import List, Tuple
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
-from orchestration.strategies import ScaleScan
+from m3c2.pipeline.strategies import ScaleScan
 
 
 @dataclass

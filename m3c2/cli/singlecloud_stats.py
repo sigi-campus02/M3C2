@@ -4,7 +4,7 @@ The parameters below define the moving and reference point clouds as well as
 sampling and output options. The resulting metrics are written to an Excel
 workbook or JSON file depending on ``output_format``.
 """
-from services.statistics_service import StatisticsService
+from m3c2.core.statistics import StatisticsService
 
 # Paths and identifiers for the point cloud dataset to analyse.
 folder_ids = ["data/TUNSPEKT Labordaten_all"]

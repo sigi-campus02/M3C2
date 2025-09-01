@@ -4,7 +4,7 @@ import os
 from typing import List
 import matplotlib.pyplot as plt
 import numpy as np
-from config.plot_config import PlotOptionsComparedistances, PlotConfig
+from m3c2.config.plot_config import PlotOptionsComparedistances, PlotConfig
 
 logger = logging.getLogger(__name__)
 

@@ -7,7 +7,7 @@ from scipy.stats import norm, weibull_min
 from datetime import datetime
 from sklearn.decomposition import PCA
 from sklearn.neighbors import NearestNeighbors
-from datasource.datasource import DataSource
+from m3c2.io.datasource import DataSource
 
 
 # Kanonische Spaltenreihenfolge für Statistik-Exports

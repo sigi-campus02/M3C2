@@ -1,0 +1,1 @@
+# Infrastruktur‑Layer (Datei‑I/O, Logging, Utilities)

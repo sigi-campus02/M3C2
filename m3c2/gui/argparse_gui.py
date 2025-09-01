@@ -11,7 +11,7 @@ import os
 import tkinter as tk
 from tkinter import messagebox
 
-from main_generatecloud import convert_one, convert_all, logger
+from m3c2.cli.main_generatecloud import convert_one, convert_all, logger
 
 
 def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
