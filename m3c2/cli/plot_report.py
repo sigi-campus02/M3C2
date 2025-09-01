@@ -26,7 +26,7 @@ OUT_DIR = os.path.join(ROOT, "outputs", "MARS_Multi_Illumination", "plots")
 def main(data_dir: str = DATA_DIR, out_dir: str = OUT_DIR) -> tuple[str, str]:
     """Generate summary PDF reports for already generated plots."""
 
-    setup_logging()
+    setup_logging(level=os.getenv("LOG_LEVEL", "INFO"))
     logger.info("Generating summary PDF reports from %s to %s", data_dir, out_dir)
 
     # Example configuration for generating additional grouped plots.

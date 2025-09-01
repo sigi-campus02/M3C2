@@ -39,7 +39,7 @@ def main():
     ap.add_argument("-n", "--dry-run", action="store_true", help="Nur anzeigen, nichts ändern")
     args = ap.parse_args()
 
-    setup_logging()
+    setup_logging(level=os.getenv("LOG_LEVEL", "INFO"))
 
     base = Path(args.path).resolve()
     changed = skipped = 0
