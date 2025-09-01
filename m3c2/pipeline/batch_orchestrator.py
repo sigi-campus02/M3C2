@@ -131,7 +131,7 @@ class BatchOrchestrator:
 
         if cfg.process_python_CC == "python" and not cfg.only_stats:
             # Run M3C2 only when full processing (beyond statistics) is requested
-            out_base = ds.folder
+            out_base = ds.config.folder
             tag = self._run_tag(cfg)
             normal = projection = np.nan
             if cfg.use_existing_params:
@@ -164,14 +164,14 @@ class BatchOrchestrator:
         try:
             # Generate distance files excluding outliers for further analysis
             logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
-            self._exclude_outliers(cfg, ds.folder)
+            self._exclude_outliers(cfg, ds.config.folder)
         except Exception:
             logger.exception("Fehler beim Entfernen von Ausreißern")
 
         try:
             # Create coloured point clouds showing outliers and inliers
             logger.info("[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …")
-            self._generate_clouds_outliers(cfg, ds.folder)
+            self._generate_clouds_outliers(cfg, ds.config.folder)
         except Exception:
             logger.exception("Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier")
 

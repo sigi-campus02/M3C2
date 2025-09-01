@@ -106,3 +106,83 @@ Traceback (most recent call last):
     raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
 FileNotFoundError: Fehlt: 0342-0349\mov.ply.xyz/.las/.laz/.ply/.obj/.gpc
 2025-09-01 16:47:46,561 [INFO] CLIApp: Processing completed successfully.
+2025-09-01 16:50:41,569 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 16:50:41,570 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 16:50:41,570 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 16:50:41,571 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 16:50:41,571 [INFO] m3c2.pipeline.batch_orchestrator: === BatchOrchestrator initialisiert ===
+2025-09-01 16:50:41,571 [INFO] m3c2.pipeline.batch_orchestrator: Konfigurationen: 1 Jobs
+2025-09-01 16:50:41,571 [INFO] m3c2.pipeline.batch_orchestrator: 0342-0349, mov.ply, ref.ply, python
+2025-09-01 16:50:41,573 [ERROR] m3c2.pipeline.batch_orchestrator: [Job] Fehler in Job '0342-0349' (Version ref.ply)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 99, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 130, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 211, in _load_data
+    mov, ref, corepoints = ds.load_points()
+                           ^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 140, in load_points
+    mov, ref = self._load_epochs()
+               ^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 169, in _load_epochs
+    m_xyz = self._ensure_xyz(self.mov_base, (m_kind, m_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 130, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: 0342-0349\mov.ply.xyz/.las/.laz/.ply/.obj/.gpc
+2025-09-01 16:50:41,577 [INFO] CLIApp: Processing completed successfully.
+2025-09-01 16:53:13,888 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 16:53:15,052 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 16:53:15,620 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 16:53:15,921 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 16:54:27,231 [INFO] m3c2.pipeline.batch_orchestrator: === BatchOrchestrator initialisiert ===
+2025-09-01 16:54:27,591 [INFO] m3c2.pipeline.batch_orchestrator: Konfigurationen: 1 Jobs
+2025-09-01 16:54:41,734 [INFO] m3c2.pipeline.batch_orchestrator: 0342-0349, mov.ply, ref.ply, python
+2025-09-01 16:57:11,254 [ERROR] m3c2.pipeline.batch_orchestrator: [Job] Fehler in Job '0342-0349' (Version ref.ply)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 99, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 130, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 211, in _load_data
+    mov, ref, corepoints = ds.load_points()
+                           ^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 140, in load_points
+    mov, ref = self._load_epochs()
+               ^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 169, in _load_epochs
+    m_xyz = self._ensure_xyz(self.mov_base, (m_kind, m_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 130, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: 0342-0349\mov.ply.xyz/.las/.laz/.ply/.obj/.gpc
+2025-09-01 16:58:56,117 [INFO] CLIApp: Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-01 16:58:56,117 [INFO] CLIApp: Folder IDs for processing: ['0342-0349']
+2025-09-01 16:58:56,117 [INFO] CLIApp: Reference filename for processing: ref.ply
+2025-09-01 16:58:56,117 [INFO] CLIApp: Moving filename for processing: mov.ply
+2025-09-01 16:58:56,117 [INFO] m3c2.pipeline.batch_orchestrator: === BatchOrchestrator initialisiert ===
+2025-09-01 16:58:56,117 [INFO] m3c2.pipeline.batch_orchestrator: Konfigurationen: 1 Jobs
+2025-09-01 16:58:56,117 [INFO] m3c2.pipeline.batch_orchestrator: 0342-0349, mov.ply, ref.ply, python
+2025-09-01 16:58:56,117 [ERROR] m3c2.pipeline.batch_orchestrator: [Job] Fehler in Job '0342-0349' (Version ref.ply)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 99, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 130, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 211, in _load_data
+    mov, ref, corepoints = ds.load_points()
+                           ^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 140, in load_points
+    mov, ref = self._load_epochs()
+               ^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 169, in _load_epochs
+    m_xyz = self._ensure_xyz(self.mov_base, (m_kind, m_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 130, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: 0342-0349\mov.ply.xyz/.las/.laz/.ply/.obj/.gpc
+2025-09-01 16:58:56,117 [INFO] CLIApp: Processing completed successfully.
