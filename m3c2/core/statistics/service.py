@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 from typing import Dict, List, Optional, Tuple
 
+import logging
 import numpy as np
 import pandas as pd
 
@@ -16,6 +17,9 @@ from .exporters import (
     _append_df_to_json,
     write_cloud_stats,
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 class StatisticsService:
@@ -211,6 +215,7 @@ class StatisticsService:
         outlier_multiplicator: float = 3.0,
         outlier_method: str = "rmse",
     ) -> pd.DataFrame:
+        logger.info("Starting compute_m3c2_statistics for %d folders", len(folder_ids))
         rows: List[Dict] = []
 
         for fid in folder_ids:
@@ -270,9 +275,9 @@ class StatisticsService:
                                 }
                             )
                         else:
-                            print(f"[Stats] Spalte '{col}' fehlt in: {cc_path}")
+                            logger.warning("[Stats] Spalte '%s' fehlt in: %s", col, cc_path)
                     except Exception as e:
-                        print(f"[Stats] Konnte CC-Datei nicht lesen für {fid}: {e}")
+                        logger.error("[Stats] Konnte CC-Datei nicht lesen für %s: %s", fid, e)
 
         df_result = pd.DataFrame(rows)
 
@@ -282,6 +287,7 @@ class StatisticsService:
             else:
                 _append_df_to_excel(df_result, out_path, sheet_name=sheet_name)
 
+        logger.info("Finished compute_m3c2_statistics for %d folders", len(folder_ids))
         return df_result
 
     @classmethod
