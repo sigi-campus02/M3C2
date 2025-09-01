@@ -20,12 +20,23 @@ class PlotServiceCompareDistances:
         folder_ids = config.folder_ids
         ref_variants = config.filenames
 
-        if options.plot_blandaltman:
-            logging.info("Generating Bland-Altman plots...")
-            bland_altman_plot(folder_ids, ref_variants, outdir=config.path)
-        if options.plot_passingbablok:
-            logging.info("Generating Passing-Bablok plots...")
-            passing_bablok_plot(folder_ids, ref_variants, outdir=config.path)
-        if options.plot_linearregression:
-            logging.info("Generating Linear Regression plots...")
-            linear_regression_plot(folder_ids, ref_variants, outdir=config.path)
+        logger.info(
+            "Generating comparison plots for folders %s with reference variants %s",
+            folder_ids,
+            ref_variants,
+        )
+        try:
+            if options.plot_blandaltman:
+                logger.info("Generating Bland-Altman plots...")
+                bland_altman_plot(folder_ids, ref_variants, outdir=config.path)
+            if options.plot_passingbablok:
+                logger.info("Generating Passing-Bablok plots...")
+                passing_bablok_plot(folder_ids, ref_variants, outdir=config.path)
+            if options.plot_linearregression:
+                logger.info("Generating Linear Regression plots...")
+                linear_regression_plot(folder_ids, ref_variants, outdir=config.path)
+        except Exception:
+            logger.exception("Failed to generate comparison plots")
+            raise
+        else:
+            logger.info("Successfully generated comparison plots")

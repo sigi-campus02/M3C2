@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+from pathlib import Path
 from unittest.mock import MagicMock
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from m3c2.cli.cli import CLIApp
 

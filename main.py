@@ -17,12 +17,34 @@ Run Pipeline using the command line:
                 --log_level INFO
 """
 
+import logging
+import os
+
+from m3c2.io.logging_utils import setup_logging
+
+logger = logging.getLogger(__name__)
+
 
 def main() -> None:
     """Execute the command line application."""
     from m3c2.cli.cli import CLIApp
 
-    CLIApp().run()
+    app = CLIApp()
+    args = app.parse_args()
+    level = os.environ.get("LOG_LEVEL", args.log_level)
+    setup_logging(level=level, log_file="logs/orchestration.log")
+
+    logger.info(
+        "Running pipeline for folders %s with reference filename %s",
+        args.folders,
+        args.filename_ref,
+    )
+    try:
+        app.run(arg=args)
+        logger.info("Processing completed successfully")
+    except Exception:
+        logger.exception("Processing failed")
+        raise
 
 
 if __name__ == "__main__":

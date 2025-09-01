@@ -41,8 +41,17 @@ def main(
         plot_linearregression=True,
     )
 
-    logging.info("Starting plot generation %s, %s", cfg, opts)
-    PlotServiceCompareDistances.overlay_plots(cfg, opts)
+    logger.info(
+        "Starting plot generation for folders %s with reference variants %s",
+        folder_ids,
+        ref_variants,
+    )
+    try:
+        PlotServiceCompareDistances.overlay_plots(cfg, opts)
+        logger.info("Plot generation completed successfully")
+    except Exception:
+        logger.exception("Plot generation failed")
+        raise
 
 
 if __name__ == "__main__":

@@ -26,9 +26,17 @@ class ScaleEstimator:
         """
         if cfg.normal_override is not None and cfg.proj_override is not None:
             normal, projection = cfg.normal_override, cfg.proj_override
-            logger.info("[Scales] Overrides verwendet: normal=%.6f, proj=%.6f", normal, projection)
+            logger.info(
+                "[Scales] Overrides verwendet: normal=%.6f, proj=%.6f",
+                normal,
+                projection,
+            )
             return normal, projection
 
+        return self._determine_scales(cfg, corepoints)
+
+    def _determine_scales(self, cfg, corepoints) -> Tuple[float, float]:
+        """Internal helper implementing the scale determination workflow."""
         t0 = time.perf_counter()
         try:
             strategy_cls = STRATEGIES[self.strategy_name]
@@ -63,5 +71,10 @@ class ScaleEstimator:
 
         t0 = time.perf_counter()
         normal, projection = ParamEstimator.select_scales(scans)
-        logger.info("[Select] normal=%.6f, proj=%.6f | %.3fs", normal, projection, time.perf_counter() - t0)
+        logger.info(
+            "[Select] normal=%.6f, proj=%.6f | %.3fs",
+            normal,
+            projection,
+            time.perf_counter() - t0,
+        )
         return normal, projection

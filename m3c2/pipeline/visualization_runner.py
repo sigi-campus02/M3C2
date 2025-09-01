@@ -19,6 +19,10 @@ class VisualizationRunner:
 
         This method is part of the public pipeline API.
         """
+        self._generate_visuals(cfg, mov, distances, out_base, tag)
+
+    def _generate_visuals(self, cfg, mov, distances: np.ndarray, out_base: str, tag: str) -> None:
+        """Internal helper performing the visualization generation."""
         logger.info("[Visual] Erzeuge Visualisierungen …")
         os.makedirs(out_base, exist_ok=True)
         hist_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_histogram.png")
@@ -29,7 +33,9 @@ class VisualizationRunner:
         logger.info("[Visual] Histogram gespeichert: %s", hist_path)
         cloud = getattr(mov, "cloud", None)
         if cloud is None:
-            logger.warning("[Visual] mov besitzt kein 'cloud'-Attribut; Visualisierung übersprungen")
+            logger.warning(
+                "[Visual] mov besitzt kein 'cloud'-Attribut; Visualisierung übersprungen"
+            )
             return
 
         colors = VisualizationService.colorize(cloud, distances, outply=ply_path)

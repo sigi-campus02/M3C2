@@ -6,7 +6,6 @@ import logging
 import json
 from pathlib import Path
 from typing import Any, List, Optional
-from m3c2.io.logging_utils import setup_logging
 from m3c2.pipeline.batch_orchestrator import BatchOrchestrator
 from m3c2.config.pipeline_config import PipelineConfig
 
@@ -194,13 +193,11 @@ class CLIApp:
         return configs
     
 
-    def run(self, argv: Optional[List[str]] = None) -> int:
-        """Main runner: setup logging, validate inputs, build configs, run orchestrator."""
-       
-        arg = self.parse_args(argv)
+    def run(self, argv: Optional[List[str]] = None, arg: argparse.Namespace | None = None) -> int:
+        """Validate inputs, build configs, run orchestrator."""
 
-        log_file = "logs/orchestration.log"
-        setup_logging(level=arg.log_level, log_file=log_file)
+        if arg is None:
+            arg = self.parse_args(argv)
 
         base_dir = Path(arg.data_dir).expanduser().resolve()
         

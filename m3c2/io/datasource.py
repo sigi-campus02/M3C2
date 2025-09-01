@@ -16,6 +16,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Tuple
 
+logger = logging.getLogger(__name__)
+
 import numpy as np
 import py4dgeo
 from plyfile import PlyData
@@ -98,7 +100,7 @@ class DataSource:
 
         # Convert LAS/LAZ files to ``.xyz`` using ``laspy``
         if kind == "laslike" and path:
-            logging.info("[%s] Konvertiere LAS/LAZ → XYZ …", base)
+            logger.info("[%s] Konvertiere LAS/LAZ → XYZ …", base)
             arr = read_las(path)
             np.savetxt(xyz, arr, fmt="%.6f")
             return xyz
@@ -107,21 +109,21 @@ class DataSource:
         if kind == "ply" and path:
             if PlyData is None:
                 raise RuntimeError("PLY gefunden, aber 'plyfile' ist nicht installiert.")
-            logging.info("[%s] Konvertiere PLY → XYZ …", base)
+            logger.info("[%s] Konvertiere PLY → XYZ …", base)
             arr = read_ply(path)
             np.savetxt(xyz, arr, fmt="%.6f")
             return xyz
 
         # Convert OBJ files by extracting their vertices
         if kind == "obj" and path:
-            logging.info("[%s] Konvertiere OBJ → XYZ …", base)
+            logger.info("[%s] Konvertiere OBJ → XYZ …", base)
             arr = read_obj(path)
             np.savetxt(xyz, arr, fmt="%.6f")
             return xyz
 
         # Convert GPC files to ``.xyz`` using plain text loading
         if kind == "gpc" and path:
-            logging.info("[%s] Konvertiere GPC → XYZ …", base)
+            logger.info("[%s] Konvertiere GPC → XYZ …", base)
             arr = read_gpc(path)
             np.savetxt(xyz, arr, fmt="%.6f")
             return xyz
@@ -154,21 +156,21 @@ class DataSource:
         r_kind, r_path = self._detect(self.ref_base)
 
         if m_kind == r_kind == "xyz":
-            logging.info("Nutze py4dgeo.read_from_xyz")
+            logger.info("Nutze py4dgeo.read_from_xyz")
             
             return py4dgeo.read_from_xyz(str(m_path), str(r_path))
 
         if m_kind == r_kind == "laslike":
-            logging.info("Nutze py4dgeo.read_from_las (unterstützt .las und .laz)")
+            logger.info("Nutze py4dgeo.read_from_las (unterstützt .las und .laz)")
             return py4dgeo.read_from_las(str(m_path), str(r_path))
 
         if m_kind == r_kind == "ply" and hasattr(py4dgeo, "read_from_ply"):
-            logging.info("Nutze py4dgeo.read_from_ply")
+            logger.info("Nutze py4dgeo.read_from_ply")
             return py4dgeo.read_from_ply(str(m_path), str(r_path))
 
         m_xyz = self._ensure_xyz(self.mov_base, (m_kind, m_path))
         r_xyz = self._ensure_xyz(self.ref_base, (r_kind, r_path))
-        logging.info("Mischtypen → konvertiert zu XYZ → py4dgeo.read_from_xyz")
+        logger.info("Mischtypen → konvertiert zu XYZ → py4dgeo.read_from_xyz")
         return py4dgeo.read_from_xyz(str(m_xyz), str(r_xyz))
 
     def _derive_corepoints(self, mov: object, ref: object) -> np.ndarray:
@@ -176,7 +178,7 @@ class DataSource:
 
         use_mov = self.config.mov_as_corepoints
         label = "mov" if use_mov else "ref"
-        logging.info(
+        logger.info(
             "Nutze %s als Corepoints und nutze Subsamling: %s",
             label,
             self.config.use_subsampled_corepoints,
