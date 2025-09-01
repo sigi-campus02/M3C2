@@ -26,7 +26,7 @@ def test_run_m3c2_writes_outputs(tmp_path, monkeypatch, caplog):
     caplog.set_level(logging.INFO)
 
     executor = M3C2Executor()
-    d, u = executor._run_m3c2(
+    d, u = executor.run_m3c2(
         cfg,
         mov,
         ref,

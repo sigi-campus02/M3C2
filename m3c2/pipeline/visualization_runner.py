@@ -14,8 +14,11 @@ logger = logging.getLogger(__name__)
 class VisualizationRunner:
     """Create histograms and coloured point clouds for M3C2 outputs."""
 
-    def _generate_visuals(self, cfg, mov, distances: np.ndarray, out_base: str, tag: str) -> None:
-        """Create visualisations for computed distances."""
+    def generate_visuals(self, cfg, mov, distances: np.ndarray, out_base: str, tag: str) -> None:
+        """Create visualisations for computed distances.
+
+        This method is part of the public pipeline API.
+        """
         logger.info("[Visual] Erzeuge Visualisierungen …")
         os.makedirs(out_base, exist_ok=True)
         hist_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_histogram.png")
@@ -34,8 +37,11 @@ class VisualizationRunner:
         except Exception as exc:
             logger.warning("[Visual] Export valid-only übersprungen: %s", exc)
 
-    def _generate_clouds_outliers(self, cfg, out_base: str, tag: str) -> None:
-        """Create coloured point clouds for inliers and outliers."""
+    def generate_clouds_outliers(self, cfg, out_base: str, tag: str) -> None:
+        """Create coloured point clouds for inliers and outliers.
+
+        This method is part of the public pipeline API.
+        """
         logger.info("[Visual] Erzeuge .ply Dateien für Outliers / Inliers …")
         os.makedirs(out_base, exist_ok=True)
         ply_valid_path_outlier = os.path.join(

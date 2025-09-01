@@ -15,8 +15,11 @@ class StatisticsRunner:
     def __init__(self, output_format: str) -> None:
         self.output_format = output_format
 
-    def _compute_statistics(self, cfg, ref, tag: str) -> None:
-        """Compute M3C2 statistics for a job."""
+    def compute_statistics(self, cfg, ref, tag: str) -> None:
+        """Compute M3C2 statistics for a job.
+
+        This method is part of the public pipeline API.
+        """
         if cfg.stats_singleordistance == "distance":
             logger.info(
                 f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …"

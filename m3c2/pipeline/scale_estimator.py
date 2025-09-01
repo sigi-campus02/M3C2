@@ -19,8 +19,11 @@ class ScaleEstimator:
     def __init__(self, strategy_name: str = "radius") -> None:
         self.strategy_name = strategy_name
 
-    def _determine_scales(self, cfg, corepoints) -> Tuple[float, float]:
-        """Determine suitable normal and projection scales."""
+    def determine_scales(self, cfg, corepoints) -> Tuple[float, float]:
+        """Determine suitable normal and projection scales.
+
+        This method is part of the public pipeline API.
+        """
         if cfg.normal_override is not None and cfg.proj_override is not None:
             normal, projection = cfg.normal_override, cfg.proj_override
             logger.info("[Scales] Overrides verwendet: normal=%.6f, proj=%.6f", normal, projection)
