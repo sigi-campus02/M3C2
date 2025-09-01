@@ -22,7 +22,7 @@ from plyfile import PlyData
 import laspy
 
 from m3c2.config.datasource_config import DataSourceConfig
-from .format_handler import read_las, read_ply, read_obj, read_gpc
+from .format_handler import read_las, read_obj, read_gpc
 
 
 @dataclass
@@ -108,6 +108,7 @@ class DataSource:
             if PlyData is None:
                 raise RuntimeError("PLY gefunden, aber 'plyfile' ist nicht installiert.")
             logging.info("[%s] Konvertiere PLY → XYZ …", base)
+            from .format_handler import read_ply  # local import; only needed here
             arr = read_ply(path)
             np.savetxt(xyz, arr, fmt="%.6f")
             return xyz
@@ -163,7 +164,7 @@ class DataSource:
 
         if m_kind == r_kind == "ply" and hasattr(py4dgeo, "read_from_ply"):
             logging.info("Nutze py4dgeo.read_from_ply")
-            return read_ply(str(m_path), str(r_path))
+            return py4dgeo.read_from_ply(str(m_path), str(r_path))
 
         m_xyz = self._ensure_xyz(self.mov_base, (m_kind, m_path))
         r_xyz = self._ensure_xyz(self.ref_base, (r_kind, r_path))

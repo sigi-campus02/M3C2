@@ -20,10 +20,20 @@ class DummyEpoch:
 
 
 class DummyPy4DGeo:
+    last_call: str | None = None
+
     @staticmethod
     def read_from_xyz(m_path: str, r_path: str):  # type: ignore[override]
+        DummyPy4DGeo.last_call = "xyz"
         mov_arr = np.loadtxt(m_path)
         ref_arr = np.loadtxt(r_path)
+        return DummyEpoch(mov_arr), DummyEpoch(ref_arr)
+
+    @staticmethod
+    def read_from_ply(m_path: str, r_path: str):  # type: ignore[override]
+        DummyPy4DGeo.last_call = "ply"
+        mov_arr = np.array([[0.0, 0.0, 0.0]])
+        ref_arr = np.array([[1.0, 1.0, 1.0]])
         return DummyEpoch(mov_arr), DummyEpoch(ref_arr)
 
 
@@ -59,6 +69,7 @@ def test_load_points_xyz(tmp_path: Path, monkeypatch) -> None:
     np.savetxt(tmp_path / "mov.xyz", mov, fmt="%.6f")
     np.savetxt(tmp_path / "ref.xyz", ref, fmt="%.6f")
 
+    DummyPy4DGeo.last_call = None
     monkeypatch.setattr(ds_module, "py4dgeo", DummyPy4DGeo)
 
     cfg = DataSourceConfig(str(tmp_path))
@@ -68,3 +79,19 @@ def test_load_points_xyz(tmp_path: Path, monkeypatch) -> None:
     assert np.allclose(mov_epoch.cloud, mov)
     assert np.allclose(ref_epoch.cloud, ref)
     assert np.allclose(corepoints, mov)
+    assert DummyPy4DGeo.last_call == "xyz"
+
+
+def test_load_points_ply(tmp_path: Path, monkeypatch) -> None:
+    (tmp_path / "mov.ply").write_text("dummy")
+    (tmp_path / "ref.ply").write_text("dummy")
+
+    DummyPy4DGeo.last_call = None
+    monkeypatch.setattr(ds_module, "py4dgeo", DummyPy4DGeo)
+
+    cfg = DataSourceConfig(str(tmp_path))
+    ds = ds_module.DataSource(cfg)
+    mov_epoch, ref_epoch, corepoints = ds.load_points()
+
+    assert DummyPy4DGeo.last_call == "ply"
+    assert np.allclose(corepoints, mov_epoch.cloud)
