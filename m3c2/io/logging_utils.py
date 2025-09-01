@@ -9,12 +9,17 @@ duplicate handlers.
 from __future__ import annotations
 
 import logging
-import os
-import sys
-from logging.handlers import RotatingFileHandler
+from pathlib import Path
+from typing import Any, Dict, Optional
 
 
-def setup_logging(log_file: str = "orchestration.log", level: int = logging.INFO) -> None:
+def setup_logging(
+        config: Optional[Dict[str, Any]] = None, 
+        log_file: str = "orchestration.log", 
+        level: Optional[str] = None,
+        console: bool = True,
+        file: bool = True,
+    ) -> None:
     """Configure the root logger with console and file handlers.
 
     Parameters
@@ -26,28 +31,26 @@ def setup_logging(log_file: str = "orchestration.log", level: int = logging.INFO
         Logging level to configure on the root logger.
     """
 
-    log_file = os.path.abspath(log_file)
-    os.makedirs(os.path.dirname(log_file), exist_ok=True)
+    log_cfg = (config or {}).get("logging", {})
 
-    formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+    if log_file is None:
+        log_file = log_cfg.get("file")
+    if level is None:
+        level = log_cfg.get("level", "INFO")
 
-    root = logging.getLogger()
-    root.setLevel(level)
+    handlers = []
+    if console:
+        handlers.append(logging.StreamHandler())
+    if file and log_file:
+        path = Path(log_file)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        handlers.append(logging.FileHandler(path))
 
-    # Remove existing handlers to avoid duplicate log entries when the
-    # function is invoked repeatedly.
-    for handler in root.handlers[:]:
-        root.removeHandler(handler)
-        handler.close()
-
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setFormatter(formatter)
-    root.addHandler(console_handler)
-
-    file_handler = RotatingFileHandler(log_file, maxBytes=1_000_000, backupCount=3)
-    file_handler.setFormatter(formatter)
-    root.addHandler(file_handler)
-
-
-__all__ = ["setup_logging"]
+    logging.basicConfig(
+        level=getattr(logging, level.upper(), logging.INFO),
+        format=log_cfg.get(
+            "format", "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+        ),
+        handlers=handlers or None,
+    )
 
