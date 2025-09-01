@@ -4,57 +4,93 @@ from __future__ import annotations
 
 from pathlib import Path
 from importlib import import_module
+import logging
 from typing import Callable, Dict
 from plyfile import PlyData
 
 import numpy as np
+
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Reader functions
 
 def read_xyz(path: Path) -> np.ndarray:
     """Read XYZ formatted files using ``numpy``."""
-    return np.loadtxt(path, dtype=np.float64, usecols=(0, 1, 2))
+    logger.info("Reading XYZ file %s", path)
+    try:
+        return np.loadtxt(path, dtype=np.float64, usecols=(0, 1, 2))
+    except Exception:
+        logger.exception("Failed to read XYZ file %s", path)
+        raise
 
 
 def read_las(path: Path) -> np.ndarray:
     """Read LAS/LAZ files using :mod:`laspy` lazily."""
+    logger.info("Reading LAS/LAZ file %s", path)
     try:
         laspy = import_module("laspy")
     except Exception as exc:  # pragma: no cover - dependency issue
+        logger.exception("LAS/LAZ found, but 'laspy' is not installed.")
         raise RuntimeError("LAS/LAZ found, but 'laspy' is not installed.") from exc
 
     try:
         las = laspy.read(str(path))
     except ModuleNotFoundError as exc:  # pragma: no cover - dependency issue
+        logger.exception("LAZ detected but 'laspy[lazrs]' is missing.")
         raise RuntimeError(
-            "LAZ detected, please install 'laspy[lazrs]'."
+            "LAZ detected, please install 'laspy[lazrs]'.",
         ) from exc
+    except Exception:
+        logger.exception("Failed to read LAS/LAZ file %s", path)
+        raise
     return np.vstack([las.x, las.y, las.z]).T.astype(np.float64)
 
 
 def read_ply(path: Path) -> np.ndarray:
-    ply = PlyData.read(str(path))
+    logger.info("Reading PLY file %s", path)
+    try:
+        ply = PlyData.read(str(path))
+    except Exception:
+        logger.exception("Failed to read PLY file %s", path)
+        raise
     v = ply["vertex"]
     return np.vstack([v["x"], v["y"], v["z"]]).T.astype(np.float64)
 
 
 def read_obj(path: Path) -> np.ndarray:
     """Parse an OBJ file and extract vertex coordinates."""
+    logger.info("Reading OBJ file %s", path)
     vertices: list[list[float]] = []
-    with open(path, "r", encoding="utf-8") as handle:
-        for line in handle:
-            line = line.strip()
-            if line.startswith("v "):
-                parts = line.split()
-                if len(parts) >= 4:
-                    vertices.append([float(parts[1]), float(parts[2]), float(parts[3])])
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            for line_number, line in enumerate(handle, 1):
+                line = line.strip()
+                if line.startswith("v "):
+                    parts = line.split()
+                    if len(parts) >= 4:
+                        vertices.append([float(parts[1]), float(parts[2]), float(parts[3])])
+                    else:
+                        logger.warning(
+                            "Malformed vertex line %d in %s: %s",
+                            line_number,
+                            path,
+                            line,
+                        )
+    except Exception:
+        logger.exception("Failed to read OBJ file %s", path)
+        raise
     return np.asarray(vertices, dtype=np.float64)
 
 
 def read_gpc(path: Path) -> np.ndarray:
     """Read GPC files as plain text."""
-    return np.loadtxt(path, dtype=np.float64, usecols=(0, 1, 2))
+    logger.info("Reading GPC file %s", path)
+    try:
+        return np.loadtxt(path, dtype=np.float64, usecols=(0, 1, 2))
+    except Exception:
+        logger.exception("Failed to read GPC file %s", path)
+        raise
 
 
 # Mapping from extension (without dot) to reader function
