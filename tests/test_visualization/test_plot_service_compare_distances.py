@@ -30,3 +30,21 @@ def test_overlay_plots_delegates(monkeypatch, tmp_path):
     assert len(lr.calls) == 1
     assert ba.calls[0][0] == ("f1",)
     assert lr.calls[0][0] == ("f1",)
+
+def test_overlay_plots_no_options(monkeypatch, tmp_path):
+    ba = CallRecorder()
+    pb = CallRecorder()
+    lr = CallRecorder()
+
+    monkeypatch.setattr(plot_comparedistances_service, "bland_altman_plot", ba)
+    monkeypatch.setattr(plot_comparedistances_service, "passing_bablok_plot", pb)
+    monkeypatch.setattr(plot_comparedistances_service, "linear_regression_plot", lr)
+
+    cfg = PlotConfig(folder_ids=["f1"], filenames=["ref", "ref_ai"], bins=10, outdir=str(tmp_path), project="P")
+    opts = PlotOptionsComparedistances(plot_blandaltman=False, plot_passingbablok=False, plot_linearregression=False)
+
+    PlotServiceCompareDistances.overlay_plots(cfg, opts)
+
+    assert ba.calls == []
+    assert pb.calls == []
+    assert lr.calls == []
