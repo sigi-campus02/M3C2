@@ -147,5 +147,6 @@ def add_cloud_header_comments(xlsx_path: str,
 
     wb.save(xlsx_path)
 
-# Beispielaufruf:
-add_cloud_header_comments("cloud_stats.xlsx", sheet_name="CloudStats")
+if __name__ == "__main__":
+    # Beispielaufruf:
+    add_cloud_header_comments("cloud_stats.xlsx", sheet_name="CloudStats")
