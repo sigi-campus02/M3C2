@@ -8,6 +8,9 @@ import numpy as np
 from sklearn.neighbors import NearestNeighbors
 
 
+logger = logging.getLogger(__name__)
+
+
 class ScanStrategy(Protocol):
     """Protocol for scale scanning strategies used by :class:`ParamEstimator`."""
 
@@ -237,7 +240,7 @@ class RadiusScanStrategy:
             # Randomly subsample the cloud to speed up evaluation
             idx = np.random.choice(len(pts), size=self.sample_size, replace=False)
             pts = pts[idx]
-            logging.info(f"[RadiusScan] Subsample: {self.sample_size}/{len(points)}")
+            logger.info(f"[RadiusScan] Subsample: {self.sample_size}/{len(points)}")
 
         scans: List[ScaleScan] = []
         for level in range(self.i_min, self.i_max + 1):
@@ -262,7 +265,7 @@ class RadiusScanStrategy:
             )
 
             if self.log_each_scale:
-                logging.info(
+                logger.info(
                     "[RadiusScan] D=%g | pop=%4.1f±%3.1f | 97%%>%d | valid=%d/%d (%s) | sigma=%g | lambda_min=%g | Sigma/D=%s",
                     D,
                     res["mean_population"],

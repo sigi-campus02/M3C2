@@ -41,7 +41,7 @@ def main(
         plot_linearregression=True,
     )
 
-    logging.info("Starting plot generation %s, %s", cfg, opts)
+    logger.info("Starting plot generation %s, %s", cfg, opts)
     PlotServiceCompareDistances.overlay_plots(cfg, opts)
 
 
