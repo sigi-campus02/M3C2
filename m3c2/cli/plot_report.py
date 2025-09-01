@@ -18,9 +18,12 @@ from m3c2.config.plot_config import PlotOptions
 
 # Input and output directories for the Multi-Illumination dataset.
 DATA_DIR = os.path.join(ROOT, "data", "Multi-Illumination")
-OUT_DIR  = os.path.join(ROOT, "outputs", "MARS_Multi_Illumination", "plots")
+OUT_DIR = os.path.join(ROOT, "outputs", "MARS_Multi_Illumination", "plots")
 
-if __name__ == "__main__":
+
+def main(data_dir: str = DATA_DIR, out_dir: str = OUT_DIR) -> tuple[str, str]:
+    """Generate summary PDF reports for already generated plots."""
+
     setup_logging()
 
     # Example configuration for generating additional grouped plots.
@@ -32,27 +35,31 @@ if __name__ == "__main__":
     # Example call to generate overlay plots for each index. Commented out to
     # prevent accidental regeneration of existing PNGs.
     # PlotService.overlay_by_index(
-    #     DATA_DIR, OUT_DIR,
+    #     data_dir, out_dir,
     #     versions=("python",),
     #     bins=256,
     #     options=only_grouped,
-    #     skip_existing=True,   # existing PNGs are not overwritten
+    #     skip_existing=True,
     # )
 
-    # Build PDF reports that summarize the parts with and without outliers.
     pdf_incl = PlotService.build_parts_pdf(
-        OUT_DIR,
-        pdf_path=os.path.join(OUT_DIR, "parts_summary_incl_outliers.pdf"),
+        out_dir,
+        pdf_path=os.path.join(out_dir, "parts_summary_incl_outliers.pdf"),
         include_with=True,
         include_inlier=False,
     )
     pdf_excl = PlotService.build_parts_pdf(
-        OUT_DIR,
-        pdf_path=os.path.join(OUT_DIR, "parts_summary_excl_outliers.pdf"),
+        out_dir,
+        pdf_path=os.path.join(out_dir, "parts_summary_excl_outliers.pdf"),
         include_with=False,
         include_inlier=True,
     )
 
     print(f"PDF (incl. outliers): {pdf_incl}")
     print(f"PDF (excl. outliers): {pdf_excl}")
+    return pdf_incl, pdf_excl
+
+
+if __name__ == "__main__":
+    main()
 
