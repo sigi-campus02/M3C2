@@ -3,9 +3,25 @@
 from __future__ import annotations
 import logging
 from dataclasses import dataclass
-from typing import List, Optional, Protocol, Dict
+from typing import Dict, List, Optional, Protocol
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
+
+
+class ScanStrategy(Protocol):
+    """Protocol for scale scanning strategies used by :class:`ParamEstimator`."""
+
+    def scan(self, points: np.ndarray, min_spacing: float) -> List["ScaleScan"]:
+        """Scan a point cloud for candidate scales.
+
+        Parameters
+        ----------
+        points : ndarray
+            Point cloud coordinates.
+        min_spacing : float
+            Estimated minimal spacing between points.
+        """
+        ...
 
 
 @dataclass
@@ -260,3 +276,11 @@ class RadiusScanStrategy:
                     "nan" if np.isnan(res["relative_roughness"]) else f"{res['relative_roughness']:.4f}",
                 )
         return scans
+
+
+# Registry of available strategies for easier selection by name.  Additional
+# strategies can simply be added to this dictionary.
+STRATEGIES: Dict[str, type[ScanStrategy]] = {
+    "radius": RadiusScanStrategy,
+}
+

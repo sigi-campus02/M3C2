@@ -71,6 +71,13 @@ class CLIApp:
             help="Sample size used for parameter estimation (normal & projection scale).",
         )
         parser.add_argument(
+            "--scale_strategy",
+            type=str,
+            choices=["radius"],
+            default="radius",
+            help="Strategy for scanning normal/projection scales.",
+        )
+        parser.add_argument(
             "--only_stats",
             action="store_true",
             help="Only compute statistics based on existing distance files (no M3C2 processing).",
@@ -228,15 +235,15 @@ class CLIApp:
         # Building pipeline configuration
 
         configs = self.create_pipeline_configurations(folder_ids, arg)
-        
-        # Running orchestrator
 
-        orchestrator = BatchOrchestrator(configs)
+        # Running orchestrator
+        orchestrator = BatchOrchestrator(configs, strategy=arg.scale_strategy)
 
         try:
             orchestrator.run_all()
         except Exception as e:
             self.logger.error("Error occurred while running orchestrator: %s", e)
             return 1
-        
+
         self.logger.info("Processing completed successfully.")
+        return 0
