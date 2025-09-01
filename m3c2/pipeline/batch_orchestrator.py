@@ -86,8 +86,19 @@ class BatchOrchestrator:
         for cfg in self.configs:
             try:
                 self._run_single(cfg)
+            except (IOError, ValueError):
+                logger.exception(
+                    "[Job] Fehler in Job '%s' (Version %s)",
+                    cfg.folder_id,
+                    cfg.filename_ref,
+                )
             except Exception:
-                logger.exception("[Job] Fehler in Job '%s' (Version %s)", cfg.folder_id, cfg.filename_ref)
+                logger.exception(
+                    "[Job] Unerwarteter Fehler in Job '%s' (Version %s)",
+                    cfg.folder_id,
+                    cfg.filename_ref,
+                )
+                raise
 
     def _run_single(self, cfg: PipelineConfig) -> None:
         """Execute the pipeline for a single configuration.
@@ -144,20 +155,33 @@ class BatchOrchestrator:
         try:
             logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
             self.outlier_handler._exclude_outliers(cfg, ds.config.folder, tag)
-        except Exception:
+        except (IOError, ValueError):
             logger.exception("Fehler beim Entfernen von Ausreißern")
+        except Exception:
+            logger.exception("Unerwarteter Fehler beim Entfernen von Ausreißern")
+            raise
 
         try:
             logger.info("[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …")
             self.visualization_runner._generate_clouds_outliers(cfg, ds.config.folder, tag)
+        except (IOError, ValueError):
+            logger.exception(
+                "Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
+            )
         except Exception:
-            logger.exception("Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier")
+            logger.exception(
+                "Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
+            )
+            raise
 
         try:
             logger.info("[Statistics] Berechne Statistiken …")
             self.statistics_runner._compute_statistics(cfg, ref, tag)
-        except Exception:
+        except (IOError, ValueError):
             logger.exception("Fehler bei der Berechnung der Statistik")
+        except Exception:
+            logger.exception("Unerwarteter Fehler bei der Berechnung der Statistik")
+            raise
 
         logger.info("[Job] %s abgeschlossen in %.3fs", cfg.folder_id, time.perf_counter() - start)
 
