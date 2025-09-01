@@ -4696,3 +4696,141 @@ FileNotFoundError: Fehlt: data\Multi-illumination\Job_0378_8400-110\1-5_2-5\1-5_
 2025-08-29 09:52:36,506 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_excl_outliers.pdf
 2025-08-29 09:54:05,528 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_incl_outliers.pdf
 2025-08-29 09:54:10,238 [INFO] [Report] PDF created: c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\outputs\MARS_Multi_Illumination\plots\parts_summary_excl_outliers.pdf
+2025-09-01 09:24:00,948 [INFO] [Scan] data\Multi-Illumination
+2025-09-01 09:24:00,948 [INFO]   a-*  plain: 7 | AI: 7 | indices=[1, 2, 3, 4, 5, 6, 7] / [1, 2, 3, 4, 5, 6, 7]
+2025-09-01 09:24:00,948 [INFO]   b-*  plain: 7 | AI: 7 | indices=[1, 2, 3, 4, 5, 6, 7] / [1, 2, 3, 4, 5, 6, 7]
+2025-09-01 09:24:00,948 [INFO]   Case1 (a-i vs b-i): 1 Runs, indices=[1]
+2025-09-01 09:24:00,948 [INFO]   Case2 (a-i vs b-i-AI): 1 Runs, indices=[1]
+2025-09-01 09:24:00,948 [INFO]   Case3 (a-i-AI vs b-i): 1 Runs, indices=[1]
+2025-09-01 09:24:00,948 [INFO]   Case4 (a-i-AI vs b-i-AI): 1 Runs, indices=[1]
+2025-09-01 09:24:00,948 [INFO]   => Total Runs so far (inkl. Multi-Illumination): 4
+2025-09-01 09:24:00,948 [INFO] === BatchOrchestrator initialisiert ===
+2025-09-01 09:24:00,948 [INFO] Konfigurationen: 4 Jobs
+2025-09-01 09:24:00,948 [INFO] data\Multi-Illumination, a-1, b-1, python
+2025-09-01 09:24:00,948 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 09:24:01,000 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1.xyz'
+2025-09-01 09:24:06,863 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1.xyz'
+2025-09-01 09:24:12,690 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 09:24:12,690 [INFO] [Load] data/data\Multi-Illumination: mov=(1848754, 3), ref=(1898606, 3), corepoints=(1848754, 3) | 11.738s
+2025-09-01 09:24:12,690 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-09-01 09:24:12,698 [INFO] [Params] gespeichert: data\Multi-Illumination\python_a-1-b-1_m3c2_params.txt
+2025-09-01 09:24:12,698 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 09:24:13,158 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 09:24:54,476 [INFO] [Run] Punkte=1848754 | NaN=0.00% | Zeit=41.785s
+2025-09-01 09:24:56,858 [INFO] [Run] Distanzen gespeichert: data\Multi-Illumination\python_a-1-b-1_m3c2_distances.txt (1848754 Werte, 0.00% NaN)
+2025-09-01 09:25:00,544 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-Illumination\python_a-1-b-1_m3c2_distances_coordinates.txt
+2025-09-01 09:25:06,999 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-Illumination\python_a-1-b-1_m3c2_uncertainties.txt
+2025-09-01 09:25:07,001 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-09-01 09:25:08,767 [INFO] [Visual] Histogram gespeichert: data\Multi-Illumination\python_a-1-b-1_histogram.png
+2025-09-01 09:25:11,828 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-Illumination\python_a-1-b-1_includenonvalid.ply
+2025-09-01 09:25:14,926 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-Illumination\python_a-1-b-1.ply
+2025-09-01 09:25:14,926 [INFO] [Outlier] Entferne Ausreißer für data\Multi-Illumination
+2025-09-01 09:25:14,926 [ERROR] Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 170, in _run_single
+    self._exclude_outliers(cfg, ds.folder)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 358, in _exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-01 09:25:14,926 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 09:25:14,926 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 09:25:14,979 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-b-1_m3c2_distances_coordinates_outlier_rmse.txt -> data\Multi-Illumination\python_a-1-b-1_outlier_rmse.ply (17343 Punkte, SF='distance')
+2025-09-01 09:25:18,933 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-b-1_m3c2_distances_coordinates_inlier_rmse.txt -> data\Multi-Illumination\python_a-1-b-1_inlier_rmse.ply (1831404 Punkte, SF='distance')
+2025-09-01 09:25:18,946 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-Illumination,b-1 …
+2025-09-01 09:25:48,258 [INFO] [Job] data\Multi-Illumination abgeschlossen in 107.307s
+2025-09-01 09:25:48,280 [INFO] data\Multi-Illumination, a-1, b-1-AI, python
+2025-09-01 09:25:48,280 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 09:25:48,317 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1.xyz'
+2025-09-01 09:25:53,976 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1-AI.xyz'
+2025-09-01 09:26:00,677 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 09:26:00,677 [INFO] [Load] data/data\Multi-Illumination: mov=(1848754, 3), ref=(2200151, 3), corepoints=(1848754, 3) | 12.397s
+2025-09-01 09:26:00,677 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-09-01 09:26:00,677 [INFO] [Params] gespeichert: data\Multi-Illumination\python_a-1-b-1-AI_m3c2_params.txt
+2025-09-01 09:26:00,677 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 09:26:01,139 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 09:26:37,244 [INFO] [Run] Punkte=1848754 | NaN=0.18% | Zeit=36.562s
+2025-09-01 09:26:39,667 [INFO] [Run] Distanzen gespeichert: data\Multi-Illumination\python_a-1-b-1-AI_m3c2_distances.txt (1848754 Werte, 0.18% NaN)
+2025-09-01 09:26:43,352 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-Illumination\python_a-1-b-1-AI_m3c2_distances_coordinates.txt
+2025-09-01 09:26:49,877 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-Illumination\python_a-1-b-1-AI_m3c2_uncertainties.txt
+2025-09-01 09:26:49,885 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-09-01 09:26:50,845 [INFO] [Visual] Histogram gespeichert: data\Multi-Illumination\python_a-1-b-1-AI_histogram.png
+2025-09-01 09:26:53,912 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-Illumination\python_a-1-b-1-AI_includenonvalid.ply
+2025-09-01 09:26:56,962 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-Illumination\python_a-1-b-1-AI.ply
+2025-09-01 09:26:56,962 [INFO] [Outlier] Entferne Ausreißer für data\Multi-Illumination
+2025-09-01 09:26:56,962 [ERROR] Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 170, in _run_single
+    self._exclude_outliers(cfg, ds.folder)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 358, in _exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-01 09:26:56,962 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 09:26:56,962 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 09:26:57,014 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-b-1-AI_m3c2_distances_coordinates_outlier_rmse.txt -> data\Multi-Illumination\python_a-1-b-1-AI_outlier_rmse.ply (19657 Punkte, SF='distance')
+2025-09-01 09:27:01,013 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-b-1-AI_m3c2_distances_coordinates_inlier_rmse.txt -> data\Multi-Illumination\python_a-1-b-1-AI_inlier_rmse.ply (1825744 Punkte, SF='distance')
+2025-09-01 09:27:01,025 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-Illumination,b-1-AI …
+2025-09-01 09:27:16,762 [INFO] [Job] data\Multi-Illumination abgeschlossen in 88.485s
+2025-09-01 09:27:16,785 [INFO] data\Multi-Illumination, a-1-AI, b-1, python
+2025-09-01 09:27:16,785 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 09:27:16,821 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1-AI.xyz'
+2025-09-01 09:27:23,430 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1.xyz'
+2025-09-01 09:27:29,194 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 09:27:29,194 [INFO] [Load] data/data\Multi-Illumination: mov=(2143284, 3), ref=(1898606, 3), corepoints=(2143284, 3) | 12.410s
+2025-09-01 09:27:29,194 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-09-01 09:27:29,194 [INFO] [Params] gespeichert: data\Multi-Illumination\python_a-1-AI-b-1_m3c2_params.txt
+2025-09-01 09:27:29,194 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 09:27:29,764 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 09:28:09,473 [INFO] [Run] Punkte=2143284 | NaN=9.99% | Zeit=40.280s
+2025-09-01 09:28:12,224 [INFO] [Run] Distanzen gespeichert: data\Multi-Illumination\python_a-1-AI-b-1_m3c2_distances.txt (2143284 Werte, 9.99% NaN)
+2025-09-01 09:28:16,402 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-Illumination\python_a-1-AI-b-1_m3c2_distances_coordinates.txt
+2025-09-01 09:28:23,938 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-Illumination\python_a-1-AI-b-1_m3c2_uncertainties.txt
+2025-09-01 09:28:23,938 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-09-01 09:28:25,004 [INFO] [Visual] Histogram gespeichert: data\Multi-Illumination\python_a-1-AI-b-1_histogram.png
+2025-09-01 09:28:28,589 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-Illumination\python_a-1-AI-b-1_includenonvalid.ply
+2025-09-01 09:28:31,861 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-Illumination\python_a-1-AI-b-1.ply
+2025-09-01 09:28:31,863 [INFO] [Outlier] Entferne Ausreißer für data\Multi-Illumination
+2025-09-01 09:28:31,863 [ERROR] Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 170, in _run_single
+    self._exclude_outliers(cfg, ds.folder)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 358, in _exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-01 09:28:31,863 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 09:28:31,863 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 09:28:31,902 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-AI-b-1_m3c2_distances_coordinates_outlier_rmse.txt -> data\Multi-Illumination\python_a-1-AI-b-1_outlier_rmse.ply (12186 Punkte, SF='distance')
+2025-09-01 09:28:36,053 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-AI-b-1_m3c2_distances_coordinates_inlier_rmse.txt -> data\Multi-Illumination\python_a-1-AI-b-1_inlier_rmse.ply (1917090 Punkte, SF='distance')
+2025-09-01 09:28:36,053 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-Illumination,b-1 …
+2025-09-01 09:29:02,509 [INFO] [Job] data\Multi-Illumination abgeschlossen in 105.730s
+2025-09-01 09:29:02,530 [INFO] data\Multi-Illumination, a-1-AI, b-1-AI, python
+2025-09-01 09:29:02,530 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 09:29:02,570 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1-AI.xyz'
+2025-09-01 09:29:09,178 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1-AI.xyz'
+2025-09-01 09:29:15,813 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 09:29:15,813 [INFO] [Load] data/data\Multi-Illumination: mov=(2143284, 3), ref=(2200151, 3), corepoints=(2143284, 3) | 13.281s
+2025-09-01 09:29:15,813 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-09-01 09:29:15,813 [INFO] [Params] gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_params.txt
+2025-09-01 09:29:15,813 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 09:29:16,375 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 09:29:59,806 [INFO] [Run] Punkte=2143284 | NaN=1.21% | Zeit=43.997s
+2025-09-01 09:30:02,619 [INFO] [Run] Distanzen gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_distances.txt (2143284 Werte, 1.21% NaN)
+2025-09-01 09:30:06,843 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_distances_coordinates.txt
+2025-09-01 09:30:14,396 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_uncertainties.txt
+2025-09-01 09:30:14,396 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-09-01 09:30:15,444 [INFO] [Visual] Histogram gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI_histogram.png
+2025-09-01 09:30:18,934 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI_includenonvalid.ply
+2025-09-01 09:30:22,443 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI.ply
+2025-09-01 09:30:22,443 [INFO] [Outlier] Entferne Ausreißer für data\Multi-Illumination
+2025-09-01 09:30:22,443 [ERROR] Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 170, in _run_single
+    self._exclude_outliers(cfg, ds.folder)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 358, in _exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-01 09:30:22,443 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 09:30:22,443 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 09:30:22,563 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_distances_coordinates_outlier_rmse.txt -> data\Multi-Illumination\python_a-1-AI-b-1-AI_outlier_rmse.ply (50194 Punkte, SF='distance')
+2025-09-01 09:30:26,989 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_distances_coordinates_inlier_rmse.txt -> data\Multi-Illumination\python_a-1-AI-b-1-AI_inlier_rmse.ply (2067166 Punkte, SF='distance')
+2025-09-01 09:30:27,001 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-Illumination,b-1-AI …
+2025-09-01 09:31:04,223 [INFO] [Job] data\Multi-Illumination abgeschlossen in 121.696s

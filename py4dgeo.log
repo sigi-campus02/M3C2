@@ -986,3 +986,19 @@
 [2025-08-29 09:51:35][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1.xyz'
 [2025-08-29 09:51:41][INFO] Building KDTree structure with leaf parameter 10
 [2025-08-29 09:51:42][INFO] Building KDTree structure with leaf parameter 10
+[2025-09-01 09:24:01][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1.xyz'
+[2025-09-01 09:24:06][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1.xyz'
+[2025-09-01 09:24:12][INFO] Building KDTree structure with leaf parameter 10
+[2025-09-01 09:24:13][INFO] Building KDTree structure with leaf parameter 10
+[2025-09-01 09:25:48][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1.xyz'
+[2025-09-01 09:25:53][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1-AI.xyz'
+[2025-09-01 09:26:00][INFO] Building KDTree structure with leaf parameter 10
+[2025-09-01 09:26:01][INFO] Building KDTree structure with leaf parameter 10
+[2025-09-01 09:27:16][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1-AI.xyz'
+[2025-09-01 09:27:23][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1.xyz'
+[2025-09-01 09:27:29][INFO] Building KDTree structure with leaf parameter 10
+[2025-09-01 09:27:29][INFO] Building KDTree structure with leaf parameter 10
+[2025-09-01 09:29:02][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1-AI.xyz'
+[2025-09-01 09:29:09][INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1-AI.xyz'
+[2025-09-01 09:29:15][INFO] Building KDTree structure with leaf parameter 10
+[2025-09-01 09:29:16][INFO] Building KDTree structure with leaf parameter 10
