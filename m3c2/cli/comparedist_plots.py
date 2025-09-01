@@ -9,12 +9,13 @@ logger = logging.getLogger(__name__)
 
 import sys
 import os
+
 # Allow absolute imports when the script is executed directly.
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from m3c2.config.plot_config import PlotConfig, PlotOptionsComparedistances
 from m3c2.visualization.plot_comparedistances_service import (
     PlotServiceCompareDistances,
-    PlotConfig,
-    PlotOptionsComparedistances,
 )
 
 # Select the folders and reference data variants to compare.
