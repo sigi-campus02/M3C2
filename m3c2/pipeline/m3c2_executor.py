@@ -16,9 +16,12 @@ logger = logging.getLogger(__name__)
 class M3C2Executor:
     """Run the M3C2 algorithm for a given configuration."""
 
-    def _run_m3c2(self, cfg, mov, ref, corepoints, normal: float, projection: float, out_base: str, tag: str,
+    def run_m3c2(self, cfg, mov, ref, corepoints, normal: float, projection: float, out_base: str, tag: str,
     ) -> Tuple[np.ndarray, np.ndarray]:
-        """Run M3C2 and store distances and uncertainties."""
+        """Run M3C2 and store distances and uncertainties.
+
+        This method is part of the public pipeline API.
+        """
         t0 = time.perf_counter()
         runner = M3C2Runner()
         distances, uncertainties = runner.run(mov, ref, corepoints, normal, projection)

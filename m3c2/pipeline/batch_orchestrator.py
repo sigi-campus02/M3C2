@@ -115,7 +115,7 @@ class BatchOrchestrator:
         )
         start = time.perf_counter()
 
-        ds, mov, ref, corepoints = self.data_loader._load_data(cfg)
+        ds, mov, ref, corepoints = self.data_loader.load_data(cfg)
         tag = self._run_tag(cfg)
 
         if cfg.process_python_CC == "python" and not cfg.only_stats:
@@ -134,28 +134,28 @@ class BatchOrchestrator:
                 else:
                     logger.info("[Params] keine vorhandenen Parameter gefunden, berechne neu")
             if np.isnan(normal) or np.isnan(projection):
-                normal, projection = self.scale_estimator._determine_scales(cfg, corepoints)
+                normal, projection = self.scale_estimator.determine_scales(cfg, corepoints)
                 self._save_params(cfg, normal, projection, out_base)
-            distances, _ = self.m3c2_executor._run_m3c2(
+            distances, _ = self.m3c2_executor.run_m3c2(
                 cfg, mov, ref, corepoints, normal, projection, out_base, tag
             )
-            self.visualization_runner._generate_visuals(cfg, mov, distances, out_base, tag)
+            self.visualization_runner.generate_visuals(cfg, mov, distances, out_base, tag)
 
         try:
             logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
-            self.outlier_handler._exclude_outliers(cfg, ds.config.folder, tag)
+            self.outlier_handler.exclude_outliers(cfg, ds.config.folder, tag)
         except Exception:
             logger.exception("Fehler beim Entfernen von Ausreißern")
 
         try:
             logger.info("[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …")
-            self.visualization_runner._generate_clouds_outliers(cfg, ds.config.folder, tag)
+            self.visualization_runner.generate_clouds_outliers(cfg, ds.config.folder, tag)
         except Exception:
             logger.exception("Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier")
 
         try:
             logger.info("[Statistics] Berechne Statistiken …")
-            self.statistics_runner._compute_statistics(cfg, ref, tag)
+            self.statistics_runner.compute_statistics(cfg, ref, tag)
         except Exception:
             logger.exception("Fehler bei der Berechnung der Statistik")
 

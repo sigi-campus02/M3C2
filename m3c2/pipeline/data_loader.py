@@ -17,8 +17,11 @@ logger = logging.getLogger(__name__)
 class DataLoader:
     """Load point cloud data and core points according to a configuration."""
 
-    def _load_data(self, cfg) -> Tuple[DataSource, object, object, object]:
-        """Load point clouds and core points as specified by ``cfg``."""
+    def load_data(self, cfg) -> Tuple[DataSource, object, object, object]:
+        """Load point clouds and core points as specified by ``cfg``.
+
+        This method is part of the public pipeline API.
+        """
         t0 = time.perf_counter()
         ds_config = DataSourceConfig(
             os.path.join(cfg.data_dir, cfg.folder_id),

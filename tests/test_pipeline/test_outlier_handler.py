@@ -18,6 +18,6 @@ def test_exclude_outliers(monkeypatch):
     cfg = SimpleNamespace(outlier_detection_method="iqr", outlier_multiplicator=2.5)
     handler = OutlierHandler()
 
-    handler._exclude_outliers(cfg, out_base="base", tag="tag")
+    handler.exclude_outliers(cfg, out_base="base", tag="tag")
 
     assert called["args"] == ("base", "tag", "iqr", 2.5)

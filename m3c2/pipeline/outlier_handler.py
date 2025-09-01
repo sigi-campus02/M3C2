@@ -11,8 +11,11 @@ logger = logging.getLogger(__name__)
 class OutlierHandler:
     """Remove statistical outliers from M3C2 results."""
 
-    def _exclude_outliers(self, cfg, out_base: str, tag: str) -> None:
-        """Remove outliers based on configuration settings."""
+    def exclude_outliers(self, cfg, out_base: str, tag: str) -> None:
+        """Remove outliers based on configuration settings.
+
+        This method is part of the public pipeline API.
+        """
         exclude_outliers(
             data_folder=out_base,
             ref_variant=tag,

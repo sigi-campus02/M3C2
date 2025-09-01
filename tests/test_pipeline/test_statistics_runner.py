@@ -31,7 +31,7 @@ def test_compute_statistics_distance(monkeypatch, caplog):
 
     runner = StatisticsRunner(output_format="excel")
     caplog.set_level(logging.INFO)
-    runner._compute_statistics(cfg, ref=None, tag="ref")
+    runner.compute_statistics(cfg, ref=None, tag="ref")
 
     assert called["out_path"].endswith("proj_m3c2_stats_distances.xlsx")
     assert any("Stats on Distance" in rec.message for rec in caplog.records)
@@ -59,7 +59,7 @@ def test_compute_statistics_single(monkeypatch, caplog):
 
     runner = StatisticsRunner(output_format="json")
     caplog.set_level(logging.INFO)
-    runner._compute_statistics(cfg, ref=None, tag="ref")
+    runner.compute_statistics(cfg, ref=None, tag="ref")
 
     assert called["out_path"].endswith("proj_m3c2_stats_clouds.json")
     assert any("Stats on SingleClouds" in rec.message for rec in caplog.records)
@@ -69,7 +69,7 @@ def test_invalid_output_format():
     runner = StatisticsRunner(output_format="xml")
     cfg = SimpleNamespace(stats_singleordistance="distance", folder_id="fid", filename_ref="ref")
     try:
-        runner._compute_statistics(cfg, ref=None, tag="ref")
+        runner.compute_statistics(cfg, ref=None, tag="ref")
     except ValueError:
         pass
     else:

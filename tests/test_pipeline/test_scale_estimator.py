@@ -66,7 +66,7 @@ def test_determine_scales_with_mock_strategy(monkeypatch):
     cfg = _minimal_cfg()
     estimator = ScaleEstimator(strategy_name="dummy")
 
-    normal, projection = estimator._determine_scales(cfg, np.zeros((1, 3)))
+    normal, projection = estimator.determine_scales(cfg, np.zeros((1, 3)))
 
     assert normal == 1.0
     assert projection == 2.0
@@ -78,7 +78,7 @@ def test_determine_scales_unknown_strategy(monkeypatch):
     estimator = ScaleEstimator(strategy_name="radius")
 
     with pytest.raises(ValueError):
-        estimator._determine_scales(cfg, np.zeros((1, 3)))
+        estimator.determine_scales(cfg, np.zeros((1, 3)))
 
 
 def test_radius_scan_strategy_evaluate_radius_scale_plane():
