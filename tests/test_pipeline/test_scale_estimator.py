@@ -98,7 +98,7 @@ def test_determine_scales_empty_scan_results(monkeypatch):
     estimator = ScaleEstimator(strategy_name="dummy")
 
     with pytest.raises(ValueError, match="keine Skalen"):
-        estimator._determine_scales(cfg, np.zeros((1, 3)))
+        estimator.determine_scales(cfg, np.zeros((1, 3)))
 
 
 def test_radius_scan_strategy_evaluate_radius_scale_plane():
