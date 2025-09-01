@@ -201,11 +201,11 @@ class BatchOrchestrator:
         # Create a data source that knows how to load the required clouds
         
         ds_config = DataSourceConfig(
-            cfg.folder_id,
+            os.path.join(cfg.data_dir, cfg.folder_id),
             cfg.filename_mov,
             cfg.filename_ref,
             cfg.mov_as_corepoints,
-            cfg.use_subsampled_corepoints
+            cfg.use_subsampled_corepoints,
         )
         ds = DataSource(ds_config)
         mov, ref, corepoints = ds.load_points()

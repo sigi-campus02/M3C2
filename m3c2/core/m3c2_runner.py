@@ -8,7 +8,7 @@ code.
 
 from __future__ import annotations
 import numpy as np
-import py4dgeo
+import importlib
 from typing import Tuple
 
 
@@ -17,8 +17,8 @@ class M3C2Runner:
 
     @staticmethod
     def run(
-        mov: py4dgeo.Epoch,
-        ref: py4dgeo.Epoch,
+        mov: object,
+        ref: object,
         corepoints: np.ndarray,
         normal: float,
         projection: float,
@@ -48,6 +48,8 @@ class M3C2Runner:
         Exception
             Propagated from :mod:`py4dgeo` if the computation fails.
         """
+        # Import py4dgeo lazily to ease testing and optional dependency handling
+        py4dgeo = importlib.import_module("py4dgeo")
         # Create the py4dgeo object that performs the actual computation
         m3c2 = py4dgeo.M3C2(
             epochs=(mov, ref),
