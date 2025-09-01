@@ -25,6 +25,17 @@ python main.py
 
 Outputs, statistics, and logs are written to dataset folders and the `outputs/` directory.
 
+## Logging
+
+Control verbosity with the `--log_level` option or by setting the `LOG_LEVEL` environment variable. For example:
+
+```bash
+export LOG_LEVEL=DEBUG
+python main.py
+```
+
+If neither is provided, the log level defaults to `INFO`.
+
 ## Repository Structure
 - `config/` – dataclasses and plotting configuration
 - `datasource/` – unified loading of point cloud data

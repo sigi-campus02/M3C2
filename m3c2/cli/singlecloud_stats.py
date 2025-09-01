@@ -1,6 +1,7 @@
 """Compute statistics for a single point cloud pair using ``StatisticsService``."""
 
 import logging
+import os
 
 from m3c2.core.statistics import StatisticsService
 from m3c2.io.logging_utils import setup_logging
@@ -24,7 +25,7 @@ def main(
 ) -> None:
     """Invoke :func:`StatisticsService.calc_single_cloud_stats` with defaults."""
 
-    setup_logging()
+    setup_logging(level=os.getenv("LOG_LEVEL", "INFO"))
     logger.info(
         "Parameters received: folder_ids=%s, filename_mov=%s, filename_ref=%s, "
         "area_m2=%s, radius=%s, k=%s, sample_size=%s, use_convex_hull=%s, "

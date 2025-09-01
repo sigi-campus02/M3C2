@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import logging
 import json
+import os
 from pathlib import Path
 from typing import Any, List, Optional
 from m3c2.io.logging_utils import setup_logging
@@ -136,8 +137,8 @@ class CLIApp:
             "--log_level",
             type=str,
             choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
-            default="INFO",
-            help="Logging level.",
+            default=None,
+            help="Logging level (falls back to LOG_LEVEL env var).",
         )
         return parser
 
@@ -158,6 +159,9 @@ class CLIApp:
                 parser.set_defaults(**defaults)
 
         args = parser.parse_args(argv)
+
+        if args.log_level is None:
+            args.log_level = os.getenv("LOG_LEVEL", "INFO")
 
         return args
 
