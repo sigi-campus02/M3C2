@@ -1,0 +1,19 @@
+{
+  "logging": {
+    "level": "INFO",
+    "file": "logs/orchestration.log",
+    "format": "%(asctime)s [%(levelname)-8s] %(name)s - %(message)s",
+    "date_format": "%Y-%m-%d %H:%M:%S"
+  },
+  "arguments": {
+    "data_dir": "data",
+    "folders": ["0342-0349"],
+    "filename_ref": "ref.ply",
+    "filename_mov": "mov.ply",
+    "project": "MARS",
+    "output_format": "excel",
+    "outlier_detection_method": "rmse",
+    "outlier_rmse_multiplicator": 3.0,
+    "log_level": "INFO"
+  }
+}

@@ -5250,3 +5250,97 @@ TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
 2025-09-01 10:40:19,800 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_distances_coordinates_inlier_rmse.txt -> data\Multi-Illumination\python_a-1-AI-b-1-AI_inlier_rmse.ply (2067166 Punkte, SF='distance')
 2025-09-01 10:40:19,810 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-Illumination,b-1-AI …
 2025-09-01 10:41:15,216 [INFO] [Job] data\Multi-Illumination abgeschlossen in 189.072s
+2025-09-01 12:47:46,150 [INFO] m3c2.pipeline.batch_orchestrator: === BatchOrchestrator initialisiert ===
+2025-09-01 12:47:46,150 [INFO] m3c2.pipeline.batch_orchestrator: Konfigurationen: 2 Jobs
+2025-09-01 12:47:46,150 [INFO] m3c2.pipeline.batch_orchestrator: data\0342-0349, mov, ref, python
+2025-09-01 12:47:46,150 [INFO] root: Nutze py4dgeo.read_from_xyz
+2025-09-01 12:47:46,192 [INFO] py4dgeo: Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-01 12:47:48,465 [INFO] py4dgeo: Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-01 12:47:48,547 [INFO] root: Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 12:47:48,547 [INFO] m3c2.pipeline.batch_orchestrator: [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.399s
+2025-09-01 12:47:48,547 [ERROR] m3c2.pipeline.batch_orchestrator: [Job] Fehler in Job 'data\0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 12:47:48,555 [INFO] m3c2.pipeline.batch_orchestrator: data\0342-0349, mov, ref_ai, python
+2025-09-01 12:47:48,555 [INFO] root: Nutze py4dgeo.read_from_xyz
+2025-09-01 12:47:48,596 [INFO] py4dgeo: Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-01 12:47:50,862 [INFO] py4dgeo: Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-01 12:47:53,013 [INFO] root: Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 12:47:53,013 [INFO] m3c2.pipeline.batch_orchestrator: [Load] data/data\0342-0349: mov=(709128, 3), ref=(711075, 3), corepoints=(709128, 3) | 4.458s
+2025-09-01 12:47:53,013 [ERROR] m3c2.pipeline.batch_orchestrator: [Job] Fehler in Job 'data\0342-0349' (Version ref_ai)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 12:48:46,017 [INFO] m3c2.pipeline.batch_orchestrator: === BatchOrchestrator initialisiert ===
+2025-09-01 12:48:46,017 [INFO] m3c2.pipeline.batch_orchestrator: Konfigurationen: 2 Jobs
+2025-09-01 12:48:46,017 [INFO] m3c2.pipeline.batch_orchestrator: data\0342-0349, mov, ref, python
+2025-09-01 12:48:46,017 [INFO] root: Nutze py4dgeo.read_from_xyz
+2025-09-01 12:48:46,059 [INFO] py4dgeo: Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-01 12:48:48,260 [INFO] py4dgeo: Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-01 12:48:48,344 [INFO] root: Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 12:48:48,345 [INFO] m3c2.pipeline.batch_orchestrator: [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.326s
+2025-09-01 12:48:48,345 [ERROR] m3c2.pipeline.batch_orchestrator: [Job] Fehler in Job 'data\0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 12:48:48,347 [INFO] m3c2.pipeline.batch_orchestrator: data\0342-0349, mov, ref_ai, python
+2025-09-01 12:48:48,347 [INFO] root: Nutze py4dgeo.read_from_xyz
+2025-09-01 12:48:48,387 [INFO] py4dgeo: Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-01 12:55:49,342 [INFO] m3c2.pipeline.batch_orchestrator: === BatchOrchestrator initialisiert ===
+2025-09-01 12:55:49,342 [INFO] m3c2.pipeline.batch_orchestrator: Konfigurationen: 2 Jobs
+2025-09-01 12:55:49,342 [INFO] m3c2.pipeline.batch_orchestrator: data\0342-0349, mov, ref, python
+2025-09-01 12:55:49,342 [INFO] root: Nutze py4dgeo.read_from_xyz
+2025-09-01 12:55:49,389 [INFO] py4dgeo: Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-01 12:55:51,561 [INFO] py4dgeo: Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-01 12:55:51,650 [INFO] root: Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 12:55:51,651 [INFO] m3c2.pipeline.batch_orchestrator: [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.302s
+2025-09-01 12:55:51,651 [ERROR] m3c2.pipeline.batch_orchestrator: [Job] Fehler in Job 'data\0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 12:55:51,653 [INFO] m3c2.pipeline.batch_orchestrator: data\0342-0349, mov, ref_ai, python
+2025-09-01 12:55:51,654 [INFO] root: Nutze py4dgeo.read_from_xyz
+2025-09-01 12:55:51,694 [INFO] py4dgeo: Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-01 12:55:53,868 [INFO] py4dgeo: Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-01 12:55:56,087 [INFO] root: Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 12:55:56,087 [INFO] m3c2.pipeline.batch_orchestrator: [Load] data/data\0342-0349: mov=(709128, 3), ref=(711075, 3), corepoints=(709128, 3) | 4.434s
+2025-09-01 12:55:56,087 [ERROR] m3c2.pipeline.batch_orchestrator: [Job] Fehler in Job 'data\0342-0349' (Version ref_ai)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'

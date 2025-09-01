@@ -3,8 +3,9 @@ from __future__ import annotations
 
 import argparse
 import logging
+import json
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, List, Optional
 from m3c2.io.logging_utils import setup_logging
 from m3c2.pipeline.batch_orchestrator import BatchOrchestrator
 from m3c2.config.pipeline_config import PipelineConfig
@@ -12,8 +13,13 @@ from m3c2.config.pipeline_config import PipelineConfig
 class CLIApp:
     """Command line application wrapper for the pipeline."""
 
-    def __init__(self) -> None:
+    def __init__(self, config_path: str | Path | None = None) -> None:
         self.logger = logging.getLogger(self.__class__.__name__)
+        self.config_path = (
+            Path(config_path)
+            if config_path is not None
+            else Path(__file__).resolve().parent.parent / "config.json"
+        )
 
     # ------------------------------------------------------------------
     def build_parser(self) -> argparse.ArgumentParser:
@@ -25,13 +31,14 @@ class CLIApp:
         parser.add_argument(
             "--data_dir",
             type=str,
+            default="data",
             help="Directory containing point cloud data folders.",
         )
         parser.add_argument(
             "--folders",
             type=str,
             nargs="+",
-            required=True,
+            default=None,
             help="List of folder IDs to process (e.g., '0342-0349 0817-0821').",
         )
         parser.add_argument(
@@ -131,7 +138,21 @@ class CLIApp:
     def parse_args(self, argv: Optional[List[str]] = None) -> argparse.Namespace:
         """Parse command line arguments using the configured parser."""
         parser = self.build_parser()
-        return parser.parse_args(argv)
+
+        # Load defaults from configuration file if available
+        if self.config_path.exists():
+            try:
+                with self.config_path.open("r", encoding="utf-8") as handle:
+                    data: dict[str, Any] = json.load(handle)
+            except json.JSONDecodeError:
+                data = {}
+            defaults = data.get("arguments", data)
+            if isinstance(defaults, dict):
+                parser.set_defaults(**defaults)
+
+        args = parser.parse_args(argv)
+
+        return args
 
     # ------------------------------------------------------------------
 
@@ -145,7 +166,7 @@ class CLIApp:
         for folder in folder_ids:
             config = PipelineConfig(
                 data_dir=args.data_dir,
-                folders=folder,
+                folder_id=folder,
                 filename_ref=args.filename_ref,
                 filename_mov=args.filename_mov,
                 mov_as_corepoints=args.mov_as_corepoints,
