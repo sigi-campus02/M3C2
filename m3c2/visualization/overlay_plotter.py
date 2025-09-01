@@ -1,0 +1,227 @@
+from __future__ import annotations
+
+import logging
+import os
+from typing import Dict, Tuple, List
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.stats import norm, weibull_min, probplot
+
+logger = logging.getLogger(__name__)
+
+
+def get_common_range(data: Dict[str, np.ndarray]) -> Tuple[float, float, np.ndarray]:
+    """Determine a common value range for multiple data arrays."""
+    all_vals = np.concatenate(list(data.values())) if data else np.array([])
+    data_min, data_max = (
+        (float(np.min(all_vals)), float(np.max(all_vals))) if all_vals.size else (0.0, 1.0)
+    )
+    x = np.linspace(data_min, data_max, 500)
+    return data_min, data_max, x
+
+
+def plot_overlay_histogram(
+    fid: str,
+    fname: str,
+    data: Dict[str, np.ndarray],
+    bins: int,
+    data_min: float,
+    data_max: float,
+    colors: Dict[str, str],
+    outdir: str,
+    title_text: str | None = None,
+    labels_order: List[str] | None = None,
+) -> None:
+    plt.figure(figsize=(10, 6))
+    labels = labels_order or list(data.keys())
+    for v in labels:
+        arr = data[v]
+        plt.hist(
+            arr,
+            bins=bins,
+            range=(data_min, data_max),
+            density=True,
+            histtype="step",
+            linewidth=2,
+            label=v,
+            color=colors.get(v),
+        )
+    plt.title(title_text or f"Histogramm – {fid}/{fname}")
+    plt.xlabel("M3C2 distance")
+    plt.ylabel("Density")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(outdir, f"{fid}_{fname}_OverlayHistogramm.png"))
+    plt.close()
+
+
+def plot_overlay_gauss(
+    fid: str,
+    fname: str,
+    data: Dict[str, np.ndarray],
+    gauss_params: Dict[str, Tuple[float, float]],
+    x: np.ndarray,
+    colors: Dict[str, str],
+    outdir: str,
+    title_text: str | None = None,
+    labels_order: List[str] | None = None,
+) -> None:
+    plt.figure(figsize=(10, 6))
+    labels = labels_order or list(data.keys())
+    for v in labels:
+        if v in gauss_params:
+            mu, std = gauss_params[v]
+            plt.plot(
+                x,
+                norm.pdf(x, mu, std),
+                color=colors.get(v),
+                linestyle="--" if v.lower() != "cc" else "-",
+                linewidth=2,
+                label=rf"{v} Gauss ($\mu$={mu:.4f}, $\sigma$={std:.4f})",
+            )
+    plt.title(title_text or f"Overlay Gauss-Fits – {fid}/{fname}")
+    plt.xlabel("M3C2 distance")
+    plt.ylabel("Density")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(outdir, f"{fid}_{fname}_OverlayGaussFits.png"))
+    plt.close()
+
+
+def plot_overlay_weibull(
+    fid: str,
+    fname: str,
+    data: Dict[str, np.ndarray],
+    x: np.ndarray,
+    colors: Dict[str, str],
+    outdir: str,
+    title_text: str | None = None,
+    labels_order: List[str] | None = None,
+) -> None:
+    weibull_params: Dict[str, Tuple[float, float, float]] = {}
+    for v, arr in data.items():
+        try:
+            a, loc, b = weibull_min.fit(arr)
+            weibull_params[v] = (float(a), float(loc), float(b))
+        except Exception as e:
+            logger.warning("[Report] Weibull-Fit fehlgeschlagen (%s/%s, %s): %s", fid, fname, v, e)
+
+    plt.figure(figsize=(10, 6))
+    labels = labels_order or list(weibull_params.keys())
+    for v in labels:
+        if v in weibull_params:
+            a, loc, b = weibull_params[v]
+            plt.plot(
+                x,
+                weibull_min.pdf(x, a, loc=loc, scale=b),
+                color=colors.get(v),
+                linestyle="--" if v.lower() != "cc" else "-",
+                linewidth=2,
+                label=rf"{v} Weibull (a={a:.2f}, b={b:.4f})",
+            )
+    plt.title(title_text or f"Overlay Weibull-Fits – {fid}/{fname}")
+    plt.xlabel("M3C2 distance")
+    plt.ylabel("Density")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(outdir, f"{fid}_{fname}_OverlayWeibullFits.png"))
+    plt.close()
+
+
+def plot_overlay_boxplot(
+    fid: str,
+    fname: str,
+    data: Dict[str, np.ndarray],
+    colors: Dict[str, str],
+    outdir: str,
+    title_text: str | None = None,
+    labels_order: List[str] | None = None,
+) -> None:
+    try:
+        import seaborn as sns
+
+        records = [pd.DataFrame({"Version": v, "Distanz": arr}) for v, arr in data.items()]
+        if not records:
+            return
+        df = pd.concat(records, ignore_index=True)
+        order = labels_order or list(df["Version"].unique())
+        palette = {v: colors.get(v) for v in order}
+        plt.figure(figsize=(10, 6))
+        sns.boxplot(data=df, x="Version", y="Distanz", palette=palette, legend=False, order=order)
+        plt.title(title_text or f"Boxplot – {fid}/{fname}")
+        plt.xlabel("Version")
+        plt.ylabel("M3C2 distance")
+        plt.tight_layout()
+        plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Boxplot.png"))
+        plt.close()
+    except Exception:
+        labels = labels_order or list(data.keys())
+        arrs = [data[v] for v in labels]
+        plt.figure(figsize=(10, 6))
+        b = plt.boxplot(arrs, labels=labels, patch_artist=True)
+        for patch, v in zip(b["boxes"], labels):
+            c = colors.get(v, "#aaaaaa")
+            patch.set_facecolor(c)
+            patch.set_alpha(0.5)
+        plt.title(title_text or f"Boxplot – {fid}/{fname}")
+        plt.xlabel("Version")
+        plt.ylabel("M3C2 distance")
+        plt.tight_layout()
+        plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Boxplot.png"))
+        plt.close()
+
+
+def plot_overlay_qq(
+    fid: str,
+    fname: str,
+    data: Dict[str, np.ndarray],
+    colors: Dict[str, str],
+    outdir: str,
+    title_text: str | None = None,
+    labels_order: List[str] | None = None,
+) -> None:
+    plt.figure(figsize=(10, 6))
+    labels = labels_order or list(data.keys())
+    for v in labels:
+        arr = data[v]
+        (osm, osr), (slope, intercept, r) = probplot(arr, dist="norm")
+        plt.plot(osm, osr, marker="o", linestyle="", label=v, color=colors.get(v))
+        plt.plot(osm, slope * osm + intercept, color=colors.get(v), linestyle="--", alpha=0.7)
+    plt.title(title_text or f"Q-Q-Plot – {fid}/{fname}")
+    plt.xlabel("Theoretical quantiles")
+    plt.ylabel("Ordered values")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(outdir, f"{fid}_{fname}_QQPlot.png"))
+    plt.close()
+
+
+def plot_overlay_violin(
+    fid: str,
+    fname: str,
+    data: Dict[str, np.ndarray],
+    colors: Dict[str, str],
+    outdir: str,
+    title_text: str | None = None,
+    labels_order: List[str] | None = None,
+) -> None:
+    try:
+        import seaborn as sns
+
+        records = [pd.DataFrame({"Version": v, "Distanz": arr}) for v, arr in data.items()]
+        if not records:
+            return
+        df = pd.concat(records, ignore_index=True)
+        palette = {v: colors.get(v) for v in df["Version"].unique()}
+        plt.figure(figsize=(10, 6))
+        sns.violinplot(data=df, x="Version", y="Distanz", palette=palette, cut=0, inner="quartile")
+        plt.title(title_text or f"Violinplot – {fid}/{fname}")
+        plt.xlabel("Version")
+        plt.ylabel("M3C2 distance")
+        plt.tight_layout()
+        plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Violinplot.png"))
+        plt.close()
+    except Exception as e:
+        logger.warning("[Report] Violinplot fehlgeschlagen (%s/%s): %s", fid, fname, e)
