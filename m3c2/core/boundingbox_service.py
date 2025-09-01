@@ -1,9 +1,14 @@
 """Clip multiple point clouds to their common oriented bounding box overlap."""
 
+import logging
+
 import numpy as np
 import open3d as o3d
 from pathlib import Path
 from typing import List, Tuple
+
+
+logger = logging.getLogger(__name__)
 
 
 def read_ply(path: str) -> o3d.geometry.PointCloud:
@@ -120,7 +125,12 @@ def clip_obbf_aligned_many(
         inter_max += pad
 
     if np.any(inter_min >= inter_max):
-        raise RuntimeError("Keine gemeinsame OBB-Überlappung gefunden (in ref-OBB-Frame).")
+        logger.warning(
+            "Keine gemeinsame OBB-Überlappung gefunden (in ref-OBB-Frame)."
+        )
+        raise RuntimeError(
+            "Keine gemeinsame OBB-Überlappung gefunden (in ref-OBB-Frame)."
+        )
 
     # 5) Clip each cloud and transform back to world coordinates
     for xyz_l, cols, nrms, outp in zip(
@@ -145,10 +155,15 @@ def clip_obbf_aligned_many(
 
         outp = str(Path(outp).expanduser().resolve())
         o3d.io.write_point_cloud(outp, pc_out, write_ascii=False, compressed=False)
-        print(f"{outp}  |  {xyz_l.shape[0]} -> {clipped_local.shape[0]} Punkte")
+        logger.info(
+            "%s  |  %d -> %d Punkte",
+            outp,
+            xyz_l.shape[0],
+            clipped_local.shape[0],
+        )
 
-    print("Gemeinsame OBB-Grenzen (im lokalen Frame der ersten Cloud):")
-    print("  min:", inter_min, "\n  max:", inter_max)
+    logger.info("Gemeinsame OBB-Grenzen (im lokalen Frame der ersten Cloud):")
+    logger.info("  min: %s\n  max: %s", inter_min, inter_max)
 
 
 if __name__ == "__main__":
