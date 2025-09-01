@@ -200,14 +200,15 @@ class BatchOrchestrator:
         t0 = time.perf_counter()
         # Create a data source that knows how to load the required clouds
         
-        ds = DataSourceConfig(
+        ds_config = DataSourceConfig(
             cfg.folder_id,
             cfg.filename_mov,
             cfg.filename_ref,
             cfg.mov_as_corepoints,
             cfg.use_subsampled_corepoints
         )
-        mov, ref, corepoints = DataSource.load_points(ds)
+        ds = DataSource(ds_config)
+        mov, ref, corepoints = ds.load_points()
 
         logger.info(
             "[Load] data/%s: mov=%s, ref=%s, corepoints=%s | %.3fs",
