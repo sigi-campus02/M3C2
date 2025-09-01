@@ -1,6 +1,12 @@
 """Compute statistics for a single point cloud pair using ``StatisticsService``."""
 
+import logging
+
 from m3c2.core.statistics import StatisticsService
+from m3c2.io.logging_utils import setup_logging
+
+
+logger = logging.getLogger(__name__)
 
 
 def main(
@@ -18,21 +24,46 @@ def main(
 ) -> None:
     """Invoke :func:`StatisticsService.calc_single_cloud_stats` with defaults."""
 
-    folder_ids = folder_ids or ["data/TUNSPEKT Labordaten_all"]
-
-    StatisticsService.calc_single_cloud_stats(
-        folder_ids=folder_ids,
-        filename_mov=filename_mov,
-        filename_ref=filename_ref,
-        area_m2=area_m2,
-        radius=radius,
-        k=k,
-        sample_size=sample_size,
-        use_convex_hull=use_convex_hull,
-        out_path=out_path,
-        sheet_name=sheet_name,
-        output_format=output_format,
+    setup_logging()
+    logger.info(
+        "Parameters received: folder_ids=%s, filename_mov=%s, filename_ref=%s, "
+        "area_m2=%s, radius=%s, k=%s, sample_size=%s, use_convex_hull=%s, "
+        "out_path=%s, sheet_name=%s, output_format=%s",
+        folder_ids,
+        filename_mov,
+        filename_ref,
+        area_m2,
+        radius,
+        k,
+        sample_size,
+        use_convex_hull,
+        out_path,
+        sheet_name,
+        output_format,
     )
+
+    folder_ids = folder_ids or ["data/TUNSPEKT Labordaten_all"]
+    logger.info("Processing folders: %s", folder_ids)
+
+    try:
+        StatisticsService.calc_single_cloud_stats(
+            folder_ids=folder_ids,
+            filename_mov=filename_mov,
+            filename_ref=filename_ref,
+            area_m2=area_m2,
+            radius=radius,
+            k=k,
+            sample_size=sample_size,
+            use_convex_hull=use_convex_hull,
+            out_path=out_path,
+            sheet_name=sheet_name,
+            output_format=output_format,
+        )
+    except Exception:
+        logger.exception("Statistics computation failed")
+        raise
+    else:
+        logger.info("Statistics computation completed successfully")
 
 
 if __name__ == "__main__":
