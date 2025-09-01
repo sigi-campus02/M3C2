@@ -13,13 +13,10 @@ and dependency-free.
 """
 
 from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import List, Tuple
-
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
-
 from orchestration.strategies import ScaleScan
 
 

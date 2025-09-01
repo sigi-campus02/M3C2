@@ -11,7 +11,7 @@ import sys
 import os
 # Allow absolute imports when the script is executed directly.
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from services.plot_service_comparedistances import (
+from services.plot_comparedistances_service import (
     PlotServiceCompareDistances,
     PlotConfig,
     PlotOptionsComparedistances,

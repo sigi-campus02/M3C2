@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from orchestration.strategies import ScaleScan
-from services.param_estimator import ParamEstimator
+from services.param_estimator_service import ParamEstimator
 
 
 class DummyStrategy:

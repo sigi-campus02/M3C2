@@ -32,6 +32,5 @@ Outputs, statistics, and logs are written to dataset folders and the `outputs/` 
 - `orchestration/` – batch runners and M3C2 execution logic
 - `services/` – parameter estimation, statistics, outlier handling, visualization
 - `tests/` – unit tests covering key functionality
-- `statostics/` – original README with an in-depth explanation of statistical metrics
 
-For detailed descriptions of the calculated statistics, see `statostics/README.md`.
+For detailed descriptions of the calculated statistics, see `docu/README.md`.

@@ -12,9 +12,9 @@ from typing import List, Tuple
 import numpy as np
 from datasource.datasource import DataSource
 from config.pipeline_config import PipelineConfig
-from services.param_estimator import ParamEstimator
+from services.param_estimator_service import ParamEstimator
 from services.statistics_service import StatisticsService
-from services.exclude_outliers import exclude_outliers
+from services.exclude_outliers_service import exclude_outliers
 from services.visualization_service import VisualizationService
 from orchestration.m3c2_runner import M3C2Runner
 from orchestration.strategies import (RadiusScanStrategy, ScaleScan)

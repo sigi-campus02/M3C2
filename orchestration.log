@@ -4834,3 +4834,419 @@ TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
 2025-09-01 09:30:26,989 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_distances_coordinates_inlier_rmse.txt -> data\Multi-Illumination\python_a-1-AI-b-1-AI_inlier_rmse.ply (2067166 Punkte, SF='distance')
 2025-09-01 09:30:27,001 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-Illumination,b-1-AI …
 2025-09-01 09:31:04,223 [INFO] [Job] data\Multi-Illumination abgeschlossen in 121.696s
+2025-09-01 10:26:13,694 [INFO] === BatchOrchestrator initialisiert ===
+2025-09-01 10:26:13,694 [INFO] Konfigurationen: 12 Jobs
+2025-09-01 10:26:13,694 [INFO] data\0342-0349, mov, ref, python
+2025-09-01 10:26:13,695 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:26:13,742 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-01 10:26:15,965 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-01 10:26:16,052 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:26:16,053 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.358s
+2025-09-01 10:26:16,053 [ERROR] [Job] Fehler in Job 'data\0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 10:26:16,055 [INFO] data\0342-0349, mov, ref-AI, python
+2025-09-01 10:26:16,055 [ERROR] [Job] Fehler in Job 'data\0342-0349' (Version ref-AI)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 133, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 212, in _load_data
+    mov, ref, corepoints = ds.load_points()
+                           ^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 300, in load_points
+    r_xyz = self._ensure_xyz(self.ref_base, (r_kind, r_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 258, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: data\0342-0349\ref-AI.xyz/.las/.laz/.ply/.obj/.gpc
+2025-09-01 10:26:16,056 [INFO] data\0817-0821, mov, ref, python
+2025-09-01 10:26:16,056 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:26:16,094 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\mov.xyz'
+2025-09-01 10:26:29,948 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0817-0821\ref.xyz'
+2025-09-01 10:26:30,008 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:26:30,008 [INFO] [Load] data/data\0817-0821: mov=(4524729, 3), ref=(15777, 3), corepoints=(4524729, 3) | 13.951s
+2025-09-01 10:26:30,008 [ERROR] [Job] Fehler in Job 'data\0817-0821' (Version ref)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 10:26:30,014 [INFO] data\0817-0821, mov, ref-AI, python
+2025-09-01 10:26:30,015 [ERROR] [Job] Fehler in Job 'data\0817-0821' (Version ref-AI)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 133, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 212, in _load_data
+    mov, ref, corepoints = ds.load_points()
+                           ^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 300, in load_points
+    r_xyz = self._ensure_xyz(self.ref_base, (r_kind, r_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 258, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: data\0817-0821\ref-AI.xyz/.las/.laz/.ply/.obj/.gpc
+2025-09-01 10:26:30,016 [INFO] data\0910-0913, mov, ref, python
+2025-09-01 10:26:30,017 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:26:30,054 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\mov.xyz'
+2025-09-01 10:26:44,501 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0910-0913\ref.xyz'
+2025-09-01 10:26:45,002 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:26:45,002 [INFO] [Load] data/data\0910-0913: mov=(4760406, 3), ref=(167652, 3), corepoints=(4760406, 3) | 14.987s
+2025-09-01 10:26:45,003 [ERROR] [Job] Fehler in Job 'data\0910-0913' (Version ref)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 10:26:45,009 [INFO] data\0910-0913, mov, ref-AI, python
+2025-09-01 10:26:45,010 [ERROR] [Job] Fehler in Job 'data\0910-0913' (Version ref-AI)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 133, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 212, in _load_data
+    mov, ref, corepoints = ds.load_points()
+                           ^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 300, in load_points
+    r_xyz = self._ensure_xyz(self.ref_base, (r_kind, r_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 258, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: data\0910-0913\ref-AI.xyz/.las/.laz/.ply/.obj/.gpc
+2025-09-01 10:26:45,010 [INFO] data\1130-1133, mov, ref, python
+2025-09-01 10:26:45,011 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:26:45,049 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\mov.xyz'
+2025-09-01 10:26:45,401 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1130-1133\ref.xyz'
+2025-09-01 10:26:45,525 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:26:45,525 [INFO] [Load] data/data\1130-1133: mov=(107169, 3), ref=(40647, 3), corepoints=(107169, 3) | 0.515s
+2025-09-01 10:26:45,525 [ERROR] [Job] Fehler in Job 'data\1130-1133' (Version ref)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 10:26:45,526 [INFO] data\1130-1133, mov, ref-AI, python
+2025-09-01 10:26:45,527 [ERROR] [Job] Fehler in Job 'data\1130-1133' (Version ref-AI)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 133, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 212, in _load_data
+    mov, ref, corepoints = ds.load_points()
+                           ^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 300, in load_points
+    r_xyz = self._ensure_xyz(self.ref_base, (r_kind, r_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 258, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: data\1130-1133\ref-AI.xyz/.las/.laz/.ply/.obj/.gpc
+2025-09-01 10:26:45,527 [INFO] data\1203-1206, mov, ref, python
+2025-09-01 10:26:45,529 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:26:45,566 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\mov.xyz'
+2025-09-01 10:26:47,210 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1203-1206\ref.xyz'
+2025-09-01 10:26:47,407 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:26:47,408 [INFO] [Load] data/data\1203-1206: mov=(525255, 3), ref=(65910, 3), corepoints=(525255, 3) | 1.880s
+2025-09-01 10:26:47,408 [ERROR] [Job] Fehler in Job 'data\1203-1206' (Version ref)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 10:26:47,409 [INFO] data\1203-1206, mov, ref-AI, python
+2025-09-01 10:26:47,410 [ERROR] [Job] Fehler in Job 'data\1203-1206' (Version ref-AI)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 133, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 212, in _load_data
+    mov, ref, corepoints = ds.load_points()
+                           ^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 300, in load_points
+    r_xyz = self._ensure_xyz(self.ref_base, (r_kind, r_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 258, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: data\1203-1206\ref-AI.xyz/.las/.laz/.ply/.obj/.gpc
+2025-09-01 10:26:47,410 [INFO] data\1306-1311, mov, ref, python
+2025-09-01 10:26:47,411 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:26:47,450 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\mov.xyz'
+2025-09-01 10:26:48,861 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\1306-1311\ref.xyz'
+2025-09-01 10:26:52,005 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:26:52,006 [INFO] [Load] data/data\1306-1311: mov=(456945, 3), ref=(1036734, 3), corepoints=(456945, 3) | 4.596s
+2025-09-01 10:26:52,006 [ERROR] [Job] Fehler in Job 'data\1306-1311' (Version ref)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 10:26:52,008 [INFO] data\1306-1311, mov, ref-AI, python
+2025-09-01 10:26:52,009 [ERROR] [Job] Fehler in Job 'data\1306-1311' (Version ref-AI)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 133, in _run_single
+    ds, mov, ref, corepoints = self._load_data(cfg)
+                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 212, in _load_data
+    mov, ref, corepoints = ds.load_points()
+                           ^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 300, in load_points
+    r_xyz = self._ensure_xyz(self.ref_base, (r_kind, r_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\datasource\datasource.py", line 258, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: data\1306-1311\ref-AI.xyz/.las/.laz/.ply/.obj/.gpc
+2025-09-01 10:27:41,220 [INFO] === BatchOrchestrator initialisiert ===
+2025-09-01 10:27:41,220 [INFO] Konfigurationen: 2 Jobs
+2025-09-01 10:27:41,220 [INFO] data\0342-0349, mov, ref, python
+2025-09-01 10:27:41,221 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:27:41,259 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-01 10:27:43,409 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-01 10:27:43,492 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:27:43,492 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.272s
+2025-09-01 10:27:43,493 [ERROR] [Job] Fehler in Job 'data\0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 10:27:43,495 [INFO] data\0342-0349, mov, ref_ai, python
+2025-09-01 10:27:43,495 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:27:43,536 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-01 10:27:45,695 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-01 10:27:47,818 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:27:47,818 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(711075, 3), corepoints=(709128, 3) | 4.323s
+2025-09-01 10:27:47,818 [ERROR] [Job] Fehler in Job 'data\0342-0349' (Version ref_ai)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 10:32:31,539 [INFO] [Scan] data\Multi-Illumination
+2025-09-01 10:32:31,540 [INFO]   a-*  plain: 7 | AI: 7 | indices=[1, 2, 3, 4, 5, 6, 7] / [1, 2, 3, 4, 5, 6, 7]
+2025-09-01 10:32:31,540 [INFO]   b-*  plain: 7 | AI: 7 | indices=[1, 2, 3, 4, 5, 6, 7] / [1, 2, 3, 4, 5, 6, 7]
+2025-09-01 10:32:31,540 [INFO]   Case1 (a-i vs b-i): 1 Runs, indices=[1]
+2025-09-01 10:32:31,540 [INFO]   Case2 (a-i vs b-i-AI): 1 Runs, indices=[1]
+2025-09-01 10:32:31,540 [INFO]   Case3 (a-i-AI vs b-i): 1 Runs, indices=[1]
+2025-09-01 10:32:31,541 [INFO]   Case4 (a-i-AI vs b-i-AI): 1 Runs, indices=[1]
+2025-09-01 10:32:31,541 [INFO]   => Total Runs so far (inkl. Multi-Illumination): 4
+2025-09-01 10:32:31,541 [INFO] === BatchOrchestrator initialisiert ===
+2025-09-01 10:32:31,541 [INFO] Konfigurationen: 4 Jobs
+2025-09-01 10:32:31,541 [INFO] data\Multi-Illumination, a-1, b-1, python
+2025-09-01 10:32:31,542 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:32:31,581 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1.xyz'
+2025-09-01 10:32:37,178 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1.xyz'
+2025-09-01 10:32:42,839 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:32:42,840 [INFO] [Load] data/data\Multi-Illumination: mov=(1848754, 3), ref=(1898606, 3), corepoints=(1848754, 3) | 11.299s
+2025-09-01 10:32:42,840 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-09-01 10:32:42,841 [INFO] [Params] gespeichert: data\Multi-Illumination\python_a-1-b-1_m3c2_params.txt
+2025-09-01 10:32:42,841 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 10:32:43,305 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 10:33:19,346 [INFO] === BatchOrchestrator initialisiert ===
+2025-09-01 10:33:19,347 [INFO] Konfigurationen: 2 Jobs
+2025-09-01 10:33:19,347 [INFO] data\0342-0349, mov, ref, python
+2025-09-01 10:33:19,349 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:33:19,446 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-01 10:33:25,173 [INFO] [Run] Punkte=1848754 | NaN=0.00% | Zeit=42.330s
+2025-09-01 10:33:25,436 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-01 10:33:25,519 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:33:25,520 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 6.172s
+2025-09-01 10:33:25,520 [ERROR] [Job] Fehler in Job 'data\0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 10:33:25,522 [INFO] data\0342-0349, mov, ref_ai, python
+2025-09-01 10:33:25,522 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:33:25,562 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-01 10:33:27,621 [INFO] [Run] Distanzen gespeichert: data\Multi-Illumination\python_a-1-b-1_m3c2_distances.txt (1848754 Werte, 0.00% NaN)
+2025-09-01 10:33:27,850 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-01 10:33:30,045 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:33:30,046 [INFO] [Load] data/data\0342-0349: mov=(709128, 3), ref=(711075, 3), corepoints=(709128, 3) | 4.523s
+2025-09-01 10:33:30,046 [ERROR] [Job] Fehler in Job 'data\0342-0349' (Version ref_ai)
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 102, in run_all
+    self._run_single(cfg)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 158, in _run_single
+    normal, projection = self._determine_scales(cfg, corepoints)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 245, in _determine_scales
+    avg = ParamEstimator.estimate_min_spacing(corepoints)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParamEstimator.estimate_min_spacing() missing 1 required positional argument: 'points'
+2025-09-01 10:33:31,587 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-Illumination\python_a-1-b-1_m3c2_distances_coordinates.txt
+2025-09-01 10:33:38,319 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-Illumination\python_a-1-b-1_m3c2_uncertainties.txt
+2025-09-01 10:33:38,323 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-09-01 10:33:39,606 [INFO] [Visual] Histogram gespeichert: data\Multi-Illumination\python_a-1-b-1_histogram.png
+2025-09-01 10:33:42,596 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-Illumination\python_a-1-b-1_includenonvalid.ply
+2025-09-01 10:33:45,666 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-Illumination\python_a-1-b-1.ply
+2025-09-01 10:33:45,666 [INFO] [Outlier] Entferne Ausreißer für data\Multi-Illumination
+2025-09-01 10:33:45,666 [ERROR] Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 170, in _run_single
+    self._exclude_outliers(cfg, ds.folder)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 358, in _exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-01 10:33:45,667 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 10:33:45,668 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 10:33:45,706 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-b-1_m3c2_distances_coordinates_outlier_rmse.txt -> data\Multi-Illumination\python_a-1-b-1_outlier_rmse.ply (17343 Punkte, SF='distance')
+2025-09-01 10:33:49,717 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-b-1_m3c2_distances_coordinates_inlier_rmse.txt -> data\Multi-Illumination\python_a-1-b-1_inlier_rmse.ply (1831404 Punkte, SF='distance')
+2025-09-01 10:33:49,723 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-Illumination,b-1 …
+2025-09-01 10:34:17,879 [INFO] [Job] data\Multi-Illumination abgeschlossen in 106.341s
+2025-09-01 10:34:17,901 [INFO] data\Multi-Illumination, a-1, b-1-AI, python
+2025-09-01 10:34:17,901 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:34:17,962 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1.xyz'
+2025-09-01 10:34:27,340 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1-AI.xyz'
+2025-09-01 10:34:38,775 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:34:38,775 [INFO] [Load] data/data\Multi-Illumination: mov=(1848754, 3), ref=(2200151, 3), corepoints=(1848754, 3) | 20.874s
+2025-09-01 10:34:38,775 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-09-01 10:34:38,775 [INFO] [Params] gespeichert: data\Multi-Illumination\python_a-1-b-1-AI_m3c2_params.txt
+2025-09-01 10:34:38,775 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 10:34:39,461 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 10:35:19,071 [INFO] [Run] Punkte=1848754 | NaN=0.18% | Zeit=40.286s
+2025-09-01 10:35:21,813 [INFO] [Run] Distanzen gespeichert: data\Multi-Illumination\python_a-1-b-1-AI_m3c2_distances.txt (1848754 Werte, 0.18% NaN)
+2025-09-01 10:35:27,858 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-Illumination\python_a-1-b-1-AI_m3c2_distances_coordinates.txt
+2025-09-01 10:35:36,124 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-Illumination\python_a-1-b-1-AI_m3c2_uncertainties.txt
+2025-09-01 10:35:36,128 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-09-01 10:35:37,063 [INFO] [Visual] Histogram gespeichert: data\Multi-Illumination\python_a-1-b-1-AI_histogram.png
+2025-09-01 10:35:40,440 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-Illumination\python_a-1-b-1-AI_includenonvalid.ply
+2025-09-01 10:35:43,908 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-Illumination\python_a-1-b-1-AI.ply
+2025-09-01 10:35:43,909 [INFO] [Outlier] Entferne Ausreißer für data\Multi-Illumination
+2025-09-01 10:35:43,909 [ERROR] Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 170, in _run_single
+    self._exclude_outliers(cfg, ds.folder)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 358, in _exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-01 10:35:43,909 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 10:35:43,909 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 10:35:43,954 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-b-1-AI_m3c2_distances_coordinates_outlier_rmse.txt -> data\Multi-Illumination\python_a-1-b-1-AI_outlier_rmse.ply (19657 Punkte, SF='distance')
+2025-09-01 10:35:47,921 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-b-1-AI_m3c2_distances_coordinates_inlier_rmse.txt -> data\Multi-Illumination\python_a-1-b-1-AI_inlier_rmse.ply (1825744 Punkte, SF='distance')
+2025-09-01 10:35:47,927 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-Illumination,b-1-AI …
+2025-09-01 10:36:04,239 [INFO] [Job] data\Multi-Illumination abgeschlossen in 106.334s
+2025-09-01 10:36:04,257 [INFO] data\Multi-Illumination, a-1-AI, b-1, python
+2025-09-01 10:36:04,258 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:36:04,296 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1-AI.xyz'
+2025-09-01 10:36:11,546 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1.xyz'
+2025-09-01 10:36:17,827 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:36:17,828 [INFO] [Load] data/data\Multi-Illumination: mov=(2143284, 3), ref=(1898606, 3), corepoints=(2143284, 3) | 13.571s
+2025-09-01 10:36:17,828 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-09-01 10:36:17,829 [INFO] [Params] gespeichert: data\Multi-Illumination\python_a-1-AI-b-1_m3c2_params.txt
+2025-09-01 10:36:17,829 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 10:36:18,395 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 10:37:03,600 [INFO] [Run] Punkte=2143284 | NaN=9.99% | Zeit=45.771s
+2025-09-01 10:37:08,383 [INFO] [Run] Distanzen gespeichert: data\Multi-Illumination\python_a-1-AI-b-1_m3c2_distances.txt (2143284 Werte, 9.99% NaN)
+2025-09-01 10:37:15,820 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-Illumination\python_a-1-AI-b-1_m3c2_distances_coordinates.txt
+2025-09-01 10:37:24,002 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-Illumination\python_a-1-AI-b-1_m3c2_uncertainties.txt
+2025-09-01 10:37:24,006 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-09-01 10:37:25,072 [INFO] [Visual] Histogram gespeichert: data\Multi-Illumination\python_a-1-AI-b-1_histogram.png
+2025-09-01 10:37:28,960 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-Illumination\python_a-1-AI-b-1_includenonvalid.ply
+2025-09-01 10:37:32,211 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-Illumination\python_a-1-AI-b-1.ply
+2025-09-01 10:37:32,212 [INFO] [Outlier] Entferne Ausreißer für data\Multi-Illumination
+2025-09-01 10:37:32,212 [ERROR] Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 170, in _run_single
+    self._exclude_outliers(cfg, ds.folder)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 358, in _exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-01 10:37:32,213 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 10:37:32,213 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 10:37:32,241 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-AI-b-1_m3c2_distances_coordinates_outlier_rmse.txt -> data\Multi-Illumination\python_a-1-AI-b-1_outlier_rmse.ply (12186 Punkte, SF='distance')
+2025-09-01 10:37:36,704 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-AI-b-1_m3c2_distances_coordinates_inlier_rmse.txt -> data\Multi-Illumination\python_a-1-AI-b-1_inlier_rmse.ply (1917090 Punkte, SF='distance')
+2025-09-01 10:37:36,710 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-Illumination,b-1 …
+2025-09-01 10:38:06,130 [INFO] [Job] data\Multi-Illumination abgeschlossen in 121.874s
+2025-09-01 10:38:06,151 [INFO] data\Multi-Illumination, a-1-AI, b-1-AI, python
+2025-09-01 10:38:06,151 [INFO] Nutze py4dgeo.read_from_xyz
+2025-09-01 10:38:06,190 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\a-1-AI.xyz'
+2025-09-01 10:38:16,155 [INFO] Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\Multi-Illumination\b-1-AI.xyz'
+2025-09-01 10:38:27,509 [INFO] Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-01 10:38:27,509 [INFO] [Load] data/data\Multi-Illumination: mov=(2143284, 3), ref=(2200151, 3), corepoints=(2143284, 3) | 21.362s
+2025-09-01 10:38:27,509 [INFO] [Scales] Overrides verwendet: normal=0.002000, proj=0.004000
+2025-09-01 10:38:27,509 [INFO] [Params] gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_params.txt
+2025-09-01 10:38:27,509 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 10:38:28,342 [INFO] Building KDTree structure with leaf parameter 10
+2025-09-01 10:39:39,865 [INFO] [Run] Punkte=2143284 | NaN=1.21% | Zeit=72.348s
+2025-09-01 10:39:44,559 [INFO] [Run] Distanzen gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_distances.txt (2143284 Werte, 1.21% NaN)
+2025-09-01 10:39:51,049 [INFO] [Run] Distanzen mit Koordinaten gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_distances_coordinates.txt
+2025-09-01 10:40:01,494 [INFO] [Run] Unsicherheiten gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_uncertainties.txt
+2025-09-01 10:40:01,499 [INFO] [Visual] Erzeuge Visualisierungen …
+2025-09-01 10:40:02,818 [INFO] [Visual] Histogram gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI_histogram.png
+2025-09-01 10:40:06,873 [INFO] [Visual] Farb-PLY gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI_includenonvalid.ply
+2025-09-01 10:40:11,704 [INFO] [Visual] Valid-PLY gespeichert: data\Multi-Illumination\python_a-1-AI-b-1-AI.ply
+2025-09-01 10:40:11,707 [INFO] [Outlier] Entferne Ausreißer für data\Multi-Illumination
+2025-09-01 10:40:11,708 [ERROR] Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 170, in _run_single
+    self._exclude_outliers(cfg, ds.folder)
+  File "C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\orchestration\batch_orchestrator.py", line 358, in _exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-01 10:40:11,709 [INFO] [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 10:40:11,709 [INFO] [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-01 10:40:11,927 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_distances_coordinates_outlier_rmse.txt -> data\Multi-Illumination\python_a-1-AI-b-1-AI_outlier_rmse.ply (50194 Punkte, SF='distance')
+2025-09-01 10:40:19,800 [INFO] [TXT->PLY] data\Multi-Illumination\python_a-1-AI-b-1-AI_m3c2_distances_coordinates_inlier_rmse.txt -> data\Multi-Illumination\python_a-1-AI-b-1-AI_inlier_rmse.ply (2067166 Punkte, SF='distance')
+2025-09-01 10:40:19,810 [INFO] [Stats on Distance] Berechne M3C2-Statistiken data\Multi-Illumination,b-1-AI …
+2025-09-01 10:41:15,216 [INFO] [Job] data\Multi-Illumination abgeschlossen in 189.072s
