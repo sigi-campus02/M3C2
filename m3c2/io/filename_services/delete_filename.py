@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 # remove_cloud_token.py
-import argparse, os
+import argparse, os, logging
 from pathlib import Path
+
+from m3c2.io.logging_utils import setup_logging
+
+logger = logging.getLogger(__name__)
 
 def transform(name: str) -> str:
     # Entfernt ALLE Vorkommen von "_validonly" im Namen (inkl. vor der Extension)
@@ -31,6 +35,8 @@ def main():
     ap.add_argument("-n", "--dry-run", action="store_true", help="Nur anzeigen, nichts ändern")
     args = ap.parse_args()
 
+    setup_logging()
+
     base = Path(args.path).resolve()
     changed = skipped = 0
 
@@ -40,15 +46,17 @@ def main():
             continue
         target = p.with_name(new_name)
         if target.exists() and target != p:
-            print(f"SKIP (Ziel existiert): {p} -> {target}")
+            logger.warning(f"SKIP (Ziel existiert): {p} -> {target}")
             skipped += 1
             continue
-        print(f"{p} -> {target}")
+        logger.info(f"{p} -> {target}")
         if not args.dry_run:
             p.rename(target)
         changed += 1
 
-    print(f"Fertig. {'(Dry-Run) ' if args.dry_run else ''}Umbenannt: {changed}, Übersprungen: {skipped}")
+    logger.info(
+        f"Fertig. {'(Dry-Run) ' if args.dry_run else ''}Umbenannt: {changed}, Übersprungen: {skipped}"
+    )
 
 if __name__ == "__main__":
     main()
