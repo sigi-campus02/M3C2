@@ -18,6 +18,7 @@ from m3c2.core.exclude_outliers import exclude_outliers
 from m3c2.visualization.visualization_service import VisualizationService
 from m3c2.core.m3c2_runner import M3C2Runner
 from m3c2.pipeline.strategies import (RadiusScanStrategy, ScaleScan)
+from m3c2.config.datasource_config import DataSourceConfig
 
 logger = logging.getLogger(__name__)
 
@@ -37,9 +38,7 @@ class BatchOrchestrator:
 
     def __init__(
         self,
-        configs: List[PipelineConfig],
-        sample_size: int | None = None,
-        output_format: str = "excel",
+        configs: List[PipelineConfig]
     ) -> None:
         """Create a new orchestrator instance.
 
@@ -47,16 +46,9 @@ class BatchOrchestrator:
         ----------
         configs : list[PipelineConfig]
             Configurations describing each job to run.
-        sample_size : int, optional
-            Number of core points used during scale estimation.
-        output_format : str
-            Output format for statistics, ``"excel"`` or ``"json"``.
         """
         self.configs = configs
-        self.sample_size = sample_size
-        self.output_format = output_format.lower()
-        # Strategy object used for scanning normal scales
-        self.strategy = RadiusScanStrategy(sample_size=sample_size)
+        self.strategy = RadiusScanStrategy(sample_size=configs.sample_size)
 
         # Log basic information about the incoming batch
         logger.info("=== BatchOrchestrator initialisiert ===")
@@ -202,14 +194,16 @@ class BatchOrchestrator:
         """
         t0 = time.perf_counter()
         # Create a data source that knows how to load the required clouds
-        ds = DataSource(
+        
+        ds = DataSourceConfig(
             cfg.folder_id,
             cfg.filename_mov,
             cfg.filename_ref,
             cfg.mov_as_corepoints,
             cfg.use_subsampled_corepoints
         )
-        mov, ref, corepoints = ds.load_points()
+        mov, ref, corepoints = DataSource.load_points(ds)
+
         logger.info(
             "[Load] data/%s: mov=%s, ref=%s, corepoints=%s | %.3fs",
             cfg.folder_id,
