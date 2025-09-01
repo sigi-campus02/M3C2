@@ -21,11 +21,11 @@ class PlotServiceCompareDistances:
         ref_variants = config.filenames
 
         if options.plot_blandaltman:
-            logging.info("Generating Bland-Altman plots...")
+            logger.info("Generating Bland-Altman plots...")
             bland_altman_plot(folder_ids, ref_variants, outdir=config.path)
         if options.plot_passingbablok:
-            logging.info("Generating Passing-Bablok plots...")
+            logger.info("Generating Passing-Bablok plots...")
             passing_bablok_plot(folder_ids, ref_variants, outdir=config.path)
         if options.plot_linearregression:
-            logging.info("Generating Linear Regression plots...")
+            logger.info("Generating Linear Regression plots...")
             linear_regression_plot(folder_ids, ref_variants, outdir=config.path)
