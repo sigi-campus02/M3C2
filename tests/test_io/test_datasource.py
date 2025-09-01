@@ -9,6 +9,7 @@ import numpy as np
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 import m3c2.io.datasource as ds_module
+from m3c2.config.datasource_config import DataSourceConfig
 
 
 class DummyEpoch:
@@ -31,7 +32,8 @@ def test_detect_xyz(tmp_path: Path) -> None:
     folder.mkdir()
     (folder / "mov.xyz").write_text("0 0 0\n")
 
-    ds = ds_module.DataSource(str(folder))
+    cfg = DataSourceConfig(str(folder))
+    ds = ds_module.DataSource(cfg)
     kind, path = ds._detect(ds.mov_base)
 
     assert kind == "xyz"
@@ -41,7 +43,8 @@ def test_detect_xyz(tmp_path: Path) -> None:
 def test_ensure_xyz_from_gpc(tmp_path: Path) -> None:
     gpc_path = tmp_path / "mov.gpc"
     gpc_path.write_text("1 2 3\n4 5 6\n")
-    ds = ds_module.DataSource(str(tmp_path))
+    cfg = DataSourceConfig(str(tmp_path))
+    ds = ds_module.DataSource(cfg)
 
     xyz_path = ds._ensure_xyz(ds.mov_base, ("gpc", gpc_path))
 
@@ -58,7 +61,8 @@ def test_load_points_xyz(tmp_path: Path, monkeypatch) -> None:
 
     monkeypatch.setattr(ds_module, "py4dgeo", DummyPy4DGeo)
 
-    ds = ds_module.DataSource(str(tmp_path))
+    cfg = DataSourceConfig(str(tmp_path))
+    ds = ds_module.DataSource(cfg)
     mov_epoch, ref_epoch, corepoints = ds.load_points()
 
     assert np.allclose(mov_epoch.cloud, mov)
