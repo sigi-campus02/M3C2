@@ -5,7 +5,7 @@ The script compiles individual plot images produced for the Multi-Illumination
 project into two consolidated PDF reports—one including all outliers and one
 using only inlier data. The heavy lifting is delegated to :class:`PlotService`.
 """
-import os, sys, logging
+import os, sys
 
 # Determine repository root so that package imports work when executed directly.
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -24,7 +24,7 @@ OUT_DIR = os.path.join(ROOT, "outputs", "MARS_Multi_Illumination", "plots")
 def main(data_dir: str = DATA_DIR, out_dir: str = OUT_DIR) -> tuple[str, str]:
     """Generate summary PDF reports for already generated plots."""
 
-    setup_logging()
+    setup_logging(level=os.getenv("LOG_LEVEL", "INFO"))
 
     # Example configuration for generating additional grouped plots.
     # only_grouped = PlotOptions(

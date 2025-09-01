@@ -24,6 +24,9 @@ python main.py
 ```
 
 Outputs, statistics, and logs are written to dataset folders and the `outputs/` directory.
+The log level can be set with the `--log_level` flag or a `LOG_LEVEL`
+environment variable. If the flag is omitted, the environment variable is
+used, defaulting to `INFO` when unspecified.
 
 ## Repository Structure
 - `config/` – dataclasses and plotting configuration

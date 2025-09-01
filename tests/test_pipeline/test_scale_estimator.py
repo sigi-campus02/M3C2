@@ -3,6 +3,10 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from m3c2.config.pipeline_config import PipelineConfig
 from m3c2.pipeline.scale_estimator import ScaleEstimator
 from m3c2.pipeline import scale_estimator as se_module
@@ -98,7 +102,7 @@ def test_determine_scales_empty_scan_results(monkeypatch):
     estimator = ScaleEstimator(strategy_name="dummy")
 
     with pytest.raises(ValueError, match="keine Skalen"):
-        estimator._determine_scales(cfg, np.zeros((1, 3)))
+        estimator.determine_scales(cfg, np.zeros((1, 3)))
 
 
 def test_radius_scan_strategy_evaluate_radius_scale_plane():
