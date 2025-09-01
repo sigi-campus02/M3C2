@@ -5,13 +5,22 @@
     "format": "%(asctime)s [%(levelname)-8s] %(name)s - %(message)s",
     "date_format": "%Y-%m-%d %H:%M:%S"
   },
-  "arguments": {
+  "arguments":   {
     "data_dir": "data",
     "folders": ["0342-0349"],
-    "filename_ref": "ref.ply",
-    "filename_mov": "mov.ply",
-    "project": "MARS",
+    "filename_ref": "ref",
+    "filename_mov": "mov",
+    "mov_as_corepoints": true,
+    "use_subsampled_corepoints": 1,
+    "sample_size": 10000,
+    "scale_strategy": "radius",
+    "only_stats": false,
+    "stats_singleordistance": "distance",
     "output_format": "excel",
+    "project": "MARS",
+    "normal_override": null,
+    "proj_override": null,
+    "use_existing_params": false,
     "outlier_detection_method": "rmse",
     "outlier_multiplicator": 3.0,
     "log_level": "INFO"
