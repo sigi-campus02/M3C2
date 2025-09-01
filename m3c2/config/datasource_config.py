@@ -12,3 +12,4 @@ class DataSourceConfig:
     ref_basename: str = "ref"
     mov_as_corepoints: bool = True
     use_subsampled_corepoints: int = 1
+
