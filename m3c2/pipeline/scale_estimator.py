@@ -47,9 +47,19 @@ class ScaleEstimator:
 
         if scans:
             top_valid = sorted(scans, key=lambda s: s.valid_normals, reverse=True)[:5]
-            logger.debug("  Top(valid_normals): %s", [(round(s.scale, 6), int(s.valid_normals)) for s in top_valid])
-            top_smooth = sorted(scans, key=lambda s: (np.nan_to_num(s.roughness, nan=np.inf)))[:5]
-            logger.debug("  Top(min_roughness): %s", [(round(s.scale, 6), float(s.roughness)) for s in top_smooth])
+            logger.debug(
+                "  Top(valid_normals): %s",  # noqa: G004
+                [(round(s.scale, 6), int(s.valid_normals)) for s in top_valid],
+            )
+            top_smooth = sorted(
+                scans, key=lambda s: (np.nan_to_num(s.roughness, nan=np.inf))
+            )[:5]
+            logger.debug(
+                "  Top(min_roughness): %s",  # noqa: G004
+                [(round(s.scale, 6), float(s.roughness)) for s in top_smooth],
+            )
+        else:
+            raise ValueError("Scan-Strategie lieferte keine Skalen.")
 
         t0 = time.perf_counter()
         normal, projection = ParamEstimator.select_scales(scans)

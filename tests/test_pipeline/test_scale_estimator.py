@@ -42,6 +42,15 @@ class DummyEstimator:
         return 1.0, 2.0
 
 
+class DummyEstimatorNoScans(DummyEstimator):
+    def scan_scales(self, corepoints, avg_spacing):
+        return []
+
+    @staticmethod
+    def select_scales(scans):
+        raise AssertionError("select_scales should not be called")
+
+
 def _minimal_cfg(**kwargs) -> PipelineConfig:
     defaults = dict(
         data_dir="",
@@ -79,6 +88,17 @@ def test_determine_scales_unknown_strategy(monkeypatch):
 
     with pytest.raises(ValueError):
         estimator.determine_scales(cfg, np.zeros((1, 3)))
+
+
+def test_determine_scales_empty_scan_results(monkeypatch):
+    monkeypatch.setitem(se_module.STRATEGIES, "dummy", DummyStrategy)
+    monkeypatch.setattr(se_module, "ParamEstimator", DummyEstimatorNoScans)
+
+    cfg = _minimal_cfg()
+    estimator = ScaleEstimator(strategy_name="dummy")
+
+    with pytest.raises(ValueError, match="keine Skalen"):
+        estimator._determine_scales(cfg, np.zeros((1, 3)))
 
 
 def test_radius_scan_strategy_evaluate_radius_scale_plane():
