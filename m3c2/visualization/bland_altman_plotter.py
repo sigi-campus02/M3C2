@@ -30,7 +30,7 @@ def bland_altman_plot(
         a, b = result
 
         if a.size == 0 or b.size == 0:
-            print(f"[BlandAltman] Leere Distanzwerte in {fid}, übersprungen")
+            logger.warning("[BlandAltman] Leere Distanzwerte in %s, übersprungen", fid)
             continue
 
         mean_vals = (a + b) / 2.0
@@ -39,6 +39,16 @@ def bland_altman_plot(
         std_diff = float(np.std(diff_vals, ddof=1))
         upper = mean_diff + 1.96 * std_diff
         lower = mean_diff - 1.96 * std_diff
+
+        logger.debug(
+            "[BlandAltman] %s statistics: mean_diff=%.6f, std_diff=%.6f, upper=%.6f, lower=%.6f, n=%d",
+            fid,
+            mean_diff,
+            std_diff,
+            upper,
+            lower,
+            a.size,
+        )
 
         logger.info(
             f"[BlandAltman] {fid}: mean_diff={mean_diff:.6f}, std_diff={std_diff:.6f}, "
