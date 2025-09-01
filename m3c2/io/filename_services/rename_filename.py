@@ -2,17 +2,23 @@
 # rename_group_prefixes.py
 import re, argparse, os
 from pathlib import Path
+import logging
+from m3c2.io.logging_utils import setup_logging
 
 # Matcht einen "Cloud-Block":  (_|^-)(1|2)-<idx>(-AI)?_cloud
 BLOCK = re.compile(
     r'(?P<pre>(^|[_-]))(?P<grp>[12])-(?P<idx>\d+)(?P<ai>-AI)?(?P<cloud>_cloud)'
 )
 
+logger = logging.getLogger(__name__)
+
+
 def transform(name: str) -> str:
     def repl(m):
         mapped = 'a' if m.group('grp') == '1' else 'b'
         return f"{m.group('pre')}{mapped}-{m.group('idx')}{m.group('ai') or ''}{m.group('cloud')}"
     return BLOCK.sub(repl, name)
+
 
 def iter_paths(base: Path, recursive: bool):
     """Liefert Dateien und Ordner. Bei Rekursion bottom-up (sicher für Ordner-Renames)."""
@@ -26,9 +32,12 @@ def iter_paths(base: Path, recursive: bool):
         for p in base.iterdir():
             yield p  # Dateien und Ordner
 
+
 def main():
+    setup_logging()
+
     ap = argparse.ArgumentParser(
-        description="Ersetzt in *_cloud-Blöcken die Gruppenkennung: 1-* -> a-*, 2-* -> b-* (in Dateien und Ordnern)."
+        description="Ersetzt in *_cloud-Blöcken die Gruppenkennung: 1-* -> a-*, 2-* -> b-* (in Dateien und Ordnern).",
     )
     ap.add_argument("path", nargs="?", default=".", help="Basisordner (Standard: .)")
     ap.add_argument("-r", "--recursive", action="store_true", help="Auch Unterordner bearbeiten")
@@ -37,22 +46,34 @@ def main():
 
     base = Path(args.path).resolve()
     changed = skipped = 0
+    logger.info("Start processing %s", base)
 
     for p in iter_paths(base, args.recursive):
+        logger.info("Processing %s", p)
         new_name = transform(p.name)
         if new_name == p.name:
             continue
         target = p.with_name(new_name)
         if target.exists() and target != p:
-            print(f"SKIP (Ziel existiert): {p} -> {target}")
+            logger.info("Skip (Ziel existiert): %s -> %s", p, target)
             skipped += 1
             continue
-        print(f"{p} -> {target}")
-        if not args.dry_run:
-            p.rename(target)
-        changed += 1
+        try:
+            if not args.dry_run:
+                p.rename(target)
+            logger.info("Renamed %s -> %s", p, target)
+            changed += 1
+        except OSError as e:
+            logger.warning("Failed to rename %s -> %s: %s", p, target, e)
 
-    print(f"Fertig. {'(Dry-Run) ' if args.dry_run else ''}Umbenannt: {changed}, Übersprungen: {skipped}")
+    logger.info(
+        "Fertig. %sUmbenannt: %d, Übersprungen: %d",
+        "(Dry-Run) " if args.dry_run else "",
+        changed,
+        skipped,
+    )
+
 
 if __name__ == "__main__":
     main()
+
