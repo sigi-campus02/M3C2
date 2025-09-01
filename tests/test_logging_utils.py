@@ -30,3 +30,8 @@ def test_setup_logging_idempotent(tmp_path: Path) -> None:
     # cleanup
     for handler in list(logger.handlers):
         logger.removeHandler(handler)
+
+
+def test_fatal_alias() -> None:
+    """Ensure that the ``FATAL`` level name maps to ``CRITICAL``."""
+    assert logging.getLevelName("FATAL") == logging.CRITICAL
