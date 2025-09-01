@@ -1,0 +1,76 @@
+from __future__ import annotations
+
+import logging
+from types import SimpleNamespace
+
+from m3c2.pipeline.statistics_runner import StatisticsRunner
+from m3c2.core.statistics import StatisticsService
+
+
+def test_compute_statistics_distance(monkeypatch, caplog):
+    called = {}
+
+    def fake_compute_m3c2_statistics(**kwargs):
+        called.update(kwargs)
+
+    monkeypatch.setattr(
+        StatisticsService,
+        "compute_m3c2_statistics",
+        staticmethod(fake_compute_m3c2_statistics),
+    )
+
+    cfg = SimpleNamespace(
+        stats_singleordistance="distance",
+        folder_id="fid",
+        filename_ref="ref",
+        process_python_CC="proc",
+        project="proj",
+        outlier_multiplicator=3.0,
+        outlier_detection_method="rmse",
+    )
+
+    runner = StatisticsRunner(output_format="excel")
+    caplog.set_level(logging.INFO)
+    runner._compute_statistics(cfg, ref=None, tag="ref")
+
+    assert called["out_path"].endswith("proj_m3c2_stats_distances.xlsx")
+    assert any("Stats on Distance" in rec.message for rec in caplog.records)
+
+
+def test_compute_statistics_single(monkeypatch, caplog):
+    called = {}
+
+    def fake_calc_single_cloud_stats(**kwargs):
+        called.update(kwargs)
+
+    monkeypatch.setattr(
+        StatisticsService,
+        "calc_single_cloud_stats",
+        classmethod(lambda cls, **kwargs: fake_calc_single_cloud_stats(**kwargs)),
+    )
+
+    cfg = SimpleNamespace(
+        stats_singleordistance="single",
+        folder_id="fid",
+        filename_mov="mov",
+        filename_ref="ref",
+        project="proj",
+    )
+
+    runner = StatisticsRunner(output_format="json")
+    caplog.set_level(logging.INFO)
+    runner._compute_statistics(cfg, ref=None, tag="ref")
+
+    assert called["out_path"].endswith("proj_m3c2_stats_clouds.json")
+    assert any("Stats on SingleClouds" in rec.message for rec in caplog.records)
+
+
+def test_invalid_output_format():
+    runner = StatisticsRunner(output_format="xml")
+    cfg = SimpleNamespace(stats_singleordistance="distance", folder_id="fid", filename_ref="ref")
+    try:
+        runner._compute_statistics(cfg, ref=None, tag="ref")
+    except ValueError:
+        pass
+    else:
+        assert False, "Expected ValueError for invalid output format"
