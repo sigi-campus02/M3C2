@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import os
 import numpy as np
-from m3c2.pipeline.batch_orchestrator import BatchOrchestrator
 from m3c2.config.pipeline_config import PipelineConfig
+from m3c2.pipeline.data_loader import DataLoader
 
 
 class DummyDS:
@@ -30,10 +30,10 @@ def test_load_data_uses_data_dir(tmp_path, monkeypatch):
     )
 
     monkeypatch.setattr(
-        "m3c2.pipeline.batch_orchestrator.DataSource", DummyDS
+        "m3c2.pipeline.data_loader.DataSource", DummyDS
     )
-    orch = BatchOrchestrator([cfg])
-    ds, mov, ref, corepoints = orch._load_data(cfg)
+    loader = DataLoader()
+    ds, mov, ref, corepoints = loader._load_data(cfg)
 
     assert ds.config.folder == os.path.join(cfg.data_dir, cfg.folder_id)
     assert mov.shape == (1, 3)
