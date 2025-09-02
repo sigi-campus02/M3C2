@@ -1,3 +1,5 @@
+"""Tests for the :mod:`m3c2.core.param_estimator` module."""
+
 import numpy as np
 import pytest
 
@@ -6,6 +8,8 @@ from m3c2.core.param_estimator import ParamEstimator
 
 
 class DummyStrategy:
+    """Strategy stub returning predefined scans for testing."""
+
     def __init__(self, scans):
         self.scans = scans
         self.called_with = None
@@ -14,8 +18,19 @@ class DummyStrategy:
         self.called_with = (points, avg_spacing)
         return self.scans
 
-
 def test_estimate_min_spacing_and_scan(tmp_path):
+    """Test estimation of minimum spacing and scanning scales.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory provided by pytest.
+
+    Returns
+    -------
+    None
+    """
+
     points = np.array(
         [
             [0.0, 0.0, 0.0],
@@ -38,8 +53,14 @@ def test_estimate_min_spacing_and_scan(tmp_path):
     assert result_scans is scans
     assert strategy.called_with == (points, spacing)
 
-
 def test_select_scales():
+    """Test selecting scales for normal and projection estimation.
+
+    Returns
+    -------
+    None
+    """
+
     scans = [
         ScaleScan(scale=1.0, valid_normals=10, mean_population=0, roughness=0.1, coverage=1.0, mean_lambda3=0.01),
         ScaleScan(scale=2.0, valid_normals=8, mean_population=0, roughness=0.05, coverage=1.0, mean_lambda3=0.02),
