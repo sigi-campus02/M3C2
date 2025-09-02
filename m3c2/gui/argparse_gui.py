@@ -135,6 +135,12 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(args: argparse.Namespace) -> None:
+    """Handle parsed arguments after GUI startup and run conversions.
+
+    This function is passed to :func:`run_gui`, which launches the Tkinter
+    interface.  After the user confirms their selections, ``run_gui`` calls
+    ``main`` with the resulting :class:`argparse.Namespace` to start processing.
+    """
     txts: list[str] = []
     dirs: list[str] = []
     for p in args.paths:
