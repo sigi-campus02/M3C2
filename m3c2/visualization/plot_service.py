@@ -276,6 +276,12 @@ class PlotService:
 
     @staticmethod
     def summary_pdf(config: PlotConfig) -> None:
+        """Aggregate individual plot images into a comparison PDF.
+
+        Collects the previously generated overlay plots in ``config.path`` and
+        merges them into a multi-page PDF summarizing the results for all
+        datasets.
+        """
         _summary_pdf(config)
 
     @staticmethod
