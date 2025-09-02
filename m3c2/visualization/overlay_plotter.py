@@ -86,6 +86,36 @@ def plot_overlay_gauss(
     title_text: str | None = None,
     labels_order: List[str] | None = None,
 ) -> None:
+    """Plot Gaussian probability density functions for multiple datasets.
+
+    Parameters
+    ----------
+    fid : str
+        Identifier of the feature or dataset group, used in the plot title
+        and output filename.
+    fname : str
+        Name of the input file for display in the figure title and filename.
+    data : Dict[str, np.ndarray]
+        Mapping of labels to the underlying samples. The labels define which
+        Gaussian parameters are plotted.
+    gauss_params : Dict[str, Tuple[float, float]]
+        Pre-computed Gaussian parameters ``(mean, std)`` for each label in
+        ``data``.
+    x : np.ndarray
+        Common x-range on which the Gaussian curves are evaluated.
+    colors : Dict[str, str]
+        Mapping of labels to colors used for the curves.
+    outdir : str
+        Directory where the resulting image is stored.
+    title_text : str | None, optional
+        Custom text for the plot title. When ``None`` a default title is used.
+    labels_order : List[str] | None, optional
+        Custom order in which to plot the labels. When ``None`` the dictionary
+        order of ``data`` is used.
+
+    The function overlays the Gaussian PDF for each dataset on a single set of
+    axes, allowing visual comparison of their fitted distributions.
+    """
     plt.figure(figsize=(10, 6))
     labels = labels_order or list(data.keys())
     for v in labels:
