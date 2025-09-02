@@ -1,3 +1,11 @@
+"""Utilities to annotate cloud statistics worksheets.
+
+This module attaches descriptive comments to the headers of a *CloudStats*
+Excel sheet.  Each column in the sheet represents a point-cloud metric and the
+inserted comments explain how those metrics were derived, aiding users when
+creating or inspecting cloud statistics tables.
+"""
+
 import logging
 import re
 from openpyxl import load_workbook
