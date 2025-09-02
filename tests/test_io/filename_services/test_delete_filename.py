@@ -1,3 +1,10 @@
+"""Tests for the :mod:`delete_filename` service.
+
+These tests ensure that file names prefixed with ``python_`` are correctly
+transformed or renamed and that the command-line interface respects the dry
+run option.
+"""
+
 import sys
 from pathlib import Path
 
@@ -18,10 +25,30 @@ from m3c2.io.filename_services import delete_filename
     ],
 )
 def test_transform(name, expected):
+    """Ensure the prefix ``python_`` is removed from file names.
+
+    Parameters
+    ----------
+    name : str
+        Original file name.
+    expected : str
+        Expected file name after transformation.
+    """
+
     assert delete_filename.transform(name) == expected
 
 
 def test_main_renames_and_dry_run(tmp_path, monkeypatch):
+    """Check recursive renaming and handling of the dry-run flag.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory used for creating test files.
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to modify :data:`sys.argv` for invoking the CLI.
+    """
+
     f1 = tmp_path / "python_file1.txt"
     f1.touch()
     sub = tmp_path / "sub"
