@@ -1,3 +1,20 @@
+"""High-level service functions for M3C2 statistics.
+
+The module exposes the :class:`StatisticsService` facade which bundles
+operations for analysing M3C2 distance arrays and point clouds.  Key
+helpers include:
+
+* :func:`StatisticsService.calc_stats` – derive descriptive metrics and
+  distribution fits for a set of distances.
+* :func:`StatisticsService.compute_m3c2_statistics` – aggregate statistics
+  for multiple folders and export the combined results.
+* :func:`StatisticsService.calc_single_cloud_stats` – evaluate quality
+  metrics for individual point clouds.
+
+These high-level functions form the public API used by the CLI and other
+modules when working with statistics.
+"""
+
 from __future__ import annotations
 
 import os
@@ -23,7 +40,17 @@ logger = logging.getLogger(__name__)
 
 
 class StatisticsService:
-    """Fassade für die Statistikberechnung und den Export."""
+    """Facade for computing and exporting statistics.
+
+    The service wraps low-level metric calculations and exposes
+    three main entry points:
+
+    * :meth:`calc_stats` – compute statistics for a distance array.
+    * :meth:`compute_m3c2_statistics` – aggregate results across
+      multiple folders and optionally persist them.
+    * :meth:`calc_single_cloud_stats` – derive metrics for individual
+      point clouds.
+    """
 
     @staticmethod
     def calc_stats(
