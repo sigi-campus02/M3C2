@@ -122,6 +122,12 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
 # ---------------------------------------------------------------------------
 
 def build_parser() -> argparse.ArgumentParser:
+    """Construct the command line interface for PLY generation.
+
+    Adds a ``paths`` positional argument accepting one or more TXT files or
+    directories to search recursively.  The optional ``--overwrite`` flag
+    controls whether existing ``.ply`` files are replaced.
+    """
     parser = argparse.ArgumentParser(description="Erzeuge .ply aus *_m3c2_distances_coordinates*.txt")
     parser.add_argument("paths", nargs="+", help="Ordner oder Dateien (TXT). Bei Ordnern wird rekursiv gesucht.")
     parser.add_argument("--overwrite", action="store_true", help="Vorhandene .ply überschreiben")
