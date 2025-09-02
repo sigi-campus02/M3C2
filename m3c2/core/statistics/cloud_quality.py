@@ -54,7 +54,8 @@ def _convex_hull_area_xy(xy: np.ndarray) -> float:
 
     try:
         from scipy.spatial import ConvexHull
-    except Exception:
+    except ImportError:
+        logger.warning("scipy is missing. Returning NaN for convex hull area.")
         return np.nan
     hull = ConvexHull(xy)
     return float(hull.volume)
