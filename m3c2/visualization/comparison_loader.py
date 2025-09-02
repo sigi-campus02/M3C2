@@ -1,3 +1,10 @@
+"""Utilities for loading and masking comparison distance data.
+
+This module contains small helpers used by the visualization tooling to
+discover distance files for different reference variants, read them into
+NumPy arrays and return paired arrays with invalid values removed.
+"""
+
 from __future__ import annotations
 
 import logging
