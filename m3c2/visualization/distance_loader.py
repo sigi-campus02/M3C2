@@ -54,6 +54,14 @@ def scan_distance_files_by_index(data_dir: str, versions=("python", "CC")) -> Tu
     )
 
     def idx_of(tag: str) -> int:
+        """Return the numerical index encoded in a tag.
+
+        Tags follow the pattern ``'<prefix>-<num>'`` where ``<prefix>`` is
+        either ``a`` or ``b`` and ``<num>`` is an integer.  An optional
+        ``-AI`` suffix may be present.  This helper extracts the ``<num>``
+        portion and returns it as an integer, or ``-1`` if the tag does not
+        match the expected format.
+        """
         m = re.match(r'^[ab]-(\d+)(?:-AI)?$', tag, re.IGNORECASE)
         return int(m.group(1)) if m else -1
 
