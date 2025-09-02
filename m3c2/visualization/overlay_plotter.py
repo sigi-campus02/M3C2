@@ -232,7 +232,7 @@ def plot_overlay_boxplot(
         plt.tight_layout()
         plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Boxplot.png"))
         plt.close()
-    except Exception:
+    except ImportError:
         labels = labels_order or list(data.keys())
         arrs = [data[v] for v in labels]
         plt.figure(figsize=(10, 6))
@@ -247,6 +247,8 @@ def plot_overlay_boxplot(
         plt.tight_layout()
         plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Boxplot.png"))
         plt.close()
+    except (ValueError, OSError) as e:
+        logger.warning("[Report] Boxplot failed (%s/%s): %s", fid, fname, e)
 
 
 def plot_overlay_qq(
@@ -331,5 +333,7 @@ def plot_overlay_violin(
         plt.tight_layout()
         plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Violinplot.png"))
         plt.close()
-    except Exception as e:
+    except ImportError:
+        logger.warning("[Report] Violinplot requires seaborn (%s/%s)", fid, fname)
+    except (ValueError, OSError) as e:
         logger.warning("[Report] Violinplot fehlgeschlagen (%s/%s): %s", fid, fname, e)
