@@ -1,3 +1,10 @@
+"""Export utilities for statistics tables.
+
+This module provides helper functions to persist statistical results in a
+canonical column order. Data frames can be appended to Excel or JSON files
+so that successive runs build a consolidated record of metrics.
+"""
+
 from __future__ import annotations
 
 import logging
