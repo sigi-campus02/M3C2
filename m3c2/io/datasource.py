@@ -42,6 +42,13 @@ class DataSource:
 
     @property
     def ref_base(self) -> Path:
+        """Return the base path for the reference epoch.
+
+        The path is constructed by combining the configured data folder with
+        the reference file's base name. The resulting path intentionally lacks
+        a file extension; downstream loaders append the appropriate suffix when
+        searching for the actual reference data file.
+        """
         return Path(self.config.folder) / self.config.ref_basename
 
     def _detect(self, base: Path) -> tuple[str | None, Path | None]:
