@@ -1,3 +1,9 @@
+"""Tests for the pipeline component factory.
+
+This module verifies that :class:`~m3c2.pipeline.component_factory.PipelineComponentFactory`
+creates fully configured pipeline components.
+"""
+
 from __future__ import annotations
 
 from m3c2.pipeline.component_factory import PipelineComponentFactory
@@ -10,6 +16,13 @@ from m3c2.pipeline.visualization_runner import VisualizationRunner
 
 
 def test_factory_creates_configured_components():
+    """Test that configured components are created correctly.
+
+    Notes
+    -----
+    The assertion for the outlier handler remains commented out until the
+    component implementation is complete.
+    """
     factory = PipelineComponentFactory(strategy_name="radius", output_format="excel")
 
     assert isinstance(factory.create_data_loader(), DataLoader)
