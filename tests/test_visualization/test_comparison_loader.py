@@ -1,8 +1,18 @@
+"""Tests for the comparison loader utilities."""
+
 import numpy as np
 from m3c2.visualization.comparison_loader import _load_and_mask
 
 
 def test_load_and_mask_removes_nan(tmp_path):
+    """Ensure NaN entries are removed by :func:`_load_and_mask`.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory provided by pytest.
+    """
+
     fid_dir = tmp_path / "fid1"
     fid_dir.mkdir()
     (fid_dir / "python_ref_m3c2_distances.txt").write_text("0.0\n1.0\nnan\n2.0\n")
