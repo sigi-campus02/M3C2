@@ -48,6 +48,19 @@ def read_las(path: Path) -> np.ndarray:
 
 
 def read_ply(path: Path) -> np.ndarray:
+    """Read a PLY file and return its point cloud.
+
+    Parameters
+    ----------
+    path:
+        Path to the ``.ply`` file to read.
+
+    Returns
+    -------
+    numpy.ndarray
+        Array of shape ``(N, 3)`` containing ``x``, ``y`` and ``z`` coordinates
+        of the point cloud.
+    """
     logger.info("Reading PLY file %s", path)
     try:
         ply = PlyData.read(str(path))
