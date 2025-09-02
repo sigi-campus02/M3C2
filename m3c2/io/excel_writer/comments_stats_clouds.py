@@ -1,6 +1,9 @@
 from openpyxl import load_workbook
 from openpyxl.comments import Comment
+import logging
 import re
+
+logger = logging.getLogger(__name__)
 
 # ---- feste (exakte) Header-Kommentare für Single-Cloud-Stats ----
 CLOUD_HEADER_COMMENTS = {
@@ -108,12 +111,19 @@ def add_cloud_header_comments(xlsx_path: str,
     Hängt erklärende Kommentare an die Header der Single-Cloud-Statistik an.
     Unterstützt exakte Header und dynamische (regex-basierte) Header.
     """
+    logger.info("Loading workbook '%s'", xlsx_path)
     wb = load_workbook(xlsx_path)
     if sheet_name not in wb.sheetnames:
         raise ValueError(f"Sheet '{sheet_name}' nicht gefunden in {xlsx_path}")
     ws = wb[sheet_name]
 
     headers = [cell.value for cell in ws[header_row]]
+    logger.info("Retrieved headers: %s", headers)
+    expected_headers = set(CLOUD_HEADER_COMMENTS)
+    missing_headers = expected_headers - {h for h in headers if isinstance(h, str)}
+    if missing_headers:
+        logger.warning("Missing expected headers: %s", sorted(missing_headers))
+
     for col_idx, header in enumerate(headers, start=1):
         if not header or not isinstance(header, str):
             continue
@@ -144,8 +154,11 @@ def add_cloud_header_comments(xlsx_path: str,
         c.width = box_width
         c.height = box_height
         cell.comment = c
+        logger.info("Inserted comment for header '%s'", header)
 
+    logger.info("Saving workbook to '%s'", xlsx_path)
     wb.save(xlsx_path)
+    logger.info("Completed saving workbook to '%s'", xlsx_path)
 
 if __name__ == "__main__":
     # Beispielaufruf:

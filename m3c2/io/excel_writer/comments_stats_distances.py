@@ -1,6 +1,8 @@
-
 from openpyxl import load_workbook
 from openpyxl.comments import Comment
+import logging
+
+logger = logging.getLogger(__name__)
 
 HEADER_COMMENTS = {
     "Timestamp": "Zeitpunkt der Auswertung.",
@@ -75,6 +77,7 @@ def add_header_comments(
     box_width: float = 300,
     box_height: float = 160
 ):
+    logger.info("Loading workbook '%s'", xlsx_path)
     wb = load_workbook(xlsx_path)
     if sheet_name not in wb.sheetnames:
         raise ValueError(f"Sheet '{sheet_name}' nicht gefunden in {xlsx_path}")
@@ -82,6 +85,11 @@ def add_header_comments(
 
     # Lese die Überschriftenzeile
     headers = [cell.value for cell in ws[header_row]]
+    logger.info("Retrieved headers: %s", headers)
+    expected_headers = set(HEADER_COMMENTS)
+    missing_headers = expected_headers - {h for h in headers if isinstance(h, str)}
+    if missing_headers:
+        logger.warning("Missing expected headers: %s", sorted(missing_headers))
 
     for col_idx, header in enumerate(headers, start=1):
         if not header:
@@ -96,8 +104,11 @@ def add_header_comments(
         c.width = box_width
         c.height = box_height
         cell.comment = c
+        logger.info("Inserted comment for header '%s'", header)
 
+    logger.info("Saving workbook to '%s'", xlsx_path)
     wb.save(xlsx_path)
+    logger.info("Completed saving workbook to '%s'", xlsx_path)
 
 if __name__ == "__main__":
     add_header_comments("m3c2_stats_all.xlsx", sheet_name="Results")
