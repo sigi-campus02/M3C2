@@ -28,7 +28,26 @@ def linear_regression_plot(
     ref_variants: List[str],
     outdir: str = "LinearRegression",
 ) -> None:
-    """Create OLS linear regression plots for given folders."""
+    """Create OLS linear regression plots for given folders.
+
+    Parameters
+    ----------
+    folder_ids:
+        List of folder identifiers whose comparison results should be
+        visualised.
+    ref_variants:
+        Names of the two reference variants to compare.  The list must
+        contain exactly two entries.
+    outdir, optional:
+        Destination directory for the generated plots.  If not provided,
+        plots are written to ``"LinearRegression"``.
+
+    Returns
+    -------
+    None
+        For each folder ID a PNG file containing the regression plot is
+        written to *outdir*.
+    """
 
     if len(ref_variants) != 2:
         raise ValueError("ref_variants must contain exactly two entries")
