@@ -11,7 +11,26 @@ logger = logging.getLogger(__name__)
 
 
 class OutlierHandler:
-    """Remove statistical outliers from M3C2 results."""
+    """Remove statistical outliers from M3C2 results.
+
+    This lightweight wrapper encapsulates the optional post-processing stage
+    of the pipeline in which distance measurements considered outliers are
+    discarded.  The handler merely forwards the work to
+    :func:`exclude_outliers` while wiring in configuration and bookkeeping
+    provided by the surrounding orchestration code.
+
+    Parameters to :meth:`exclude_outliers` are pulled from a
+    ``PipelineConfig`` instance.  It must provide the attributes
+    ``outlier_detection_method`` (e.g. ``"sigma"`` or ``"iqr"``) and
+    ``outlier_multiplicator`` describing the threshold to use.  The handler
+    operates on the ``*_m3c2_distances_coordinates.txt`` file inside the
+    ``out_base`` directory and writes the filtered version back to disk.
+
+    The class itself does not return any value.  Its sole side effect is the
+    generation of the cleaned output file; any exceptions raised by the
+    underlying routine are propagated to the caller so that the pipeline can
+    react accordingly.
+    """
 
     def exclude_outliers(self, cfg, out_base: str, tag: str) -> None:
         """Remove outliers based on configuration settings.
