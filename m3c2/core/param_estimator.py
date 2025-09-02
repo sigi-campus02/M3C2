@@ -18,6 +18,7 @@ from typing import List, Tuple
 
 import logging
 import numpy as np
+from sklearn.exceptions import NotFittedError
 from sklearn.neighbors import NearestNeighbors
 
 from m3c2.pipeline.strategies import ScaleScan, ScanStrategy
@@ -78,8 +79,10 @@ class ParamEstimator:
             spacing = float(np.mean(distances[:, 1:]))
             logger.debug("[Spacing] average spacing %.6f", spacing)
             return spacing
-        except Exception:
-            logger.exception("[Spacing] failed to estimate spacing for %d points", len(points))
+        except (ValueError, RuntimeError, NotFittedError) as err:
+            logger.error(
+                "[Spacing] failed to estimate spacing for %d points", len(points), exc_info=err
+            )
             raise
 
     def scan_scales(self, points: np.ndarray, avg_spacing: float) -> List[ScaleScan]:
@@ -110,10 +113,11 @@ class ParamEstimator:
             scans = self.strategy.scan(points, avg_spacing)
             logger.debug("[Scan] strategy returned %d scans", len(scans))
             return scans
-        except Exception:
-            logger.exception(
+        except (ValueError, RuntimeError, NotFittedError) as err:
+            logger.error(
                 "[Scan] unexpected error while scanning scales for %d points",
                 len(points),
+                exc_info=err,
             )
             raise
 
@@ -230,6 +234,8 @@ class ParamEstimator:
                 "[Select] resulting normal=%.6f projection=%.6f", normal, projection
             )
             return float(normal), float(projection)
-        except Exception:
-            logger.exception("[Select] failed to select scales from %d scans", len(scans))
+        except (ValueError, RuntimeError, NotFittedError) as err:
+            logger.error(
+                "[Select] failed to select scales from %d scans", len(scans), exc_info=err
+            )
             raise
