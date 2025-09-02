@@ -33,10 +33,28 @@ class BatchOrchestrator:
         Format for statistical outputs, ``"excel"`` or ``"json"``.
     """
 
-    def __init__(self, configs: List[PipelineConfig], strategy: str = "radius") -> None:
-        """Create a new orchestrator instance."""
+    def __init__(
+        self,
+        configs: List[PipelineConfig],
+        strategy: str = "radius",
+        fail_fast: bool = False,
+    ) -> None:
+        """Create a new orchestrator instance.
+
+        Parameters
+        ----------
+        configs : list[PipelineConfig]
+            Collection of configuration objects to process.
+        strategy : str, optional
+            Strategy used by the pipeline components.
+        fail_fast : bool, optional
+            Abort the batch on unexpected errors if ``True``. If ``False``
+            (default), errors are logged and processing continues with the
+            next job.
+        """
 
         self.configs = configs
+        self.fail_fast = fail_fast
         output_format = configs[0].output_format if configs else "excel"
         self.factory = PipelineComponentFactory(strategy, output_format)
         self.data_loader = self.factory.create_data_loader()
@@ -77,7 +95,9 @@ class BatchOrchestrator:
         Notes
         -----
         Any exception raised during processing of a single job is caught and
-        logged so that subsequent jobs can continue.
+        logged. When ``fail_fast`` is ``False`` (default) the batch continues
+        with the next job. If ``fail_fast`` is ``True``, unexpected errors
+        abort the batch.
         """
         if not self.configs:
             logger.warning("Keine Konfigurationen – nichts zu tun.")
@@ -99,7 +119,8 @@ class BatchOrchestrator:
                     cfg.folder_id,
                     cfg.filename_ref,
                 )
-                raise
+                if self.fail_fast:
+                    raise
 
     def _run_single(self, cfg: PipelineConfig) -> None:
         """Execute the pipeline for a single configuration.
