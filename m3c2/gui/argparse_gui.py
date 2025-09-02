@@ -100,9 +100,12 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
         root.destroy()
         try:
             main_func(argv)
-        except Exception as exc:  # final safety net
+        except (RuntimeError, ValueError) as exc:
             logger.exception("Exception raised by main_func")
             messagebox.showerror("Fehler", str(exc))
+        except Exception:
+            logger.exception("Unexpected exception raised by main_func")
+            raise
 
     def on_cancel() -> None:
         """Close the GUI without executing the selected command."""
