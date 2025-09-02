@@ -19,6 +19,21 @@ def _bbox_area_xy(xy: np.ndarray) -> float:
 
 
 def _convex_hull_area_xy(xy: np.ndarray) -> float:
+    """Return the area of the convex hull defined by XY coordinates.
+
+    Parameters
+    ----------
+    xy : np.ndarray
+        Array of shape ``(n_points, 2)`` with the x and y coordinates of the
+        point cloud.
+
+    Returns
+    -------
+    float
+        Area of the convex hull in the XY plane. If ``scipy`` is not available,
+        ``NaN`` is returned.
+    """
+
     try:
         from scipy.spatial import ConvexHull
     except Exception:
