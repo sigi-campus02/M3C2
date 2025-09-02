@@ -9,7 +9,25 @@ from typing import Dict, List, Optional
 
 @dataclass(frozen=True)
 class PlotOptions:
-    """Flags controlling which plot types are generated."""
+    """Flags controlling which plot types are generated.
+
+    Attributes
+    ----------
+    plot_hist:
+        Generate histogram plots of the distance distributions.
+    plot_gauss:
+        Overlay Gaussian fit curves on the histogram.
+    plot_weibull:
+        Overlay Weibull fit curves on the histogram.
+    plot_box:
+        Produce box plots of the distances.
+    plot_qq:
+        Generate quantile-quantile plots.
+    plot_grouped_bar:
+        Create grouped bar plots showing mean and standard deviation.
+    plot_violin:
+        Produce violin plots of the distance distributions.
+    """
 
     plot_hist: bool = True
     plot_gauss: bool = True
