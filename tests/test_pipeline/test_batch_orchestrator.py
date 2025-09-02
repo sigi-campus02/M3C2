@@ -21,6 +21,7 @@ def test_load_data_uses_data_dir(tmp_path, monkeypatch):
         folder_id="sub",
         filename_mov="mov.xyz",
         filename_ref="ref.xyz",
+        filename_singlecloud="single.xyz",
         mov_as_corepoints=True,
         use_subsampled_corepoints=1,
         only_stats=False,
@@ -33,7 +34,7 @@ def test_load_data_uses_data_dir(tmp_path, monkeypatch):
         "m3c2.pipeline.data_loader.DataSource", DummyDS
     )
     loader = DataLoader()
-    ds, mov, ref, corepoints = loader.load_data(cfg)
+    ds, mov, ref, corepoints = loader.load_data(cfg, mode="multicloud")
 
     assert ds.config.folder == os.path.join(cfg.data_dir, cfg.folder_id)
     assert mov.shape == (1, 3)
