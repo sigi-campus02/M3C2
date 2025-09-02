@@ -1,3 +1,11 @@
+"""Bland–Altman plot creation utilities.
+
+This module loads paired distance measurements for given folders and
+reference variants and visualizes their agreement using Bland–Altman
+scatter plots. It computes the mean difference and 95% limits of agreement
+and saves the resulting plots for further analysis.
+"""
+
 from __future__ import annotations
 
 import logging
