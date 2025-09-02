@@ -15,7 +15,42 @@ logger = logging.getLogger(__name__)
 
 
 class M3C2Executor:
-    """Run the M3C2 algorithm for a given configuration."""
+    """High level interface for executing the M3C2 algorithm.
+
+    The executor exposes :meth:`run_m3c2`, which accepts a configuration
+    object, moving and reference point clouds, an array of core points and the
+    normal and projection scales used by the algorithm.  It delegates the
+    heavy computation to :class:`~m3c2.core.m3c2_runner.M3C2Runner` while
+    handling logging and persistence of the results.
+
+    Inputs
+    ------
+    ``cfg``
+        Configuration object that must provide ``process_python_CC`` to build
+        output file names.
+    ``mov`` and ``ref``
+        Point cloud data as ``(N, 3)`` arrays or objects exposing a ``cloud``
+        attribute with such an array.
+    ``corepoints``
+        ``(N, 3)`` coordinates of the core points where distances are
+        evaluated.
+    ``normal`` / ``projection``
+        Floating point scale parameters controlling the local surface fitting
+        and projection radius.
+    ``out_base`` / ``tag``
+        Output directory and filename tag used for the generated text files.
+
+    Outputs
+    -------
+    A tuple of ``numpy.ndarray`` objects representing the distances and their
+    uncertainties, followed by the path to the saved distances file.
+
+    Side Effects
+    ------------
+    Three ASCII files (distances, distances with coordinates and
+    uncertainties) are written to ``out_base`` and informative log messages are
+    emitted.
+    """
 
     def run_m3c2(self, cfg, mov, ref, corepoints, normal: float, projection: float, out_base: str, tag: str,
     ) -> Tuple[np.ndarray, np.ndarray]:
