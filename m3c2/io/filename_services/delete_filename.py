@@ -26,6 +26,28 @@ def iter_paths(base: Path, recursive: bool, include_dirs: bool):
                 yield p
 
 def main():
+    """Entry point for the ``delete_filename`` CLI.
+
+    The command removes every occurrence of ``python_`` from file and directory
+    names.  It can operate on a single directory or recursively on a directory
+    tree and supports a dry-run mode to preview changes.
+
+    Usage
+    -----
+    python -m m3c2.io.filename_services.delete_filename [PATH]
+        [-r] [--include-dirs] [-n]
+
+    Parameters
+    ----------
+    PATH : str, optional
+        Base directory to process. Defaults to the current directory.
+    -r, --recursive : bool
+        Recurse into subdirectories.
+    --include-dirs : bool
+        Apply renaming to directory names as well.
+    -n, --dry-run : bool
+        Show actions without performing any renaming.
+    """
     ap = argparse.ArgumentParser(
         description='Entfernt alle Vorkommen von "_cloud" aus Datei-/Ordnernamen.'
     )
