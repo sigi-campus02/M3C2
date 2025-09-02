@@ -14,6 +14,19 @@ from m3c2.gui.argparse_gui import run_gui
 
 
 def test_run_gui_invokes_parse_args_and_main_func() -> None:
+    """Test the integration between GUI argument collection and execution.
+
+    Purpose
+    -------
+    Ensure that values entered in the GUI are converted into command-line
+    arguments and passed to both :func:`ArgumentParser.parse_args` and the
+    supplied ``main`` function.
+
+    Expected Behavior
+    -----------------
+    After simulating user input and triggering the "Start" button, both mocks
+    should be invoked once with ``["--flag", "--opt", "value", "positional"]``.
+    """
     parser = argparse.ArgumentParser(prog="prog")
     parser.add_argument("--flag", action="store_true")
     parser.add_argument("--opt")
