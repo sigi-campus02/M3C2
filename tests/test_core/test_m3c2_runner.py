@@ -1,3 +1,9 @@
+"""Tests for the :mod:`m3c2_runner` module.
+
+This module focuses on validating that the :class:`M3C2Runner` correctly
+interacts with the underlying ``py4dgeo`` library.
+"""
+
 import sys
 import types
 import importlib
@@ -5,6 +11,15 @@ import numpy as np
 
 
 def test_m3c2_runner(monkeypatch):
+    """Test the M3C2 runner with a dummy ``py4dgeo`` implementation.
+
+    Parameters
+    ----------
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to replace the ``py4dgeo`` module with a dummy
+        implementation.
+
+    """
     called = {}
 
     class DummyM3C2:
