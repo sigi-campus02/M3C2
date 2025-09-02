@@ -85,6 +85,21 @@ class StatisticsRunner:
         )
 
     def single_cloud_statistics_handler(self, cfg, singlecloud, normal):
+        """Compute statistics for a single point cloud.
+
+        Args:
+            cfg: Configuration for the current job. Must provide
+                ``folder_id``, ``filename_singlecloud`` and ``project`` so
+                that results can be written to the correct output folder.
+            singlecloud: The point cloud for which statistics are evaluated.
+            normal: Radius used during computation of the cloud statistics.
+
+        Writes
+        ------
+        ``outputs/{project}_output/{project}_m3c2_stats_clouds`` with an
+        extension of ``.xlsx`` or ``.json`` depending on the selected output
+        format.
+        """
         logger.info(
             f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_singlecloud} …",
         )
