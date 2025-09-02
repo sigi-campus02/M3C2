@@ -25,6 +25,7 @@ import numpy as np
 import pandas as pd
 
 from m3c2.io.datasource import DataSource
+from m3c2.config.datasource_config import DataSourceConfig
 
 from .basic_metrics import basic_stats, fit_distributions
 from .outliers import compute_outliers, get_outlier_mask
@@ -375,8 +376,13 @@ class StatisticsService:
     def calc_single_cloud_stats(
         cls,
         folder_ids: List[str],
+
         filename_mov: str = "mov",
         filename_ref: str = "ref",
+
+        mov_cloud: Optional[object] = None,
+        ref_cloud: Optional[object] = None,
+
         area_m2: Optional[float] = None,
         radius: float = 1.0,
         k: int = 6,
@@ -431,9 +437,9 @@ class StatisticsService:
         """
         rows: List[Dict] = []
 
+        mov, ref = mov_cloud, ref_cloud
+
         for fid in folder_ids:
-            ds = DataSource(fid, filename_mov, filename_ref)
-            mov, ref, _ = ds.load_points()
             for fname, epoch in ((filename_mov, mov), (filename_ref, ref)):
                 pts = epoch.cloud if hasattr(epoch, "cloud") else epoch
                 stats = _calc_single_cloud_stats(

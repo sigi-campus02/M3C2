@@ -2,6 +2,7 @@ from __future__ import annotations
 """Handle exclusion of statistical outliers."""
 
 import logging
+import os
 
 from m3c2.core.exclude_outliers import exclude_outliers
 
@@ -12,7 +13,7 @@ logger = logging.getLogger(__name__)
 class OutlierHandler:
     """Remove statistical outliers from M3C2 results."""
 
-    def exclude_outliers(self, cfg, dists_path: str) -> None:
+    def exclude_outliers(self, cfg, out_base: str, tag: str) -> None:
         """Remove outliers based on configuration settings.
 
         This method is part of the public pipeline API.
@@ -20,6 +21,7 @@ class OutlierHandler:
         logger.info("[Outlier] Entferne Ausreißer …")
         method = cfg.outlier_detection_method
         outlier_multiplicator = cfg.outlier_multiplicator
+        dists_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances_coordinates.txt")
 
         try:
             exclude_outliers(

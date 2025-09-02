@@ -128,9 +128,10 @@ class BatchOrchestrator:
 
         ds, mov, ref, corepoints = self.data_loader.load_data(cfg)
         tag = self._run_tag(cfg)
+        out_base = ds.config.folder
+
 
         if cfg.process_python_CC == "python" and not cfg.only_stats:
-            out_base = ds.config.folder
             normal = projection = np.nan
             if cfg.use_existing_params:
                 params_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt")
@@ -154,7 +155,7 @@ class BatchOrchestrator:
 
         try:
             logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
-            self.outlier_handler.exclude_outliers(cfg, dists_path)
+            self.outlier_handler.exclude_outliers(cfg, out_base, tag)
         except (IOError, ValueError):
             logger.exception("Fehler beim Entfernen von Ausreißern")
         except Exception:
@@ -172,7 +173,7 @@ class BatchOrchestrator:
 
         try:
             logger.info("[Statistics] Berechne Statistiken …")
-            self.statistics_runner.compute_statistics(cfg, ref, tag)
+            self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
         except (IOError, ValueError):
             logger.exception("Fehler bei der Berechnung der Statistik")
         except Exception:

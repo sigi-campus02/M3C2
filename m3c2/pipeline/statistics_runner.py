@@ -15,7 +15,7 @@ class StatisticsRunner:
     def __init__(self, output_format: str) -> None:
         self.output_format = output_format
 
-    def compute_statistics(self, cfg, ref, tag: str) -> None:
+    def compute_statistics(self, cfg, mov, ref, tag: str) -> None:
         """Compute M3C2 statistics for a job.
 
         This method is part of the public pipeline API.
@@ -68,4 +68,6 @@ class StatisticsRunner:
                 out_path=out_path,
                 sheet_name="CloudStats",
                 output_format=self.output_format,
+                mov_cloud=mov,
+                ref_cloud=ref
             )
