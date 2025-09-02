@@ -347,6 +347,49 @@ class StatisticsService:
         sheet_name: str = "CloudStats",
         output_format: str = "excel",
     ) -> pd.DataFrame:
+        """Compute quality metrics for point clouds in multiple folders.
+
+        For each entry in ``folder_ids`` the moving and reference point
+        clouds are loaded with :class:`~m3c2.io.datasource.DataSource` and
+        evaluated via :func:`~m3c2.core.statistics.cloud_quality._calc_single_cloud_stats`.
+
+        Parameters
+        ----------
+        folder_ids
+            Paths to folders containing the point cloud pair.
+        filename_mov
+            Base filename of the moving cloud.
+        filename_ref
+            Base filename of the reference cloud.
+        area_m2
+            Known footprint area in square metres. If ``None`` the area is
+            estimated from the cloud extent (convex hull or bounding box).
+        radius
+            Radius in metres used for radius-neighbour queries.
+        k
+            Number of nearest neighbours used for k-NN statistics.
+        sample_size
+            Maximum number of points sampled for local computations.
+        use_convex_hull
+            Whether to estimate the area using the convex hull. If ``False``
+            the bounding box area is used instead.
+        out_path
+            Destination file for writing the resulting statistics table.
+        sheet_name
+            Sheet name to use when exporting to Excel.
+        output_format
+            Format of the output file, e.g. ``"excel"`` or ``"json"``.
+
+        Returns
+        -------
+        pandas.DataFrame
+            One row per processed cloud containing metrics such as point
+            count, footprint area and density, height distribution,
+            nearest‑neighbour distances, local density and roughness
+            statistics, eigenvalue‑based shape features (linearity,
+            planarity, sphericity, anisotropy, omnivariance, eigenentropy,
+            curvature), verticality measures and normal direction variation.
+        """
         rows: List[Dict] = []
 
         for fid in folder_ids:
