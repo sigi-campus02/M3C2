@@ -170,8 +170,14 @@ def plot_overlay_weibull(
         try:
             a, loc, b = weibull_min.fit(arr)
             weibull_params[v] = (float(a), float(loc), float(b))
-        except Exception as e:
-            logger.warning("[Report] Weibull-Fit fehlgeschlagen (%s/%s, %s): %s", fid, fname, v, e)
+        except (ValueError, RuntimeError):
+            logger.warning(
+                "[Report] Weibull-Fit fehlgeschlagen (%s/%s, %s) mit Daten: %s",
+                fid,
+                fname,
+                v,
+                arr,
+            )
 
     plt.figure(figsize=(10, 6))
     labels = labels_order or list(weibull_params.keys())
