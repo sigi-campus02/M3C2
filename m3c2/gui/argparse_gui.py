@@ -10,8 +10,13 @@ import argparse
 import os
 import tkinter as tk
 from tkinter import messagebox
+import logging
 
-from m3c2.cli.main_generatecloud import convert_one, convert_all, logger
+from m3c2.io.logging_utils import setup_logging
+from m3c2.cli.main_generatecloud import convert_one, convert_all
+
+
+logger = logging.getLogger(__name__)
 
 
 def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
@@ -21,7 +26,9 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
     presses the "Start" button.  A "Cancel" button closes the window without
     running anything.
     """
+    setup_logging()
     root = tk.Tk()
+    logger.info("GUI window opened")
     root.title(parser.prog or "Argumente")
 
     widgets: dict[str, tk.Variable] = {}
@@ -72,6 +79,7 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
                     argv.extend(value.split())
                 elif value:
                     argv.append(value)
+        logger.info("Start pressed with arguments: %s", argv)
         try:
             args = parser.parse_args(argv)
         except SystemExit:
@@ -79,6 +87,7 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
             messagebox.showerror("Ungültige Eingabe", "Bitte Eingaben prüfen.")
             return
         except Exception as exc:
+            logger.exception("Error parsing arguments")
             messagebox.showerror("Fehler", str(exc))
             return
 
@@ -86,9 +95,11 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
         try:
             main_func(args)
         except Exception as exc:  # final safety net
+            logger.exception("Exception raised by main_func")
             messagebox.showerror("Fehler", str(exc))
 
     def on_cancel() -> None:
+        logger.info("Cancel pressed")
         root.destroy()
 
     tk.Button(root, text="Start", command=on_start).grid(row=row, column=0, padx=5, pady=10)
