@@ -10,8 +10,6 @@ import logging
 import os
 import time
 from typing import List
-
-from matplotlib.pylab import normal
 import numpy as np
 
 from m3c2.config.pipeline_config import PipelineConfig

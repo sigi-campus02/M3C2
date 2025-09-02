@@ -84,7 +84,7 @@ def calc_single_cloud_stats(
         raise ValueError("points must be of shape (N, 3)")
     num = len(P)
     logger.info(
-        "Calculating cloud stats for %d points (radius=%s, k=%d, sample_size=%s)",
+        "Calculating cloud stats for %d points (radius=%s, k=%s, sample_size=%s)",
         num,
         radius,
         k,

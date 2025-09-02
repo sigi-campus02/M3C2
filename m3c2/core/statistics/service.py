@@ -349,7 +349,7 @@ class StatisticsService:
 
         area_m2: Optional[float] = None,
         radius: float = None,
-        k: int = None,
+        k: int = 24,
         sample_size: Optional[int] = None,
         use_convex_hull: bool = True,
         out_path: str = "m3c2_stats_clouds.xlsx",
