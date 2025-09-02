@@ -1,3 +1,5 @@
+"""Tests for the batch orchestrator's data loading mechanisms."""
+
 from __future__ import annotations
 
 import os
@@ -7,6 +9,8 @@ from m3c2.pipeline.data_loader import DataLoader
 
 
 class DummyDS:
+    """Minimal data source used to validate configuration paths in tests."""
+
     def __init__(self, config):
         self.config = config
 
@@ -16,6 +20,15 @@ class DummyDS:
 
 
 def test_load_data_uses_data_dir(tmp_path, monkeypatch):
+    """Verify that the loader honors the configured data directory.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory representing the pipeline's data directory.
+    monkeypatch : pytest.MonkeyPatch
+        Fixture for replacing the ``DataSource`` with ``DummyDS``.
+    """
     cfg = PipelineConfig(
         data_dir=str(tmp_path),
         folder_id="sub",
