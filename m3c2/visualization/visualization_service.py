@@ -14,6 +14,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 # seaborn optional
 try:
@@ -75,10 +78,15 @@ class VisualizationService:
 
         arr = np.loadtxt(txt_path, skiprows=1)
         if arr.size == 0:
+            logger.warning("TXT-Datei enthält keine Werte: %s", txt_path)
             raise ValueError(f"TXT-Datei enthält keine Werte: {txt_path}")
         if arr.ndim == 1:
+            logger.warning("TXT-Datei hat nur eine Zeile: %s", txt_path)
             arr = arr.reshape(1, -1)
         if arr.shape[1] != 4:
+            logger.warning(
+                "TXT-Datei muss 4 Spalten haben (%s hat %d)", txt_path, arr.shape[1]
+            )
             raise ValueError(f"TXT-Datei muss 4 Spalten haben: {txt_path}")
 
         points = arr[:, :3]
@@ -116,9 +124,13 @@ class VisualizationService:
             binary=write_binary,
         )
 
-        import logging
-        logger = logging.getLogger(__name__)
-        logger.info(f"[TXT->PLY] {txt_path} -> {outply} ({n} Punkte, SF='{scalar_name}')")
+        logger.info(
+            "[TXT->PLY] %s -> %s (%d Punkte, SF='%s')",
+            txt_path,
+            outply,
+            n,
+            scalar_name,
+        )
 
 
 
@@ -161,6 +173,7 @@ class VisualizationService:
             if d:
                 os.makedirs(d, exist_ok=True)
             plt.savefig(path)
+            logger.info("Histogram saved to %s", path)
         plt.close()
 
     # ---------- PLY-Exports ----------
@@ -236,6 +249,7 @@ class VisualizationService:
         if d:
             os.makedirs(d, exist_ok=True)
         PlyData([el], text=False).write(outply)
+        logger.info("Colorized %d points -> %s", n, outply)
         return colors
 
     # --- OPTIONAL: export_valid(...) gleich mit Scalar schreiben (nur wenn du willst) ---
@@ -273,8 +287,30 @@ class VisualizationService:
         if PlyData is None or PlyElement is None:
             raise RuntimeError("PLY-Export nicht verfügbar (pip install plyfile).")
 
+        if (
+            points.size == 0
+            or colors.size == 0
+            or distances.size == 0
+            or points.ndim != 2
+            or colors.ndim != 2
+            or points.shape[1] != 3
+            or colors.shape[1] != 3
+            or points.shape[0] != colors.shape[0]
+            or points.shape[0] != distances.shape[0]
+        ):
+            logger.warning(
+                "Ungültige Eingabearrays: points%s colors%s distances%s",
+                points.shape,
+                colors.shape,
+                distances.shape,
+            )
+            return
+
         # Keep only rows with finite distance values
         mask = ~np.isnan(distances)
+        if not mask.any():
+            logger.warning("Keine gültigen Punkte zum Exportieren vorhanden")
+            return
         pts = points[mask]
         cols = colors[mask]
         dists = distances[mask].astype(np.float32)
@@ -287,6 +323,13 @@ class VisualizationService:
             scalar=dists,
             scalar_name=scalar_name,
             binary=write_binary,
+        )
+
+        logger.info(
+            "[export_valid] %d Punkte exportiert -> %s (SF='%s')",
+            pts.shape[0],
+            outply,
+            scalar_name,
         )
 
 
