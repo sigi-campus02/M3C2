@@ -4,7 +4,6 @@ from __future__ import annotations
 import logging
 import os
 import time
-from typing import Tuple
 
 import numpy as np
 
@@ -17,7 +16,9 @@ logger = logging.getLogger(__name__)
 class DataLoader:
     """Load point cloud data and core points according to a configuration."""
 
-    def load_data(self, cfg, mode) -> Tuple[DataSource, object, object, object]:
+
+    def load_data(self, cfg, mode: str) -> tuple[DataSource, object, object, object] | object:
+
         """Load point clouds and core points according to ``cfg``.
 
         Parameters
@@ -26,15 +27,17 @@ class DataLoader:
             Configuration defining the location of the point clouds and
             which epoch to use for the core points.
         mode : str
-            ``"multicloud"`` to load moving and reference clouds or
-            ``"singlecloud"`` to load only a single epoch.
+            ``"multicloud"`` to load moving and reference epochs or
+            ``"singlecloud"`` to load a single epoch.
 
         Returns
         -------
-        tuple
-            ``(ds, mov, ref, corepoints)`` containing the :class:`DataSource`
-            used for loading, the moving and reference epochs and a NumPy array
-            of the core point coordinates.
+        tuple or object
+            For ``"multicloud"`` returns ``(ds, mov, ref, corepoints)``
+            containing the :class:`DataSource` used for loading, the moving
+            and reference epochs and a NumPy array of the core point
+            coordinates.  For ``"singlecloud"`` returns only the single cloud
+            epoch.
 
         Side Effects
         ------------
@@ -45,16 +48,16 @@ class DataLoader:
         -----
         This method is part of the public pipeline API.
         """
-        t0 = time.perf_counter()
-
         if mode == "multicloud":
             return self._load_data_multi(cfg)
 
         if mode == "singlecloud":
             return self._load_data_single(cfg)
 
+        raise ValueError(f"Unknown mode '{mode}'")
 
-    def _load_data_multi(self, cfg) -> Tuple[DataSource, object, object, object]:
+
+    def _load_data_multi(self, cfg) -> tuple[DataSource, object, object, object]:
         """Load multi-cloud data according to ``cfg``.
 
         Parameters
@@ -93,7 +96,7 @@ class DataLoader:
         )
         return ds, mov, ref, corepoints
 
-    def _load_data_single(self, cfg) -> Tuple[DataSource, object]:
+    def _load_data_single(self, cfg) -> object:
         """Load single-cloud data according to ``cfg``.
 
         Parameters
@@ -104,15 +107,14 @@ class DataLoader:
 
         Returns
         -------
-        tuple
-            ``(ds, single_cloud)`` containing the :class:`DataSource`
-            used for loading and the single cloud epoch.
+        object
+            The single cloud epoch.
         """
         t0 = time.perf_counter()
 
         ds_config = DataSourceConfig(
             os.path.join(cfg.data_dir, cfg.folder_id),
-            cfg.filename_singlecloud
+            cfg.filename_singlecloud,
         )
         ds_single = DataSource(ds_config)
 

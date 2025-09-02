@@ -31,13 +31,13 @@ def test_compute_statistics_distance(monkeypatch, caplog):
 
     runner = StatisticsRunner(output_format="excel")
     caplog.set_level(logging.INFO)
-    runner.compute_statistics(cfg, ref=None, tag="ref")
+    runner.compute_statistics(cfg, mov=None, ref=None, tag="ref")
 
     assert called["out_path"].endswith("proj_m3c2_stats_distances.xlsx")
     assert any("Stats on Distance" in rec.message for rec in caplog.records)
 
 
-def test_compute_statistics_single(monkeypatch, caplog):
+def test_single_cloud_statistics_handler(monkeypatch, caplog):
     called = {}
 
     def fake_calc_single_cloud_stats(**kwargs):
@@ -50,16 +50,14 @@ def test_compute_statistics_single(monkeypatch, caplog):
     )
 
     cfg = SimpleNamespace(
-        stats_singleordistance="single",
         folder_id="fid",
-        filename_mov="mov",
-        filename_ref="ref",
+        filename_singlecloud="cloud",
         project="proj",
     )
 
     runner = StatisticsRunner(output_format="json")
     caplog.set_level(logging.INFO)
-    runner.compute_statistics(cfg, ref=None, tag="ref")
+    runner.single_cloud_statistics_handler(cfg, singlecloud=None)
 
     assert called["out_path"].endswith("proj_m3c2_stats_clouds.json")
     assert any("Stats on SingleClouds" in rec.message for rec in caplog.records)
@@ -69,7 +67,7 @@ def test_invalid_output_format():
     runner = StatisticsRunner(output_format="xml")
     cfg = SimpleNamespace(stats_singleordistance="distance", folder_id="fid", filename_ref="ref")
     try:
-        runner.compute_statistics(cfg, ref=None, tag="ref")
+        runner.compute_statistics(cfg, mov=None, ref=None, tag="ref")
     except ValueError:
         pass
     else:

@@ -21,6 +21,7 @@ def test_load_data_uses_data_dir(tmp_path, monkeypatch):
         folder_id="sub",
         filename_mov="mov.xyz",
         filename_ref="ref.xyz",
+        filename_singlecloud="single.xyz",
         mov_as_corepoints=True,
         use_subsampled_corepoints=1,
         only_stats=False,
