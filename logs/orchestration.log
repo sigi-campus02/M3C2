@@ -320,3 +320,145 @@ TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
 2025-09-01 17:30:56,327 [INFO] m3c2.pipeline.batch_orchestrator: [Stats on Distance] Berechne M3C2-Statistiken 0342-0349,ref …
 2025-09-01 17:31:28,114 [INFO] m3c2.pipeline.batch_orchestrator: [Job] 0342-0349 abgeschlossen in 390.636s
 2025-09-01 17:31:28,114 [INFO] CLIApp: Processing completed successfully.
+2025-09-02 08:48:48,881 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_run_invokes_orchestrator0
+2025-09-02 08:48:48,881 [INFO] CLIApp - Folder IDs for processing: ['001']
+2025-09-02 08:48:48,881 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 08:48:48,881 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 08:48:48,881 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 08:48:48,892 [INFO] m3c2.cli.comparedist_plots - Starting plot generation PlotConfig(folder_ids=['id'], filenames=['ref'], project='MARS', outdir='C:\\Users\\sieglinde.hoedl\\AppData\\Local\\Temp\\pytest-of-Sieglinde.Hoedl\\pytest-3\\test_main_creates_output0', versions=None, bins=256, colors={}, path='C:\\Users\\sieglinde.hoedl\\AppData\\Local\\Temp\\pytest-of-Sieglinde.Hoedl\\pytest-3\\test_main_creates_output0\\MARS_output\\MARS_plots'), PlotOptionsComparedistances(plot_blandaltman=True, plot_passingbablok=True, plot_linearregression=True)
+2025-09-02 08:48:48,895 [INFO] m3c2.cli.outlier_plots - Starting variant ref
+2025-09-02 08:48:48,966 [INFO] m3c2.cli.outlier_plots - Completed variant ref
+2025-09-02 08:48:49,295 [INFO] m3c2.cli.plot_report - Generating summary PDF reports from C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_builds_pdfs0 to C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_builds_pdfs0
+2025-09-02 08:48:49,295 [INFO] m3c2.cli.plot_report - PDF (incl. outliers): C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_builds_pdfs0\parts_summary_incl_outliers.pdf
+2025-09-02 08:48:49,295 [INFO] m3c2.cli.plot_report - PDF (excl. outliers): C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_builds_pdfs0\parts_summary_excl_outliers.pdf
+2025-09-02 08:48:49,295 [INFO] m3c2.cli.singlecloud_stats - Parameters received: folder_ids=['fid'], filename_mov=HandheldRoi, filename_ref=MavicRoi, area_m2=None, radius=1.0, k=6, sample_size=100000, use_convex_hull=True, out_path=C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_writes_output0\stats.xlsx, sheet_name=CloudStats, output_format=excel
+2025-09-02 08:48:49,295 [INFO] m3c2.cli.singlecloud_stats - Processing folders: ['fid']
+2025-09-02 08:48:49,295 [INFO] m3c2.cli.singlecloud_stats - Statistics computation completed successfully
+2025-09-02 08:48:49,309 [INFO] m3c2.core.statistics.basic_metrics - basic_stats received 0 values
+2025-09-02 08:48:49,310 [INFO] m3c2.core.statistics.basic_metrics - basic_stats summary: min=nan, max=nan, mean=nan
+2025-09-02 08:48:49,311 [INFO] m3c2.core.statistics.basic_metrics - basic_stats received 3 values
+2025-09-02 08:48:49,312 [INFO] m3c2.core.statistics.basic_metrics - basic_stats summary: min=1.000000, max=3.000000, mean=2.000000
+2025-09-02 08:48:49,328 [INFO] m3c2.core.statistics.basic_metrics - fit_distributions Gaussian: mu=0.946220, std=2.027199, chi2=58.254962
+2025-09-02 08:48:49,328 [INFO] m3c2.core.statistics.basic_metrics - fit_distributions Weibull: a=5.182183, b=10.252431, loc=-8.505403, chi2=42.907220
+2025-09-02 08:48:51,257 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 4 points (radius=2.0, k=2, sample_size=None)
+2025-09-02 08:48:51,257 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=4.000, roughness_mean=0.000
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 2.504309
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 2.504309
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_exclude_outliers_methods0\distances_inlier_rmse.txt
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_exclude_outliers_methods0\distances_outlier_rmse.txt
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 9
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 1
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 8
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 2
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 6
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] IQR: 0.250000
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwellen: -0.400000 bis 0.600000
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_exclude_outliers_methods0\distances_inlier_iqr.txt
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_exclude_outliers_methods0\distances_outlier_iqr.txt
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 9
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 1
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 8
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: iqr
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 2
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 6
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] STD: 2.502990
+2025-09-02 08:48:51,274 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 2.502990
+2025-09-02 08:48:51,289 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_exclude_outliers_methods0\distances_inlier_std.txt
+2025-09-02 08:48:51,289 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_exclude_outliers_methods0\distances_outlier_std.txt
+2025-09-02 08:48:51,289 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 9
+2025-09-02 08:48:51,289 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 1
+2025-09-02 08:48:51,289 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 8
+2025-09-02 08:48:51,289 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: std
+2025-09-02 08:48:51,289 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 2
+2025-09-02 08:48:51,289 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 6
+2025-09-02 08:48:51,293 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_exclude_outliers_methods0\distances_inlier_nmad.txt
+2025-09-02 08:48:51,293 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_exclude_outliers_methods0\distances_outlier_nmad.txt
+2025-09-02 08:48:51,293 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 9
+2025-09-02 08:48:51,293 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 1
+2025-09-02 08:48:51,293 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 8
+2025-09-02 08:48:51,293 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: nmad
+2025-09-02 08:48:51,293 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 2
+2025-09-02 08:48:51,293 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 6
+2025-09-02 08:48:51,298 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 2.504309
+2025-09-02 08:48:51,298 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 2.504309
+2025-09-02 08:48:51,298 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_outlier_detector_class0\distances_inlier_rmse.txt
+2025-09-02 08:48:51,298 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_outlier_detector_class0\distances_outlier_rmse.txt
+2025-09-02 08:48:51,298 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 9
+2025-09-02 08:48:51,298 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 1
+2025-09-02 08:48:51,298 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 8
+2025-09-02 08:48:51,298 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 08:48:51,298 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 2
+2025-09-02 08:48:51,298 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 6
+2025-09-02 08:48:51,312 [INFO] m3c2.core.statistics.exporters - Skipping writing table to dummy.xlsx - no data
+2025-09-02 08:48:51,329 [INFO] m3c2.core.statistics.exporters - Skipping writing cloud stats to dummy.xlsx - no data
+2025-09-02 08:48:51,330 [INFO] m3c2.core.m3c2_runner - Starting M3C2 run with normal=0.5 and projection=1.0
+2025-09-02 08:48:51,330 [INFO] m3c2.core.m3c2_runner - Completed M3C2 run: 1 distances (NaN ratio 0.00%)
+2025-09-02 08:48:51,330 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: rmse
+2025-09-02 08:48:51,330 [INFO] m3c2.core.statistics.outliers - [Outliers] RMSE: 5.773503, Outlier-Schwelle: 5.773503
+2025-09-02 08:48:51,330 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: iqr
+2025-09-02 08:48:51,330 [INFO] m3c2.core.statistics.outliers - [Outliers] IQR: 25.500000
+2025-09-02 08:48:51,330 [INFO] m3c2.core.statistics.outliers - [Outliers] Outlier-Schwellen: -36.500000 bis 65.500000
+2025-09-02 08:48:51,339 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: std
+2025-09-02 08:48:51,340 [INFO] m3c2.core.statistics.outliers - [Outliers] STD: 4.714045, Outlier-Schwelle: 4.714045
+2025-09-02 08:48:51,341 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: nmad
+2025-09-02 08:48:51,341 [INFO] m3c2.core.statistics.outliers - [Outliers] NMAD: 0.000000, Outlier-Schwelle: 0.000000
+2025-09-02 08:48:51,343 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: foo
+2025-09-02 08:48:51,344 [INFO] m3c2.core.statistics.outliers - [Outliers] Outlier: +1 / -1 | Inlier: +2 / -1
+2025-09-02 08:48:51,345 [INFO] m3c2.core.statistics.outliers - [Outliers] Outlier: +0 / -0 | Inlier: +2 / -0
+2025-09-02 08:48:51,350 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 4 points
+2025-09-02 08:48:51,357 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 4 points and avg_spacing 1.000000
+2025-09-02 08:48:51,360 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 2 scans
+2025-09-02 08:48:51,368 [INFO] m3c2.gui.argparse_gui - GUI window opened
+2025-09-02 08:48:51,372 [INFO] m3c2.gui.argparse_gui - Start pressed with arguments: ['--flag', '--opt', 'value', 'positional']
+2025-09-02 08:48:51,375 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Loading workbook 'dummy.xlsx'
+2025-09-02 08:48:51,375 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Workbook 'dummy.xlsx' loaded
+2025-09-02 08:48:51,375 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Checking for sheet 'CloudStats'
+2025-09-02 08:48:51,375 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Processing headers in sheet 'CloudStats'
+2025-09-02 08:48:51,375 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Inserted comment for header 'Timestamp'
+2025-09-02 08:48:51,375 [WARNING] m3c2.io.excel_writer.comments_stats_clouds - No comment mapping found for header 'Other'
+2025-09-02 08:48:51,375 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Saving workbook 'dummy.xlsx'
+2025-09-02 08:48:51,375 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Workbook 'dummy.xlsx' saved
+2025-09-02 08:48:51,375 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Loading workbook 'dummy.xlsx'
+2025-09-02 08:48:51,375 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Workbook 'dummy.xlsx' loaded
+2025-09-02 08:48:51,375 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Checking for sheet 'CloudStats'
+2025-09-02 08:48:51,375 [WARNING] m3c2.io.excel_writer.comments_stats_clouds - Sheet 'CloudStats' not found in dummy.xlsx
+2025-09-02 08:48:51,394 [INFO] m3c2.io.excel_writer.comments_stats_distances - Loading workbook 'dummy.xlsx'
+2025-09-02 08:48:51,394 [INFO] m3c2.io.excel_writer.comments_stats_distances - Workbook 'dummy.xlsx' loaded
+2025-09-02 08:48:51,394 [INFO] m3c2.io.excel_writer.comments_stats_distances - Checking for sheet 'Results'
+2025-09-02 08:48:51,394 [INFO] m3c2.io.excel_writer.comments_stats_distances - Processing headers in sheet 'Results'
+2025-09-02 08:48:51,394 [INFO] m3c2.io.excel_writer.comments_stats_distances - Inserted comment for header 'Timestamp'
+2025-09-02 08:48:51,394 [WARNING] m3c2.io.excel_writer.comments_stats_distances - No comment mapping found for header 'Other'
+2025-09-02 08:48:51,394 [INFO] m3c2.io.excel_writer.comments_stats_distances - Saving workbook 'dummy.xlsx'
+2025-09-02 08:48:51,395 [INFO] m3c2.io.excel_writer.comments_stats_distances - Workbook 'dummy.xlsx' saved
+2025-09-02 08:48:51,398 [INFO] m3c2.io.excel_writer.comments_stats_distances - Loading workbook 'dummy.xlsx'
+2025-09-02 08:48:51,398 [INFO] m3c2.io.excel_writer.comments_stats_distances - Workbook 'dummy.xlsx' loaded
+2025-09-02 08:48:51,398 [INFO] m3c2.io.excel_writer.comments_stats_distances - Checking for sheet 'Results'
+2025-09-02 08:48:51,398 [WARNING] m3c2.io.excel_writer.comments_stats_distances - Sheet 'Results' not found in dummy.xlsx
+2025-09-02 08:48:51,418 [INFO] m3c2.io.filename_services.delete_filename - C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_renames_and_dry_run0\sub\python_file2.txt -> C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_renames_and_dry_run0\sub\file2.txt
+2025-09-02 08:48:51,418 [INFO] m3c2.io.filename_services.delete_filename - C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_renames_and_dry_run0\python_file1.txt -> C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_renames_and_dry_run0\file1.txt
+2025-09-02 08:48:51,418 [INFO] m3c2.io.filename_services.delete_filename - Fertig. Umbenannt: 2, Übersprungen: 0
+2025-09-02 08:48:51,418 [INFO] m3c2.io.filename_services.delete_filename - C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_renames_and_dry_run0\python_dry.txt -> C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_renames_and_dry_run0\dry.txt
+2025-09-02 08:48:51,418 [INFO] m3c2.io.filename_services.delete_filename - Fertig. (Dry-Run) Umbenannt: 1, Übersprungen: 0
+2025-09-02 08:48:51,442 [INFO] m3c2.io.filename_services.rename_filename - C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_renames_and_dry_run1\sub\2-2_cloud.txt -> C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_renames_and_dry_run1\sub\b-2_cloud.txt
+2025-09-02 08:48:51,443 [INFO] m3c2.io.filename_services.rename_filename - C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_renames_and_dry_run1\1-1_cloud.txt -> C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_renames_and_dry_run1\a-1_cloud.txt
+2025-09-02 08:48:51,443 [INFO] m3c2.io.filename_services.rename_filename - Fertig. Umbenannt: 2, Übersprungen: 0
+2025-09-02 08:48:51,445 [INFO] m3c2.io.filename_services.rename_filename - C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_renames_and_dry_run1\1-3_cloud.txt -> C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_main_renames_and_dry_run1\a-3_cloud.txt
+2025-09-02 08:48:51,445 [INFO] m3c2.io.filename_services.rename_filename - Fertig. (Dry-Run) Umbenannt: 1, Übersprungen: 0
+2025-09-02 08:48:51,490 [INFO] m3c2.io.format_handler - Reading GPC file C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_ensure_xyz_from_gpc0\mov.gpc
+2025-09-02 08:48:51,491 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 08:48:51,491 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 08:48:51,491 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_ply
+2025-09-02 08:48:51,491 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 08:48:51,510 [INFO] m3c2.io.format_handler - Reading XYZ file C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_read_xyz0\points.xyz
+2025-09-02 08:48:51,510 [INFO] m3c2.io.format_handler - Reading PLY file C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_read_ply0\points.ply
+2025-09-02 08:48:51,528 [INFO] m3c2.io.format_handler - Reading OBJ file C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_read_obj0\mesh.obj
+2025-09-02 08:48:51,529 [INFO] m3c2.io.format_handler - Reading LAS/LAZ file C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-3\test_read_las_missing_dependen0\dummy.las
+2025-09-02 08:48:51,529 [ERROR] m3c2.io.format_handler - LAS/LAZ found, but 'laspy' is not installed.
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\format_handler.py", line 32, in read_las
+    laspy = import_module("laspy")
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\tests\test_io\test_format_handler.py", line 61, in fake_import
+    raise ImportError
+ImportError
