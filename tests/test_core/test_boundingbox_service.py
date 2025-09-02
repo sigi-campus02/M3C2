@@ -1,3 +1,9 @@
+"""Test suite for the bounding box service.
+
+These tests exercise helper utilities used for reading point clouds,
+frame transformations, and bounding box clipping.
+"""
+
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -6,8 +12,15 @@ from unittest.mock import MagicMock
 import numpy as np
 import pytest
 
-
 class DummyPointCloud:
+    """Lightweight stand-in for an Open3D ``PointCloud``.
+
+    Parameters
+    ----------
+    empty : bool, optional
+        Whether the point cloud should behave as empty. Defaults to ``True``.
+    """
+
     def __init__(self, empty: bool = True):
         self._empty = empty
         self.points = []
@@ -32,6 +45,19 @@ class DummyPointCloud:
 
 
 def _dummy_read_point_cloud(path):
+    """Generate a dummy point cloud for the given file.
+
+    Parameters
+    ----------
+    path : path-like
+        Path to the PLY file.
+
+    Returns
+    -------
+    DummyPointCloud
+        Placeholder point cloud instance.
+    """
+
     return DummyPointCloud()
 
 
@@ -53,12 +79,30 @@ from m3c2.core.boundingbox_service import (
 
 
 def test_read_ply_missing(tmp_path):
+    """Ensure ``read_ply`` raises when the source file is absent.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory provided by ``pytest``.
+    """
+
     missing_path = tmp_path / "missing.ply"
     with pytest.raises(FileNotFoundError):
         read_ply(missing_path)
 
 
 def test_read_ply_empty(tmp_path, monkeypatch):
+    """Check that reading an empty cloud triggers a ``RuntimeError``.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory in which an empty file is created.
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to override the point-cloud reader.
+    """
+
     empty_path = tmp_path / "empty.ply"
     empty_path.touch()
 
@@ -71,6 +115,12 @@ def test_read_ply_empty(tmp_path, monkeypatch):
 
 
 def test_round_trip_transformations():
+    """Verify that frame transformations are inverse operations.
+
+    Random points are rotated and translated to a local frame and back to
+    world coordinates, ensuring the round-trip recovers the original data.
+    """
+
     rng = np.random.default_rng(42)
     xyz = rng.random((10, 3))
     Q, _ = np.linalg.qr(rng.standard_normal((3, 3)))
@@ -85,6 +135,14 @@ def test_round_trip_transformations():
 
 
 def test_clip_obbf_aligned_many_mismatched_input_lengths(monkeypatch):
+    """Confirm mismatched path lists raise a ``ValueError``.
+
+    Parameters
+    ----------
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to replace the ``open3d`` module dependency.
+    """
+
     monkeypatch.setattr("m3c2.core.boundingbox_service.o3d", MagicMock())
     with pytest.raises(ValueError):
         clip_obbf_aligned_many(["a.ply", "b.ply"], ["out.ply"])
