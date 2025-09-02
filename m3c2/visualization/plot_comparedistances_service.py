@@ -19,7 +19,20 @@ logger = logging.getLogger(__name__)
 
 
 class PlotServiceCompareDistances:
-    """Facade orchestrating distance comparison plots."""
+    """High level façade for creating distance comparison plots.
+
+    The service exposes a single entry point that coordinates several
+    specialized plotting routines.  Based on the provided
+    :class:`~m3c2.config.plot_config.PlotConfig`, it resolves where the
+    output should be stored (``config.path``) and which distance datasets
+    should be compared (``config.folder_ids`` and ``config.filenames``).
+
+    The generated diagrams are controlled by
+    :class:`~m3c2.config.plot_config.PlotOptionsComparedistances`.  Setting
+    ``plot_blandaltman``, ``plot_passingbablok`` and/or
+    ``plot_linearregression`` toggles the respective Bland–Altman,
+    Passing–Bablok, and linear regression plots.
+    """
 
     @classmethod
     def overlay_plots(cls, config: PlotConfig, options: PlotOptionsComparedistances) -> None:
