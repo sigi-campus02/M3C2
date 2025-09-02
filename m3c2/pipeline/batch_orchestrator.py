@@ -202,6 +202,8 @@ class BatchOrchestrator:
                 self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
             except (IOError, ValueError):
                 logger.exception("Fehler bei der Berechnung der Statistik")
+            except RuntimeError:
+                logger.exception("Fehler bei der Berechnung der Statistik")
             except Exception:
                 logger.exception(
                     "Unerwarteter Fehler bei der Berechnung der Statistik"
