@@ -112,9 +112,17 @@ class BatchOrchestrator:
                     cfg.folder_id,
                     cfg.filename_ref,
                 )
-            except Exception:
+            except RuntimeError:
                 logger.exception(
                     "[Job] Unerwarteter Fehler in Job '%s' (Version %s)",
+                    cfg.folder_id,
+                    cfg.filename_ref,
+                )
+                if self.fail_fast:
+                    raise
+            except Exception:
+                logger.exception(
+                    "[Job] Unbekannter Fehler in Job '%s' (Version %s)",
                     cfg.folder_id,
                     cfg.filename_ref,
                 )
@@ -202,7 +210,7 @@ class BatchOrchestrator:
                 self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
             except (IOError, ValueError):
                 logger.exception("Fehler bei der Berechnung der Statistik")
-            except Exception:
+            except RuntimeError:
                 logger.exception(
                     "Unerwarteter Fehler bei der Berechnung der Statistik"
                 )
@@ -247,7 +255,7 @@ class BatchOrchestrator:
             )
         except (IOError, ValueError):
             logger.exception("Fehler bei der Berechnung der Statistik")
-        except Exception:
+        except RuntimeError:
             logger.exception(
                 "Unerwarteter Fehler bei der Berechnung der Statistik"
             )
@@ -387,7 +395,7 @@ class BatchOrchestrator:
             self.outlier_handler.exclude_outliers(cfg, out_base, tag)
         except (IOError, ValueError):
             logger.exception("Fehler beim Entfernen von Ausreißern")
-        except Exception:
+        except RuntimeError:
             logger.exception(
                 "Unerwarteter Fehler beim Entfernen von Ausreißern"
             )
@@ -405,7 +413,7 @@ class BatchOrchestrator:
             logger.exception(
                 "Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
             )
-        except Exception:
+        except RuntimeError:
             logger.exception(
                 "Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
             )
