@@ -215,6 +215,21 @@ class StatisticsService:
         outlier_multiplicator: float = 3.0,
         outlier_method: str = "rmse",
     ) -> pd.DataFrame:
+        """
+        Gather M3C2 distance statistics from multiple project folders and return
+        them in a single table.
+
+        For each folder ID the method looks for distance and parameter files
+        produced by either the Python or CloudCompare implementation, depending
+        on ``process_python_CC``. Loaded values are passed to :meth:`calc_stats`
+        and the resulting metrics are collected. When ``out_path`` is provided
+        the aggregated dataframe is appended to an Excel or JSON file.
+
+        Returns
+        -------
+        pandas.DataFrame
+            One row per processed folder with the computed statistics.
+        """
         logger.info("Starting compute_m3c2_statistics for %d folders", len(folder_ids))
         rows: List[Dict] = []
 
