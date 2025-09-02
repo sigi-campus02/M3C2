@@ -11,6 +11,26 @@ from m3c2.io.logging_utils import setup_logging
 
 
 def test_setup_logging_idempotent(tmp_path: Path) -> None:
+    """Verify that repeated logging configuration calls have no side effects.
+
+    Parameters
+    ----------
+    tmp_path : Path
+        Temporary directory provided by ``pytest`` to store the log file.
+
+    Returns
+    -------
+    None
+        This function performs assertions and returns nothing.
+
+    Examples
+    --------
+    >>> from pathlib import Path
+    >>> from m3c2.io.logging_utils import setup_logging
+    >>> log_file = Path("example.log")
+    >>> setup_logging(log_file=str(log_file))
+    >>> setup_logging(log_file=str(log_file))
+    """
     logger = logging.getLogger()
     # ensure clean logger state
     for handler in list(logger.handlers):
