@@ -282,6 +282,24 @@ def overlay_plots(config: PlotConfig, options: PlotOptions) -> None:
 
 
 def summary_pdf(config: PlotConfig) -> None:
+    """Assemble a PDF summary from previously generated plot PNGs.
+
+    Parameters
+    ----------
+    config : PlotConfig
+        Configuration describing where plot images are stored. The ``path``
+        attribute must point to a directory containing the PNG files and is
+        also used as the destination for the resulting PDF.
+
+    Produces
+    --------
+    A two-page document named ``ALLFOLDERS_comparison_report.pdf`` located in
+    ``config.path``. Each page arranges the PNG files
+    ``ALLFOLDERS_ALL_WITH_<suffix>.png`` and
+    ``ALLFOLDERS_ALL_INLIER_<suffix>.png`` for supported plot types (overlay
+    histograms, Gaussian and Weibull fits, box plots, Q-Q plots and grouped
+    bar charts) into a 2×3 grid.
+    """
     plot_types = [
         ("OverlayHistogramm", "Histogramm", (0, 0)),
         ("Boxplot", "Boxplot", (0, 1)),
