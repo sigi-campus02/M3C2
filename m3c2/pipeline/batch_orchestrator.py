@@ -127,7 +127,10 @@ class BatchOrchestrator:
         )
         start = time.perf_counter()
 
-        ds, mov, ref, corepoints = self.data_loader.load_data(cfg)
+        ds, mov, ref, corepoints = self.data_loader.load_data(cfg, type="multicloud")
+
+        ds_single, single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+
         tag = self._run_tag(cfg)
         out_base = ds.config.folder
 
@@ -174,7 +177,7 @@ class BatchOrchestrator:
 
         try:
             logger.info("[Statistics] Berechne Statistiken …")
-            self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
+            self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
         except (IOError, ValueError):
             logger.exception("Fehler bei der Berechnung der Statistik")
         except Exception:

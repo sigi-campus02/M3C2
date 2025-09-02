@@ -61,6 +61,7 @@ def _convex_hull_area_xy(xy: np.ndarray) -> float:
 
 
 def _calc_single_cloud_stats(
+    
     points: np.ndarray,
     area_m2: Optional[float] = None,
     radius: float = 1.0,
@@ -69,6 +70,12 @@ def _calc_single_cloud_stats(
     use_convex_hull: bool = True,
 ) -> Dict:
     """Berechne Qualitätsmetriken für eine Punktwolke."""
+    
+    logger.debug(f"points type: {type(points)}, shape: {getattr(points, 'shape', None)}")
+    logger.debug(f"points: {points}")
+    points = np.asarray(points)
+    logger.debug(f"points shape: {points.shape}")
+
     if points is None or len(points) == 0:
         raise ValueError("Points array is empty")
     P = np.asarray(points, dtype=float)

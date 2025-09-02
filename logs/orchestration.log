@@ -1684,3 +1684,730 @@ TypeError: StatisticsRunner.compute_statistics() takes 5 positional arguments bu
 2025-09-02 12:38:43,765 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=5048.960, roughness_mean=0.022
 2025-09-02 12:38:44,695 [INFO] m3c2.pipeline.batch_orchestrator - [Job] 0342-0349 abgeschlossen in 264.480s
 2025-09-02 12:38:44,712 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 13:08:34,451 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:08:34,451 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:08:34,451 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:08:34,451 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:08:34,451 [INFO] CLIApp - Single statistics filename for processing: ref_ai
+2025-09-02 13:08:34,451 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:08:34,451 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:08:34,451 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:08:34,451 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:08:34,492 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:08:36,772 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:08:36,852 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:08:36,852 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.398s
+2025-09-02 13:08:36,854 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 132, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 112, in _load_data_single
+    cfg.filename_singlecloud
+AttributeError: 'PipelineConfig' object has no attribute 'filename_singlecloud'. Did you mean: 'filename_singlestats'?
+2025-09-02 13:08:36,857 [ERROR] CLIApp - Error occurred while running orchestrator: 'PipelineConfig' object has no attribute 'filename_singlecloud'
+2025-09-02 13:11:17,556 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:11:17,556 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:11:17,556 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:11:17,556 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:11:17,556 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:11:17,556 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:11:17,556 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:11:17,556 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:11:17,556 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:11:17,608 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:11:19,856 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:11:19,929 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:11:19,929 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.367s
+2025-09-02 13:11:19,937 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 132, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 112, in _load_data_single
+    cfg.filename_singlecloud
+AttributeError: 'PipelineConfig' object has no attribute 'filename_singlecloud'. Did you mean: 'filename_singlestats'?
+2025-09-02 13:11:19,937 [ERROR] CLIApp - Error occurred while running orchestrator: 'PipelineConfig' object has no attribute 'filename_singlecloud'
+2025-09-02 13:12:03,026 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:12:03,026 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:12:03,026 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:12:03,026 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:12:03,026 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:12:03,026 [ERROR] __main__ - Error running CLI application: PipelineConfig.__init__() got an unexpected keyword argument 'filename_singlestats'
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\main.py", line 35, in main
+    CLIApp().run()
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\cli\cli.py", line 263, in run
+    configs = self.create_pipeline_configurations(folder_ids, arg)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\cli\cli.py", line 195, in create_pipeline_configurations
+    config = PipelineConfig(
+             ^^^^^^^^^^^^^^^
+TypeError: PipelineConfig.__init__() got an unexpected keyword argument 'filename_singlestats'
+2025-09-02 13:12:46,230 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:12:46,230 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:12:46,230 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:12:46,230 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:12:46,230 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:12:46,230 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:12:46,230 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:12:46,230 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:12:46,230 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:12:46,270 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:12:48,514 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:12:48,582 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:12:48,582 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.358s
+2025-09-02 13:12:48,582 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:12:48,635 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-02 13:12:50,824 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:12:50,901 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:12:50,901 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.310s
+2025-09-02 13:12:50,901 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 13:12:50,901 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 13:12:51,258 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 0.014339
+2025-09-02 13:12:51,258 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 0.043016
+2025-09-02 13:12:52,626 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt
+2025-09-02 13:12:52,626 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt
+2025-09-02 13:12:52,626 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 709128
+2025-09-02 13:12:52,634 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 9634
+2025-09-02 13:12:52,634 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 699494
+2025-09-02 13:12:52,634 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 13:12:52,634 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 15636
+2025-09-02 13:12:52,634 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 683858
+2025-09-02 13:12:52,634 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entfernen abgeschlossen
+2025-09-02 13:12:52,634 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:12:52,634 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:12:52,677 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt -> data\0342-0349\python_mov-ref_outlier_rmse.ply (15636 Punkte, SF='distance')
+2025-09-02 13:12:54,155 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_mov-ref_inlier_rmse.ply (683858 Punkte, SF='distance')
+2025-09-02 13:12:54,155 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 13:12:54,158 [ERROR] m3c2.pipeline.batch_orchestrator - Unerwarteter Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 95, in _single_cloud_handler
+    f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_singlestats} …",
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PipelineConfig' object has no attribute 'filename_singlestats'. Did you mean: 'filename_singlecloud'?
+2025-09-02 13:12:54,161 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 95, in _single_cloud_handler
+    f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_singlestats} …",
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PipelineConfig' object has no attribute 'filename_singlestats'. Did you mean: 'filename_singlecloud'?
+2025-09-02 13:12:54,162 [ERROR] CLIApp - Error occurred while running orchestrator: 'PipelineConfig' object has no attribute 'filename_singlestats'
+2025-09-02 13:13:35,486 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:13:35,486 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:13:35,486 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:13:35,486 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:13:35,486 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:13:35,486 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:13:35,486 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:13:35,486 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:13:35,486 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:13:35,527 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:13:37,749 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:13:37,829 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:13:37,830 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.338s
+2025-09-02 13:13:37,830 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:13:37,865 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-02 13:13:40,050 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:13:40,130 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:13:40,131 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.301s
+2025-09-02 13:13:40,131 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 13:13:40,131 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 13:13:40,497 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 0.014339
+2025-09-02 13:13:40,497 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 0.043016
+2025-09-02 13:13:41,891 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt
+2025-09-02 13:13:41,891 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt
+2025-09-02 13:13:41,891 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 709128
+2025-09-02 13:13:41,893 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 9634
+2025-09-02 13:13:41,893 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 699494
+2025-09-02 13:13:41,893 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 13:13:41,893 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 15636
+2025-09-02 13:13:41,893 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 683858
+2025-09-02 13:13:41,893 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entfernen abgeschlossen
+2025-09-02 13:13:41,893 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:13:41,893 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:13:41,933 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt -> data\0342-0349\python_mov-ref_outlier_rmse.ply (15636 Punkte, SF='distance')
+2025-09-02 13:13:43,445 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_mov-ref_inlier_rmse.ply (683858 Punkte, SF='distance')
+2025-09-02 13:13:43,445 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 13:13:43,445 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken 0342-0349,ref_ai …
+2025-09-02 13:13:43,448 [ERROR] m3c2.pipeline.batch_orchestrator - Unerwarteter Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 108, in _single_cloud_handler
+    StatisticsService.calc_single_cloud_stats(
+TypeError: StatisticsService.calc_single_cloud_stats() got an unexpected keyword argument 'filename_singlecloud'
+2025-09-02 13:13:43,450 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 108, in _single_cloud_handler
+    StatisticsService.calc_single_cloud_stats(
+TypeError: StatisticsService.calc_single_cloud_stats() got an unexpected keyword argument 'filename_singlecloud'
+2025-09-02 13:13:43,451 [ERROR] CLIApp - Error occurred while running orchestrator: StatisticsService.calc_single_cloud_stats() got an unexpected keyword argument 'filename_singlecloud'
+2025-09-02 13:15:11,635 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:15:11,636 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:15:11,636 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:15:11,636 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:15:11,637 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:15:11,637 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:15:11,637 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:15:11,638 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:15:11,638 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:15:11,675 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:15:13,919 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:15:14,005 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:15:14,005 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.366s
+2025-09-02 13:15:14,006 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:15:14,043 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-02 13:15:16,231 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:15:16,307 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:15:16,307 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.307s
+2025-09-02 13:15:16,307 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 13:15:16,307 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 13:15:16,671 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 0.014339
+2025-09-02 13:15:16,671 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 0.043016
+2025-09-02 13:15:18,039 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt
+2025-09-02 13:15:18,039 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt
+2025-09-02 13:15:18,039 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 709128
+2025-09-02 13:15:18,053 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 9634
+2025-09-02 13:15:18,053 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 699494
+2025-09-02 13:15:18,053 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 13:15:18,053 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 15636
+2025-09-02 13:15:18,053 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 683858
+2025-09-02 13:15:18,053 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entfernen abgeschlossen
+2025-09-02 13:15:18,053 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:15:18,053 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:15:18,096 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt -> data\0342-0349\python_mov-ref_outlier_rmse.ply (15636 Punkte, SF='distance')
+2025-09-02 13:15:19,583 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_mov-ref_inlier_rmse.ply (683858 Punkte, SF='distance')
+2025-09-02 13:15:19,583 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 13:15:19,584 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken 0342-0349,ref_ai …
+2025-09-02 13:15:19,586 [ERROR] m3c2.pipeline.batch_orchestrator - Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 108, in _single_cloud_handler
+    StatisticsService.calc_single_cloud_stats(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\service.py", line 441, in calc_single_cloud_stats
+    for fname, epoch in ((filename_singlecloud, singlecloud)):
+        ^^^^^^^^^^^^
+ValueError: too many values to unpack (expected 2)
+2025-09-02 13:15:19,589 [INFO] m3c2.pipeline.batch_orchestrator - [Job] 0342-0349 abgeschlossen in 7.951s
+2025-09-02 13:15:19,589 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 13:17:21,937 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:17:21,937 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:17:21,937 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:17:21,937 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:17:21,937 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:17:21,937 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:17:21,937 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:17:21,937 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:17:21,937 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:17:21,984 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:17:24,205 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:17:24,285 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:17:24,285 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.333s
+2025-09-02 13:17:24,285 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:17:24,321 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-02 13:17:26,504 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:17:26,582 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:17:26,582 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.297s
+2025-09-02 13:17:26,583 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 13:17:26,583 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 13:17:26,941 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 0.014339
+2025-09-02 13:17:26,941 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 0.043016
+2025-09-02 13:17:28,317 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt
+2025-09-02 13:17:28,317 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt
+2025-09-02 13:17:28,317 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 709128
+2025-09-02 13:17:28,317 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 9634
+2025-09-02 13:17:28,317 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 699494
+2025-09-02 13:17:28,317 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 13:17:28,317 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 15636
+2025-09-02 13:17:28,317 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 683858
+2025-09-02 13:17:28,317 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entfernen abgeschlossen
+2025-09-02 13:17:28,317 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:17:28,325 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:17:28,366 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt -> data\0342-0349\python_mov-ref_outlier_rmse.ply (15636 Punkte, SF='distance')
+2025-09-02 13:17:29,841 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_mov-ref_inlier_rmse.ply (683858 Punkte, SF='distance')
+2025-09-02 13:17:29,841 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 13:17:29,841 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken 0342-0349,ref_ai …
+2025-09-02 13:17:29,851 [ERROR] m3c2.pipeline.batch_orchestrator - Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 108, in _single_cloud_handler
+    StatisticsService.calc_single_cloud_stats(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\service.py", line 442, in calc_single_cloud_stats
+    stats = _calc_single_cloud_stats(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\cloud_quality.py", line 74, in _calc_single_cloud_stats
+    P = np.asarray(points, dtype=float)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2025-09-02 13:17:29,863 [INFO] m3c2.pipeline.batch_orchestrator - [Job] 0342-0349 abgeschlossen in 7.913s
+2025-09-02 13:17:29,863 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 13:23:19,014 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:23:19,029 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:23:19,029 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:23:19,029 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:23:19,029 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:23:19,029 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:23:19,029 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:23:19,029 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:23:19,029 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:23:19,074 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:23:21,291 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:23:21,371 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:23:21,371 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.340s
+2025-09-02 13:23:21,371 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:23:21,413 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-02 13:23:23,609 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:23:23,689 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:23:23,690 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.318s
+2025-09-02 13:23:23,690 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 13:23:23,690 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 13:23:24,049 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 0.014339
+2025-09-02 13:23:24,049 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 0.043016
+2025-09-02 13:23:25,427 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt
+2025-09-02 13:23:25,427 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt
+2025-09-02 13:23:25,427 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 709128
+2025-09-02 13:23:25,429 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 9634
+2025-09-02 13:23:25,429 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 699494
+2025-09-02 13:23:25,429 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 13:23:25,429 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 15636
+2025-09-02 13:23:25,429 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 683858
+2025-09-02 13:23:25,429 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entfernen abgeschlossen
+2025-09-02 13:23:25,429 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:23:25,429 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:23:25,472 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt -> data\0342-0349\python_mov-ref_outlier_rmse.ply (15636 Punkte, SF='distance')
+2025-09-02 13:23:26,978 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_mov-ref_inlier_rmse.ply (683858 Punkte, SF='distance')
+2025-09-02 13:23:26,978 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 13:23:26,978 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken 0342-0349,ref_ai …
+2025-09-02 13:23:26,979 [INFO] m3c2.core.statistics.service - Processing single cloud 0342-0349, ref_ai …
+2025-09-02 13:23:26,979 [INFO] m3c2.core.statistics.service - Point count: 2 | Array shape: N/A
+2025-09-02 13:23:26,981 [ERROR] m3c2.pipeline.batch_orchestrator - Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 108, in _single_cloud_handler
+    StatisticsService.calc_single_cloud_stats(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\service.py", line 445, in calc_single_cloud_stats
+    stats = _calc_single_cloud_stats(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\cloud_quality.py", line 74, in _calc_single_cloud_stats
+    P = np.asarray(points, dtype=float)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+2025-09-02 13:23:26,981 [INFO] m3c2.pipeline.batch_orchestrator - [Job] 0342-0349 abgeschlossen in 7.953s
+2025-09-02 13:23:26,981 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 13:29:39,038 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:29:39,038 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:29:39,038 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:29:39,038 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:29:39,038 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:29:39,038 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:29:39,038 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:29:39,038 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:29:39,038 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:29:39,093 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:29:41,326 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:29:41,399 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:29:41,399 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.354s
+2025-09-02 13:30:02,167 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:30:02,375 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-02 13:30:55,675 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:30:55,675 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:30:55,675 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:30:55,675 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:30:55,675 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:30:55,675 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:30:55,675 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:30:55,675 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:30:55,675 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:30:55,726 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:30:57,962 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:30:58,044 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:30:58,045 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.356s
+2025-09-02 13:31:01,874 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:31:01,928 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-02 13:31:10,002 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:31:10,308 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:31:23,621 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 25.088s
+2025-09-02 13:31:40,254 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 13:31:41,014 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 13:31:41,374 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 0.014339
+2025-09-02 13:31:41,374 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 0.043016
+2025-09-02 13:31:42,754 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt
+2025-09-02 13:31:42,754 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt
+2025-09-02 13:31:42,754 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 709128
+2025-09-02 13:31:42,770 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 9634
+2025-09-02 13:31:42,770 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 699494
+2025-09-02 13:31:42,771 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 13:31:42,771 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 15636
+2025-09-02 13:31:42,771 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 683858
+2025-09-02 13:31:42,772 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entfernen abgeschlossen
+2025-09-02 13:31:43,958 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:31:44,495 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:31:44,545 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt -> data\0342-0349\python_mov-ref_outlier_rmse.ply (15636 Punkte, SF='distance')
+2025-09-02 13:31:46,028 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_mov-ref_inlier_rmse.ply (683858 Punkte, SF='distance')
+2025-09-02 13:31:48,982 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 13:32:00,733 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken 0342-0349,ref_ai …
+2025-09-02 13:33:21,948 [ERROR] py4dgeo - Normals for this Epoch have not been calculated! Please use Epoch.calculate_normals or load externally calculated normals.
+2025-09-02 13:33:23,957 [ERROR] py4dgeo - Normals for this Epoch have not been calculated! Please use Epoch.calculate_normals or load externally calculated normals.
+2025-09-02 13:33:51,173 [INFO] m3c2.core.statistics.service - Processing single cloud 0342-0349, ref_ai …
+2025-09-02 13:33:51,597 [ERROR] py4dgeo - Normals for this Epoch have not been calculated! Please use Epoch.calculate_normals or load externally calculated normals.
+2025-09-02 13:33:53,877 [INFO] m3c2.core.statistics.service - Point count: 3 | Array shape: N/A
+2025-09-02 13:33:54,287 [ERROR] py4dgeo - Normals for this Epoch have not been calculated! Please use Epoch.calculate_normals or load externally calculated normals.
+2025-09-02 13:33:57,508 [ERROR] py4dgeo - Normals for this Epoch have not been calculated! Please use Epoch.calculate_normals or load externally calculated normals.
+2025-09-02 13:33:58,654 [ERROR] py4dgeo - Normals for this Epoch have not been calculated! Please use Epoch.calculate_normals or load externally calculated normals.
+2025-09-02 13:34:00,351 [ERROR] py4dgeo - Normals for this Epoch have not been calculated! Please use Epoch.calculate_normals or load externally calculated normals.
+2025-09-02 13:34:01,271 [ERROR] py4dgeo - Normals for this Epoch have not been calculated! Please use Epoch.calculate_normals or load externally calculated normals.
+2025-09-02 13:34:02,154 [ERROR] py4dgeo - Normals for this Epoch have not been calculated! Please use Epoch.calculate_normals or load externally calculated normals.
+2025-09-02 13:34:03,240 [ERROR] py4dgeo - Normals for this Epoch have not been calculated! Please use Epoch.calculate_normals or load externally calculated normals.
+2025-09-02 13:34:04,041 [ERROR] py4dgeo - Normals for this Epoch have not been calculated! Please use Epoch.calculate_normals or load externally calculated normals.
+2025-09-02 13:34:09,413 [ERROR] m3c2.pipeline.batch_orchestrator - Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 108, in _single_cloud_handler
+    StatisticsService.calc_single_cloud_stats(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\service.py", line 443, in calc_single_cloud_stats
+    stats = _calc_single_cloud_stats(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\cloud_quality.py", line 74, in _calc_single_cloud_stats
+    P = np.asarray(points, dtype=float)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (3,) + inhomogeneous part.
+2025-09-02 13:34:10,434 [INFO] m3c2.pipeline.batch_orchestrator - [Job] 0342-0349 abgeschlossen in 194.756s
+2025-09-02 13:37:11,750 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:37:11,750 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:37:11,750 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:37:11,750 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:37:11,750 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:37:11,750 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:37:11,765 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:37:11,765 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:37:11,765 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:37:11,803 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:37:14,049 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:37:14,128 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:37:14,128 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.363s
+2025-09-02 13:37:17,563 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:37:17,606 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-02 13:37:25,960 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:37:26,275 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:37:32,466 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 17.801s
+2025-09-02 13:37:33,119 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 13:37:33,119 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 13:37:33,518 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 0.014339
+2025-09-02 13:37:33,518 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 0.043016
+2025-09-02 13:37:34,909 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt
+2025-09-02 13:37:34,909 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt
+2025-09-02 13:37:34,909 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 709128
+2025-09-02 13:37:34,909 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 9634
+2025-09-02 13:37:34,909 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 699494
+2025-09-02 13:37:34,909 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 13:37:34,909 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 15636
+2025-09-02 13:37:34,909 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 683858
+2025-09-02 13:37:34,909 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entfernen abgeschlossen
+2025-09-02 13:37:34,909 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:37:34,909 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:37:34,958 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt -> data\0342-0349\python_mov-ref_outlier_rmse.ply (15636 Punkte, SF='distance')
+2025-09-02 13:37:36,429 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_mov-ref_inlier_rmse.ply (683858 Punkte, SF='distance')
+2025-09-02 13:37:36,430 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 13:37:36,430 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken 0342-0349,ref_ai …
+2025-09-02 13:37:42,154 [INFO] m3c2.core.statistics.service - Processing single cloud 0342-0349, ref_ai …
+2025-09-02 13:37:42,155 [INFO] m3c2.core.statistics.service - Point count: 3 | Array shape: N/A
+2025-09-02 13:37:42,159 [ERROR] m3c2.pipeline.batch_orchestrator - Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 108, in _single_cloud_handler
+    StatisticsService.calc_single_cloud_stats(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\service.py", line 443, in calc_single_cloud_stats
+    stats = _calc_single_cloud_stats(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\cloud_quality.py", line 79, in _calc_single_cloud_stats
+    P = np.asarray(points, dtype=float)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (3,) + inhomogeneous part.
+2025-09-02 13:37:42,162 [INFO] m3c2.pipeline.batch_orchestrator - [Job] 0342-0349 abgeschlossen in 30.397s
+2025-09-02 13:37:42,163 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 13:39:43,937 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:39:43,937 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:39:43,937 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:39:43,937 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:39:43,937 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:39:43,937 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:39:43,937 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:39:43,937 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:39:43,937 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:39:43,980 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:39:46,179 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:39:46,259 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:39:46,259 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.315s
+2025-09-02 13:39:46,260 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:39:46,302 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-02 13:39:48,473 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:39:48,555 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:39:48,556 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.296s
+2025-09-02 13:39:48,556 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 13:39:48,556 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 13:39:48,912 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 0.014339
+2025-09-02 13:39:48,912 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 0.043016
+2025-09-02 13:39:50,319 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt
+2025-09-02 13:39:50,321 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt
+2025-09-02 13:39:50,321 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 709128
+2025-09-02 13:39:50,321 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 9634
+2025-09-02 13:39:50,321 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 699494
+2025-09-02 13:39:50,321 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 13:39:50,321 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 15636
+2025-09-02 13:39:50,321 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 683858
+2025-09-02 13:39:50,321 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entfernen abgeschlossen
+2025-09-02 13:39:50,321 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:39:50,321 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:39:50,364 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt -> data\0342-0349\python_mov-ref_outlier_rmse.ply (15636 Punkte, SF='distance')
+2025-09-02 13:39:51,875 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_mov-ref_inlier_rmse.ply (683858 Punkte, SF='distance')
+2025-09-02 13:39:51,875 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 13:39:51,875 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken 0342-0349,ref_ai …
+2025-09-02 13:39:51,875 [ERROR] m3c2.pipeline.batch_orchestrator - Unerwarteter Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 108, in _single_cloud_handler
+    StatisticsService.calc_single_cloud_stats(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\service.py", line 440, in calc_single_cloud_stats
+    points = np.asarray(points)
+                        ^^^^^^
+UnboundLocalError: cannot access local variable 'points' where it is not associated with a value
+2025-09-02 13:39:51,875 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 108, in _single_cloud_handler
+    StatisticsService.calc_single_cloud_stats(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\service.py", line 440, in calc_single_cloud_stats
+    points = np.asarray(points)
+                        ^^^^^^
+UnboundLocalError: cannot access local variable 'points' where it is not associated with a value
+2025-09-02 13:39:51,886 [ERROR] CLIApp - Error occurred while running orchestrator: cannot access local variable 'points' where it is not associated with a value
+2025-09-02 13:41:51,832 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:41:51,848 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:41:51,848 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:41:51,848 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:41:51,848 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:41:51,848 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:41:51,848 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:41:51,848 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:41:51,848 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:41:51,894 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:41:54,129 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:41:54,208 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:41:54,208 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.359s
+2025-09-02 13:41:54,208 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:41:54,250 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-02 13:41:56,411 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:41:56,492 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:41:56,493 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.284s
+2025-09-02 13:41:56,493 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 13:41:56,493 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 13:41:56,852 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 0.014339
+2025-09-02 13:41:56,852 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 0.043016
+2025-09-02 13:41:58,243 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt
+2025-09-02 13:41:58,243 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt
+2025-09-02 13:41:58,243 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 709128
+2025-09-02 13:41:58,243 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 9634
+2025-09-02 13:41:58,243 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 699494
+2025-09-02 13:41:58,243 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 13:41:58,243 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 15636
+2025-09-02 13:41:58,243 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 683858
+2025-09-02 13:41:58,243 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entfernen abgeschlossen
+2025-09-02 13:41:58,243 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:41:58,251 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:41:58,290 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt -> data\0342-0349\python_mov-ref_outlier_rmse.ply (15636 Punkte, SF='distance')
+2025-09-02 13:41:59,758 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_mov-ref_inlier_rmse.ply (683858 Punkte, SF='distance')
+2025-09-02 13:41:59,759 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 13:41:59,759 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken 0342-0349,ref_ai …
+2025-09-02 13:41:59,759 [INFO] m3c2.core.statistics.service - Processing single cloud 0342-0349, ref_ai …
+2025-09-02 13:41:59,760 [INFO] m3c2.core.statistics.service - Point count: 3 | Array shape: N/A
+2025-09-02 13:41:59,760 [ERROR] m3c2.pipeline.batch_orchestrator - Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 108, in _single_cloud_handler
+    StatisticsService.calc_single_cloud_stats(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\service.py", line 444, in calc_single_cloud_stats
+    stats = _calc_single_cloud_stats(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\cloud_quality.py", line 76, in _calc_single_cloud_stats
+    points = np.asarray(points)
+             ^^^^^^^^^^^^^^^^^^
+ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (3,) + inhomogeneous part.
+2025-09-02 13:41:59,760 [INFO] m3c2.pipeline.batch_orchestrator - [Job] 0342-0349 abgeschlossen in 7.916s
+2025-09-02 13:41:59,766 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 13:43:44,701 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:43:44,701 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:43:44,701 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:43:44,701 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:43:44,701 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:43:44,701 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:43:44,701 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:43:44,717 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:43:44,717 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:43:44,746 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:43:46,999 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:43:47,086 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:43:47,086 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.369s
+2025-09-02 13:43:47,087 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:43:47,119 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-02 13:43:49,311 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:43:49,394 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:43:49,394 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.308s
+2025-09-02 13:43:49,394 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 13:43:49,394 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 13:43:49,750 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 0.014339
+2025-09-02 13:43:49,750 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 0.043016
+2025-09-02 13:43:51,157 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt
+2025-09-02 13:43:51,157 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt
+2025-09-02 13:43:51,157 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 709128
+2025-09-02 13:43:51,168 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 9634
+2025-09-02 13:43:51,168 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 699494
+2025-09-02 13:43:51,168 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 13:43:51,168 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 15636
+2025-09-02 13:43:51,168 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 683858
+2025-09-02 13:43:51,168 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entfernen abgeschlossen
+2025-09-02 13:43:51,168 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:43:51,168 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:43:51,206 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt -> data\0342-0349\python_mov-ref_outlier_rmse.ply (15636 Punkte, SF='distance')
+2025-09-02 13:43:52,696 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_mov-ref_inlier_rmse.ply (683858 Punkte, SF='distance')
+2025-09-02 13:43:52,697 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 13:43:52,697 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken 0342-0349,ref_ai …
+2025-09-02 13:43:52,697 [INFO] m3c2.core.statistics.service - Processing single cloud 0342-0349, ref_ai …
+2025-09-02 13:43:52,697 [INFO] m3c2.core.statistics.service - Point count: 3 | Array shape: N/A
+2025-09-02 13:43:52,701 [ERROR] m3c2.pipeline.batch_orchestrator - Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 180, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 65, in compute_statistics
+    return self._single_cloud_handler(cfg, single_cloud)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 108, in _single_cloud_handler
+    StatisticsService.calc_single_cloud_stats(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\service.py", line 444, in calc_single_cloud_stats
+    stats = _calc_single_cloud_stats(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\cloud_quality.py", line 76, in _calc_single_cloud_stats
+    points = np.asarray(points)
+             ^^^^^^^^^^^^^^^^^^
+ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (3,) + inhomogeneous part.
+2025-09-02 13:43:52,704 [INFO] m3c2.pipeline.batch_orchestrator - [Job] 0342-0349 abgeschlossen in 7.987s
+2025-09-02 13:43:52,704 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 13:44:42,889 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:44:42,889 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:44:42,891 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:44:42,891 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:44:42,891 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:44:42,891 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:44:42,891 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:44:42,891 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:44:42,891 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:44:42,932 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:44:45,171 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:44:45,255 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:44:45,256 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.364s
+2025-09-02 13:44:45,256 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:44:45,299 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref_ai.xyz'
+2025-09-02 13:44:47,500 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:44:47,580 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:44:47,581 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.324s
+2025-09-02 13:44:47,581 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 13:44:47,581 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 13:44:47,935 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 0.014339
+2025-09-02 13:44:47,935 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 0.043016
+2025-09-02 13:44:49,325 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt
+2025-09-02 13:44:49,325 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt
+2025-09-02 13:44:49,325 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 709128
+2025-09-02 13:44:49,325 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 9634
+2025-09-02 13:44:49,325 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 699494
+2025-09-02 13:44:49,325 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 13:44:49,325 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 15636
+2025-09-02 13:44:49,325 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 683858
+2025-09-02 13:44:49,325 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entfernen abgeschlossen
+2025-09-02 13:44:49,333 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:44:49,333 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 13:44:49,373 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt -> data\0342-0349\python_mov-ref_outlier_rmse.ply (15636 Punkte, SF='distance')
+2025-09-02 13:44:50,850 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt -> data\0342-0349\python_mov-ref_inlier_rmse.ply (683858 Punkte, SF='distance')
+2025-09-02 13:44:50,850 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 13:44:50,850 [INFO] m3c2.pipeline.statistics_runner - [Stats on Distance] Berechne M3C2-Statistiken 0342-0349,ref …
+2025-09-02 13:44:50,851 [INFO] m3c2.core.statistics.service - Starting compute_m3c2_statistics for 1 folders
+2025-09-02 13:44:50,851 [INFO] m3c2.core.statistics.service - Processing Python distances: data\0342-0349\python_mov-ref_m3c2_distances.txt
+2025-09-02 13:44:50,852 [INFO] m3c2.core.statistics.service - Using Python params: data\0342-0349\python_mov-ref_m3c2_params.txt
+2025-09-02 13:44:50,947 [INFO] m3c2.core.statistics.basic_metrics - basic_stats received 699494 values
+2025-09-02 13:44:50,985 [INFO] m3c2.core.statistics.basic_metrics - basic_stats summary: min=-0.115560, max=0.132246, mean=-0.000889
+2025-09-02 13:45:05,131 [INFO] m3c2.core.statistics.basic_metrics - fit_distributions Gaussian: mu=-0.000889, std=0.014311, chi2=238689480875.462036
+2025-09-02 13:45:05,131 [INFO] m3c2.core.statistics.basic_metrics - fit_distributions Weibull: a=5.675151, b=0.103573, loc=-0.098135, chi2=9860681782068.097656
+2025-09-02 13:45:05,131 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: rmse
+2025-09-02 13:45:05,131 [INFO] m3c2.core.statistics.outliers - [Outliers] RMSE: 0.014339, Outlier-Schwelle: 0.043016
+2025-09-02 13:45:05,138 [INFO] m3c2.core.statistics.outliers - [Outliers] Outlier: +12902 / -2734 | Inlier: +264076 / -419712
+2025-09-02 13:45:05,138 [INFO] m3c2.core.statistics.basic_metrics - basic_stats received 683858 values
+2025-09-02 13:45:05,180 [INFO] m3c2.core.statistics.basic_metrics - basic_stats summary: min=-0.043002, max=0.043009, mean=-0.001821
+2025-09-02 13:45:05,464 [INFO] m3c2.core.statistics.exporters - Appended 1 rows to Excel file outputs/MARS_output/MARS_m3c2_stats_distances.xlsx
+2025-09-02 13:45:05,464 [INFO] m3c2.core.statistics.service - Finished compute_m3c2_statistics for 1 folders
+2025-09-02 13:45:05,464 [INFO] m3c2.pipeline.batch_orchestrator - [Job] 0342-0349 abgeschlossen in 22.581s
+2025-09-02 13:45:05,464 [INFO] CLIApp - Processing completed successfully.

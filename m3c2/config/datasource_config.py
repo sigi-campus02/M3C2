@@ -29,6 +29,7 @@ class DataSourceConfig:
     folder: str
     mov_basename: str = "mov"
     ref_basename: str = "ref"
+    filename_singlecloud: str = None
     mov_as_corepoints: bool = True
     use_subsampled_corepoints: int = 1
 

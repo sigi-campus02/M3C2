@@ -47,6 +47,7 @@ class PipelineConfig:
     folder_id: str
     filename_mov: str
     filename_ref: str
+    filename_singlecloud: str
     mov_as_corepoints: bool
     use_subsampled_corepoints: int
     only_stats: bool

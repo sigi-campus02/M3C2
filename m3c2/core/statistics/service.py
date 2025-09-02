@@ -377,20 +377,18 @@ class StatisticsService:
         cls,
         folder_ids: List[str],
 
-        filename_mov: str = "mov",
-        filename_ref: str = "ref",
-
-        mov_cloud: Optional[object] = None,
-        ref_cloud: Optional[object] = None,
+        filename_singlecloud: str,
+        singlecloud: Optional[object] = None,
 
         area_m2: Optional[float] = None,
         radius: float = 1.0,
         k: int = 6,
-        sample_size: Optional[int] = 100_000,
+        sample_size: Optional[int] = None,
         use_convex_hull: bool = True,
         out_path: str = "m3c2_stats_clouds.xlsx",
         sheet_name: str = "CloudStats",
         output_format: str = "excel",
+
     ) -> pd.DataFrame:
         """Compute quality metrics for point clouds in multiple folders.
 
@@ -437,21 +435,22 @@ class StatisticsService:
         """
         rows: List[Dict] = []
 
-        mov, ref = mov_cloud, ref_cloud
-
         for fid in folder_ids:
-            for fname, epoch in ((filename_mov, mov), (filename_ref, ref)):
-                pts = epoch.cloud if hasattr(epoch, "cloud") else epoch
-                stats = _calc_single_cloud_stats(
-                    pts,
-                    area_m2=area_m2,
-                    radius=radius,
-                    k=k,
-                    sample_size=sample_size,
-                    use_convex_hull=use_convex_hull,
-                )
-                stats.update({"File": fname, "Folder": fid})
-                rows.append(stats)
+
+            pts = singlecloud.cloud if hasattr(singlecloud, "cloud") else singlecloud
+            logger.info(f"Processing single cloud {fid}, {filename_singlecloud} …")
+            logger.info(f"Point count: {len(pts)} | Array shape: {pts.shape if hasattr(pts, 'shape') else 'N/A'}")
+
+            stats = _calc_single_cloud_stats(
+                pts,
+                area_m2=area_m2,
+                radius=radius,
+                k=k,
+                sample_size=sample_size,
+                use_convex_hull=use_convex_hull,
+            )
+            stats.update({"File": filename_singlecloud, "Folder": fid})
+            rows.append(stats)
 
         df_result = pd.DataFrame(rows)
         if out_path and rows:

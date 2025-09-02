@@ -68,6 +68,12 @@ class CLIApp:
             help="Name of moving point cloud file.",
         )
         parser.add_argument(
+            "--filename_singlestats",
+            type=str,
+            default="mov",
+            help="Name of single statistics file.",
+        )
+        parser.add_argument(
             "--mov_as_corepoints",
             action="store_true",
             help="Use moving point cloud as corepoints.",
@@ -191,6 +197,7 @@ class CLIApp:
                 folder_id=folder,
                 filename_ref=args.filename_ref,
                 filename_mov=args.filename_mov,
+                filename_singlecloud=args.filename_singlecloud,
                 mov_as_corepoints=args.mov_as_corepoints,
                 use_subsampled_corepoints=args.use_subsampled_corepoints,
                 sample_size=args.sample_size,
@@ -233,11 +240,14 @@ class CLIApp:
             self.logger.error("The following folders are missing in the data directory: %s", missing_folders)
             return 1
     
-        if not arg.filename_ref:
+        if not arg.filename_ref and not arg.stats_singleordistance == "single":
             self.logger.error("No ref filename specified.")
             return 1
-        if not arg.filename_mov:
+        if not arg.filename_mov and not arg.stats_singleordistance == "single":
             self.logger.error("No mov filename specified.")
+            return 1
+        if not arg.filename_singlestats and arg.stats_singleordistance == "single":
+            self.logger.error("No single stats filename specified for single-cloud statistics")
             return 1
 
         folder_ids = list(arg.folders)
@@ -246,6 +256,7 @@ class CLIApp:
         self.logger.info("Folder IDs for processing: %s", folder_ids)
         self.logger.info("Reference filename for processing: %s", arg.filename_ref)
         self.logger.info("Moving filename for processing: %s", arg.filename_mov)
+        self.logger.info("Single statistics filename for processing: %s", arg.filename_singlestats)
     
         # Building pipeline configuration
 
