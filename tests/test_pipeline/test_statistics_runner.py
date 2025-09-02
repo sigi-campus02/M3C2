@@ -1,3 +1,9 @@
+"""Tests covering the :mod:`StatisticsRunner` pipeline component.
+
+These tests validate distance statistics, single cloud statistics, and the
+handling of invalid output formats.
+"""
+
 from __future__ import annotations
 
 import logging
@@ -8,6 +14,21 @@ from m3c2.core.statistics import StatisticsService
 
 
 def test_compute_statistics_distance(monkeypatch, caplog):
+    """Validate computation and logging of distance statistics.
+
+    Parameters
+    ----------
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to replace ``compute_m3c2_statistics`` with a mock.
+    caplog : pytest.LogCaptureFixture
+        Fixture that captures log messages for assertion.
+
+    Returns
+    -------
+    None
+        This test asserts side effects and does not return a value.
+    """
+
     called = {}
 
     def fake_compute_m3c2_statistics(**kwargs):
@@ -38,6 +59,21 @@ def test_compute_statistics_distance(monkeypatch, caplog):
 
 
 def test_single_cloud_statistics_handler(monkeypatch, caplog):
+    """Ensure the runner handles statistics for single clouds correctly.
+
+    Parameters
+    ----------
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to patch ``calc_single_cloud_stats``.
+    caplog : pytest.LogCaptureFixture
+        Fixture capturing log output for verification.
+
+    Returns
+    -------
+    None
+        This test asserts side effects and does not return a value.
+    """
+
     called = {}
 
     def fake_calc_single_cloud_stats(**kwargs):
@@ -64,6 +100,14 @@ def test_single_cloud_statistics_handler(monkeypatch, caplog):
 
 
 def test_invalid_output_format():
+    """Check that an unsupported output format raises ``ValueError``.
+
+    Returns
+    -------
+    None
+        This test asserts that the appropriate exception is raised.
+    """
+
     runner = StatisticsRunner(output_format="xml")
     cfg = SimpleNamespace(stats_singleordistance="distance", folder_id="fid", filename_ref="ref")
     try:
