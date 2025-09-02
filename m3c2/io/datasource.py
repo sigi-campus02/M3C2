@@ -248,21 +248,36 @@ class DataSource:
 
         if m_kind == r_kind == "xyz":
             logger.info("Nutze py4dgeo.read_from_xyz")
-
-            return py4dgeo.read_from_xyz(str(m_path), str(r_path))
+            try:
+                return py4dgeo.read_from_xyz(str(m_path), str(r_path))
+            except (FileNotFoundError, py4dgeo.Py4DGEOError) as exc:
+                logger.error("py4dgeo.read_from_xyz failed: %s", exc)
+                raise
 
         if m_kind == r_kind == "laslike":
             logger.info("Nutze py4dgeo.read_from_las (unterstützt .las und .laz)")
-            return py4dgeo.read_from_las(str(m_path), str(r_path))
+            try:
+                return py4dgeo.read_from_las(str(m_path), str(r_path))
+            except (FileNotFoundError, py4dgeo.Py4DGEOError) as exc:
+                logger.error("py4dgeo.read_from_las failed: %s", exc)
+                raise
 
         if m_kind == r_kind == "ply" and hasattr(py4dgeo, "read_from_ply"):
             logger.info("Nutze py4dgeo.read_from_ply")
-            return py4dgeo.read_from_ply(str(m_path), str(r_path))
+            try:
+                return py4dgeo.read_from_ply(str(m_path), str(r_path))
+            except (FileNotFoundError, py4dgeo.Py4DGEOError) as exc:
+                logger.error("py4dgeo.read_from_ply failed: %s", exc)
+                raise
 
         m_xyz = self._ensure_xyz(self.mov_base, (m_kind, m_path))
         r_xyz = self._ensure_xyz(self.ref_base, (r_kind, r_path))
         logger.info("Mischtypen → konvertiert zu XYZ → py4dgeo.read_from_xyz")
-        return py4dgeo.read_from_xyz(str(m_xyz), str(r_xyz))
+        try:
+            return py4dgeo.read_from_xyz(str(m_xyz), str(r_xyz))
+        except (FileNotFoundError, py4dgeo.Py4DGEOError) as exc:
+            logger.error("py4dgeo.read_from_xyz failed: %s", exc)
+            raise
     
 
     def _load_epochs_singlecloud(self) -> np.ndarray:
@@ -272,20 +287,35 @@ class DataSource:
 
         if s_kind == "xyz":
             logger.info("Nutze py4dgeo.read_from_xyz")
-
-            return py4dgeo.read_from_xyz(str(s_path))
+            try:
+                return py4dgeo.read_from_xyz(str(s_path))
+            except (FileNotFoundError, py4dgeo.Py4DGEOError) as exc:
+                logger.error("py4dgeo.read_from_xyz failed: %s", exc)
+                raise
 
         if s_kind == "laslike":
             logger.info("Nutze py4dgeo.read_from_las (unterstützt .las und .laz)")
-            return py4dgeo.read_from_las(str(s_path))
+            try:
+                return py4dgeo.read_from_las(str(s_path))
+            except (FileNotFoundError, py4dgeo.Py4DGEOError) as exc:
+                logger.error("py4dgeo.read_from_las failed: %s", exc)
+                raise
 
         if s_kind == "ply" and hasattr(py4dgeo, "read_from_ply"):
             logger.info("Nutze py4dgeo.read_from_ply")
-            return py4dgeo.read_from_ply(str(s_path))
+            try:
+                return py4dgeo.read_from_ply(str(s_path))
+            except (FileNotFoundError, py4dgeo.Py4DGEOError) as exc:
+                logger.error("py4dgeo.read_from_ply failed: %s", exc)
+                raise
 
         s_xyz = self._ensure_xyz(self.singlecloud_base, (s_kind, s_path))
         logger.info("Mischtypen → konvertiert zu XYZ → py4dgeo.read_from_xyz")
-        return py4dgeo.read_from_xyz(str(s_xyz))
+        try:
+            return py4dgeo.read_from_xyz(str(s_xyz))
+        except (FileNotFoundError, py4dgeo.Py4DGEOError) as exc:
+            logger.error("py4dgeo.read_from_xyz failed: %s", exc)
+            raise
     
 
     def _derive_corepoints(self, mov: object, ref: object) -> np.ndarray:
