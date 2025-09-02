@@ -10,6 +10,26 @@ logger = logging.getLogger(__name__)
 
 
 def get_outlier_mask(clipped, method, outlier_multiplicator):
+    """Create a boolean mask marking elements considered outliers.
+
+    Parameters
+    ----------
+    clipped : np.ndarray
+        Array of numeric values whose outliers should be detected.
+    method : str
+        Outlier detection algorithm to use; one of ``"rmse"``, ``"iqr"``,
+        ``"std"`` or ``"nmad"``.
+    outlier_multiplicator : float
+        Multiplier applied to the base statistic of the selected method to
+        derive the outlier threshold.
+
+    Returns
+    -------
+    tuple[np.ndarray, float | str]
+        A tuple containing the boolean mask of detected outliers and the
+        threshold used for classification.  For the ``"iqr"`` method the
+        threshold is returned as a formatted string ``"(lower, upper)"``.
+    """
     logger.info("[Outliers] Methode: %s", method)
     if method == "rmse":
         rmse = np.sqrt(np.mean(clipped**2))
