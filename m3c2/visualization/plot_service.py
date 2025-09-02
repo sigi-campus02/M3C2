@@ -272,6 +272,12 @@ class PlotService:
 
     @staticmethod
     def overlay_plots(config: PlotConfig, options: PlotOptions) -> None:
+        """Wrapper exposing :func:`report_builder.overlay_plots`.
+
+        The heavy lifting is done by ``report_builder.overlay_plots``; this
+        method merely forwards the call so that overlay plotting is available
+        via :class:`PlotService`.
+        """
         _overlay_plots(config, options)
 
     @staticmethod
