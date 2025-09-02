@@ -145,6 +145,17 @@ def write_table(
     sheet_name: str = "Results",
     output_format: str = "excel",
 ) -> None:
+    """Write a list of statistics rows to disk.
+
+    Args:
+        rows: Sequence of dictionaries representing table rows.
+        out_path: Destination file path for the table.
+        sheet_name: Excel worksheet name when ``output_format`` is ``"excel"``.
+        output_format: Output file format, either ``"excel"`` or ``"json"``.
+
+    Returns:
+        None: The table is written to ``out_path`` and nothing is returned.
+    """
     df = pd.DataFrame(rows)
     if df.empty:
         logger.info("Skipping writing table to %s - no data", out_path)
