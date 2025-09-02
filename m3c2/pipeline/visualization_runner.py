@@ -42,7 +42,25 @@ class VisualizationRunner:
             logger.warning("[Visual] Export valid-only übersprungen: %s", exc)
 
     def generate_clouds_outliers(self, cfg, out_base: str, tag: str) -> None:
-        """Create coloured point clouds for inliers and outliers.
+        """Convert TXT distance outputs into colourised inlier/outlier point clouds.
+
+        Parameters
+        ----------
+        cfg : object
+            Configuration providing the ``process_python_CC`` prefix and the
+            ``outlier_detection_method`` identifier used to compose file names.
+        out_base : str
+            Directory where the TXT inputs are located and the resulting PLY
+            files will be written.
+        tag : str
+            Label appended to file names to distinguish different processing
+            runs or datasets.
+
+        Outputs
+        -------
+        Two PLY files are created in ``out_base``—one for outliers and one for
+        inliers—derived from TXT files containing coordinates and M3C2 distance
+        values.
 
         This method is part of the public pipeline API.
         """
