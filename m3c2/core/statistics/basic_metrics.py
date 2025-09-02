@@ -20,7 +20,28 @@ logger = logging.getLogger(__name__)
 
 
 def basic_stats(values: np.ndarray, tolerance: float) -> Dict[str, float]:
-    """Berechne Grundkennzahlen für ein Werte-Array."""
+    """Compute descriptive statistics for an array of values.
+
+    Parameters
+    ----------
+    values : np.ndarray
+        Numeric sequence for which statistics are evaluated.
+    tolerance : float
+        Threshold for computing ``Within-Tolerance`` as well as the
+        ``Jaccard Index`` and ``Dice Coefficient``.
+
+    Returns
+    -------
+    Dict[str, float]
+        A dictionary containing summary statistics such as counts,
+        sums, moments, percentiles and error metrics. Keys include
+        ``Valid Count``, ``Valid Sum``, ``Valid Squared Sum``, ``Min``,
+        ``Max``, ``Mean``, ``Median``, ``RMS``, ``Std Empirical``,
+        ``MAE``, ``NMAD``, ``Q05``, ``Q25``, ``Q75``, ``Q95``, ``IQR``,
+        ``Skewness``, ``Kurtosis``, ``Anteil |Distanz| > 0.01``,
+        ``Anteil [-2Std,2Std]``, ``Max |Distanz|``, ``Bias``,
+        ``Within-Tolerance``, ``Jaccard Index`` and ``Dice Coefficient``.
+    """
     logger.info("basic_stats received %d values", values.size)
     if values.size == 0:
         result = {
