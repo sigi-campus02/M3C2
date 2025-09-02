@@ -1,3 +1,5 @@
+"""Utilities for loading M3C2 distance data for visualisation."""
+
 from __future__ import annotations
 
 import logging
