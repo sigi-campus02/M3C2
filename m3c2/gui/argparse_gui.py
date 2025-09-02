@@ -56,6 +56,14 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
         row += 1
 
     def on_start() -> None:
+        """Handle the start event by collecting arguments and executing the main function.
+
+        The callback gathers values from all GUI widgets, assembles them into an
+        ``argv`` list, parses them using the provided ``argparse`` parser and, if
+        successful, closes the GUI and invokes ``main_func`` with the resulting
+        namespace.  Any parsing errors are reported via a message box instead of
+        raising ``SystemExit``.
+        """
         argv: list[str] = []
         for action in parser._actions:
             if isinstance(action, argparse._HelpAction):
@@ -99,6 +107,7 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
             messagebox.showerror("Fehler", str(exc))
 
     def on_cancel() -> None:
+        """Close the GUI without executing the selected command."""
         logger.info("Cancel pressed")
         root.destroy()
 
@@ -113,6 +122,12 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
 # ---------------------------------------------------------------------------
 
 def build_parser() -> argparse.ArgumentParser:
+    """Construct the command line interface for PLY generation.
+
+    Adds a ``paths`` positional argument accepting one or more TXT files or
+    directories to search recursively.  The optional ``--overwrite`` flag
+    controls whether existing ``.ply`` files are replaced.
+    """
     parser = argparse.ArgumentParser(description="Erzeuge .ply aus *_m3c2_distances_coordinates*.txt")
     parser.add_argument("paths", nargs="+", help="Ordner oder Dateien (TXT). Bei Ordnern wird rekursiv gesucht.")
     parser.add_argument("--overwrite", action="store_true", help="Vorhandene .ply überschreiben")
@@ -120,6 +135,12 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(args: argparse.Namespace) -> None:
+    """Handle parsed arguments after GUI startup and run conversions.
+
+    This function is passed to :func:`run_gui`, which launches the Tkinter
+    interface.  After the user confirms their selections, ``run_gui`` calls
+    ``main`` with the resulting :class:`argparse.Namespace` to start processing.
+    """
     txts: list[str] = []
     dirs: list[str] = []
     for p in args.paths:

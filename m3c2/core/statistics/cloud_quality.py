@@ -1,3 +1,12 @@
+"""Compute descriptive quality metrics for point clouds.
+
+This module provides utilities to summarize characteristics of 3D point
+clouds, including global density, height distributions, nearest neighbour
+statistics, local geometric descriptors such as linearity and planarity, and
+orientation measures like verticality and normal variation.  The metrics can
+be used to assess the quality and structure of point cloud data.
+"""
+
 from __future__ import annotations
 
 from typing import Dict, List, Optional
@@ -13,12 +22,36 @@ logger = logging.getLogger(__name__)
 
 
 def _bbox_area_xy(xy: np.ndarray) -> float:
+    """Return area of axis-aligned bounding box for 2D points.
+
+    Args:
+        xy: Array of ``(x, y)`` coordinates with shape ``(N, 2)``.
+
+    Returns:
+        The area spanned by the minimal axis-aligned bounding box
+        covering the points, in square units.
+    """
     x_min, y_min = np.min(xy[:, 0]), np.min(xy[:, 1])
     x_max, y_max = np.max(xy[:, 0]), np.max(xy[:, 1])
     return float((x_max - x_min) * (y_max - y_min))
 
 
 def _convex_hull_area_xy(xy: np.ndarray) -> float:
+    """Return the area of the convex hull defined by XY coordinates.
+
+    Parameters
+    ----------
+    xy : np.ndarray
+        Array of shape ``(n_points, 2)`` with the x and y coordinates of the
+        point cloud.
+
+    Returns
+    -------
+    float
+        Area of the convex hull in the XY plane. If ``scipy`` is not available,
+        ``NaN`` is returned.
+    """
+
     try:
         from scipy.spatial import ConvexHull
     except Exception:
@@ -135,6 +168,22 @@ def _calc_single_cloud_stats(
         normals.append(n)
 
     def _agg(arr):
+        """Aggregate statistics for a sequence.
+
+        Computes the mean, median, and the 5th and 95th percentiles of
+        the given array-like input. When the provided sequence is empty,
+        a tuple of NaN values is returned instead.
+
+        Parameters
+        ----------
+        arr : Sequence[float]
+            Values to aggregate.
+
+        Returns
+        -------
+        Tuple[float, float, float, float]
+            Mean, median, 5th percentile, and 95th percentile.
+        """
         if len(arr) == 0:
             return (np.nan, np.nan, np.nan, np.nan)
         a = np.asarray(arr, dtype=float)

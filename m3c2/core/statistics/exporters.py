@@ -1,3 +1,10 @@
+"""Export utilities for statistics tables.
+
+This module provides helper functions to persist statistical results in a
+canonical column order. Data frames can be appended to Excel or JSON files
+so that successive runs build a consolidated record of metrics.
+"""
+
 from __future__ import annotations
 
 import logging
@@ -34,6 +41,12 @@ logger = logging.getLogger(__name__)
 
 
 def _now_timestamp() -> str:
+    """Return the current time formatted as ``YYYY-MM-DD HH:MM:SS``.
+
+    The timestamp is generated using :func:`datetime.now` and formatted with
+    :func:`strftime` so that exported statistics include a consistent,
+    human-readable creation time.
+    """
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
@@ -138,6 +151,17 @@ def write_table(
     sheet_name: str = "Results",
     output_format: str = "excel",
 ) -> None:
+    """Write a list of statistics rows to disk.
+
+    Args:
+        rows: Sequence of dictionaries representing table rows.
+        out_path: Destination file path for the table.
+        sheet_name: Excel worksheet name when ``output_format`` is ``"excel"``.
+        output_format: Output file format, either ``"excel"`` or ``"json"``.
+
+    Returns:
+        None: The table is written to ``out_path`` and nothing is returned.
+    """
     df = pd.DataFrame(rows)
     if df.empty:
         logger.info("Skipping writing table to %s - no data", out_path)
@@ -154,6 +178,30 @@ def write_cloud_stats(
     sheet_name: str = "CloudStats",
     output_format: str = "excel",
 ) -> None:
+    """Write per-cloud statistics to an Excel or JSON file.
+
+    Parameters
+    ----------
+    rows : List[Dict]
+        Sequence of statistics dictionaries, one for each processed
+        cloud.
+    out_path : str, optional
+        Target file to create or update. Defaults to
+        ``"m3c2_stats_clouds.xlsx"``.
+    sheet_name : str, optional
+        Name of the worksheet when writing an Excel file. Defaults to
+        ``"CloudStats"``.
+    output_format : str, optional
+        Either ``"excel"`` or ``"json"`` to select the file format.
+
+    Notes
+    -----
+    The function appends the provided rows to the file at ``out_path``.
+    When ``output_format`` is ``"excel"``, the data are written to the
+    specified worksheet of an XLSX file. If ``"json"`` is requested, a
+    JSON array of records is produced instead.
+    """
+
     df = pd.DataFrame(rows)
     if df.empty:
         logger.info("Skipping writing cloud stats to %s - no data", out_path)

@@ -31,6 +31,15 @@ class OutlierDetector:
     """Perform outlier detection based on a configuration."""
 
     def __init__(self, config: OutlierConfig) -> None:
+        """Initialize the detector with a configuration.
+
+        Parameters
+        ----------
+        config : OutlierConfig
+            Configuration specifying the path to the distance file, the
+            detection method to use and the outlier threshold multiplier.
+        """
+
         self.config = config
 
     @staticmethod
@@ -74,6 +83,15 @@ class OutlierDetector:
         return mask, threshold
 
     def _save(self, result: OutlierResult) -> None:
+        """Persist inlier and outlier rows to text files.
+
+        Two files are created in the same directory as the source distance
+        file. The file names are derived from the input path without its suffix
+        and follow the pattern ``<base>_inlier_<method>.txt`` and
+        ``<base>_outlier_<method>.txt``. The arrays are written with
+        :func:`numpy.savetxt` using the ``"x y z distance"`` header.
+        """
+
         base = Path(self.config.file_path).with_suffix("")
         inlier_path = f"{base}_inlier_{self.config.method}.txt"
         outlier_path = f"{base}_outlier_{self.config.method}.txt"

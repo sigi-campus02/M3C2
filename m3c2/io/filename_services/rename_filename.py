@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+"""Rename *_cloud group prefixes from numbers to letters.
+
+This command line tool walks over files and directories and converts
+occurrences of numeric group identifiers in ``*_cloud`` segments.  A leading
+``1-`` is replaced by ``a-`` and ``2-`` becomes ``b-``.  The script supports a
+dry-run mode and optional recursion into subdirectories.
+"""
+
 # rename_group_prefixes.py
 import re, argparse, os, logging
 from pathlib import Path
@@ -13,9 +21,37 @@ BLOCK = re.compile(
 )
 
 def transform(name: str) -> str:
+    """Rename numeric group prefixes in ``*_cloud`` blocks to letters.
+
+    The function looks for filename segments matching the pattern
+    ``(^|[_-])(1|2)-<idx>(-AI)?_cloud`` and substitutes the leading group
+    identifier. Blocks starting with ``1-`` are replaced with ``a-`` and
+    those starting with ``2-`` are replaced with ``b-`` while preserving the
+    index, optional ``-AI`` marker and trailing ``_cloud``.
+
+    Parameters
+    ----------
+    name : str
+        Original filename that may contain group-prefixed cloud blocks.
+
+    Returns
+    -------
+    str
+        Filename with numeric group prefixes replaced by their alphabetical
+        equivalents.
+    """
+
     def repl(m):
+        """Map group numbers to letters inside ``*_cloud`` blocks.
+
+        The regex match ``m`` contains a numeric group identifier ``grp`` and
+        the surrounding parts of a ``*_cloud`` block. ``1`` is replaced with
+        ``a`` and ``2`` with ``b`` while keeping the rest of the match
+        unchanged.
+        """
         mapped = 'a' if m.group('grp') == '1' else 'b'
         return f"{m.group('pre')}{mapped}-{m.group('idx')}{m.group('ai') or ''}{m.group('cloud')}"
+
     return BLOCK.sub(repl, name)
 
 def iter_paths(base: Path, recursive: bool):
@@ -31,6 +67,17 @@ def iter_paths(base: Path, recursive: bool):
             yield p  # Dateien und Ordner
 
 def main():
+    """Rename group prefixes in ``*_cloud`` blocks from the command line.
+
+    Usage
+    -----
+    ``python -m m3c2.io.filename_services.rename_filename [PATH] [-r] [-n]``
+
+    ``PATH`` defaults to the current directory. Use ``-r``/``--recursive`` to
+    process subdirectories and ``-n``/``--dry-run`` to preview changes without
+    applying them.
+    """
+
     ap = argparse.ArgumentParser(
         description="Ersetzt in *_cloud-Blöcken die Gruppenkennung: 1-* -> a-*, 2-* -> b-* (in Dateien und Ordnern)."
     )

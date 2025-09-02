@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 # remove_cloud_token.py
+"""CLI tool for removing `_cloud` tokens from file and directory names.
+
+The script walks a base directory and renames entries by deleting the
+`_cloud` token from their names. It supports recursive traversal,
+optionally includes directory names in the renaming process and offers a
+dry-run mode to preview changes without modifying the filesystem.
+"""
+
 import argparse, os, logging
 from pathlib import Path
 
@@ -8,7 +16,13 @@ from m3c2.io.logging_utils import resolve_log_level, setup_logging
 logger = logging.getLogger(__name__)
 
 def transform(name: str) -> str:
-    # Entfernt ALLE Vorkommen von "_validonly" im Namen (inkl. vor der Extension)
+    """Remove all occurrences of the ``python_`` marker from a name.
+
+    The function strips every ``python_`` substring from the provided file or
+    directory name.  The remainder of the name, including any extension, is
+    returned unchanged.  If the marker constitutes the entire original name an
+    empty string is returned, allowing the caller to skip renaming.
+    """
     return name.replace("python_", "")
 
 def iter_paths(base: Path, recursive: bool, include_dirs: bool):
@@ -26,6 +40,28 @@ def iter_paths(base: Path, recursive: bool, include_dirs: bool):
                 yield p
 
 def main():
+    """Entry point for the ``delete_filename`` CLI.
+
+    The command removes every occurrence of ``python_`` from file and directory
+    names.  It can operate on a single directory or recursively on a directory
+    tree and supports a dry-run mode to preview changes.
+
+    Usage
+    -----
+    python -m m3c2.io.filename_services.delete_filename [PATH]
+        [-r] [--include-dirs] [-n]
+
+    Parameters
+    ----------
+    PATH : str, optional
+        Base directory to process. Defaults to the current directory.
+    -r, --recursive : bool
+        Recurse into subdirectories.
+    --include-dirs : bool
+        Apply renaming to directory names as well.
+    -n, --dry-run : bool
+        Show actions without performing any renaming.
+    """
     ap = argparse.ArgumentParser(
         description='Entfernt alle Vorkommen von "_cloud" aus Datei-/Ordnernamen.'
     )

@@ -1,3 +1,20 @@
+"""High-level service functions for M3C2 statistics.
+
+The module exposes the :class:`StatisticsService` facade which bundles
+operations for analysing M3C2 distance arrays and point clouds.  Key
+helpers include:
+
+* :func:`StatisticsService.calc_stats` – derive descriptive metrics and
+  distribution fits for a set of distances.
+* :func:`StatisticsService.compute_m3c2_statistics` – aggregate statistics
+  for multiple folders and export the combined results.
+* :func:`StatisticsService.calc_single_cloud_stats` – evaluate quality
+  metrics for individual point clouds.
+
+These high-level functions form the public API used by the CLI and other
+modules when working with statistics.
+"""
+
 from __future__ import annotations
 
 import os
@@ -23,7 +40,17 @@ logger = logging.getLogger(__name__)
 
 
 class StatisticsService:
-    """Fassade für die Statistikberechnung und den Export."""
+    """Facade for computing and exporting statistics.
+
+    The service wraps low-level metric calculations and exposes
+    three main entry points:
+
+    * :meth:`calc_stats` – compute statistics for a distance array.
+    * :meth:`compute_m3c2_statistics` – aggregate results across
+      multiple folders and optionally persist them.
+    * :meth:`calc_single_cloud_stats` – derive metrics for individual
+      point clouds.
+    """
 
     @staticmethod
     def calc_stats(
@@ -36,6 +63,40 @@ class StatisticsService:
         outlier_multiplicator: float = 3.0,
         outlier_method: str = "rmse",
     ) -> Dict:
+        """Compute descriptive statistics for a set of M3C2 distances.
+
+        Parameters
+        ----------
+        distances : np.ndarray
+            Array of distance values. ``NaN`` entries are ignored.
+        params_path : Optional[str], optional
+            Path to a ``*_m3c2_params.txt`` file from which the normal and
+            search scale are loaded.
+        bins : int, default 256
+            Number of histogram bins used for distribution fitting.
+        range_override : Optional[Tuple[float, float]], optional
+            Explicit ``(min, max)`` limits used instead of the data range.
+        min_expected : Optional[float], optional
+            Minimum expected count per histogram bin. If provided it is passed
+            to the distribution fitting routine.
+        tolerance : float, default 0.01
+            Absolute distance threshold used for several ratio metrics.
+        outlier_multiplicator : float, default 3.0
+            Multiplicative factor applied to the chosen outlier metric to
+            derive an inlier threshold.
+        outlier_method : str, default "rmse"
+            Name of the method used to compute the outlier threshold.
+
+        Returns
+        -------
+        Dict
+            A mapping with numerous aggregated statistics. The dictionary
+            contains overall counts and sums, summary metrics (mean, median,
+            RMS, standard deviation, MAE, NMAD), inlier/outlier information,
+            quantiles and interquartile ranges for all data and inliers only,
+            goodness-of-fit parameters for Gaussian and Weibull distributions
+            as well as higher order moments such as skewness and kurtosis.
+        """
         total_count = len(distances)
         nan_count = int(np.isnan(distances).sum())
         valid = distances[~np.isnan(distances)]
@@ -215,6 +276,21 @@ class StatisticsService:
         outlier_multiplicator: float = 3.0,
         outlier_method: str = "rmse",
     ) -> pd.DataFrame:
+        """
+        Gather M3C2 distance statistics from multiple project folders and return
+        them in a single table.
+
+        For each folder ID the method looks for distance and parameter files
+        produced by either the Python or CloudCompare implementation, depending
+        on ``process_python_CC``. Loaded values are passed to :meth:`calc_stats`
+        and the resulting metrics are collected. When ``out_path`` is provided
+        the aggregated dataframe is appended to an Excel or JSON file.
+
+        Returns
+        -------
+        pandas.DataFrame
+            One row per processed folder with the computed statistics.
+        """
         logger.info("Starting compute_m3c2_statistics for %d folders", len(folder_ids))
         rows: List[Dict] = []
 
@@ -305,6 +381,49 @@ class StatisticsService:
         sheet_name: str = "CloudStats",
         output_format: str = "excel",
     ) -> pd.DataFrame:
+        """Compute quality metrics for point clouds in multiple folders.
+
+        For each entry in ``folder_ids`` the moving and reference point
+        clouds are loaded with :class:`~m3c2.io.datasource.DataSource` and
+        evaluated via :func:`~m3c2.core.statistics.cloud_quality._calc_single_cloud_stats`.
+
+        Parameters
+        ----------
+        folder_ids
+            Paths to folders containing the point cloud pair.
+        filename_mov
+            Base filename of the moving cloud.
+        filename_ref
+            Base filename of the reference cloud.
+        area_m2
+            Known footprint area in square metres. If ``None`` the area is
+            estimated from the cloud extent (convex hull or bounding box).
+        radius
+            Radius in metres used for radius-neighbour queries.
+        k
+            Number of nearest neighbours used for k-NN statistics.
+        sample_size
+            Maximum number of points sampled for local computations.
+        use_convex_hull
+            Whether to estimate the area using the convex hull. If ``False``
+            the bounding box area is used instead.
+        out_path
+            Destination file for writing the resulting statistics table.
+        sheet_name
+            Sheet name to use when exporting to Excel.
+        output_format
+            Format of the output file, e.g. ``"excel"`` or ``"json"``.
+
+        Returns
+        -------
+        pandas.DataFrame
+            One row per processed cloud containing metrics such as point
+            count, footprint area and density, height distribution,
+            nearest‑neighbour distances, local density and roughness
+            statistics, eigenvalue‑based shape features (linearity,
+            planarity, sphericity, anisotropy, omnivariance, eigenentropy,
+            curvature), verticality measures and normal direction variation.
+        """
         rows: List[Dict] = []
 
         for fid in folder_ids:
@@ -335,6 +454,27 @@ class StatisticsService:
 
     @staticmethod
     def _load_params(params_path: Optional[str]) -> Tuple[float, float]:
+        """Load M3C2 configuration values from a parameter file.
+
+        The M3C2 computation writes a small text file with the parameters
+        used during the run.  This helper reads the file and extracts the
+        normal and search scales that are stored in lines beginning with
+        ``"NormalScale="`` and ``"SearchScale="``.  When no file is
+        supplied or a value is missing the respective scale defaults to
+        ``numpy.nan``.
+
+        Parameters
+        ----------
+        params_path:
+            Path to the parameter file.  If ``None`` or the file does not
+            exist, ``numpy.nan`` is returned for both values.
+
+        Returns
+        -------
+        Tuple[float, float]
+            The ``(normal_scale, search_scale)`` read from the file.
+        """
+
         normal_scale = np.nan
         search_scale = np.nan
         if params_path and os.path.exists(params_path):
@@ -348,6 +488,21 @@ class StatisticsService:
 
     @staticmethod
     def _resolve(fid: str, filename: str) -> str:
+        """Resolve the path for a statistics file.
+
+        The function first checks whether ``filename`` exists inside the
+        directory identified by ``fid``.  If the file is found there, that
+        path is returned.  Otherwise, the function falls back to the
+        repository's ``data`` directory and constructs the path as
+        ``data/fid/filename``.
+
+        Args:
+            fid: Identifier of the dataset, used as directory name.
+            filename: Name of the file to resolve.
+
+        Returns:
+            The resolved file path.
+        """
         p1 = os.path.join(fid, filename)
         if os.path.exists(p1):
             return p1
