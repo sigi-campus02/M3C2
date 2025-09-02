@@ -1,3 +1,10 @@
+"""Facade service for distance comparison plots.
+
+This module serves as a façade orchestrating multiple plot types—
+Bland-Altman, Passing-Bablok, and linear regression—to compare distance
+measurements.
+"""
+
 from __future__ import annotations
 
 import logging
