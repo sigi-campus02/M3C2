@@ -1,3 +1,5 @@
+"""Tests for cloud quality statistics calculations."""
+
 import sys
 from pathlib import Path
 
@@ -9,18 +11,53 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from m3c2.core.statistics.cloud_quality import _calc_single_cloud_stats
 
-
 def test_calc_single_cloud_stats_empty():
+    """Ensure empty arrays raise ``ValueError``.
+
+    Parameters
+    ----------
+    None
+
+    Raises
+    ------
+    ValueError
+        If the input point array is empty.
+    """
+
     with pytest.raises(ValueError):
         _calc_single_cloud_stats(np.array([]))
 
 
 def test_calc_single_cloud_stats_wrong_shape():
+    """Ensure arrays with invalid shape raise ``ValueError``.
+
+    Parameters
+    ----------
+    None
+
+    Raises
+    ------
+    ValueError
+        If the input array does not have shape ``(n, 3)``.
+    """
+
     with pytest.raises(ValueError):
         _calc_single_cloud_stats(np.zeros((3, 2)))
 
 
 def test_calc_single_cloud_stats_basic():
+    """Compute statistics for a small point cloud.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+        Asserts that computed statistics match expected values.
+    """
+
     points = np.array(
         [
             [0.0, 0.0, 0.0],
