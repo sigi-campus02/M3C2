@@ -93,9 +93,9 @@ class BatchOrchestrator:
 
         Notes
         -----
-        Any exception raised during processing of a single job is caught and
+        Any runtime error raised during processing of a single job is caught and
         logged. When ``fail_fast`` is ``False`` (default) the batch continues
-        with the next job. If ``fail_fast`` is ``True``, unexpected errors
+        with the next job. If ``fail_fast`` is ``True``, such errors
         abort the batch.
         """
         if not self.configs:
@@ -112,7 +112,7 @@ class BatchOrchestrator:
                     cfg.folder_id,
                     cfg.filename_ref,
                 )
-            except Exception:
+            except RuntimeError:
                 logger.exception(
                     "[Job] Unerwarteter Fehler in Job '%s' (Version %s)",
                     cfg.folder_id,
@@ -202,7 +202,7 @@ class BatchOrchestrator:
                 self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
             except (IOError, ValueError):
                 logger.exception("Fehler bei der Berechnung der Statistik")
-            except Exception:
+            except RuntimeError:
                 logger.exception(
                     "Unerwarteter Fehler bei der Berechnung der Statistik"
                 )
@@ -228,8 +228,8 @@ class BatchOrchestrator:
         ------
         IOError, ValueError
             If the input data is missing or the configuration is invalid.
-        Exception
-            Any unexpected error during scale estimation or statistics
+        RuntimeError
+            Any unexpected runtime error during scale estimation or statistics
             computation is logged and re-raised.
         """
 
@@ -247,7 +247,7 @@ class BatchOrchestrator:
             )
         except (IOError, ValueError):
             logger.exception("Fehler bei der Berechnung der Statistik")
-        except Exception:
+        except RuntimeError:
             logger.exception(
                 "Unerwarteter Fehler bei der Berechnung der Statistik"
             )
@@ -378,7 +378,7 @@ class BatchOrchestrator:
         to filter points and then calls
         :meth:`VisualizationRunner.generate_clouds_outliers` to create ``.ply``
         clouds for both outliers and inliers. ``IOError`` and ``ValueError`` are
-        logged, while unexpected exceptions are logged and re-raised.
+        logged, while unexpected runtime errors are logged and re-raised.
         """
 
         # ----- Remove Outliers -----
@@ -387,7 +387,7 @@ class BatchOrchestrator:
             self.outlier_handler.exclude_outliers(cfg, out_base, tag)
         except (IOError, ValueError):
             logger.exception("Fehler beim Entfernen von Ausreißern")
-        except Exception:
+        except RuntimeError:
             logger.exception(
                 "Unerwarteter Fehler beim Entfernen von Ausreißern"
             )
@@ -405,7 +405,7 @@ class BatchOrchestrator:
             logger.exception(
                 "Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
             )
-        except Exception:
+        except RuntimeError:
             logger.exception(
                 "Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
             )
