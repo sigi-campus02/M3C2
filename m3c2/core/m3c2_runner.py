@@ -51,7 +51,9 @@ class M3C2Runner:
 
         Raises
         ------
-        Exception
+        ImportError
+            If the optional dependency :mod:`py4dgeo` is missing.
+        py4dgeo.Py4DGEOError or RuntimeError
             Propagated from :mod:`py4dgeo` if the computation fails.
         """
         logger.info(
@@ -59,7 +61,11 @@ class M3C2Runner:
         )
 
         # Import py4dgeo lazily to ease testing and optional dependency handling
-        py4dgeo = importlib.import_module("py4dgeo")
+        try:
+            py4dgeo = importlib.import_module("py4dgeo")
+        except ImportError as err:  # pragma: no cover - optional dependency
+            logger.exception("Failed to import py4dgeo: %s", err)
+            raise
 
         try:
             # Create the py4dgeo object that performs the actual computation
@@ -70,8 +76,8 @@ class M3C2Runner:
                 normal_radii=[normal],
             )
             distances, uncertainties = m3c2.run()
-        except Exception:  # pragma: no cover - py4dgeo exceptions
-            logger.exception("M3C2 run failed")
+        except (py4dgeo.Py4DGEOError, RuntimeError) as err:  # pragma: no cover - py4dgeo exceptions
+            logger.exception("M3C2 run failed: %s", err)
             raise
 
         nan_ratio = float(np.isnan(distances).mean()) if distances.size else 0.0
