@@ -437,7 +437,27 @@ def build_parts_pdf(
 
 
 def merge_pdfs(pdf_paths: List[str], out_path: str) -> str:
-    """Merge multiple PDFs into a single file."""
+    """Merge multiple PDF files into a single document.
+
+    Parameters
+    ----------
+    pdf_paths : List[str]
+        Paths to the individual PDF files to merge. Missing files are skipped
+        and a warning is logged.
+    out_path : str
+        Destination path for the merged PDF. Parent directories are created if
+        necessary.
+
+    Returns
+    -------
+    str
+        The filesystem path of the resulting merged PDF.
+
+    Raises
+    ------
+    RuntimeError
+        If :mod:`PyPDF2` is not available.
+    """
     try:
         from PyPDF2 import PdfMerger
     except Exception as e:
