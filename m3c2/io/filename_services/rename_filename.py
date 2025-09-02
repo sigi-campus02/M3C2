@@ -14,6 +14,13 @@ BLOCK = re.compile(
 
 def transform(name: str) -> str:
     def repl(m):
+        """Map group numbers to letters inside ``*_cloud`` blocks.
+
+        The regex match ``m`` contains a numeric group identifier ``grp`` and
+        the surrounding parts of a ``*_cloud`` block. ``1`` is replaced with
+        ``a`` and ``2`` with ``b`` while keeping the rest of the match
+        unchanged.
+        """
         mapped = 'a' if m.group('grp') == '1' else 'b'
         return f"{m.group('pre')}{mapped}-{m.group('idx')}{m.group('ai') or ''}{m.group('cloud')}"
     return BLOCK.sub(repl, name)
