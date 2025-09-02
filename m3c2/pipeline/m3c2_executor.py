@@ -1,5 +1,6 @@
-from __future__ import annotations
 """Execute the M3C2 algorithm and persist results."""
+
+from __future__ import annotations
 
 import logging
 import os
