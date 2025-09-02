@@ -460,8 +460,10 @@ def merge_pdfs(pdf_paths: List[str], out_path: str) -> str:
     """
     try:
         from PyPDF2 import PdfMerger
-    except Exception as e:
-        raise RuntimeError("PyPDF2 is required for merging PDFs") from e
+    except ImportError as e:
+        raise RuntimeError(
+            "PyPDF2 is required for merging PDFs but is not installed"
+        ) from e
 
     merger = PdfMerger()
     for p in pdf_paths:
