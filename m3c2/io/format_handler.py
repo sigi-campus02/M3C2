@@ -70,7 +70,7 @@ def read_las(path: Path) -> np.ndarray:
     logger.info("Reading LAS/LAZ file %s", path)
     try:
         laspy = import_module("laspy")
-    except Exception as exc:  # pragma: no cover - dependency issue
+    except ImportError as exc:  # pragma: no cover - dependency issue
         logger.exception("LAS/LAZ found, but 'laspy' is not installed.")
         raise RuntimeError("LAS/LAZ found, but 'laspy' is not installed.") from exc
 
@@ -81,7 +81,7 @@ def read_las(path: Path) -> np.ndarray:
         raise RuntimeError(
             "LAZ detected, please install 'laspy[lazrs]'.",
         ) from exc
-    except Exception:
+    except (laspy.LaspyException, OSError):
         logger.exception("Failed to read LAS/LAZ file %s", path)
         raise
     return np.vstack([las.x, las.y, las.z]).T.astype(np.float64)
