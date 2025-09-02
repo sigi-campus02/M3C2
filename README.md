@@ -12,9 +12,20 @@ This project provides a Python workflow for comparing 3D point cloud pairs using
 - Orchestrate batch processing across many point cloud pairs
 
 ## Installation
+Install Python dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
+
+Tkinter must be available as a system package. Install it using your platform's
+package manager:
+
+- **Debian/Ubuntu:** `sudo apt install python3-tk`
+- **Fedora/RHEL:** `sudo dnf install python3-tkinter`
+- **Arch Linux:** `sudo pacman -S tk`
+- **macOS (Homebrew):** `brew install python-tk`
+- **Windows:** included with the standard Python installer
 
 ## Usage
 Adjust the settings in `main.py` and run:
