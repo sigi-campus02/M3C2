@@ -1,3 +1,10 @@
+"""Tests for basic statistical metrics and distribution fitting.
+
+This module validates the behavior of the :mod:`m3c2.core.statistics` basic
+metric utilities, ensuring they correctly handle edge cases, compute
+statistics, and fit probability distributions.
+"""
+
 import sys
 from pathlib import Path
 
@@ -10,6 +17,19 @@ from m3c2.core.statistics.basic_metrics import basic_stats, fit_distributions
 
 
 def test_basic_stats_empty_array():
+    """Handle empty input arrays in ``basic_stats``.
+
+    Purpose
+    -------
+    Ensure that ``basic_stats`` gracefully handles empty arrays without
+    producing invalid statistics.
+
+    Expected
+    --------
+    - ``Valid Count`` is ``0``.
+    - ``Mean`` and ``Jaccard Index`` are ``NaN``.
+    """
+
     res = basic_stats(np.array([]), tolerance=0.1)
     assert res["Valid Count"] == 0
     assert np.isnan(res["Mean"])
@@ -17,6 +37,23 @@ def test_basic_stats_empty_array():
 
 
 def test_basic_stats_computation():
+    """Compute statistics on a simple numeric array.
+
+    Purpose
+    -------
+    Verify that ``basic_stats`` returns correct statistical measures for a
+    small array of known values.
+
+    Expected
+    --------
+    - ``Valid Count`` equals the array length.
+    - ``Min`` and ``Max`` match the array bounds.
+    - ``Mean`` and ``Median`` both equal ``2.0``.
+    - ``Std Empirical`` matches ``np.std`` of the array.
+    - ``Within-Tolerance`` equals ``2/3`` for a tolerance of ``2.0``.
+    - ``Jaccard Index`` equals ``1/3``.
+    """
+
     arr = np.array([1.0, 2.0, 3.0])
     res = basic_stats(arr, tolerance=2.0)
     assert res["Valid Count"] == 3
@@ -30,6 +67,19 @@ def test_basic_stats_computation():
 
 
 def test_fit_distributions_basic():
+    """Fit Gaussian and Weibull distributions to random data.
+
+    Purpose
+    -------
+    Confirm that ``fit_distributions`` estimates distribution parameters and
+    Pearson correlation coefficients for sample data.
+
+    Expected
+    --------
+    - Estimated mean and standard deviation are close to sample statistics.
+    - Pearson coefficients for Gaussian and Weibull fits are non-negative.
+    """
+
     rng = np.random.default_rng(0)
     data = rng.normal(loc=1.0, scale=2.0, size=500)
     hist, bin_edges = np.histogram(data, bins=20)
@@ -41,5 +91,17 @@ def test_fit_distributions_basic():
 
 
 def test_fit_distributions_length_mismatch():
+    """Validate length checks in ``fit_distributions``.
+
+    Purpose
+    -------
+    Ensure that mismatched histogram inputs trigger an assertion error.
+
+    Expected
+    --------
+    ``fit_distributions`` raises an :class:`AssertionError` when histogram
+    and bin edge arrays are of differing lengths.
+    """
+
     with pytest.raises(AssertionError):
         fit_distributions(np.arange(10), np.ones(5), np.arange(6), None)
