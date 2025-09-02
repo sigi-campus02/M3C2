@@ -120,15 +120,34 @@ class OutlierDetector:
         inlier_path = f"{base}_inlier_{self.config.method}.txt"
         outlier_path = f"{base}_outlier_{self.config.method}.txt"
         header = "x y z distance"
-        np.savetxt(inlier_path, result.inliers, fmt="%.6f", header=header)
-        np.savetxt(outlier_path, result.outliers, fmt="%.6f", header=header)
+        try:
+            np.savetxt(inlier_path, result.inliers, fmt="%.6f", header=header)
+        except (OSError, ValueError):
+            logger.exception(
+                "[Exclude Outliers] Failed to save inlier file %s", inlier_path
+            )
+            raise
+        try:
+            np.savetxt(outlier_path, result.outliers, fmt="%.6f", header=header)
+        except (OSError, ValueError):
+            logger.exception(
+                "[Exclude Outliers] Failed to save outlier file %s", outlier_path
+            )
+            raise
         logger.info("[Exclude Outliers] Inlier gespeichert: %s", inlier_path)
         logger.info("[Exclude Outliers] Outlier gespeichert: %s", outlier_path)
 
     def run(self) -> OutlierResult:
         """Load distances, split into inliers/outliers and write results."""
 
-        distances_all = np.loadtxt(self.config.dists_path, skiprows=1)
+        try:
+            distances_all = np.loadtxt(self.config.dists_path, skiprows=1)
+        except (OSError, ValueError):
+            logger.exception(
+                "[Exclude Outliers] Failed to load distances from %s",
+                self.config.dists_path,
+            )
+            raise
         valid_mask = ~np.isnan(distances_all[:, 3])
         distances_valid = distances_all[valid_mask]
         mask, _ = self._detect_outlier_mask(
