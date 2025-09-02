@@ -53,4 +53,4 @@ class M3C2Executor:
         np.savetxt(uncert_path, uncertainties, fmt="%.6f")
         logger.info("[Run] Unsicherheiten gespeichert: %s", uncert_path)
 
-        return distances, uncertainties
+        return distances, uncertainties, dists_path

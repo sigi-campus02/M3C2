@@ -147,14 +147,14 @@ class BatchOrchestrator:
             if np.isnan(normal) or np.isnan(projection):
                 normal, projection = self.scale_estimator.determine_scales(cfg, corepoints)
                 self._save_params(cfg, normal, projection, out_base)
-            distances, _ = self.m3c2_executor.run_m3c2(
+            distances, uncertainties, dists_path = self.m3c2_executor.run_m3c2(
                 cfg, mov, ref, corepoints, normal, projection, out_base, tag
             )
             self.visualization_runner.generate_visuals(cfg, mov, distances, out_base, tag)
 
         try:
             logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
-            self.outlier_handler.exclude_outliers(cfg, ds.config.folder, tag)
+            self.outlier_handler.exclude_outliers(cfg, dists_path)
         except (IOError, ValueError):
             logger.exception("Fehler beim Entfernen von Ausreißern")
         except Exception:

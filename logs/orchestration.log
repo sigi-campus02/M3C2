@@ -462,3 +462,498 @@ Traceback (most recent call last):
   File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\tests\test_io\test_format_handler.py", line 61, in fake_import
     raise ImportError
 ImportError
+2025-09-02 09:10:57,823 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 09:10:57,823 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 09:10:57,823 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 09:10:57,823 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 09:10:57,823 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 09:10:57,823 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 09:10:57,823 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 09:10:57,823 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 09:10:57,866 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 09:11:00,185 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 09:11:00,274 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 09:11:00,274 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.445s
+2025-09-02 09:11:00,274 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 709128 points
+2025-09-02 09:11:02,135 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.000973 (k=6) | 1.861s
+2025-09-02 09:11:02,135 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 709128 points and avg_spacing 0.000973
+2025-09-02 09:11:02,145 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/709128
+2025-09-02 09:11:02,182 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000121639 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:11:02,216 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000243279 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:11:02,249 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000486558 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:11:02,282 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000973116 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:11:02,316 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00194623 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:11:02,349 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00389246 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:11:02,383 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00778493 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:11:02,416 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0155699 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:11:02,449 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0311397 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:11:02,498 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0622794 | pop=11.3±1.6 | 97%>15 | valid=462/10000 (5%) | sigma=0.00276001 | lambda_min=1.13883e-05 | Sigma/D=0.0443
+2025-09-02 09:11:02,807 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.124559 | pop=18.3±6.2 | 97%>32 | valid=7216/10000 (72%) | sigma=0.00395471 | lambda_min=3.19922e-05 | Sigma/D=0.0317
+2025-09-02 09:11:03,222 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.249118 | pop=54.9±25.3 | 97%>108 | valid=9833/10000 (98%) | sigma=0.00745415 | lambda_min=0.0001174 | Sigma/D=0.0299
+2025-09-02 09:11:03,222 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 1.087s
+2025-09-02 09:11:03,222 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-02 09:11:03,224 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.124559, proj=0.249118 | 0.000s
+2025-09-02 09:11:03,224 [INFO] m3c2.pipeline.batch_orchestrator - [Params] gespeichert: data\0342-0349\python_mov-ref_m3c2_params.txt
+2025-09-02 09:11:03,224 [INFO] m3c2.core.m3c2_runner - Starting M3C2 run with normal=0.12455881498789832 and projection=0.24911762997579665
+2025-09-02 09:11:03,224 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 09:11:03,396 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 09:16:40,250 [INFO] m3c2.core.m3c2_runner - Completed M3C2 run: 709128 distances (NaN ratio 0.01%)
+2025-09-02 09:16:40,253 [INFO] m3c2.pipeline.m3c2_executor - [Run] Punkte=709128 | NaN=0.01% | Zeit=337.027s
+2025-09-02 09:16:41,272 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen gespeichert: data\0342-0349\python_mov-ref_m3c2_distances.txt (709128 Werte, 0.01% NaN)
+2025-09-02 09:16:42,704 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen mit Koordinaten gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates.txt
+2025-09-02 09:16:45,224 [INFO] m3c2.pipeline.m3c2_executor - [Run] Unsicherheiten gespeichert: data\0342-0349\python_mov-ref_m3c2_uncertainties.txt
+2025-09-02 09:16:45,224 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge Visualisierungen …
+2025-09-02 09:16:46,088 [INFO] m3c2.visualization.visualization_service - Histogram saved to data\0342-0349\python_mov-ref_histogram.png
+2025-09-02 09:16:46,094 [INFO] m3c2.pipeline.visualization_runner - [Visual] Histogram gespeichert: data\0342-0349\python_mov-ref_histogram.png
+2025-09-02 09:16:47,266 [INFO] m3c2.visualization.visualization_service - Colorized 709128 points -> data\0342-0349\python_mov-ref_includenonvalid.ply
+2025-09-02 09:16:47,268 [INFO] m3c2.pipeline.visualization_runner - [Visual] Farb-PLY gespeichert: data\0342-0349\python_mov-ref_includenonvalid.ply
+2025-09-02 09:16:48,479 [INFO] m3c2.visualization.visualization_service - [export_valid] 709033 Punkte exportiert -> data\0342-0349\python_mov-ref.ply (SF='distance')
+2025-09-02 09:16:48,481 [INFO] m3c2.pipeline.visualization_runner - [Visual] Valid-PLY gespeichert: data\0342-0349\python_mov-ref.ply
+2025-09-02 09:16:48,481 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 09:16:48,481 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 09:16:48,481 [ERROR] m3c2.pipeline.outlier_handler - [Outlier] Fehler beim Entfernen der Ausreißer
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\outlier_handler.py", line 22, in exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-02 09:16:48,482 [ERROR] m3c2.pipeline.batch_orchestrator - Unerwarteter Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 157, in _run_single
+    self.outlier_handler.exclude_outliers(cfg, ds.config.folder, tag)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\outlier_handler.py", line 22, in exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-02 09:16:48,492 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 88, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 157, in _run_single
+    self.outlier_handler.exclude_outliers(cfg, ds.config.folder, tag)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\outlier_handler.py", line 22, in exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-02 09:16:48,493 [ERROR] CLIApp - Error occurred while running orchestrator: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-02 09:49:27,254 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 09:49:27,254 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 09:49:27,254 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 09:49:27,254 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 09:49:27,254 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 09:49:27,254 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 09:49:27,254 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 09:49:27,254 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 09:49:27,306 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 09:49:35,358 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 09:49:35,656 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 09:49:35,665 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 8.405s
+2025-09-02 09:49:35,665 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 709128 points
+2025-09-02 09:49:37,487 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.000973 (k=6) | 1.825s
+2025-09-02 09:49:37,487 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 709128 points and avg_spacing 0.000973
+2025-09-02 09:49:37,495 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/709128
+2025-09-02 09:49:37,546 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000121639 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:49:37,579 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000243279 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:49:37,613 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000486558 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:49:37,647 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000973116 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:49:37,680 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00194623 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:49:37,715 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00389246 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:49:37,749 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00778493 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:49:37,782 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0155699 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:49:37,816 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0311397 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:49:37,896 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0622794 | pop=11.1±1.5 | 97%>15 | valid=468/10000 (5%) | sigma=0.0028586 | lambda_min=1.25272e-05 | Sigma/D=0.0459
+2025-09-02 09:49:38,406 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.124559 | pop=17.9±5.9 | 97%>31 | valid=7365/10000 (74%) | sigma=0.00380558 | lambda_min=3.06662e-05 | Sigma/D=0.0306
+2025-09-02 09:49:39,113 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.249118 | pop=54.5±24.3 | 97%>104 | valid=9852/10000 (99%) | sigma=0.00732423 | lambda_min=0.000115683 | Sigma/D=0.0294
+2025-09-02 09:49:39,113 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 1.626s
+2025-09-02 09:49:39,113 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-02 09:49:39,113 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.124559, proj=0.249118 | 0.000s
+2025-09-02 09:49:39,119 [INFO] m3c2.pipeline.batch_orchestrator - [Params] gespeichert: data\0342-0349\python_mov-ref_m3c2_params.txt
+2025-09-02 09:49:39,119 [INFO] m3c2.core.m3c2_runner - Starting M3C2 run with normal=0.12455881498789832 and projection=0.24911762997579665
+2025-09-02 09:49:39,119 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 09:49:39,285 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 09:52:42,659 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 09:52:44,235 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 09:52:44,731 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 09:52:46,019 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 09:53:45,804 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 09:53:46,226 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 09:53:58,217 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 09:54:22,451 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 09:54:22,686 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 09:57:18,926 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 09:57:39,151 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 09:57:56,550 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 235.176s
+2025-09-02 09:58:49,127 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 709128 points
+2025-09-02 09:59:00,872 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.000973 (k=6) | 33.808s
+2025-09-02 09:59:05,220 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 709128 points and avg_spacing 0.000973
+2025-09-02 09:59:06,384 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/709128
+2025-09-02 09:59:23,349 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000121639 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:59:23,382 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000243279 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:59:23,421 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000486558 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:59:23,449 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000973116 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:59:23,482 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00194623 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:59:23,515 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00389246 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:59:23,549 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00778493 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:59:23,582 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0155699 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:59:23,633 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0311397 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 09:59:23,699 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0622794 | pop=11.5±1.7 | 97%>15 | valid=511/10000 (5%) | sigma=0.00313704 | lambda_min=1.45232e-05 | Sigma/D=0.0504
+2025-09-02 09:59:24,078 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.124559 | pop=18.1±6.4 | 97%>33 | valid=7316/10000 (73%) | sigma=0.00381996 | lambda_min=3.05865e-05 | Sigma/D=0.0307
+2025-09-02 09:59:24,602 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.249118 | pop=55.1±25.9 | 97%>111 | valid=9845/10000 (98%) | sigma=0.00728777 | lambda_min=0.000112915 | Sigma/D=0.0293
+2025-09-02 09:59:24,602 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 23.313s
+2025-09-02 09:59:24,606 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-02 09:59:24,606 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.124559, proj=0.249118 | 0.000s
+2025-09-02 09:59:24,606 [INFO] m3c2.pipeline.batch_orchestrator - [Params] gespeichert: data\0342-0349\python_mov-ref_m3c2_params.txt
+2025-09-02 09:59:42,453 [INFO] m3c2.core.m3c2_runner - Starting M3C2 run with normal=0.12455881498789832 and projection=0.24911762997579665
+2025-09-02 09:59:53,717 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 09:59:53,894 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 10:13:44,965 [INFO] m3c2.core.m3c2_runner - Completed M3C2 run: 709128 distances (NaN ratio 0.01%)
+2025-09-02 10:13:59,918 [INFO] m3c2.pipeline.m3c2_executor - [Run] Punkte=709128 | NaN=0.01% | Zeit=859.959s
+2025-09-02 10:14:21,365 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen gespeichert: data\0342-0349\python_mov-ref_m3c2_distances.txt (709128 Werte, 0.01% NaN)
+2025-09-02 10:14:28,938 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen mit Koordinaten gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates.txt
+2025-09-02 10:14:34,845 [INFO] m3c2.pipeline.m3c2_executor - [Run] Unsicherheiten gespeichert: data\0342-0349\python_mov-ref_m3c2_uncertainties.txt
+2025-09-02 10:14:45,748 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge Visualisierungen …
+2025-09-02 10:15:21,268 [INFO] m3c2.visualization.visualization_service - Histogram saved to data\0342-0349\python_mov-ref_histogram.png
+2025-09-02 10:15:25,885 [INFO] m3c2.pipeline.visualization_runner - [Visual] Histogram gespeichert: data\0342-0349\python_mov-ref_histogram.png
+2025-09-02 10:16:11,630 [INFO] m3c2.visualization.visualization_service - Colorized 709128 points -> data\0342-0349\python_mov-ref_includenonvalid.ply
+2025-09-02 10:16:11,630 [INFO] m3c2.pipeline.visualization_runner - [Visual] Farb-PLY gespeichert: data\0342-0349\python_mov-ref_includenonvalid.ply
+2025-09-02 10:16:12,845 [INFO] m3c2.visualization.visualization_service - [export_valid] 709033 Punkte exportiert -> data\0342-0349\python_mov-ref.ply (SF='distance')
+2025-09-02 10:16:12,853 [INFO] m3c2.pipeline.visualization_runner - [Visual] Valid-PLY gespeichert: data\0342-0349\python_mov-ref.ply
+2025-09-02 10:16:12,853 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 10:16:12,853 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 10:16:12,853 [ERROR] m3c2.pipeline.outlier_handler - [Outlier] Fehler beim Entfernen der Ausreißer
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\outlier_handler.py", line 22, in exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-02 10:16:12,858 [ERROR] m3c2.pipeline.batch_orchestrator - Unerwarteter Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 157, in _run_single
+    self.outlier_handler.exclude_outliers(cfg, ds.config.folder, tag)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\outlier_handler.py", line 22, in exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-02 10:16:12,858 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 88, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 157, in _run_single
+    self.outlier_handler.exclude_outliers(cfg, ds.config.folder, tag)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\outlier_handler.py", line 22, in exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-02 10:16:12,858 [ERROR] CLIApp - Error occurred while running orchestrator: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-02 10:32:33,634 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 10:32:33,635 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 10:32:33,636 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 10:32:33,636 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 10:32:33,636 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 10:32:33,636 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 10:32:33,637 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 10:32:33,637 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 10:32:33,677 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 10:32:35,934 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 10:32:36,015 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 10:32:36,015 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.384s
+2025-09-02 10:32:36,015 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 709128 points
+2025-09-02 10:32:37,858 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.000973 (k=6) | 1.842s
+2025-09-02 10:32:37,858 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 709128 points and avg_spacing 0.000973
+2025-09-02 10:32:37,866 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/709128
+2025-09-02 10:32:37,919 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000121639 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:32:37,950 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000243279 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:32:37,983 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000486558 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:32:38,016 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000973116 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:32:38,050 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00194623 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:32:38,083 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00389246 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:32:38,116 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00778493 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:32:38,150 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0155699 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:32:38,183 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0311397 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:32:38,251 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0622794 | pop=11.5±1.8 | 97%>16 | valid=499/10000 (5%) | sigma=0.00303547 | lambda_min=1.35333e-05 | Sigma/D=0.0487
+2025-09-02 10:32:38,554 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.124559 | pop=18.1±6.4 | 97%>33 | valid=7291/10000 (73%) | sigma=0.00396181 | lambda_min=3.20477e-05 | Sigma/D=0.0318
+2025-09-02 10:32:38,986 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.249118 | pop=54.7±25.3 | 97%>107 | valid=9832/10000 (98%) | sigma=0.00745453 | lambda_min=0.000118629 | Sigma/D=0.0299
+2025-09-02 10:32:38,986 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 1.129s
+2025-09-02 10:32:38,986 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-02 10:32:38,986 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.124559, proj=0.249118 | 0.000s
+2025-09-02 10:32:38,986 [INFO] m3c2.pipeline.batch_orchestrator - [Params] gespeichert: data\0342-0349\python_mov-ref_m3c2_params.txt
+2025-09-02 10:32:38,986 [INFO] m3c2.core.m3c2_runner - Starting M3C2 run with normal=0.12455881498789832 and projection=0.24911762997579665
+2025-09-02 10:32:38,986 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 10:32:39,155 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 10:38:15,645 [INFO] m3c2.core.m3c2_runner - Completed M3C2 run: 709128 distances (NaN ratio 0.01%)
+2025-09-02 10:38:15,645 [INFO] m3c2.pipeline.m3c2_executor - [Run] Punkte=709128 | NaN=0.01% | Zeit=336.666s
+2025-09-02 10:38:16,657 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen gespeichert: data\0342-0349\python_mov-ref_m3c2_distances.txt (709128 Werte, 0.01% NaN)
+2025-09-02 10:38:18,080 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen mit Koordinaten gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates.txt
+2025-09-02 10:38:20,664 [INFO] m3c2.pipeline.m3c2_executor - [Run] Unsicherheiten gespeichert: data\0342-0349\python_mov-ref_m3c2_uncertainties.txt
+2025-09-02 10:38:20,664 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge Visualisierungen …
+2025-09-02 10:38:21,299 [INFO] m3c2.visualization.visualization_service - Histogram saved to data\0342-0349\python_mov-ref_histogram.png
+2025-09-02 10:38:21,328 [INFO] m3c2.pipeline.visualization_runner - [Visual] Histogram gespeichert: data\0342-0349\python_mov-ref_histogram.png
+2025-09-02 10:38:22,527 [INFO] m3c2.visualization.visualization_service - Colorized 709128 points -> data\0342-0349\python_mov-ref_includenonvalid.ply
+2025-09-02 10:38:22,527 [INFO] m3c2.pipeline.visualization_runner - [Visual] Farb-PLY gespeichert: data\0342-0349\python_mov-ref_includenonvalid.ply
+2025-09-02 10:38:23,738 [INFO] m3c2.visualization.visualization_service - [export_valid] 709033 Punkte exportiert -> data\0342-0349\python_mov-ref.ply (SF='distance')
+2025-09-02 10:38:23,738 [INFO] m3c2.pipeline.visualization_runner - [Visual] Valid-PLY gespeichert: data\0342-0349\python_mov-ref.ply
+2025-09-02 10:38:23,738 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 10:38:40,647 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 10:39:05,407 [ERROR] m3c2.pipeline.outlier_handler - [Outlier] Fehler beim Entfernen der Ausreißer
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\outlier_handler.py", line 22, in exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-02 10:39:12,093 [ERROR] m3c2.pipeline.batch_orchestrator - Unerwarteter Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 157, in _run_single
+    self.outlier_handler.exclude_outliers(cfg, ds.config.folder, tag)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\outlier_handler.py", line 22, in exclude_outliers
+    exclude_outliers(
+TypeError: exclude_outliers() got an unexpected keyword argument 'data_folder'
+2025-09-02 10:41:40,538 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 10:41:40,538 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 10:41:40,538 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 10:41:40,538 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 10:41:40,538 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 10:41:40,538 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 10:41:40,538 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 10:41:40,538 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 10:41:40,574 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 10:41:42,764 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 10:41:42,847 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 10:41:42,847 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.304s
+2025-09-02 10:41:42,848 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 709128 points
+2025-09-02 10:41:44,684 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.000973 (k=6) | 1.839s
+2025-09-02 10:41:44,684 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 709128 points and avg_spacing 0.000973
+2025-09-02 10:41:44,692 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/709128
+2025-09-02 10:41:44,726 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000121639 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:41:44,765 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000243279 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:41:44,798 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000486558 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:41:44,830 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000973116 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:41:44,859 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00194623 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:41:44,900 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00389246 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:41:44,931 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00778493 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:41:44,971 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0155699 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:41:45,005 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0311397 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 10:41:45,063 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0622794 | pop=11.5±1.9 | 97%>16 | valid=432/10000 (4%) | sigma=0.00288599 | lambda_min=1.24804e-05 | Sigma/D=0.0463
+2025-09-02 10:41:45,362 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.124559 | pop=18.1±6.3 | 97%>33 | valid=7364/10000 (74%) | sigma=0.00385976 | lambda_min=3.08207e-05 | Sigma/D=0.0310
+2025-09-02 10:41:45,777 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.249118 | pop=55.4±25.6 | 97%>113 | valid=9782/10000 (98%) | sigma=0.0073215 | lambda_min=0.000112841 | Sigma/D=0.0294
+2025-09-02 10:41:45,777 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 1.094s
+2025-09-02 10:41:45,777 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-02 10:41:45,777 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.124559, proj=0.249118 | 0.000s
+2025-09-02 10:41:45,777 [INFO] m3c2.pipeline.batch_orchestrator - [Params] gespeichert: data\0342-0349\python_mov-ref_m3c2_params.txt
+2025-09-02 10:41:45,777 [INFO] m3c2.core.m3c2_runner - Starting M3C2 run with normal=0.12455881498789832 and projection=0.24911762997579665
+2025-09-02 10:41:45,777 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 10:41:45,955 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 10:47:25,166 [INFO] m3c2.core.m3c2_runner - Completed M3C2 run: 709128 distances (NaN ratio 0.01%)
+2025-09-02 10:47:25,166 [INFO] m3c2.pipeline.m3c2_executor - [Run] Punkte=709128 | NaN=0.01% | Zeit=339.392s
+2025-09-02 10:47:26,191 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen gespeichert: data\0342-0349\python_mov-ref_m3c2_distances.txt (709128 Werte, 0.01% NaN)
+2025-09-02 10:47:27,658 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen mit Koordinaten gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates.txt
+2025-09-02 10:47:30,186 [INFO] m3c2.pipeline.m3c2_executor - [Run] Unsicherheiten gespeichert: data\0342-0349\python_mov-ref_m3c2_uncertainties.txt
+2025-09-02 10:47:30,188 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge Visualisierungen …
+2025-09-02 10:47:30,783 [INFO] m3c2.visualization.visualization_service - Histogram saved to data\0342-0349\python_mov-ref_histogram.png
+2025-09-02 10:47:30,791 [INFO] m3c2.pipeline.visualization_runner - [Visual] Histogram gespeichert: data\0342-0349\python_mov-ref_histogram.png
+2025-09-02 10:47:31,985 [INFO] m3c2.visualization.visualization_service - Colorized 709128 points -> data\0342-0349\python_mov-ref_includenonvalid.ply
+2025-09-02 10:47:31,985 [INFO] m3c2.pipeline.visualization_runner - [Visual] Farb-PLY gespeichert: data\0342-0349\python_mov-ref_includenonvalid.ply
+2025-09-02 10:47:33,168 [INFO] m3c2.visualization.visualization_service - [export_valid] 709033 Punkte exportiert -> data\0342-0349\python_mov-ref.ply (SF='distance')
+2025-09-02 10:47:33,176 [INFO] m3c2.pipeline.visualization_runner - [Visual] Valid-PLY gespeichert: data\0342-0349\python_mov-ref.ply
+2025-09-02 10:47:33,176 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 10:47:33,176 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 10:47:33,176 [ERROR] m3c2.pipeline.outlier_handler - [Outlier] Fehler beim Entfernen der Ausreißer
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\outlier_handler.py", line 22, in exclude_outliers
+    exclude_outliers(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\exclude_outliers.py", line 145, in exclude_outliers
+    return detector.run()
+           ^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\exclude_outliers.py", line 107, in run
+    distances_all = np.loadtxt(self.config.file_path, skiprows=1)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_npyio_impl.py", line 1397, in loadtxt
+    arr = _read(fname, dtype=dtype, comment=comment, delimiter=delimiter,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_npyio_impl.py", line 1024, in _read
+    fh = np.lib._datasource.open(fname, 'rt', encoding=encoding)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_datasource.py", line 192, in open
+    return ds.open(path, mode, encoding=encoding, newline=newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_datasource.py", line 526, in open
+    return _file_openers[ext](found, mode=mode,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'data\\0342-0349'
+2025-09-02 10:47:33,186 [ERROR] m3c2.pipeline.batch_orchestrator - Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 157, in _run_single
+    self.outlier_handler.exclude_outliers(cfg, ds.config.folder, tag)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\outlier_handler.py", line 22, in exclude_outliers
+    exclude_outliers(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\exclude_outliers.py", line 145, in exclude_outliers
+    return detector.run()
+           ^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\exclude_outliers.py", line 107, in run
+    distances_all = np.loadtxt(self.config.file_path, skiprows=1)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_npyio_impl.py", line 1397, in loadtxt
+    arr = _read(fname, dtype=dtype, comment=comment, delimiter=delimiter,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_npyio_impl.py", line 1024, in _read
+    fh = np.lib._datasource.open(fname, 'rt', encoding=encoding)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_datasource.py", line 192, in open
+    return ds.open(path, mode, encoding=encoding, newline=newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_datasource.py", line 526, in open
+    return _file_openers[ext](found, mode=mode,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'data\\0342-0349'
+2025-09-02 10:47:33,202 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 10:47:33,202 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 10:47:33,202 [WARNING] m3c2.pipeline.visualization_runner - [Visual] Export valid-only übersprungen: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt not found.
+2025-09-02 10:47:33,202 [WARNING] m3c2.pipeline.visualization_runner - [Visual] Export valid-only übersprungen: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt not found.
+2025-09-02 10:47:33,202 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 10:47:33,202 [INFO] m3c2.pipeline.statistics_runner - [Stats on Distance] Berechne M3C2-Statistiken 0342-0349,ref …
+2025-09-02 10:47:33,202 [INFO] m3c2.core.statistics.service - Starting compute_m3c2_statistics for 1 folders
+2025-09-02 10:47:33,302 [INFO] m3c2.core.statistics.basic_metrics - basic_stats received 709033 values
+2025-09-02 10:47:33,349 [INFO] m3c2.core.statistics.basic_metrics - basic_stats summary: min=-0.120008, max=0.134913, mean=-0.000214
+2025-09-02 10:47:55,743 [INFO] m3c2.core.statistics.basic_metrics - fit_distributions Gaussian: mu=-0.000214, std=0.014627, chi2=32673381941410.097656
+2025-09-02 10:47:55,743 [INFO] m3c2.core.statistics.basic_metrics - fit_distributions Weibull: a=1.010085, b=0.349889, loc=-0.092527, chi2=11637763.605432
+2025-09-02 10:47:55,746 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: rmse
+2025-09-02 10:47:55,750 [INFO] m3c2.core.statistics.outliers - [Outliers] RMSE: 0.014629, Outlier-Schwelle: 0.043886
+2025-09-02 10:47:55,754 [INFO] m3c2.core.statistics.outliers - [Outliers] Outlier: +15929 / -2291 | Inlier: +246292 / -444509
+2025-09-02 10:47:55,755 [INFO] m3c2.core.statistics.basic_metrics - basic_stats received 690813 values
+2025-09-02 10:47:55,805 [INFO] m3c2.core.statistics.basic_metrics - basic_stats summary: min=-0.043862, max=0.043885, mean=-0.001630
+2025-09-02 10:47:56,058 [INFO] m3c2.core.statistics.exporters - Appended 1 rows to Excel file outputs/MARS_output/MARS_m3c2_stats_distances.xlsx
+2025-09-02 10:47:56,058 [INFO] m3c2.core.statistics.service - Finished compute_m3c2_statistics for 1 folders
+2025-09-02 10:47:56,058 [INFO] m3c2.pipeline.batch_orchestrator - [Job] 0342-0349 abgeschlossen in 375.520s
+2025-09-02 10:47:56,058 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 10:55:53,912 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 10:55:53,912 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 10:55:53,912 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 10:55:53,912 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 10:55:53,912 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 10:55:53,912 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 10:55:53,912 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 10:55:53,912 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 10:55:53,947 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 10:55:56,216 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 10:55:56,296 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 10:55:56,296 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.380s
+2025-09-02 10:55:56,297 [INFO] m3c2.pipeline.batch_orchestrator - [Params] geladen: data\0342-0349\python_mov-ref_m3c2_params.txt (NormalScale=0.062279, SearchScale=0.124559)
+2025-09-02 10:55:56,297 [INFO] m3c2.core.m3c2_runner - Starting M3C2 run with normal=0.0622794074939492 and projection=0.124558814987898
+2025-09-02 10:55:56,299 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 10:55:56,461 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 10:58:07,623 [INFO] m3c2.core.m3c2_runner - Completed M3C2 run: 709128 distances (NaN ratio 1.36%)
+2025-09-02 10:58:07,626 [INFO] m3c2.pipeline.m3c2_executor - [Run] Punkte=709128 | NaN=1.36% | Zeit=131.328s
+2025-09-02 10:58:08,558 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen gespeichert: data\0342-0349\python_mov-ref_m3c2_distances.txt (709128 Werte, 1.36% NaN)
+2025-09-02 10:58:09,983 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen mit Koordinaten gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates.txt
+2025-09-02 10:58:12,393 [INFO] m3c2.pipeline.m3c2_executor - [Run] Unsicherheiten gespeichert: data\0342-0349\python_mov-ref_m3c2_uncertainties.txt
+2025-09-02 10:58:12,393 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge Visualisierungen …
+2025-09-02 10:58:13,082 [INFO] m3c2.visualization.visualization_service - Histogram saved to data\0342-0349\python_mov-ref_histogram.png
+2025-09-02 10:58:13,090 [INFO] m3c2.pipeline.visualization_runner - [Visual] Histogram gespeichert: data\0342-0349\python_mov-ref_histogram.png
+2025-09-02 10:58:14,255 [INFO] m3c2.visualization.visualization_service - Colorized 709128 points -> data\0342-0349\python_mov-ref_includenonvalid.ply
+2025-09-02 10:58:14,255 [INFO] m3c2.pipeline.visualization_runner - [Visual] Farb-PLY gespeichert: data\0342-0349\python_mov-ref_includenonvalid.ply
+2025-09-02 10:58:15,453 [INFO] m3c2.visualization.visualization_service - [export_valid] 699494 Punkte exportiert -> data\0342-0349\python_mov-ref.ply (SF='distance')
+2025-09-02 10:58:15,461 [INFO] m3c2.pipeline.visualization_runner - [Visual] Valid-PLY gespeichert: data\0342-0349\python_mov-ref.ply
+2025-09-02 10:58:15,461 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 10:58:20,677 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 10:59:01,965 [ERROR] m3c2.pipeline.outlier_handler - [Outlier] Fehler beim Entfernen der Ausreißer
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\outlier_handler.py", line 22, in exclude_outliers
+    exclude_outliers(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\exclude_outliers.py", line 145, in exclude_outliers
+    return detector.run()
+           ^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\exclude_outliers.py", line 107, in run
+    distances_all = np.loadtxt(self.config.file_path, skiprows=1)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_npyio_impl.py", line 1397, in loadtxt
+    arr = _read(fname, dtype=dtype, comment=comment, delimiter=delimiter,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_npyio_impl.py", line 1024, in _read
+    fh = np.lib._datasource.open(fname, 'rt', encoding=encoding)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_datasource.py", line 192, in open
+    return ds.open(path, mode, encoding=encoding, newline=newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_datasource.py", line 526, in open
+    return _file_openers[ext](found, mode=mode,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'data\\0342-0349'
+2025-09-02 10:59:28,058 [ERROR] m3c2.pipeline.batch_orchestrator - Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 157, in _run_single
+    self.outlier_handler.exclude_outliers(cfg, ds.config.folder, tag)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\outlier_handler.py", line 22, in exclude_outliers
+    exclude_outliers(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\exclude_outliers.py", line 145, in exclude_outliers
+    return detector.run()
+           ^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\exclude_outliers.py", line 107, in run
+    distances_all = np.loadtxt(self.config.file_path, skiprows=1)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_npyio_impl.py", line 1397, in loadtxt
+    arr = _read(fname, dtype=dtype, comment=comment, delimiter=delimiter,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_npyio_impl.py", line 1024, in _read
+    fh = np.lib._datasource.open(fname, 'rt', encoding=encoding)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_datasource.py", line 192, in open
+    return ds.open(path, mode, encoding=encoding, newline=newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Python\Python312\venv\ai3d\Lib\site-packages\numpy\lib\_datasource.py", line 526, in open
+    return _file_openers[ext](found, mode=mode,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'data\\0342-0349'
+2025-09-02 10:59:28,058 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 10:59:28,058 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 10:59:28,058 [WARNING] m3c2.pipeline.visualization_runner - [Visual] Export valid-only übersprungen: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_outlier_rmse.txt not found.
+2025-09-02 10:59:28,058 [WARNING] m3c2.pipeline.visualization_runner - [Visual] Export valid-only übersprungen: data\0342-0349\python_mov-ref_m3c2_distances_coordinates_inlier_rmse.txt not found.
+2025-09-02 10:59:28,058 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 10:59:28,058 [INFO] m3c2.pipeline.statistics_runner - [Stats on Distance] Berechne M3C2-Statistiken 0342-0349,ref …
+2025-09-02 10:59:28,058 [INFO] m3c2.core.statistics.service - Starting compute_m3c2_statistics for 1 folders
+2025-09-02 10:59:28,164 [INFO] m3c2.core.statistics.basic_metrics - basic_stats received 699494 values
+2025-09-02 10:59:28,209 [INFO] m3c2.core.statistics.basic_metrics - basic_stats summary: min=-0.115560, max=0.132246, mean=-0.000889
+2025-09-02 10:59:42,593 [INFO] m3c2.core.statistics.basic_metrics - fit_distributions Gaussian: mu=-0.000889, std=0.014311, chi2=238689480875.462036
+2025-09-02 10:59:42,593 [INFO] m3c2.core.statistics.basic_metrics - fit_distributions Weibull: a=5.675151, b=0.103573, loc=-0.098135, chi2=9860681782068.097656
+2025-09-02 10:59:42,601 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: rmse
+2025-09-02 10:59:42,601 [INFO] m3c2.core.statistics.outliers - [Outliers] RMSE: 0.014339, Outlier-Schwelle: 0.043016
+2025-09-02 10:59:42,609 [INFO] m3c2.core.statistics.outliers - [Outliers] Outlier: +12902 / -2734 | Inlier: +264076 / -419712
+2025-09-02 10:59:42,609 [INFO] m3c2.core.statistics.basic_metrics - basic_stats received 683858 values
+2025-09-02 10:59:42,655 [INFO] m3c2.core.statistics.basic_metrics - basic_stats summary: min=-0.043002, max=0.043009, mean=-0.001821
+2025-09-02 10:59:43,287 [INFO] m3c2.core.statistics.exporters - Appended 1 rows to Excel file outputs/MARS_output/MARS_m3c2_stats_distances.xlsx
+2025-09-02 10:59:43,287 [INFO] m3c2.core.statistics.service - Finished compute_m3c2_statistics for 1 folders
+2025-09-02 10:59:43,287 [INFO] m3c2.pipeline.batch_orchestrator - [Job] 0342-0349 abgeschlossen in 229.380s
+2025-09-02 10:59:43,287 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 11:12:45,788 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 11:12:45,788 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 11:12:45,804 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 11:12:45,804 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 11:12:45,804 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 11:12:45,804 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 11:12:45,804 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 11:12:45,804 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 11:12:45,843 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 11:12:48,151 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 11:12:48,224 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 11:12:48,224 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.424s
+2025-09-02 11:12:48,224 [INFO] m3c2.pipeline.batch_orchestrator - [Params] geladen: data\0342-0349\python_mov-ref_m3c2_params.txt (NormalScale=0.062279, SearchScale=0.124559)
+2025-09-02 11:12:48,224 [INFO] m3c2.core.m3c2_runner - Starting M3C2 run with normal=0.0622794074939492 and projection=0.124558814987898
+2025-09-02 11:12:48,231 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 11:12:48,388 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 11:15:06,426 [INFO] m3c2.core.m3c2_runner - Completed M3C2 run: 709128 distances (NaN ratio 1.36%)
+2025-09-02 11:15:06,426 [INFO] m3c2.pipeline.m3c2_executor - [Run] Punkte=709128 | NaN=1.36% | Zeit=138.202s
+2025-09-02 11:15:07,369 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen gespeichert: data\0342-0349\python_mov-ref_m3c2_distances.txt (709128 Werte, 1.36% NaN)
+2025-09-02 11:15:08,772 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen mit Koordinaten gespeichert: data\0342-0349\python_mov-ref_m3c2_distances_coordinates.txt
+2025-09-02 11:15:11,194 [INFO] m3c2.pipeline.m3c2_executor - [Run] Unsicherheiten gespeichert: data\0342-0349\python_mov-ref_m3c2_uncertainties.txt
+2025-09-02 11:15:11,194 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge Visualisierungen …
+2025-09-02 11:15:11,923 [INFO] m3c2.visualization.visualization_service - Histogram saved to data\0342-0349\python_mov-ref_histogram.png
+2025-09-02 11:15:11,931 [INFO] m3c2.pipeline.visualization_runner - [Visual] Histogram gespeichert: data\0342-0349\python_mov-ref_histogram.png
+2025-09-02 11:15:13,115 [INFO] m3c2.visualization.visualization_service - Colorized 709128 points -> data\0342-0349\python_mov-ref_includenonvalid.ply
+2025-09-02 11:15:13,115 [INFO] m3c2.pipeline.visualization_runner - [Visual] Farb-PLY gespeichert: data\0342-0349\python_mov-ref_includenonvalid.ply
+2025-09-02 11:15:14,319 [INFO] m3c2.visualization.visualization_service - [export_valid] 699494 Punkte exportiert -> data\0342-0349\python_mov-ref.ply (SF='distance')
+2025-09-02 11:15:14,319 [INFO] m3c2.pipeline.visualization_runner - [Visual] Valid-PLY gespeichert: data\0342-0349\python_mov-ref.ply
+2025-09-02 11:15:14,319 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 11:15:14,319 [ERROR] m3c2.pipeline.batch_orchestrator - Unerwarteter Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 157, in _run_single
+    self.outlier_handler.exclude_outliers(cfg, dists_path, tag)
+TypeError: OutlierHandler.exclude_outliers() takes 3 positional arguments but 4 were given
+2025-09-02 11:15:14,319 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 88, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 157, in _run_single
+    self.outlier_handler.exclude_outliers(cfg, dists_path, tag)
+TypeError: OutlierHandler.exclude_outliers() takes 3 positional arguments but 4 were given
+2025-09-02 11:15:14,319 [ERROR] CLIApp - Error occurred while running orchestrator: OutlierHandler.exclude_outliers() takes 3 positional arguments but 4 were given

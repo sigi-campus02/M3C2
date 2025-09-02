@@ -299,10 +299,15 @@ class StatisticsService:
                 py_dist_path = cls._resolve(
                     fid, f"python_{filename_ref}_m3c2_distances.txt"
                 )
+                
                 py_params_path = cls._resolve(
                     fid, f"python_{filename_ref}_m3c2_params.txt"
                 )
+                
                 if os.path.exists(py_dist_path):
+                    logger.info("Processing Python distances: %s", py_dist_path)
+                    logger.info("Using Python params: %s", py_params_path)
+                    
                     values = np.loadtxt(py_dist_path)
                     stats = cls.calc_stats(
                         values,

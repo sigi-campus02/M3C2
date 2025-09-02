@@ -18,6 +18,7 @@ def test_main_creates_plot(tmp_path, monkeypatch):
     out_dir = tmp_path / "out"
 
     def fake_savefig(path):
+        print("savefig called with:", path)
         Path(path).write_text("img")
 
     monkeypatch.setattr(outlier_plots.plt, "savefig", fake_savefig)

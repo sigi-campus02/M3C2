@@ -12,18 +12,20 @@ logger = logging.getLogger(__name__)
 class OutlierHandler:
     """Remove statistical outliers from M3C2 results."""
 
-    def exclude_outliers(self, cfg, out_base: str, tag: str) -> None:
+    def exclude_outliers(self, cfg, dists_path: str) -> None:
         """Remove outliers based on configuration settings.
 
         This method is part of the public pipeline API.
         """
         logger.info("[Outlier] Entferne Ausreißer …")
+        method = cfg.outlier_detection_method
+        outlier_multiplicator = cfg.outlier_multiplicator
+
         try:
             exclude_outliers(
-                data_folder=out_base,
-                ref_variant=tag,
-                method=cfg.outlier_detection_method,
-                outlier_multiplicator=cfg.outlier_multiplicator,
+                dists_path=dists_path,
+                method=method,
+                outlier_multiplicator=outlier_multiplicator,
             )
             logger.info("[Outlier] Entfernen abgeschlossen")
         except Exception:
