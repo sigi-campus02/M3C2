@@ -17,6 +17,32 @@ class VisualizationRunner:
     def generate_visuals(self, cfg, mov, distances: np.ndarray, out_base: str, tag: str) -> None:
         """Create visualisations for computed distances.
 
+        Parameters
+        ----------
+        cfg:
+            Runtime configuration providing naming conventions such as
+            ``process_python_CC``.
+        mov:
+            Moving point cloud object.  If ``mov.cloud`` is not available no
+            point cloud visualisations are generated.
+        distances:
+            Array of per-point M3C2 distances used for colouring and the
+            histogram.
+        out_base:
+            Directory in which the generated files are stored.  Created if it
+            does not yet exist.
+        tag:
+            Identifier that is appended to the filenames.
+
+        The following files are written into ``out_base``:
+
+        * ``<cfg.process_python_CC>_<tag>_histogram.png`` – histogram of
+          distances.
+        * ``<cfg.process_python_CC>_<tag>_includenonvalid.ply`` – coloured point
+          cloud containing all points.
+        * ``<cfg.process_python_CC>_<tag>.ply`` – coloured point cloud containing
+          only valid points.
+
         This method is part of the public pipeline API.
         """
         logger.info("[Visual] Erzeuge Visualisierungen …")
