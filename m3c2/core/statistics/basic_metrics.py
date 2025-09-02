@@ -1,3 +1,11 @@
+"""Utilities for computing descriptive metrics and fitting distributions.
+
+This module offers functions to calculate a wide range of statistical
+descriptors for numeric arrays and to fit Gaussian and Weibull
+distributions in order to derive chi-square metrics and related
+characteristics.
+"""
+
 from __future__ import annotations
 
 from typing import Dict, Optional
