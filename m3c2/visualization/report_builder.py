@@ -328,6 +328,27 @@ def build_parts_pdf(
     include_with: bool = True,
     include_inlier: bool = True,
 ) -> str:
+    """Combine per-part plots into a multi-page PDF.
+
+    Parameters
+    ----------
+    outdir : str
+        Directory containing the PNG plots for each part.
+    pdf_path : str, optional
+        Destination file for the summary PDF. Defaults to
+        ``"parts_summary.pdf"`` inside ``outdir`` if not provided.
+    include_with : bool, default True
+        Include plots that were generated with outliers ("WITH").
+    include_inlier : bool, default True
+        Include plots generated without outliers ("INLIER"). Exactly one of
+        ``include_with`` or ``include_inlier`` must be ``True``.
+
+    Returns
+    -------
+    str
+        Path to the created PDF or an empty string if no plot images were
+        found.
+    """
     if include_with == include_inlier:
         raise ValueError("Bitte genau einen Modus wählen: include_with XOR include_inlier.")
     mode = "WITH" if include_with else "INLIER"
