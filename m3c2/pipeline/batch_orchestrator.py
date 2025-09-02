@@ -271,8 +271,12 @@ class BatchOrchestrator:
         os.makedirs(out_base, exist_ok=True)
         tag = self._run_tag(cfg)
         params_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt")
-        with open(params_path, "w") as f:
-            f.write(f"NormalScale={normal}\nSearchScale={projection}\n")
+        try:
+            with open(params_path, "w") as f:
+                f.write(f"NormalScale={normal}\nSearchScale={projection}\n")
+        except OSError:
+            logger.exception("[Params] speichern fehlgeschlagen: %s", params_path)
+            raise
         logger.info("[Params] gespeichert: %s", params_path)
 
 
