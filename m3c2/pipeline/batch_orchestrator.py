@@ -120,6 +120,14 @@ class BatchOrchestrator:
                 )
                 if self.fail_fast:
                     raise
+            except Exception:
+                logger.exception(
+                    "[Job] Unbekannter Fehler in Job '%s' (Version %s)",
+                    cfg.folder_id,
+                    cfg.filename_ref,
+                )
+                if self.fail_fast:
+                    raise
 
     def _run_single(self, cfg: PipelineConfig) -> None:
         """Execute the pipeline for a single configuration.
