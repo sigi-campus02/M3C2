@@ -116,6 +116,22 @@ class PlotService:
         options: PlotOptions | None = None,
         skip_existing: bool = True,
     ) -> None:
+        """Scan *data_dir* and create overlay plots grouped by part index.
+
+        Distance files are discovered with
+        :func:`scan_distance_files_by_index` and split into data sets that
+        include outliers (``WITH``) and those restricted to inliers
+        (``INLIER``).  For each part index the method reorders the data by
+        case, assigns stable colours, determines a common range where
+        necessary and writes the requested plots to *outdir*.
+
+        Depending on ``options`` histograms with optional Gaussian or Weibull
+        fits, box plots, Q–Q plots and grouped bar charts of means and
+        standard deviations are generated for the available data sets.  The
+        output directory is created if required and the function returns
+        silently when no suitable files are found.
+        """
+
         options = options or PlotOptions()
         os.makedirs(outdir, exist_ok=True)
         per_index, case_colors = scan_distance_files_by_index(data_dir, versions=versions)
