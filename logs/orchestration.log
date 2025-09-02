@@ -3488,3 +3488,41 @@ TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 2025-09-02 17:22:53,212 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken TUNSPEKT Labordaten_all,Faro_ipm_lab_pos01 - Box1 …
 2025-09-02 17:23:11,624 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=None, radius=0.013123012988264763, k=24, sample_size=None, use_convex_hull=True
 2025-09-02 17:23:34,159 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 786802 points (radius=0.013123012988264763, k=24, sample_size=None)
+2025-09-02 17:35:57,916 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 17:35:57,916 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-02 17:35:57,917 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-02 17:35:57,917 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-02 17:35:57,917 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 17:35:57,917 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 17:35:57,917 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 17:35:57,918 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, Faro_ipm_lab_pos02 - Box1, Faro_ipm_lab_pos01 - Box1, python
+2025-09-02 17:35:57,918 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 17:35:57,950 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos01 - Box1.xyz'
+2025-09-02 17:36:00,370 [INFO] m3c2.pipeline.data_loader - [Load] data/TUNSPEKT Labordaten_all: single_cloud=Epoch | 2.454s
+2025-09-02 17:36:00,370 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 786802 points
+2025-09-02 17:36:02,648 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.000820 (k=6) | 2.282s
+2025-09-02 17:36:02,648 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 786802 points and avg_spacing 0.000820
+2025-09-02 17:36:02,669 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/786802
+2025-09-02 17:36:02,710 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000102524 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 17:36:02,747 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000205047 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 17:36:02,780 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000410094 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 17:36:02,808 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000820188 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 17:36:02,852 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00164038 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 17:36:02,886 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00328075 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 17:36:02,927 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00656151 | pop=11.0±0.0 | 97%>11 | valid=1/10000 (0%) | sigma=0.000333746 | lambda_min=1.11386e-07 | Sigma/D=0.0509
+2025-09-02 17:36:03,032 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.013123 | pop=11.2±1.4 | 97%>15 | valid=1657/10000 (17%) | sigma=0.000339584 | lambda_min=1.22864e-07 | Sigma/D=0.0259
+2025-09-02 17:36:03,400 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.026246 | pop=25.7±5.6 | 97%>36 | valid=9076/10000 (91%) | sigma=0.000373224 | lambda_min=1.42692e-07 | Sigma/D=0.0142
+2025-09-02 17:36:03,842 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0524921 | pop=92.7±25.2 | 97%>125 | valid=9606/10000 (96%) | sigma=0.000400545 | lambda_min=1.62098e-07 | Sigma/D=0.0076
+2025-09-02 17:36:04,444 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.104984 | pop=336.5±116.3 | 97%>467 | valid=9998/10000 (100%) | sigma=0.000430933 | lambda_min=1.86936e-07 | Sigma/D=0.0041
+2025-09-02 17:36:05,386 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.209968 | pop=1206.6±455.3 | 97%>1726 | valid=9999/10000 (100%) | sigma=0.000496994 | lambda_min=2.50275e-07 | Sigma/D=0.0024
+2025-09-02 17:36:05,386 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 2.738s
+2025-09-02 17:36:05,394 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-02 17:36:05,394 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.013123, proj=0.026246 | 0.000s
+2025-09-02 17:36:05,394 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 17:36:05,394 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken TUNSPEKT Labordaten_all,Faro_ipm_lab_pos01 - Box1 …
+2025-09-02 17:36:16,563 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=None, radius=0.013123012988264763, k=24, sample_size=None, use_convex_hull=True
+2025-09-02 17:36:16,563 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 786802 points (radius=0.013123012988264763, k=24, sample_size=None)
+2025-09-02 17:36:48,128 [INFO] m3c2.core.statistics.cloud_quality - Evaluating 50000 neighborhoods (min_pts=10, max_eval=50000)
+2025-09-02 17:37:17,580 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=283084.914, roughness_mean=0.000
+2025-09-02 17:37:38,642 [INFO] m3c2.pipeline.batch_orchestrator - [Job] TUNSPEKT Labordaten_all abgeschlossen in 100.738s
+2025-09-02 17:37:38,642 [INFO] CLIApp - Processing completed successfully.
