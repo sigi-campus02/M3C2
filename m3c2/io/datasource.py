@@ -160,9 +160,9 @@ class DataSource:
             try:
                 arr = read_las(path)
                 np.savetxt(xyz, arr, fmt="%.6f")
-            except Exception as exc:
-                logger.error("LAS/LAZ conversion failed for %s: %s", path, exc)
-                raise
+            except (OSError, ValueError) as exc:
+                logger.exception("LAS/LAZ conversion failed for %s", path)
+                raise exc
             return xyz
 
         # Convert PLY files to ``.xyz`` using ``plyfile``
@@ -174,9 +174,9 @@ class DataSource:
             try:
                 arr = read_ply(path)
                 np.savetxt(xyz, arr, fmt="%.6f")
-            except Exception as exc:
-                logger.error("PLY conversion failed for %s: %s", path, exc)
-                raise
+            except (OSError, ValueError) as exc:
+                logger.exception("PLY conversion failed for %s", path)
+                raise exc
             return xyz
 
         # Convert OBJ files by extracting their vertices
@@ -185,9 +185,9 @@ class DataSource:
             try:
                 arr = read_obj(path)
                 np.savetxt(xyz, arr, fmt="%.6f")
-            except Exception as exc:
-                logger.error("OBJ conversion failed for %s: %s", path, exc)
-                raise
+            except (OSError, ValueError) as exc:
+                logger.exception("OBJ conversion failed for %s", path)
+                raise exc
             return xyz
 
         # Convert GPC files to ``.xyz`` using plain text loading
@@ -196,9 +196,9 @@ class DataSource:
             try:
                 arr = read_gpc(path)
                 np.savetxt(xyz, arr, fmt="%.6f")
-            except Exception as exc:
-                logger.error("GPC conversion failed for %s: %s", path, exc)
-                raise
+            except (OSError, ValueError) as exc:
+                logger.exception("GPC conversion failed for %s", path)
+                raise exc
             return xyz
 
         logger.error("No suitable file found for conversion: %s", base)
