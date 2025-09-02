@@ -100,6 +100,14 @@ def plot_overlay_weibull(
     title_text: str | None = None,
     labels_order: List[str] | None = None,
 ) -> None:
+    """Fit Weibull distributions and plot their probability densities.
+
+    Each array in ``data`` is fitted with :func:`scipy.stats.weibull_min.fit`
+    to estimate the shape, location, and scale parameters of a Weibull
+    distribution.  The resulting probability density functions are evaluated
+    on ``x`` and plotted together.  The combined overlay is written to
+    ``{fid}_{fname}_OverlayWeibullFits.png`` inside ``outdir``.
+    """
     weibull_params: Dict[str, Tuple[float, float, float]] = {}
     for v, arr in data.items():
         try:
