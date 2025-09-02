@@ -1,5 +1,6 @@
-from __future__ import annotations
 """Determine optimal scales for the M3C2 algorithm."""
+
+from __future__ import annotations
 
 import logging
 import time
