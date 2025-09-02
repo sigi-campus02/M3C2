@@ -102,7 +102,7 @@ def read_ply(path: Path) -> np.ndarray:
     logger.info("Reading PLY file %s", path)
     try:
         ply = PlyData.read(str(path))
-    except Exception:
+    except (OSError, ValueError):
         logger.exception("Failed to read PLY file %s", path)
         raise
     v = ply["vertex"]
