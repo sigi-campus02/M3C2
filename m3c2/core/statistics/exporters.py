@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 from datetime import datetime
 from typing import Dict, List
@@ -27,6 +28,9 @@ CANONICAL_COLUMNS = [
     "Skewness", "Kurtosis",
     "Distances Path", "Params Path"
 ]
+
+
+logger = logging.getLogger(__name__)
 
 
 def _now_timestamp() -> str:
@@ -86,6 +90,7 @@ def _append_df_to_excel(df_new: pd.DataFrame, out_xlsx: str, sheet_name: str = "
             ws.append(row)
 
     wb.save(out_xlsx)
+    logger.info("Appended %d rows to Excel file %s", len(df_new), out_xlsx)
 
 
 def _append_df_to_json(df_new: pd.DataFrame, out_json: str) -> None:
@@ -124,6 +129,7 @@ def _append_df_to_json(df_new: pd.DataFrame, out_json: str) -> None:
     df_all = df_all.reindex(columns=CANONICAL_COLUMNS)
 
     df_all.to_json(out_json, orient="records", indent=2)
+    logger.info("Appended %d rows to JSON file %s", len(df_new), out_json)
 
 
 def write_table(
@@ -134,6 +140,7 @@ def write_table(
 ) -> None:
     df = pd.DataFrame(rows)
     if df.empty:
+        logger.info("Skipping writing table to %s - no data", out_path)
         return
     if output_format.lower() == "json":
         _append_df_to_json(df, out_path)
@@ -149,6 +156,7 @@ def write_cloud_stats(
 ) -> None:
     df = pd.DataFrame(rows)
     if df.empty:
+        logger.info("Skipping writing cloud stats to %s - no data", out_path)
         return
     ts = _now_timestamp()
     df.insert(0, "Timestamp", ts)
