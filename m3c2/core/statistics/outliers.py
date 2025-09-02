@@ -2,14 +2,24 @@ from __future__ import annotations
 
 from typing import Dict
 
+import logging
 import numpy as np
 
 
+logger = logging.getLogger(__name__)
+
+
 def get_outlier_mask(clipped, method, outlier_multiplicator):
+    logger.info("[Outliers] Methode: %s", method)
     if method == "rmse":
-        rmse = np.sqrt(np.mean(clipped ** 2))
+        rmse = np.sqrt(np.mean(clipped**2))
         outlier_threshold = outlier_multiplicator * rmse
         outlier_mask = np.abs(clipped) > outlier_threshold
+        logger.info(
+            "[Outliers] RMSE: %.6f, Outlier-Schwelle: %.6f",
+            rmse,
+            outlier_threshold,
+        )
     elif method == "iqr":
         q1 = np.percentile(clipped, 25)
         q3 = np.percentile(clipped, 75)
@@ -18,16 +28,32 @@ def get_outlier_mask(clipped, method, outlier_multiplicator):
         upper_bound = q3 + 1.5 * iqr
         outlier_threshold = f"({lower_bound:.3f}, {upper_bound:.3f})"
         outlier_mask = (clipped < lower_bound) | (clipped > upper_bound)
+        logger.info("[Outliers] IQR: %.6f", iqr)
+        logger.info(
+            "[Outliers] Outlier-Schwellen: %.6f bis %.6f",
+            lower_bound,
+            upper_bound,
+        )
     elif method == "std":
         mu = np.mean(clipped)
         std = np.std(clipped)
         outlier_threshold = outlier_multiplicator * std
         outlier_mask = np.abs(clipped - mu) > outlier_threshold
+        logger.info(
+            "[Outliers] STD: %.6f, Outlier-Schwelle: %.6f",
+            std,
+            outlier_threshold,
+        )
     elif method == "nmad":
         med = np.median(clipped)
         nmad = 1.4826 * np.median(np.abs(clipped - med))
         outlier_threshold = outlier_multiplicator * nmad
         outlier_mask = np.abs(clipped - med) > outlier_threshold
+        logger.info(
+            "[Outliers] NMAD: %.6f, Outlier-Schwelle: %.6f",
+            nmad,
+            outlier_threshold,
+        )
     else:
         raise ValueError(
             "Unbekannte Methode für Ausreißer-Erkennung: 'rmse', 'iqr', 'std', 'nmad'"
@@ -44,6 +70,14 @@ def compute_outliers(inliers: np.ndarray, outliers: np.ndarray) -> Dict[str, flo
     neg_out = int(np.sum(outliers < 0))
     pos_in = int(np.sum(inliers > 0))
     neg_in = int(np.sum(inliers < 0))
+
+    logger.info(
+        "[Outliers] Outlier: +%d / -%d | Inlier: +%d / -%d",
+        pos_out,
+        neg_out,
+        pos_in,
+        neg_in,
+    )
 
     return {
         "outlier_count": int(outliers.size),
