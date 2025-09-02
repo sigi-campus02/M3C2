@@ -182,6 +182,32 @@ def plot_overlay_qq(
     title_text: str | None = None,
     labels_order: List[str] | None = None,
 ) -> None:
+    """Create an overlaid quantile-quantile (Q–Q) plot.
+
+    Each dataset in ``data`` is compared against a theoretical normal
+    distribution using :func:`scipy.stats.probplot`.  The function plots the
+    ordered sample values (``osr``) against the theoretical quantiles (``osm``)
+    and overlays a least-squares fit line defined by the returned ``slope`` and
+    ``intercept``.  Deviations from this line indicate departures from
+    normality.
+
+    Parameters
+    ----------
+    fid: str
+        Identifier of the file group used for labelling the output file.
+    fname: str
+        Name of the current file being processed.
+    data: Dict[str, np.ndarray]
+        Mapping from dataset label to the array of sample values to evaluate.
+    colors: Dict[str, str]
+        Colors to use for each dataset label.
+    outdir: str
+        Directory where the resulting plot image will be saved.
+    title_text: str, optional
+        Custom title for the plot; defaults to ``"Q-Q-Plot – {fid}/{fname}"``.
+    labels_order: List[str], optional
+        Explicit order in which datasets should be drawn.
+    """
     plt.figure(figsize=(10, 6))
     labels = labels_order or list(data.keys())
     for v in labels:
