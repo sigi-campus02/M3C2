@@ -139,6 +139,17 @@ def plot_overlay_boxplot(
     title_text: str | None = None,
     labels_order: List[str] | None = None,
 ) -> None:
+    """Create a box plot comparing distributions from multiple versions.
+
+    The function reorganizes the ``data`` dictionary into a pandas ``DataFrame``
+    with one column identifying the version and another holding the distance
+    values.  If :mod:`seaborn` is installed, this DataFrame is passed to
+    :func:`seaborn.boxplot` and the resulting figure is coloured using the
+    provided ``colors`` mapping.  When :mod:`seaborn` is unavailable, a manual
+    matplotlib implementation is used where each box is coloured individually.
+    In both cases the figure is saved to ``outdir`` with a name derived from
+    ``fid`` and ``fname``.
+    """
     try:
         import seaborn as sns
 
