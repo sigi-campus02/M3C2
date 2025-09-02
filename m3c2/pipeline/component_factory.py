@@ -35,6 +35,7 @@ class PipelineComponentFactory:
         return ScaleEstimator(strategy_name=self.strategy_name)
 
     def create_m3c2_executor(self) -> M3C2Executor:
+        """Instantiate the :class:`M3C2Executor` used for processing."""
         logger.debug("Creating %s", M3C2Executor.__name__)
         return M3C2Executor()
 
