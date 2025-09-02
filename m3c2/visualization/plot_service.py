@@ -51,6 +51,27 @@ class PlotService:
 
     @staticmethod
     def _colors_by_case(labels_order: List[str], label_to_case: Dict[str, str], case_colors: Dict[str, str]) -> Dict[str, str]:
+        """Map labels to plotting colors based on their assigned case.
+
+        Each ``label`` in ``labels_order`` is looked up in ``label_to_case`` to
+        determine the case it belongs to. The corresponding color is then
+        retrieved from ``case_colors``. If a label has no case mapping or the
+        case has no associated color, a default gray (``"#777777"``) is used.
+
+        Parameters
+        ----------
+        labels_order:
+            Sequence of labels to map.
+        label_to_case:
+            Mapping from label to case identifier.
+        case_colors:
+            Mapping from case identifier to color string.
+
+        Returns
+        -------
+        Dict[str, str]
+            A dictionary mapping each label to its resolved color.
+        """
         return {lbl: case_colors.get(label_to_case.get(lbl, "CASE1"), "#777777") for lbl in labels_order}
 
     @staticmethod
