@@ -1,3 +1,11 @@
+"""Outlier detection and analysis utilities.
+
+This module provides helpers to compute boolean masks identifying outliers
+based on various statistical measures (RMSE, interquartile range, standard
+deviation and NMAD) as well as functions to summarize inlier and outlier
+distributions.
+"""
+
 from __future__ import annotations
 
 from typing import Dict
