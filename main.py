@@ -35,6 +35,7 @@ def main() -> None:
         CLIApp().run()
     except (ValueError, RuntimeError) as exc:
         logger.error("Error running CLI application: %s", exc, exc_info=True)
+        raise SystemExit(1) from exc
 
 
 if __name__ == "__main__":
