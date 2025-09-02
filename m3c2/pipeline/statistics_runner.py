@@ -1,5 +1,6 @@
-from __future__ import annotations
 """Compute and export statistical summaries for the M3C2 pipeline."""
+
+from __future__ import annotations
 
 import logging
 import os
