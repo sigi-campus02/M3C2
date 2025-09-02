@@ -16,6 +16,18 @@ class PlotServiceCompareDistances:
 
     @classmethod
     def overlay_plots(cls, config: PlotConfig, options: PlotOptionsComparedistances) -> None:
+        """Create comparison plots for distance measurements.
+
+        Parameters
+        ----------
+        config : PlotConfig
+            Configuration providing the output ``path`` as well as the
+            ``folder_ids`` and ``filenames`` used to locate the data.
+        options : PlotOptionsComparedistances
+            Flags controlling which optional plots to generate. Enable
+            ``plot_blandaltman``, ``plot_passingbablok`` and/or
+            ``plot_linearregression`` to create the respective diagrams.
+        """
         os.makedirs(config.path, exist_ok=True)
         folder_ids = config.folder_ids
         ref_variants = config.filenames
