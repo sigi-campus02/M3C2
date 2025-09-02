@@ -59,6 +59,30 @@ class StatisticsRunner:
             return self._multi_cloud_handler(cfg, mov, ref, tag)
 
     def _multi_cloud_handler(self, cfg, mov, ref, tag):
+        """Compute and export distance-based statistics across multiple clouds.
+
+        Parameters
+        ----------
+        cfg
+            Configuration object describing the current job. It provides the
+            output directory, project name and options for the statistics
+            calculation.
+        mov, ref
+            Information about the moving and reference clouds. The parameters
+            are currently unused but preserved for API compatibility with the
+            pipeline's public methods.
+        tag : str
+            Identifier for the reference cloud whose distance statistics are
+            calculated.
+
+        Side Effects
+        ------------
+        - Writes an ``.xlsx`` or ``.json`` file with distance statistics to
+          ``outputs/{project}_output`` depending on :attr:`output_format`.
+        - Logs progress information to the module logger.
+        - Delegates the heavy lifting to
+          :func:`m3c2.core.statistics.StatisticsService.compute_m3c2_statistics`.
+        """
         logger.info(
             f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …"
         )
