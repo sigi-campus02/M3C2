@@ -2,9 +2,14 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional
 
+import logging
+
 import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.neighbors import NearestNeighbors
+
+
+logger = logging.getLogger(__name__)
 
 
 def _bbox_area_xy(xy: np.ndarray) -> float:
@@ -36,9 +41,15 @@ def _calc_single_cloud_stats(
     P = np.asarray(points, dtype=float)
     if P.ndim != 2 or P.shape[1] != 3:
         raise ValueError("points must be of shape (N, 3)")
-
-    z = P[:, 2]
     num = len(P)
+    logger.info(
+        "Calculating cloud stats for %d points (radius=%s, k=%d, sample_size=%s)",
+        num,
+        radius,
+        k,
+        sample_size,
+    )
+    z = P[:, 2]
     z_min, z_max = float(np.min(z)), float(np.max(z))
     z_mean = float(np.mean(z))
     z_median = float(np.median(z))
@@ -144,6 +155,16 @@ def _calc_single_cloud_stats(
     eig_mean, eig_med, _, _ = _agg(eigent_list)
     curv_mean, curv_med, _, _ = _agg(curv_list)
     vert_mean, vert_med, vert_q05, vert_q95 = _agg(vert_list)
+
+    if len(local_dens) == 0 or np.isnan(np.asarray(local_dens, dtype=float)).any():
+        logger.warning("Local density array is empty or contains NaN")
+    if len(rough) == 0 or np.isnan(np.asarray(rough, dtype=float)).any():
+        logger.warning("Roughness array is empty or contains NaN")
+    logger.info(
+        "Computed metrics: global density=%.3f, roughness_mean=%.3f",
+        density_global,
+        rough_mean,
+    )
 
     normal_std_deg = np.nan
     if len(normals) > 3:
