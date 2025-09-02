@@ -45,6 +45,23 @@ class DataSource:
         return Path(self.config.folder) / self.config.ref_basename
 
     def _detect(self, base: Path) -> tuple[str | None, Path | None]:
+        """Detect available point cloud files for a given base path.
+
+        Parameters
+        ----------
+        base:
+            Path without an extension that serves as the candidate stem for
+            supported point cloud file formats.
+
+        Returns
+        -------
+        tuple[str | None, Path | None]
+            A pair ``(kind, path)`` where ``kind`` identifies the detected
+            format (e.g. ``"xyz"`` or ``"laslike"``) and ``path`` points to the
+            discovered file. ``(None, None)`` is returned if no supported file
+            exists.
+        """
+
         logger.debug("Detecting file type for base %s", base)
 
         # Map each supported extension to its potential file path
