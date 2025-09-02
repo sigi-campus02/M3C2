@@ -1,3 +1,12 @@
+"""Compute descriptive quality metrics for point clouds.
+
+This module provides utilities to summarize characteristics of 3D point
+clouds, including global density, height distributions, nearest neighbour
+statistics, local geometric descriptors such as linearity and planarity, and
+orientation measures like verticality and normal variation.  The metrics can
+be used to assess the quality and structure of point cloud data.
+"""
+
 from __future__ import annotations
 
 from typing import Dict, List, Optional
