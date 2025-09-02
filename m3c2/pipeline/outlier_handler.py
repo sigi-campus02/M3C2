@@ -1,5 +1,5 @@
-from __future__ import annotations
 """Handle exclusion of statistical outliers."""
+from __future__ import annotations
 
 import logging
 
