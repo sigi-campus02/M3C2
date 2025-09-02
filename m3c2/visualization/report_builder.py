@@ -64,16 +64,29 @@ def _load_data(fid: str, filenames: List[str], versions: List[str]) -> Tuple[
             if v.lower() == "cc":
                 try:
                     arr = load_1col_distances(path_with)
-                except Exception:
-                    df = pd.read_csv(path_with, sep=";")
-                    num_cols = df.select_dtypes(include=[np.number]).columns
-                    if len(num_cols) == 0:
-                        raise ValueError("Keine numerische Spalte gefunden (CC).")
-                    arr = df[num_cols[0]].astype(float).to_numpy()
-                    arr = arr[np.isfinite(arr)]
+                except (OSError, ValueError) as e:
+                    logger.warning(
+                        "[Report] Standard-Loader fehlgeschlagen (WITH: %s): %s – versuche CC-Fallback",
+                        path_with,
+                        e,
+                    )
+                    try:
+                        df = pd.read_csv(path_with, sep=";")
+                        num_cols = df.select_dtypes(include=[np.number]).columns
+                        if len(num_cols) == 0:
+                            raise ValueError("Keine numerische Spalte gefunden (CC).")
+                        arr = df[num_cols[0]].astype(float).to_numpy()
+                        arr = arr[np.isfinite(arr)]
+                    except (OSError, ValueError) as e:
+                        logger.error(
+                            "[Report] CC-Fallback fehlgeschlagen (WITH: %s): %s",
+                            path_with,
+                            e,
+                        )
+                        continue
             else:
                 arr = load_1col_distances(path_with)
-        except Exception as e:
+        except (OSError, ValueError) as e:
             logger.error("[Report] Laden fehlgeschlagen (WITH: %s): %s", path_with, e)
             continue
 
@@ -232,7 +245,7 @@ def overlay_plots(config: PlotConfig, options: PlotOptions) -> None:
                 continue
             try:
                 arr = load_coordinates_inlier_distances(path_inl)
-            except Exception as e:
+            except (OSError, ValueError) as e:
                 logger.error("[Report] Laden fehlgeschlagen (INLIER: %s): %s", path_inl, e)
                 continue
             if arr.size:
