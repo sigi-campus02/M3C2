@@ -214,7 +214,11 @@ def write_cloud_stats(
                 old = pd.read_json(out_path)
             else:
                 old = pd.read_excel(out_path, sheet_name=sheet_name)
-        except Exception:
+        except (OSError, ValueError, pd.errors.EmptyDataError):
+            logger.exception(
+                "Failed to read existing cloud stats from %s; creating empty table",
+                out_path,
+            )
             old = pd.DataFrame(columns=["Timestamp"])
         cols = list(old.columns) if not old.empty else ["Timestamp"]
         for c in df.columns:
