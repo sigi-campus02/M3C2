@@ -12,7 +12,20 @@ logger = logging.getLogger(__name__)
 
 @dataclass(frozen=True)
 class OutlierConfig:
-    """Configuration for outlier detection."""
+    """Configuration for :class:`OutlierDetector`.
+
+    Parameters
+    ----------
+    dists_path : str
+        Path to a ``.txt`` file containing M3C2 distances with columns
+        ``x y z distance``.
+    method : str
+        Statistic used to derive the outlier threshold. Supported values are
+        ``"rmse"``, ``"iqr"``, ``"std"`` and ``"nmad"``.
+    outlier_multiplicator : float, optional
+        Multiplier applied to the chosen statistic to compute the final
+        threshold. Defaults to ``3.0``.
+    """
 
     dists_path: str
     method: str
@@ -21,7 +34,18 @@ class OutlierConfig:
 
 @dataclass
 class OutlierResult:
-    """Container holding split distance rows."""
+    """Result of an outlier detection run.
+
+    Attributes
+    ----------
+    inliers : :class:`numpy.ndarray`
+        Rows from the input distance file classified as inliers.
+    outliers : :class:`numpy.ndarray`
+        Rows from the input distance file classified as outliers.
+
+    Each array contains the four columns ``x``, ``y``, ``z`` and ``distance``
+    and can be written to disk using :meth:`OutlierDetector._save`.
+    """
 
     inliers: np.ndarray
     outliers: np.ndarray
