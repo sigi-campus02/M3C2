@@ -31,6 +31,15 @@ class OutlierDetector:
     """Perform outlier detection based on a configuration."""
 
     def __init__(self, config: OutlierConfig) -> None:
+        """Initialize the detector with a configuration.
+
+        Parameters
+        ----------
+        config : OutlierConfig
+            Configuration specifying the path to the distance file, the
+            detection method to use and the outlier threshold multiplier.
+        """
+
         self.config = config
 
     @staticmethod
