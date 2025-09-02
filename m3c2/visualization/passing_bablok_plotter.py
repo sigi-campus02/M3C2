@@ -29,7 +29,35 @@ def passing_bablok_plot(
     ref_variants: List[str],
     outdir: str = "PassingBablok",
 ) -> None:
-    """Create Passing–Bablok regression plots."""
+    """Create Passing–Bablok regression plots.
+
+    Parameters
+    ----------
+    folder_ids:
+        Identifiers of input folders that contain the distance comparison
+        files to analyse.
+    ref_variants:
+        Names of the two reference variants whose distances are compared. The
+        first element is used for the x‑axis and the second for the y‑axis.
+    outdir:
+        Output directory in which the resulting plot images are stored. It is
+        created if it does not yet exist.
+
+    Algorithm
+    ---------
+    For every folder the function loads paired distance measurements and, if
+    necessary, randomly subsamples them to at most 1000 points.  It then
+    computes the Passing–Bablok regression slope and intercept including
+    their 95% confidence intervals and visualises the data together with the
+    regression line and the confidence bounds.
+
+    Outputs
+    -------
+    PNG files for each folder named
+    ``passing_bablok_<folder>_<variant1>_vs_<variant2>.png`` are written to
+    *outdir*.  The function returns ``None`` and logs the calculated
+    coefficients as a side effect.
+    """
 
     if len(ref_variants) != 2:
         raise ValueError("ref_variants must contain exactly two entries")
