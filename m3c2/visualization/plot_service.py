@@ -39,6 +39,23 @@ class PlotService:
     # ------------------------------------------------------------------
     @staticmethod
     def _labels_by_case_map(case_map: Dict[str, str], case_order: Tuple[str, ...] | None = None) -> List[str]:
+        """Order labels according to a mapping of labels to cases.
+
+        Parameters
+        ----------
+        case_map:
+            Mapping from label names to a case identifier.
+        case_order:
+            Optional sequence describing the desired order of cases. If not
+            provided, :attr:`CASE_ORDER` is used.
+
+        Returns
+        -------
+        list[str]
+            Labels sorted first by the order of their case as specified by
+            ``case_order`` and within each case by their insertion order in
+            ``case_map``.
+        """
         order = case_order or PlotService.CASE_ORDER
         labels: List[str] = []
         for c in order:
