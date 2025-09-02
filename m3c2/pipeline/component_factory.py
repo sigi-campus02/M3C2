@@ -47,5 +47,10 @@ class PipelineComponentFactory:
         return StatisticsRunner(self.output_format)
 
     def create_visualization_runner(self) -> VisualizationRunner:
+        """Create the :class:`VisualizationRunner` for the pipeline.
+
+        The returned runner generates histograms and colourised point cloud
+        visualizations of M3C2 outputs.
+        """
         logger.debug("Creating %s", VisualizationRunner.__name__)
         return VisualizationRunner()
