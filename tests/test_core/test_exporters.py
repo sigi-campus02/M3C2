@@ -10,6 +10,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pandas as pd
+import logging
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
@@ -61,6 +62,19 @@ def test_write_table_empty_rows():
     with patch("m3c2.core.statistics.exporters._append_df_to_excel") as m_excel:
         exporters.write_table([], out_path="dummy.xlsx")
         m_excel.assert_not_called()
+
+
+def test_append_df_to_json_handles_read_errors(tmp_path, caplog):
+    """Existing JSON parse errors are logged and an empty DataFrame is used."""
+
+    out = tmp_path / "data.json"
+    out.write_text("not valid json")
+    df = pd.DataFrame({"Total Points": [1]})
+    with caplog.at_level(logging.WARNING):
+        exporters._append_df_to_json(df, str(out))
+    assert "Failed to read existing JSON" in caplog.text
+    result = pd.read_json(out)
+    assert len(result) == 1
 
 
 def test_write_cloud_stats_excel():

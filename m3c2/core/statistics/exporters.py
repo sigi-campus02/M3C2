@@ -122,7 +122,8 @@ def _append_df_to_json(df_new: pd.DataFrame, out_json: str) -> None:
     if os.path.exists(out_json):
         try:
             df_old = pd.read_json(out_json)
-        except Exception:
+        except (OSError, ValueError, pd.errors.EmptyDataError) as exc:
+            logger.warning("Failed to read existing JSON '%s': %s", out_json, exc)
             df_old = pd.DataFrame(columns=["Timestamp"])
         cols = list(df_old.columns) if not df_old.empty else ["Timestamp"]
         if "Timestamp" not in cols:
