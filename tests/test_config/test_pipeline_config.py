@@ -1,3 +1,9 @@
+"""Tests for the pipeline configuration module.
+
+These tests validate default parameter values and the immutability of
+``PipelineConfig`` instances to ensure consistent behavior across runs.
+"""
+
 import sys
 from pathlib import Path
 
@@ -16,6 +22,7 @@ def test_defaults_and_immutability():
         folder_id="folder",
         filename_mov="mov.las",
         filename_ref="ref.las",
+        filename_singlecloud="single.las",
         mov_as_corepoints=True,
         use_subsampled_corepoints=0,
         only_stats=False,
