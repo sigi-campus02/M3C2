@@ -24,7 +24,7 @@ class StatisticsRunner:
         self.output_format = output_format
 
     def compute_statistics(self, cfg, mov, ref, tag: str) -> None:
-        """Compute M3C2 statistics for a job.
+        """Compute distance based M3C2 statistics for a job.
 
         Parameters
         ----------
@@ -32,29 +32,26 @@ class StatisticsRunner:
             Configuration object describing the current job.  The runner
             expects attributes such as :attr:`stats_singleordistance`,
             :attr:`folder_id`, :attr:`project` and various filenames.
-        ref
-            Optional reference information.  The parameter is currently not
-            used but retained for API compatibility with other pipeline
+        mov, ref
+            Information on the moving and reference clouds.  The parameters are
+            currently unused but kept for API compatibility with other pipeline
             components.
         tag : str
             Identifier for the reference cloud when evaluating distance based
             statistics.
 
-        Branching
-        ---------
-        If ``cfg.stats_singleordistance`` is ``"distance"`` the method
-        computes statistics on the distances between two clouds using
-        :func:`StatisticsService.compute_m3c2_statistics`.  When the value is
-        ``"single"`` statistics for individual clouds are computed via
-        :func:`StatisticsService.calc_single_cloud_stats`.
+        Notes
+        -----
+        This method only handles ``"distance"`` statistics.  Computation of
+        statistics for individual clouds is handled separately via
+        :meth:`single_cloud_statistics_handler` and should be triggered by the
+        orchestrator.
 
         Output
         ------
-        Results are stored in ``outputs/{project}_output``.  Distance
-        statistics are written to ``{project}_m3c2_stats_distances`` and
-        single cloud statistics to ``{project}_m3c2_stats_clouds``.  The
-        extension is either ``.xlsx`` or ``.json`` depending on
-        ``self.output_format``.
+        Results are stored in ``outputs/{project}_output`` with the filename
+        ``{project}_m3c2_stats_distances`` and an extension of either
+        ``.xlsx`` or ``.json`` depending on ``self.output_format``.
 
         This method is part of the public pipeline API.
         """

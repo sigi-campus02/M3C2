@@ -174,17 +174,16 @@ class BatchOrchestrator:
                 logger.exception("Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier")
                 raise
 
-        try:
-            logger.info("[Statistics] Berechne Statistiken …")
-            self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
-        except (IOError, ValueError):
-            logger.exception("Fehler bei der Berechnung der Statistik")
-        except Exception:
-            logger.exception("Unerwarteter Fehler bei der Berechnung der Statistik")
-            raise
-
-        
-        if cfg.stats_singleordistance == "single":
+        if cfg.stats_singleordistance == "distance":
+            try:
+                logger.info("[Statistics] Berechne Statistiken …")
+                self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
+            except (IOError, ValueError):
+                logger.exception("Fehler bei der Berechnung der Statistik")
+            except Exception:
+                logger.exception("Unerwarteter Fehler bei der Berechnung der Statistik")
+                raise
+        elif cfg.stats_singleordistance == "single":
             single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
 
             try:
