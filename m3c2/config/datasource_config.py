@@ -24,7 +24,23 @@ from dataclasses import dataclass
 
 @dataclass
 class DataSourceConfig:
-    """Configuration for the data source."""
+    """Configuration for the data source.
+
+    Parameters
+    ----------
+    folder:
+        Directory containing the point cloud files.
+    mov_basename:
+        Basename for the moving point cloud file (without extension).
+    ref_basename:
+        Basename for the reference point cloud file (without extension).
+    filename_singlecloud:
+        Name used when a single point cloud file is provided.
+    mov_as_corepoints:
+        If ``True``, the moving cloud is used to derive core points.
+    use_subsampled_corepoints:
+        Factor by which to subsample the core points.
+    """
 
     folder: str
     mov_basename: str = "mov"
