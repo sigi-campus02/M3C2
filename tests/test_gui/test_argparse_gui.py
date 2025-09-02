@@ -10,15 +10,6 @@ import types
 
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
-# ``argparse_gui`` depends on ``m3c2.cli.main_generatecloud`` for its example
-# usage.  Provide a stub module so the import succeeds.
-stub_main = types.SimpleNamespace(
-    convert_one=mock.MagicMock(),
-    convert_all=mock.MagicMock(),
-    logger=mock.MagicMock(),
-)
-sys.modules["m3c2.cli.main_generatecloud"] = stub_main
-
 from m3c2.gui.argparse_gui import run_gui
 
 
@@ -66,7 +57,7 @@ def test_run_gui_invokes_parse_args_and_main_func() -> None:
         BooleanVar=FakeBooleanVar,
     )
 
-    parse_mock = mock.MagicMock(return_value=mock.sentinel.args)
+    parse_mock = mock.MagicMock()
     parser.parse_args = parse_mock
     main_mock = mock.MagicMock()
 
@@ -83,4 +74,4 @@ def test_run_gui_invokes_parse_args_and_main_func() -> None:
         button_cmds["Start"]()
 
     parse_mock.assert_called_once_with(["--flag", "--opt", "value", "positional"])
-    main_mock.assert_called_once_with(mock.sentinel.args)
+    main_mock.assert_called_once_with(["--flag", "--opt", "value", "positional"])
