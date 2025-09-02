@@ -20,7 +20,25 @@ logger = logging.getLogger(__name__)
 # Reader functions
 
 def read_xyz(path: Path) -> np.ndarray:
-    """Read XYZ formatted files using ``numpy``."""
+    """Read a plain text ``XYZ`` file and return its coordinates.
+
+    Parameters
+    ----------
+    path:
+        Path to the ``.xyz`` file to read.
+
+    Raises
+    ------
+    Exception
+        Any error encountered while reading the file is logged and
+        re-raised.
+
+    Returns
+    -------
+    numpy.ndarray
+        Array of shape ``(N, 3)`` containing ``x``, ``y`` and ``z`` coordinates
+        of the point cloud.
+    """
     logger.info("Reading XYZ file %s", path)
     try:
         return np.loadtxt(path, dtype=np.float64, usecols=(0, 1, 2))
