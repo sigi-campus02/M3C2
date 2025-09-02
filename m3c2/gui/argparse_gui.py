@@ -56,6 +56,14 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
         row += 1
 
     def on_start() -> None:
+        """Handle the start event by collecting arguments and executing the main function.
+
+        The callback gathers values from all GUI widgets, assembles them into an
+        ``argv`` list, parses them using the provided ``argparse`` parser and, if
+        successful, closes the GUI and invokes ``main_func`` with the resulting
+        namespace.  Any parsing errors are reported via a message box instead of
+        raising ``SystemExit``.
+        """
         argv: list[str] = []
         for action in parser._actions:
             if isinstance(action, argparse._HelpAction):
