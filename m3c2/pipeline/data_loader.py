@@ -16,7 +16,9 @@ logger = logging.getLogger(__name__)
 class DataLoader:
     """Load point cloud data and core points according to a configuration."""
 
+
     def load_data(self, cfg, mode: str) -> tuple[DataSource, object, object, object] | object:
+
         """Load point clouds and core points according to ``cfg``.
 
         Parameters

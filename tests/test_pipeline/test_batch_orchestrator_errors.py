@@ -71,6 +71,12 @@ def test_run_single_propagates_unexpected(monkeypatch, tmp_path):
 
     monkeypatch.setattr(orchestrator.data_loader, "load_data", fake_load_data)
     monkeypatch.setattr(
+        orchestrator.outlier_handler, "exclude_outliers", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("bad")))
+    monkeypatch.setattr(
+        orchestrator.visualization_runner,
+        "generate_clouds_outliers",
+        lambda *a, **k: None,
+    monkeypatch.setattr( 
         orchestrator.statistics_runner,
         "single_cloud_statistics_handler",
         lambda *a, **k: (_ for _ in ()).throw(RuntimeError("bad")),
