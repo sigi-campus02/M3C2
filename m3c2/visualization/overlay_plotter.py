@@ -1,3 +1,12 @@
+"""Utilities for creating overlay plots of M3C2 distance distributions.
+
+This module provides a collection of helper functions to visualize multiple
+data series in common plots such as histograms, probability density overlays,
+boxplots, Q-Q plots, and violin plots. These functions are designed to compare
+different versions or datasets by rendering them together with consistent
+styling and ranges.
+"""
+
 from __future__ import annotations
 
 import logging
