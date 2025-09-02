@@ -1,5 +1,5 @@
-from __future__ import annotations
 """Generate visual representations of M3C2 results."""
+from __future__ import annotations
 
 import logging
 import os
