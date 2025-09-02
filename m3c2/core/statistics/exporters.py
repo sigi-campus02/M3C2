@@ -34,6 +34,12 @@ logger = logging.getLogger(__name__)
 
 
 def _now_timestamp() -> str:
+    """Return the current time formatted as ``YYYY-MM-DD HH:MM:SS``.
+
+    The timestamp is generated using :func:`datetime.now` and formatted with
+    :func:`strftime` so that exported statistics include a consistent,
+    human-readable creation time.
+    """
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
