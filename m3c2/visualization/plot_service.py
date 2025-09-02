@@ -1,3 +1,11 @@
+"""Plotting and report generation façade.
+
+This module exposes the :class:`PlotService` which centralizes creation
+of overlay plots and PDF summaries from distance data. It serves as the
+single entry point for visualization and report building tasks in the
+project.
+"""
+
 from __future__ import annotations
 
 import logging
