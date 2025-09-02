@@ -43,6 +43,12 @@ class PipelineComponentFactory:
         return OutlierHandler()
 
     def create_statistics_runner(self) -> StatisticsRunner:
+        """Create a :class:`StatisticsRunner` honoring the output format.
+
+        The returned runner serializes computed statistics either as Excel
+        spreadsheets or JSON files depending on the ``output_format`` specified
+        when this factory was instantiated.
+        """
         logger.debug("Creating %s", StatisticsRunner.__name__)
         return StatisticsRunner(self.output_format)
 
