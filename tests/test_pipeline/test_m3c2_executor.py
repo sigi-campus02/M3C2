@@ -1,3 +1,10 @@
+"""Tests for the M3C2 executor.
+
+These tests cover the :class:`~m3c2.pipeline.m3c2_executor.M3C2Executor`,
+ensuring that it properly runs the M3C2 algorithm and writes the expected
+output files to disk.
+"""
+
 from __future__ import annotations
 
 import logging
@@ -9,6 +16,22 @@ from m3c2.pipeline.m3c2_executor import M3C2Executor
 
 
 def test_run_m3c2_writes_outputs(tmp_path, monkeypatch, caplog):
+    """Run the executor and check that distance and uncertainty files exist.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory used for storing output files.
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to replace the real runner with a dummy implementation.
+    caplog : pytest.LogCaptureFixture
+        Captures log records emitted during execution.
+
+    Returns
+    -------
+    None
+    """
+
     distances = np.array([1.0, np.nan])
     uncertainties = np.array([0.1, 0.2])
 
@@ -26,7 +49,7 @@ def test_run_m3c2_writes_outputs(tmp_path, monkeypatch, caplog):
     caplog.set_level(logging.INFO)
 
     executor = M3C2Executor()
-    d, u = executor.run_m3c2(
+    d, u, _ = executor.run_m3c2(
         cfg,
         mov,
         ref,
