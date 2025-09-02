@@ -163,6 +163,25 @@ class BatchOrchestrator:
         )
 
     def _batch_process_multicloud(self, cfg: PipelineConfig):
+        """Process statistics for a pair of point clouds.
+
+        Parameters
+        ----------
+        cfg : PipelineConfig
+            Configuration describing the moving and reference clouds as well
+            as processing options.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        Depending on ``cfg.only_stats`` either run the full M3C2 distance
+        computation followed by statistics generation or skip distance
+        calculation and only compute statistics. Results are written to the
+        output directory defined in ``cfg``.
+        """
         ds, mov, ref, corepoints = self.data_loader.load_data(cfg, mode="multicloud")
         out_base = ds.config.folder
         tag = self._run_tag(cfg)
