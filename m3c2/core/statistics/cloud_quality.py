@@ -141,7 +141,51 @@ def calc_single_cloud_stats(
     min_pts: int = 10,
     max_eval: Optional[int] = 50_000,
 ) -> Dict:
-    """Berechne Qualitätsmetriken für eine Punktwolke."""
+    """Compute a suite of quality metrics for a single point cloud.
+
+    The function estimates global characteristics of the input points and
+    evaluates local neighbourhoods to derive geometric descriptors.  It can
+    optionally operate on a subset of points and determine the footprint area
+    either from a provided value or from the convex hull/bounding box of the
+    data.
+
+    Parameters
+    ----------
+    points : np.ndarray
+        Array of shape ``(n_points, 3)`` containing ``(x, y, z)`` coordinates
+        of the cloud.
+    area_m2 : float, optional
+        Known planimetric area of the cloud in square metres.  If ``None``
+        (default) the area is estimated from the convex hull (or bounding box
+        if ``use_convex_hull`` is ``False``).
+    radius : float, optional
+        Search radius in metres for local neighbourhood analysis when computing
+        density and eigenvalue based features.
+    k : int, optional
+        Number of nearest neighbours used for the mean distance statistics
+        (default ``24``).
+    sample_size : int, optional
+        Maximum number of points randomly sampled for neighbourhood based
+        computations. ``None`` evaluates all points (default ``100_000``).
+    use_convex_hull : bool, optional
+        If ``True`` (default) the convex hull area is used when estimating the
+        footprint; otherwise the axis-aligned bounding box is used.
+    min_pts : int, optional
+        Minimum number of points required within ``radius`` for a neighbourhood
+        to be evaluated (default ``10``).
+    max_eval : int, optional
+        Maximum number of neighbourhoods to evaluate.  ``None`` uses all valid
+        neighbourhoods (default ``50_000``).
+
+    Returns
+    -------
+    Dict
+        Mapping containing global statistics (e.g. point count, area, vertical
+        distribution, mean nearest-neighbour distances), local density and
+        roughness summaries, eigenvalue based descriptors (linearity, planarity,
+        sphericity, anisotropy, omnivariance, eigenentropy, curvature,
+        verticality), and metadata about the parameters used.
+    """
 
     points = np.asarray(points)
 
