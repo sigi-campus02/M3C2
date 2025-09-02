@@ -101,7 +101,23 @@ def read_obj(path: Path) -> np.ndarray:
 
 
 def read_gpc(path: Path) -> np.ndarray:
-    """Read GPC files as plain text."""
+    """Read point coordinates from a GPC file.
+
+    The *GPC* (Geometrie-Punktwolke) format is a simple whitespace separated
+    text format where each line stores at least three floating point values:
+    ``x``, ``y`` and ``z``.  Additional columns are ignored.
+
+    Parameters
+    ----------
+    path : pathlib.Path
+        Path to the ``.gpc`` file that should be read.
+
+    Returns
+    -------
+    numpy.ndarray
+        Array of shape ``(N, 3)`` containing the point coordinates.
+    """
+
     logger.info("Reading GPC file %s", path)
     try:
         return np.loadtxt(path, dtype=np.float64, usecols=(0, 1, 2))
