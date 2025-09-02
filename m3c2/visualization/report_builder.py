@@ -89,6 +89,13 @@ def _plot_grouped_bar_means_stds_dual(
 ) -> None:
     """Create grouped bar plots comparing WITH and INLIER data per folder."""
     def _folder_of(label: str) -> str:
+        """Return the folder ID from a combined version/folder label.
+
+        Labels are typically formatted as ``<version>_<folder>`` (for
+        example ``"cc_Part_1"``). Only the substring after the first
+        underscore represents the folder identifier. If no underscore is
+        present, the label itself is treated as the folder name.
+        """
         return label.split("_", 1)[1] if "_" in label else label
 
     folder_to_with: Dict[str, List[np.ndarray]] = {}
