@@ -190,7 +190,29 @@ class BatchOrchestrator:
                 raise
 
     def _batch_process_singlecloud(self, cfg: PipelineConfig):
-        """Compute statistics for a single cloud."""
+        """Compute statistics for an individual point cloud.
+
+        Parameters
+        ----------
+        cfg : PipelineConfig
+            Configuration describing the input cloud and output settings.
+
+        Notes
+        -----
+        The cloud specified in ``cfg`` is loaded and the normal and
+        projection scales are determined using :attr:`scale_estimator`.
+        These scales are then passed to
+        ``statistics_runner.single_cloud_statistics_handler`` to compute
+        the statistical summaries written to the configured output paths.
+
+        Raises
+        ------
+        IOError, ValueError
+            If the input data is missing or the configuration is invalid.
+        Exception
+            Any unexpected error during scale estimation or statistics
+            computation is logged and re-raised.
+        """
 
         single_cloud = self.data_loader.load_data(cfg, mode="singlecloud")
 
