@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+"""Rename *_cloud group prefixes from numbers to letters.
+
+This command line tool walks over files and directories and converts
+occurrences of numeric group identifiers in ``*_cloud`` segments.  A leading
+``1-`` is replaced by ``a-`` and ``2-`` becomes ``b-``.  The script supports a
+dry-run mode and optional recursion into subdirectories.
+"""
+
 # rename_group_prefixes.py
 import re, argparse, os, logging
 from pathlib import Path
