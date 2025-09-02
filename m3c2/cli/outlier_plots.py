@@ -7,7 +7,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from m3c2.io.logging_utils import resolve_log_level, setup_logging
+from m3c2.io.logging_utils import setup_logging
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ def main(
 ) -> None:
     """Create boxplots comparing full and inlier-filtered distances."""
 
-    setup_logging(level=resolve_log_level())
+    setup_logging(level=os.getenv("LOG_LEVEL", "INFO"))
 
     variants = variants or [
         ("ref", "python_ref_m3c2_distances.txt"),
@@ -35,6 +35,7 @@ def main(
     outdir = outdir or os.path.join("outputs", "MARS_output", "Plots_MARS_Outlier")
 
     for variant, dist_file in variants:
+        logger.info("Starting variant %s", variant)
         data_list: list[np.ndarray] = []
         labels: list[str] = []
 
@@ -42,14 +43,17 @@ def main(
         try:
             data = np.loadtxt(file_path)
             if data.ndim == 0 or data.size == 0:
+                logger.warning("File %s is empty", file_path)
                 data = np.array([])
             else:
                 data = data[~np.isnan(data)]
-            if data.size > 0:
-                data_list.append(data)
-                labels.append("All Distances")
+                if data.size > 0:
+                    data_list.append(data)
+                    labels.append("All Distances")
+                else:
+                    logger.warning("File %s has no valid data", file_path)
         except Exception:
-            pass
+            logger.warning("File %s is missing or unreadable", file_path)
 
         for suffix, label in inlier_suffixes:
             file_path = os.path.join(
@@ -62,8 +66,10 @@ def main(
                 if data.size > 0:
                     data_list.append(data)
                     labels.append(label)
+                else:
+                    logger.warning("File %s is empty", file_path)
             except Exception:
-                pass
+                logger.warning("File %s is missing or unreadable", file_path)
 
         plt.figure(figsize=(8, 6))
         plt.boxplot(data_list, labels=labels)
@@ -76,6 +82,7 @@ def main(
         os.makedirs(outdir, exist_ok=True)
         plt.savefig(os.path.join(outdir, f"{basename}_OutlierComparison_{variant}.png"))
         plt.close()
+        logger.info("Completed variant %s", variant)
 
 
 if __name__ == "__main__":
