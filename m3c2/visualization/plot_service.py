@@ -289,4 +289,14 @@ class PlotService:
 
     @staticmethod
     def merge_pdfs(pdf_paths: List[str], out_path: str) -> str:
+        """Merge several PDF files into a single document.
+
+        Args:
+            pdf_paths: List of paths to the PDF files to be merged. Nonexistent
+                files are skipped.
+            out_path: Destination path where the merged PDF will be stored.
+
+        Returns:
+            The path to the merged PDF file.
+        """
         return _merge_pdfs(pdf_paths, out_path)
