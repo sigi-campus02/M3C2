@@ -212,6 +212,7 @@ class BatchOrchestrator:
             )
             raise
 
+
     def _save_params(self, cfg: PipelineConfig, normal: float, projection: float, out_base: str) -> None:
         """Persist determined scale parameters to disk.
 
@@ -299,7 +300,25 @@ class BatchOrchestrator:
 
 
     def _handle_outliers(self, cfg: PipelineConfig, out_base: str, tag: str):
+        """
+        Remove statistical outliers from the M3C2 results and generate
+        visualizations for the remaining points.
 
+        Parameters
+        ----------
+        cfg : PipelineConfig
+            Configuration describing the dataset to be processed.
+        out_base : str
+            Base output directory where outlier artefacts are written.
+        tag : str
+            Identifier of the current processing run used for file naming.
+
+        The method first delegates to :meth:`OutlierHandler.exclude_outliers`
+        to filter points and then calls
+        :meth:`VisualizationRunner.generate_clouds_outliers` to create ``.ply``
+        clouds for both outliers and inliers. ``IOError`` and ``ValueError`` are
+        logged, while unexpected exceptions are logged and re-raised.
+        """
 
         # ----- Remove Outliers -----
         try:
