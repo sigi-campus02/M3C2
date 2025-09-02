@@ -17,6 +17,14 @@ class ScaleEstimator:
     """Estimate normal and projection scales using a scanning strategy."""
 
     def __init__(self, strategy_name: str = "radius") -> None:
+        """Initialize the scale estimator.
+
+        Parameters
+        ----------
+        strategy_name : str, default="radius"
+            Name of the scanning strategy from :data:`STRATEGIES` used to
+            determine suitable scales.
+        """
         self.strategy_name = strategy_name
 
     def determine_scales(self, cfg, corepoints) -> Tuple[float, float]:
