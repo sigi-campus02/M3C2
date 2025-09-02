@@ -22,6 +22,20 @@ class ScaleEstimator:
     def determine_scales(self, cfg, corepoints) -> Tuple[float, float]:
         """Determine suitable normal and projection scales.
 
+        Parameters
+        ----------
+        cfg : object
+            Pipeline configuration supplying overrides and sampling parameters.
+        corepoints : array-like
+            Points on which to base the scale estimation.
+
+        Returns
+        -------
+        normal : float
+            Selected radius for normal computation.
+        projection : float
+            Selected radius for projection computation.
+
         This method is part of the public pipeline API.
         """
         if cfg.normal_override is not None and cfg.proj_override is not None:
