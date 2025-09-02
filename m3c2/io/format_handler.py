@@ -1,10 +1,10 @@
-from __future__ import annotations
-
 """File format handlers for point cloud data.
 
 This module provides reader functions for a variety of point cloud file
 formats, including ``XYZ``, ``LAS/LAZ``, ``PLY``, ``OBJ``, and ``GPC``.
 """
+
+from __future__ import annotations
 
 from pathlib import Path
 from importlib import import_module
