@@ -1,3 +1,10 @@
+"""OLS plotting utility for visualizing linear regression between two variants.
+
+This module loads paired reference measurements, fits an ordinary least squares
+regression with confidence intervals, and saves the resulting comparison
+plots for each folder.
+"""
+
 from __future__ import annotations
 
 import logging
