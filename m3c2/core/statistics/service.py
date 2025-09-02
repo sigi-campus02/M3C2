@@ -307,8 +307,17 @@ class StatisticsService:
             if os.path.exists(py_dist_path):
                 logger.info("Processing Python distances: %s", py_dist_path)
                 logger.info("Using Python params: %s", py_params_path)
-                
-                values = np.loadtxt(py_dist_path)
+                try:
+                    values = np.loadtxt(py_dist_path)
+                except (OSError, ValueError) as exc:
+                    logger.warning(
+                        "Skipping folder %s due to unreadable distances file %s: %s",
+                        fid,
+                        py_dist_path,
+                        exc,
+                    )
+                    continue
+
                 stats = cls.calc_stats(
                     values,
                     params_path=py_params_path if os.path.exists(py_params_path) else None,
