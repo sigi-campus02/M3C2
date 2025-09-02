@@ -1,3 +1,10 @@
+"""PDF and plot generation utilities for M3C2 reports.
+
+This module gathers helper functions that load distance measurements,
+compute statistics, and create visualizations which are combined into
+multi-page PDF documents.
+"""
+
 from __future__ import annotations
 
 import logging
