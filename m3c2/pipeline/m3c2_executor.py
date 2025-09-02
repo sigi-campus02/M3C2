@@ -18,7 +18,49 @@ class M3C2Executor:
 
     def run_m3c2(self, cfg, mov, ref, corepoints, normal: float, projection: float, out_base: str, tag: str,
     ) -> Tuple[np.ndarray, np.ndarray]:
-        """Run M3C2 and store distances and uncertainties.
+        """Run the core M3C2 computation and persist results to disk.
+
+        Parameters
+        ----------
+        cfg : object
+            Configuration object. Must provide the attribute
+            ``process_python_CC`` which is used to construct output file
+            names.
+        mov : array-like or object
+            Moving point cloud. May be provided as an ``(N, 3)`` array or as
+            an object exposing a ``cloud`` attribute containing such an
+            array.
+        ref : array-like or object
+            Reference point cloud in the same format as ``mov``.
+        corepoints : array-like
+            ``(N, 3)`` coordinates of the core points where distances are
+            evaluated.
+        normal : float
+            Normal scale used for local surface fitting.
+        projection : float
+            Projection scale for the M3C2 algorithm.
+        out_base : str
+            Directory to which result files are written.
+        tag : str
+            Identifier appended to the generated filenames.
+
+        Returns
+        -------
+        distances : numpy.ndarray
+            Signed distance for each core point. Entries may be ``NaN`` when
+            a distance could not be computed.
+        uncertainties : numpy.ndarray
+            One-sigma distance uncertainty for each core point.
+
+        Notes
+        -----
+        Three ASCII files are written to ``out_base``:
+
+        * ``{cfg.process_python_CC}_{tag}_m3c2_distances.txt`` – distances.
+        * ``{cfg.process_python_CC}_{tag}_m3c2_distances_coordinates.txt`` –
+          core point coordinates with distances.
+        * ``{cfg.process_python_CC}_{tag}_m3c2_uncertainties.txt`` –
+          uncertainty values.
 
         This method is part of the public pipeline API.
         """
