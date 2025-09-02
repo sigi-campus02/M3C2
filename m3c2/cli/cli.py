@@ -15,6 +15,19 @@ class CLIApp:
     """Command line application wrapper for the pipeline."""
 
     def __init__(self, config_path: str | Path | None = None) -> None:
+        """Initialize the CLI application wrapper.
+
+        Parameters
+        ----------
+        config_path:
+            Optional path to a JSON configuration file. If omitted, the
+            default ``config.json`` located two directories above this file
+            is used.
+
+        The resolved configuration path is stored on the instance and later
+        consulted to provide default argument values when parsing command-line
+        options. A logger dedicated to this class is also set up.
+        """
         self.logger = logging.getLogger(self.__class__.__name__)
         self.config_path = (
             Path(config_path)
