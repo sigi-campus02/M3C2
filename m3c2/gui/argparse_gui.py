@@ -1,19 +1,17 @@
 """GUI launcher for argparse-based scripts.
 
 This utility builds a simple Tkinter interface for all arguments defined in an
-``argparse.ArgumentParser``.  Users can edit values, start execution and cancel
+``argparse.ArgumentParser``. Users can edit values, start execution and cancel
 without running anything.
 
-Example usage reimplements the CLI from ``main_generatecloud.py``.
+Example usage integrates the :class:`~m3c2.cli.cli.CLIApp` of the project.
 """
 import argparse
-import os
 import tkinter as tk
 from tkinter import messagebox
 import logging
 
 from m3c2.io.logging_utils import setup_logging
-from m3c2.cli.main_generatecloud import convert_one, convert_all
 
 
 logger = logging.getLogger(__name__)
@@ -22,8 +20,8 @@ logger = logging.getLogger(__name__)
 def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
     """Create a Tkinter GUI for the given parser and execute ``main_func``.
 
-    ``main_func`` receives the parsed ``argparse.Namespace`` when the user
-    presses the "Start" button.  A "Cancel" button closes the window without
+    ``main_func`` receives the list of command-line arguments when the user
+    presses the "Start" button. A "Cancel" button closes the window without
     running anything.
     """
     setup_logging()
@@ -59,10 +57,10 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
         """Handle the start event by collecting arguments and executing the main function.
 
         The callback gathers values from all GUI widgets, assembles them into an
-        ``argv`` list, parses them using the provided ``argparse`` parser and, if
-        successful, closes the GUI and invokes ``main_func`` with the resulting
-        namespace.  Any parsing errors are reported via a message box instead of
-        raising ``SystemExit``.
+        ``argv`` list, validates them using the provided ``argparse`` parser and,
+        if successful, closes the GUI and invokes ``main_func`` with the
+        resulting argument list. Any parsing errors are reported via a message
+        box instead of raising ``SystemExit``.
         """
         argv: list[str] = []
         for action in parser._actions:
@@ -89,7 +87,7 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
                     argv.append(value)
         logger.info("Start pressed with arguments: %s", argv)
         try:
-            args = parser.parse_args(argv)
+            parser.parse_args(argv)
         except SystemExit:
             # argparse reports errors via SystemExit; show message instead
             messagebox.showerror("Ungültige Eingabe", "Bitte Eingaben prüfen.")
@@ -101,7 +99,7 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
 
         root.destroy()
         try:
-            main_func(args)
+            main_func(argv)
         except Exception as exc:  # final safety net
             logger.exception("Exception raised by main_func")
             messagebox.showerror("Fehler", str(exc))
@@ -118,51 +116,11 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Example integration with existing CLI (main_generatecloud.py)
+# Example integration with the CLI application
 # ---------------------------------------------------------------------------
 
-def build_parser() -> argparse.ArgumentParser:
-    """Construct the command line interface for PLY generation.
-
-    Adds a ``paths`` positional argument accepting one or more TXT files or
-    directories to search recursively.  The optional ``--overwrite`` flag
-    controls whether existing ``.ply`` files are replaced.
-    """
-    parser = argparse.ArgumentParser(description="Erzeuge .ply aus *_m3c2_distances_coordinates*.txt")
-    parser.add_argument("paths", nargs="+", help="Ordner oder Dateien (TXT). Bei Ordnern wird rekursiv gesucht.")
-    parser.add_argument("--overwrite", action="store_true", help="Vorhandene .ply überschreiben")
-    return parser
-
-
-def main(args: argparse.Namespace) -> None:
-    """Handle parsed arguments after GUI startup and run conversions.
-
-    This function is passed to :func:`run_gui`, which launches the Tkinter
-    interface.  After the user confirms their selections, ``run_gui`` calls
-    ``main`` with the resulting :class:`argparse.Namespace` to start processing.
-    """
-    txts: list[str] = []
-    dirs: list[str] = []
-    for p in args.paths:
-        if os.path.isdir(p):
-            dirs.append(os.path.abspath(p))
-        elif os.path.isfile(p):
-            if p.endswith(".txt"):
-                txts.append(os.path.abspath(p))
-            else:
-                logger.warning("Ignoriere Datei (keine .txt): %s", p)
-        else:
-            logger.warning("Pfad nicht gefunden: %s", p)
-
-    for t in txts:
-        try:
-            convert_one(t, overwrite=args.overwrite)
-        except Exception as exc:
-            logger.warning("Fehler bei %s: %s", t, exc)
-
-    if dirs:
-        convert_all(dirs, overwrite=args.overwrite)
-
-
 if __name__ == "__main__":
-    run_gui(build_parser(), main)
+    from m3c2.cli.cli import CLIApp
+
+    app = CLIApp()
+    run_gui(app.build_parser(), app.run)
