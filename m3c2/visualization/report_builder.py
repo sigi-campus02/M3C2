@@ -296,6 +296,13 @@ def summary_pdf(config: PlotConfig) -> None:
     pdf = PdfPages(outfile)
 
     def _add_page(suffix_label: str, title_suffix: str) -> None:
+        """Create a single summary page from existing plot images.
+
+        Each page arranges up to six pre-generated PNG plots in a 2×3 grid.
+        ``suffix_label`` selects which image set to include (e.g. WITH vs
+        INLIER plots), while ``title_suffix`` is appended to the page title to
+        clarify the plotted data.
+        """
         fig, axs = plt.subplots(2, 3, figsize=(24, 16))
         for suffix, title, (row, col) in plot_types:
             ax = axs[row, col]
