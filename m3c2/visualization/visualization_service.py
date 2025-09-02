@@ -22,15 +22,17 @@ logger = logging.getLogger(__name__)
 try:
     import seaborn as sns  # type: ignore
     _HAS_SNS = True
-except Exception:
+except ImportError:
     _HAS_SNS = False
+    logger.info("Missing optional dependency 'seaborn'.")
 
 # plyfile optional
 try:
     from plyfile import PlyData, PlyElement  # type: ignore
-except Exception:
+except ImportError:
     PlyData = None
     PlyElement = None
+    logger.info("Missing optional dependency 'plyfile'.")
 
 
 class VisualizationService:
