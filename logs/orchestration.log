@@ -2411,3 +2411,667 @@ ValueError: setting an array element with a sequence. The requested array has an
 2025-09-02 13:45:05,464 [INFO] m3c2.core.statistics.service - Finished compute_m3c2_statistics for 1 folders
 2025-09-02 13:45:05,464 [INFO] m3c2.pipeline.batch_orchestrator - [Job] 0342-0349 abgeschlossen in 22.581s
 2025-09-02 13:45:05,464 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 13:58:56,372 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 13:58:56,372 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 13:58:56,372 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 13:58:56,372 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 13:58:56,372 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 13:58:56,372 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 13:58:56,372 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 13:58:56,372 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 13:58:56,372 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 13:58:56,427 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 13:58:58,646 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 13:58:58,731 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 13:58:58,731 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.345s
+2025-09-02 13:58:58,734 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 132, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 232, in load_points_singlecloud
+    singlecloud = self._load_epochs_singlecloud()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 269, in _load_epochs_singlecloud
+    s_kind, s_path = self._detect(self.singlecloud_base)
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 71, in singlecloud_base
+    return Path(self.config.folder) / self.config.filename_singlecloud
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+2025-09-02 13:58:58,737 [ERROR] CLIApp - Error occurred while running orchestrator: unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+2025-09-02 14:00:50,579 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:00:50,579 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:00:50,579 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:00:50,579 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:00:50,579 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:00:50,579 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:00:50,579 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:00:50,579 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:00:50,579 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:00:50,625 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:00:52,881 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\ref.xyz'
+2025-09-02 14:00:52,962 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 14:00:52,962 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: mov=(709128, 3), ref=(27711, 3), corepoints=(709128, 3) | 2.381s
+2025-09-02 14:00:52,962 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 132, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 232, in load_points_singlecloud
+    singlecloud = self._load_epochs_singlecloud()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 269, in _load_epochs_singlecloud
+    s_kind, s_path = self._detect(self.singlecloud_base)
+                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 71, in singlecloud_base
+    return Path(self.config.folder) / self.config.filename_singlecloud
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+2025-09-02 14:00:52,970 [ERROR] CLIApp - Error occurred while running orchestrator: unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+2025-09-02 14:04:50,388 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:04:50,388 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:04:50,388 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:04:50,388 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:04:50,388 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:04:50,388 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:04:50,388 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:04:50,388 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:04:50,388 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:04:50,440 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:04:52,645 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 134, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 235, in load_points_singlecloud
+    raise TypeError("Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).")
+TypeError: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:04:52,647 [ERROR] CLIApp - Error occurred while running orchestrator: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:05:46,718 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:05:46,718 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:05:46,718 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:05:46,718 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:05:46,718 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:05:46,718 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:05:46,734 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:05:46,734 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:05:46,734 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:05:46,775 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:05:48,943 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 134, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 235, in load_points_singlecloud
+    raise TypeError("Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).")
+TypeError: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:05:48,943 [ERROR] CLIApp - Error occurred while running orchestrator: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:07:28,031 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:07:28,031 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:07:28,031 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:07:28,047 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:07:28,047 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:07:28,047 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:07:28,047 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:07:28,047 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:07:28,047 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:07:28,089 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:07:30,300 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 134, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 235, in load_points_singlecloud
+    raise TypeError("Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).")
+TypeError: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:07:30,300 [ERROR] CLIApp - Error occurred while running orchestrator: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:07:59,952 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:07:59,952 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:07:59,952 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:07:59,952 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:07:59,952 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:07:59,952 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:07:59,952 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:07:59,952 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:07:59,952 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:07:59,989 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:08:02,172 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 134, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 233, in load_points_singlecloud
+    logger.debug("Singlecloud shape: %s", singlecloud.shape)
+                                          ^^^^^^^^^^^^^^^^^
+AttributeError: 'Epoch' object has no attribute 'shape'. Did you mean: 'save'?
+2025-09-02 14:08:02,172 [ERROR] CLIApp - Error occurred while running orchestrator: 'Epoch' object has no attribute 'shape'
+2025-09-02 14:09:40,362 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:09:40,363 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:09:40,364 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:09:40,364 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:09:40,364 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:09:40,365 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:09:40,365 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:09:40,365 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:09:40,366 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:09:40,406 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:09:42,586 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 134, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 233, in load_points_singlecloud
+    logger.debug("Singlecloud shape: %s", singlecloud.shape)
+                                          ^^^^^^^^^^^^^^^^^
+AttributeError: 'Epoch' object has no attribute 'shape'. Did you mean: 'save'?
+2025-09-02 14:09:42,588 [ERROR] CLIApp - Error occurred while running orchestrator: 'Epoch' object has no attribute 'shape'
+2025-09-02 14:10:09,513 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:10:09,513 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:10:09,514 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:10:09,514 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:10:09,514 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:10:09,515 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:10:09,515 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:10:09,515 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:10:09,516 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:10:09,543 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:10:11,721 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 134, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 237, in load_points_singlecloud
+    raise TypeError("Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).")
+TypeError: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:10:11,723 [ERROR] CLIApp - Error occurred while running orchestrator: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:10:40,667 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:10:40,667 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:10:40,667 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:10:40,667 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:10:40,667 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:10:40,667 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:10:40,667 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:10:40,667 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:10:40,667 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:10:40,707 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:10:42,883 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 134, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 236, in load_points_singlecloud
+    raise TypeError("Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).")
+TypeError: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:10:42,891 [ERROR] CLIApp - Error occurred while running orchestrator: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:11:49,658 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:11:49,658 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:11:49,658 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:11:49,658 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:11:49,658 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:11:49,658 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:11:49,658 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:11:49,658 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:11:49,658 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:11:49,698 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:11:51,890 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 134, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 237, in load_points_singlecloud
+    raise TypeError("Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).")
+TypeError: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:11:51,890 [ERROR] CLIApp - Error occurred while running orchestrator: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:12:29,260 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:12:29,260 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:12:29,260 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:12:29,260 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:12:29,260 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:12:29,260 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:12:29,260 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:12:29,260 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:12:29,260 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:12:29,310 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:12:31,640 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 134, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 237, in load_points_singlecloud
+    raise TypeError("Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).")
+TypeError: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:12:31,649 [ERROR] CLIApp - Error occurred while running orchestrator: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:13:08,246 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:13:08,246 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:13:08,246 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:13:08,246 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:13:08,246 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:13:08,246 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:13:08,246 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:13:08,246 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:13:08,246 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:13:08,293 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:13:10,536 [INFO] m3c2.io.datasource - Typ von singlecloud: <class 'py4dgeo.epoch.Epoch'>
+2025-09-02 14:13:10,536 [INFO] m3c2.io.datasource - Inhalt von singlecloud: <py4dgeo.epoch.Epoch object at 0x0000021078096A50>
+2025-09-02 14:13:10,578 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 134, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 237, in load_points_singlecloud
+    raise TypeError("Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).")
+TypeError: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:13:10,578 [ERROR] CLIApp - Error occurred while running orchestrator: Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3).
+2025-09-02 14:13:42,704 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:13:42,704 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:13:42,704 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:13:42,704 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:13:42,704 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:13:42,704 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:13:42,704 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:13:42,704 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:13:42,704 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:13:42,755 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:13:45,017 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 134, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 235, in load_points_singlecloud
+    raise TypeError("Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3). Type: %s", type(singlecloud))
+TypeError: ('Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3). Type: %s', <class 'py4dgeo.epoch.Epoch'>)
+2025-09-02 14:13:45,025 [ERROR] CLIApp - Error occurred while running orchestrator: ('Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3). Type: %s', <class 'py4dgeo.epoch.Epoch'>)
+2025-09-02 14:15:07,511 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:15:07,511 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:15:07,511 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:15:07,511 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:15:07,511 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:15:07,511 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:15:07,511 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:15:07,511 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:15:07,526 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:15:07,566 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:15:09,810 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.283s
+2025-09-02 14:15:09,864 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 137, in _run_single
+    out_base = ds.config.folder
+               ^^
+UnboundLocalError: cannot access local variable 'ds' where it is not associated with a value
+2025-09-02 14:15:09,866 [ERROR] CLIApp - Error occurred while running orchestrator: cannot access local variable 'ds' where it is not associated with a value
+2025-09-02 14:15:55,797 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:15:55,797 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:15:55,797 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:15:55,797 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:15:55,797 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:15:55,797 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:15:55,797 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:15:55,797 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:15:55,797 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:15:55,841 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:15:58,098 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.303s
+2025-09-02 14:15:58,106 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für 0342-0349
+2025-09-02 14:15:58,106 [ERROR] m3c2.pipeline.batch_orchestrator - Unerwarteter Fehler beim Entfernen von Ausreißern
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 165, in _run_single
+    self.outlier_handler.exclude_outliers(cfg, out_base, tag)
+                                               ^^^^^^^^
+UnboundLocalError: cannot access local variable 'out_base' where it is not associated with a value
+2025-09-02 14:15:58,156 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 165, in _run_single
+    self.outlier_handler.exclude_outliers(cfg, out_base, tag)
+                                               ^^^^^^^^
+UnboundLocalError: cannot access local variable 'out_base' where it is not associated with a value
+2025-09-02 14:15:58,156 [ERROR] CLIApp - Error occurred while running orchestrator: cannot access local variable 'out_base' where it is not associated with a value
+2025-09-02 14:16:40,795 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:16:40,795 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:16:40,795 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:16:40,795 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:16:40,795 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:16:40,795 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:16:40,795 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:16:40,795 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:16:40,795 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:16:40,838 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:16:43,048 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.247s
+2025-09-02 14:16:43,048 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 14:16:43,048 [ERROR] m3c2.pipeline.batch_orchestrator - Unerwarteter Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 183, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+                                                   ^^^
+UnboundLocalError: cannot access local variable 'mov' where it is not associated with a value
+2025-09-02 14:16:43,100 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 183, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+                                                   ^^^
+UnboundLocalError: cannot access local variable 'mov' where it is not associated with a value
+2025-09-02 14:16:43,106 [ERROR] CLIApp - Error occurred while running orchestrator: cannot access local variable 'mov' where it is not associated with a value
+2025-09-02 14:18:22,733 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:18:22,733 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:18:22,733 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:18:22,733 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:18:22,733 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:18:22,733 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:18:22,733 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:18:22,733 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:18:22,733 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:18:22,779 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:18:25,028 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.284s
+2025-09-02 14:18:25,028 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 14:18:25,028 [ERROR] m3c2.pipeline.batch_orchestrator - Unerwarteter Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 192, in _run_single
+    self.statistics_runner.compute_statistics(cfg, single_cloud)
+TypeError: StatisticsRunner.compute_statistics() missing 3 required positional arguments: 'ref', 'tag', and 'single_cloud'
+2025-09-02 14:18:25,080 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job '0342-0349' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 192, in _run_single
+    self.statistics_runner.compute_statistics(cfg, single_cloud)
+TypeError: StatisticsRunner.compute_statistics() missing 3 required positional arguments: 'ref', 'tag', and 'single_cloud'
+2025-09-02 14:18:25,080 [ERROR] CLIApp - Error occurred while running orchestrator: StatisticsRunner.compute_statistics() missing 3 required positional arguments: 'ref', 'tag', and 'single_cloud'
+2025-09-02 14:19:53,029 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:19:53,029 [INFO] CLIApp - Folder IDs for processing: ['0342-0349']
+2025-09-02 14:19:53,029 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:19:53,029 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:19:53,045 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:19:53,045 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:19:53,045 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:19:53,045 [INFO] m3c2.pipeline.batch_orchestrator - 0342-0349, mov, ref, python
+2025-09-02 14:19:53,045 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:19:53,083 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\0342-0349\mov.xyz'
+2025-09-02 14:19:55,226 [INFO] m3c2.pipeline.data_loader - [Load] data/0342-0349: single_cloud=Epoch | 2.184s
+2025-09-02 14:19:55,226 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 14:19:55,226 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken 0342-0349,ref_ai …
+2025-09-02 14:19:55,226 [INFO] m3c2.core.statistics.service - Processing single cloud 0342-0349, ref_ai …
+2025-09-02 14:19:55,226 [INFO] m3c2.core.statistics.service - Point count: 709128 | Array shape: (709128, 3)
+2025-09-02 14:19:55,226 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 709128 points (radius=1.0, k=6, sample_size=None)
+2025-09-02 14:21:17,837 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:21:17,837 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-02 14:21:17,837 [INFO] CLIApp - Reference filename for processing: ref
+2025-09-02 14:21:17,837 [INFO] CLIApp - Moving filename for processing: mov
+2025-09-02 14:21:17,837 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:21:17,837 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:21:17,837 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:21:17,837 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, mov, ref, python
+2025-09-02 14:21:17,837 [ERROR] m3c2.io.datasource - No suitable file found for conversion: data\TUNSPEKT Labordaten_all\mov
+2025-09-02 14:21:17,837 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Fehler in Job 'TUNSPEKT Labordaten_all' (Version ref)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 188, in _run_single
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 51, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 116, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 232, in load_points_singlecloud
+    singlecloud = self._load_epochs_singlecloud()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 286, in _load_epochs_singlecloud
+    s_xyz = self._ensure_xyz(self.singlecloud_base, (s_kind, s_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 206, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: data\TUNSPEKT Labordaten_all\mov.xyz/.las/.laz/.ply/.obj/.gpc
+2025-09-02 14:21:17,837 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 14:28:05,910 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:28:05,910 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-02 14:28:05,910 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-02 14:28:05,910 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-02 14:28:05,910 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:28:05,926 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:28:05,926 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:28:05,926 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, Faro_ipm_lab_pos02 - Box1, Faro_ipm_lab_pos01 - Box1, python
+2025-09-02 14:28:05,949 [INFO] m3c2.io.format_handler - Reading PLY file data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos02 - Box1.ply
+2025-09-02 14:28:06,327 [INFO] m3c2.io.format_handler - Reading PLY file data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos01 - Box1.ply
+2025-09-02 14:28:07,818 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos02 - Box1.xyz'
+2025-09-02 14:28:08,536 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos01 - Box1.xyz'
+2025-09-02 14:28:10,880 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 14:28:10,881 [INFO] m3c2.pipeline.data_loader - [Load] data/TUNSPEKT Labordaten_all: mov=(208982, 3), ref=(786802, 3), corepoints=(208982, 3) | 4.955s
+2025-09-02 14:28:10,881 [INFO] m3c2.pipeline.batch_orchestrator - [Params] keine vorhandenen Parameter gefunden, berechne neu
+2025-09-02 14:28:10,881 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 208982 points
+2025-09-02 14:28:11,498 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.001212 (k=6) | 0.617s
+2025-09-02 14:28:11,498 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 208982 points and avg_spacing 0.001212
+2025-09-02 14:28:11,500 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/208982
+2025-09-02 14:28:11,539 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000151527 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 14:28:11,571 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000303054 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 14:28:11,602 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000606108 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 14:28:11,633 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00121222 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 14:28:11,672 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00242443 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 14:28:11,699 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00484886 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-02 14:28:11,769 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00969772 | pop=11.1±1.5 | 97%>15 | valid=261/10000 (3%) | sigma=0.000335459 | lambda_min=1.20332e-07 | Sigma/D=0.0346
+2025-09-02 14:28:12,149 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0193954 | pop=16.8±5.2 | 97%>30 | valid=9267/10000 (93%) | sigma=0.000369805 | lambda_min=1.43017e-07 | Sigma/D=0.0191
+2025-09-02 14:28:12,584 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0387909 | pop=60.5±16.6 | 97%>102 | valid=9966/10000 (100%) | sigma=0.000408391 | lambda_min=1.69015e-07 | Sigma/D=0.0105
+2025-09-02 14:28:13,131 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0775818 | pop=228.3±54.2 | 97%>333 | valid=9967/10000 (100%) | sigma=0.000432839 | lambda_min=1.88877e-07 | Sigma/D=0.0056
+2025-09-02 14:28:13,948 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.155164 | pop=833.7±201.8 | 97%>1125 | valid=9995/10000 (100%) | sigma=0.000489481 | lambda_min=2.44186e-07 | Sigma/D=0.0032
+2025-09-02 14:28:15,436 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.310327 | pop=2767.7±771.6 | 97%>3972 | valid=10000/10000 (100%) | sigma=0.00060384 | lambda_min=3.72855e-07 | Sigma/D=0.0019
+2025-09-02 14:28:15,436 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 3.939s
+2025-09-02 14:28:15,436 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-02 14:28:15,436 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.009698, proj=0.019395 | 0.000s
+2025-09-02 14:28:15,436 [INFO] m3c2.pipeline.batch_orchestrator - [Params] gespeichert: data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_m3c2_params.txt
+2025-09-02 14:28:15,436 [INFO] m3c2.core.m3c2_runner - Starting M3C2 run with normal=0.009697721093318082 and projection=0.019395442186636164
+2025-09-02 14:28:15,436 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 14:28:15,486 [INFO] py4dgeo - Building KDTree structure with leaf parameter 10
+2025-09-02 14:28:27,455 [INFO] m3c2.core.m3c2_runner - Completed M3C2 run: 208982 distances (NaN ratio 0.39%)
+2025-09-02 14:28:27,470 [INFO] m3c2.pipeline.m3c2_executor - [Run] Punkte=208982 | NaN=0.39% | Zeit=12.030s
+2025-09-02 14:28:27,793 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen gespeichert: data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_m3c2_distances.txt (208982 Werte, 0.39% NaN)
+2025-09-02 14:28:28,212 [INFO] m3c2.pipeline.m3c2_executor - [Run] Distanzen mit Koordinaten gespeichert: data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_m3c2_distances_coordinates.txt
+2025-09-02 14:28:28,949 [INFO] m3c2.pipeline.m3c2_executor - [Run] Unsicherheiten gespeichert: data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_m3c2_uncertainties.txt
+2025-09-02 14:28:28,949 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge Visualisierungen …
+2025-09-02 14:28:29,481 [INFO] m3c2.visualization.visualization_service - Histogram saved to data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_histogram.png
+2025-09-02 14:28:29,501 [INFO] m3c2.pipeline.visualization_runner - [Visual] Histogram gespeichert: data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_histogram.png
+2025-09-02 14:28:29,840 [INFO] m3c2.visualization.visualization_service - Colorized 208982 points -> data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_includenonvalid.ply
+2025-09-02 14:28:29,840 [INFO] m3c2.pipeline.visualization_runner - [Visual] Farb-PLY gespeichert: data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_includenonvalid.ply
+2025-09-02 14:28:30,190 [INFO] m3c2.visualization.visualization_service - [export_valid] 208175 Punkte exportiert -> data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1.ply (SF='distance')
+2025-09-02 14:28:30,190 [INFO] m3c2.pipeline.visualization_runner - [Visual] Valid-PLY gespeichert: data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1.ply
+2025-09-02 14:28:30,190 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Entferne Ausreißer für TUNSPEKT Labordaten_all
+2025-09-02 14:28:30,190 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entferne Ausreißer …
+2025-09-02 14:28:30,305 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] RMS: 0.000086
+2025-09-02 14:28:30,306 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 0.000257
+2025-09-02 14:28:30,729 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier gespeichert: data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_m3c2_distances_coordinates_inlier_rmse.txt
+2025-09-02 14:28:30,730 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier gespeichert: data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_m3c2_distances_coordinates_outlier_rmse.txt
+2025-09-02 14:28:30,730 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Gesamt: 208982
+2025-09-02 14:28:30,731 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] NaN: 807
+2025-09-02 14:28:30,731 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 208175
+2025-09-02 14:28:30,731 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-02 14:28:30,731 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Outlier: 3
+2025-09-02 14:28:30,731 [INFO] m3c2.core.exclude_outliers - [Exclude Outliers] Inlier: 208172
+2025-09-02 14:28:30,731 [INFO] m3c2.pipeline.outlier_handler - [Outlier] Entfernen abgeschlossen
+2025-09-02 14:28:30,731 [INFO] m3c2.pipeline.batch_orchestrator - [Outlier] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 14:28:30,731 [INFO] m3c2.pipeline.visualization_runner - [Visual] Erzeuge .ply Dateien für Outliers / Inliers …
+2025-09-02 14:28:30,731 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_m3c2_distances_coordinates_outlier_rmse.txt -> data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_outlier_rmse.ply (3 Punkte, SF='distance')
+2025-09-02 14:28:31,186 [INFO] m3c2.visualization.visualization_service - [TXT->PLY] data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_m3c2_distances_coordinates_inlier_rmse.txt -> data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_inlier_rmse.ply (208172 Punkte, SF='distance')
+2025-09-02 14:28:31,186 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 14:28:31,186 [ERROR] m3c2.pipeline.batch_orchestrator - Unerwarteter Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 179, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
+TypeError: StatisticsRunner.compute_statistics() missing 1 required positional argument: 'single_cloud'
+2025-09-02 14:28:31,186 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job 'TUNSPEKT Labordaten_all' (Version Faro_ipm_lab_pos01 - Box1)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 89, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 179, in _run_single
+    self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
+TypeError: StatisticsRunner.compute_statistics() missing 1 required positional argument: 'single_cloud'
+2025-09-02 14:28:31,186 [ERROR] CLIApp - Error occurred while running orchestrator: StatisticsRunner.compute_statistics() missing 1 required positional argument: 'single_cloud'
+2025-09-02 14:29:15,397 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:29:15,397 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-02 14:29:15,397 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-02 14:29:15,397 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-02 14:29:15,397 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:29:15,397 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:29:15,397 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:29:15,397 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, Faro_ipm_lab_pos02 - Box1, Faro_ipm_lab_pos01 - Box1, python
+2025-09-02 14:29:15,397 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:29:15,450 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos02 - Box1.xyz'
+2025-09-02 14:29:16,148 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos01 - Box1.xyz'
+2025-09-02 14:29:18,488 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 14:29:18,488 [INFO] m3c2.pipeline.data_loader - [Load] data/TUNSPEKT Labordaten_all: mov=(208982, 3), ref=(786802, 3), corepoints=(208982, 3) | 3.086s
+2025-09-02 14:29:18,488 [INFO] m3c2.pipeline.batch_orchestrator - [Job] TUNSPEKT Labordaten_all abgeschlossen in 3.086s
+2025-09-02 14:29:18,488 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 14:30:11,195 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:30:11,195 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-02 14:30:11,195 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-02 14:30:11,195 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-02 14:30:11,195 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:30:11,195 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:30:11,195 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:30:11,195 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, Faro_ipm_lab_pos02 - Box1, Faro_ipm_lab_pos01 - Box1, python
+2025-09-02 14:30:11,195 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:30:11,245 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos02 - Box1.xyz'
+2025-09-02 14:30:11,981 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos01 - Box1.xyz'
+2025-09-02 14:30:14,287 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 14:30:14,287 [INFO] m3c2.pipeline.data_loader - [Load] data/TUNSPEKT Labordaten_all: mov=(208982, 3), ref=(786802, 3), corepoints=(208982, 3) | 3.089s
+2025-09-02 14:30:14,287 [INFO] m3c2.pipeline.batch_orchestrator - [Job] TUNSPEKT Labordaten_all abgeschlossen in 3.089s
+2025-09-02 14:30:14,287 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 14:30:56,183 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 14:30:56,183 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-02 14:30:56,183 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-02 14:30:56,183 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-02 14:30:56,183 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 14:30:56,183 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 14:30:56,183 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 14:30:56,183 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, Faro_ipm_lab_pos02 - Box1, Faro_ipm_lab_pos01 - Box1, python
+2025-09-02 14:30:56,183 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 14:30:56,232 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos02 - Box1.xyz'
+2025-09-02 14:30:56,928 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos01 - Box1.xyz'
+2025-09-02 14:30:59,259 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-02 14:30:59,259 [INFO] m3c2.pipeline.data_loader - [Load] data/TUNSPEKT Labordaten_all: mov=(208982, 3), ref=(786802, 3), corepoints=(208982, 3) | 3.074s
+2025-09-02 14:30:59,259 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 14:30:59,259 [INFO] m3c2.pipeline.statistics_runner - [Stats on Distance] Berechne M3C2-Statistiken TUNSPEKT Labordaten_all,Faro_ipm_lab_pos01 - Box1 …
+2025-09-02 14:30:59,259 [INFO] m3c2.core.statistics.service - Starting compute_m3c2_statistics for 1 folders
+2025-09-02 14:30:59,267 [INFO] m3c2.core.statistics.service - Processing Python distances: data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_m3c2_distances.txt
+2025-09-02 14:30:59,267 [INFO] m3c2.core.statistics.service - Using Python params: data\TUNSPEKT Labordaten_all\python_Faro_ipm_lab_pos02 - Box1-Faro_ipm_lab_pos01 - Box1_m3c2_params.txt
+2025-09-02 14:30:59,353 [INFO] m3c2.core.statistics.basic_metrics - basic_stats received 208175 values
+2025-09-02 14:30:59,369 [INFO] m3c2.core.statistics.basic_metrics - basic_stats summary: min=-0.000266, max=0.000252, mean=0.000009
+2025-09-02 14:31:01,162 [INFO] m3c2.core.statistics.basic_metrics - fit_distributions Gaussian: mu=0.000009, std=0.000085, chi2=11725.094893
+2025-09-02 14:31:01,162 [INFO] m3c2.core.statistics.basic_metrics - fit_distributions Weibull: a=3.582408, b=0.000306, loc=-0.000266, chi2=11295.707536
+2025-09-02 14:31:01,164 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: rmse
+2025-09-02 14:31:01,164 [INFO] m3c2.core.statistics.outliers - [Outliers] RMSE: 0.000086, Outlier-Schwelle: 0.000257
+2025-09-02 14:31:01,164 [INFO] m3c2.core.statistics.outliers - [Outliers] Outlier: +0 / -3 | Inlier: +108266 / -99056
+2025-09-02 14:31:01,164 [INFO] m3c2.core.statistics.basic_metrics - basic_stats received 208172 values
+2025-09-02 14:31:01,183 [INFO] m3c2.core.statistics.basic_metrics - basic_stats summary: min=-0.000252, max=0.000252, mean=0.000009
+2025-09-02 14:31:01,458 [INFO] m3c2.core.statistics.exporters - Appended 1 rows to Excel file outputs/MARS_output/MARS_m3c2_stats_distances.xlsx
+2025-09-02 14:31:01,458 [INFO] m3c2.core.statistics.service - Finished compute_m3c2_statistics for 1 folders
+2025-09-02 14:31:01,458 [INFO] m3c2.pipeline.batch_orchestrator - [Job] TUNSPEKT Labordaten_all abgeschlossen in 5.267s
+2025-09-02 14:31:01,458 [INFO] CLIApp - Processing completed successfully.

@@ -60,8 +60,7 @@ def _convex_hull_area_xy(xy: np.ndarray) -> float:
     return float(hull.volume)
 
 
-def _calc_single_cloud_stats(
-    
+def calc_single_cloud_stats(
     points: np.ndarray,
     area_m2: Optional[float] = None,
     radius: float = 1.0,

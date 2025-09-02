@@ -23,7 +23,7 @@ class StatisticsRunner:
         """
         self.output_format = output_format
 
-    def compute_statistics(self, cfg, mov, ref, tag: str, single_cloud) -> None:
+    def compute_statistics(self, cfg, mov, ref, tag: str) -> None:
         """Compute M3C2 statistics for a job.
 
         Parameters
@@ -61,9 +61,6 @@ class StatisticsRunner:
         if cfg.stats_singleordistance == "distance":
             return self._multi_cloud_handler(cfg, mov, ref, tag)
 
-        if cfg.stats_singleordistance == "single":
-            return self._single_cloud_handler(cfg, single_cloud)
-
     def _multi_cloud_handler(self, cfg, mov, ref, tag):
         logger.info(
             f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …"
@@ -90,7 +87,7 @@ class StatisticsRunner:
             outlier_method=cfg.outlier_detection_method,
         )
 
-    def _single_cloud_handler(self, cfg, singlecloud):
+    def single_cloud_statistics_handler(self, cfg, singlecloud):
         logger.info(
             f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_singlecloud} …",
         )

@@ -113,7 +113,7 @@ class DataLoader:
         )
         ds_single = DataSource(ds_config)
 
-        single_cloud = ds_single.load_points()
+        single_cloud = ds_single.load_points_singlecloud()
 
         logger.info(
             "[Load] data/%s: single_cloud=%s | %.3fs",
@@ -121,4 +121,4 @@ class DataLoader:
             getattr(single_cloud, "cloud", np.array([])).shape if hasattr(single_cloud, "cloud") else "Epoch",
             time.perf_counter() - t0,
         )
-        return ds_single, single_cloud
+        return single_cloud

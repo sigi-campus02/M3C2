@@ -57,6 +57,19 @@ class DataSource:
         searching for the actual reference data file.
         """
         return Path(self.config.folder) / self.config.ref_basename
+    
+
+    @property
+    def singlecloud_base(self) -> Path:
+        """Return the base path for the single cloud epoch.
+
+        The path is constructed by combining the configured data folder with
+        the single cloud file's base name. The resulting path intentionally lacks
+        a file extension; downstream loaders append the appropriate suffix when
+        searching for the actual reference data file.
+        """
+        return Path(self.config.folder) / self.config.filename_singlecloud
+
 
     def _detect(self, base: Path) -> tuple[str | None, Path | None]:
         """Detect available point cloud files for a given base path.
@@ -207,7 +220,24 @@ class DataSource:
             raise TypeError("Unerwarteter Typ für corepoints; erwarte np.ndarray (Nx3).")
 
         return mov, ref, corepoints
+    
+    # ------------------------------------------------------------------
+    # public API SINGLE CLOUD
+    def load_points_singlecloud(self) -> np.ndarray:
+        """Load the single cloud epoch."""
 
+        if py4dgeo is None:
+            raise RuntimeError("'py4dgeo' ist nicht installiert.")
+
+        singlecloud = self._load_epochs_singlecloud()
+        
+        if hasattr(singlecloud, "cloud"):
+            singlecloud = singlecloud.cloud
+        if not isinstance(singlecloud, np.ndarray):
+            raise TypeError("Unerwarteter Typ für singlecloud; erwarte np.ndarray (Nx3). Type: %s", type(singlecloud))
+        
+        return singlecloud
+    
     # ------------------------------------------------------------------
     # internal helpers
     def _load_epochs(self) -> Tuple[object, object]:
@@ -233,6 +263,30 @@ class DataSource:
         r_xyz = self._ensure_xyz(self.ref_base, (r_kind, r_path))
         logger.info("Mischtypen → konvertiert zu XYZ → py4dgeo.read_from_xyz")
         return py4dgeo.read_from_xyz(str(m_xyz), str(r_xyz))
+    
+
+    def _load_epochs_singlecloud(self) -> np.ndarray:
+        """Detect input types and read epochs using :mod:`py4dgeo`."""
+
+        s_kind, s_path = self._detect(self.singlecloud_base)
+
+        if s_kind == "xyz":
+            logger.info("Nutze py4dgeo.read_from_xyz")
+
+            return py4dgeo.read_from_xyz(str(s_path))
+
+        if s_kind == "laslike":
+            logger.info("Nutze py4dgeo.read_from_las (unterstützt .las und .laz)")
+            return py4dgeo.read_from_las(str(s_path))
+
+        if s_kind == "ply" and hasattr(py4dgeo, "read_from_ply"):
+            logger.info("Nutze py4dgeo.read_from_ply")
+            return py4dgeo.read_from_ply(str(s_path))
+
+        s_xyz = self._ensure_xyz(self.singlecloud_base, (s_kind, s_path))
+        logger.info("Mischtypen → konvertiert zu XYZ → py4dgeo.read_from_xyz")
+        return py4dgeo.read_from_xyz(str(s_xyz))
+    
 
     def _derive_corepoints(self, mov: object, ref: object) -> np.ndarray:
         """Derive core points from configured epoch with optional subsampling."""

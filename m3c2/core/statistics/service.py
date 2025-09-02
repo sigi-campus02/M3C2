@@ -29,7 +29,7 @@ from m3c2.config.datasource_config import DataSourceConfig
 
 from .basic_metrics import basic_stats, fit_distributions
 from .outliers import compute_outliers, get_outlier_mask
-from .cloud_quality import _calc_single_cloud_stats
+from .cloud_quality import calc_single_cloud_stats
 from .exporters import (
     _append_df_to_excel,
     _append_df_to_json,
@@ -441,7 +441,7 @@ class StatisticsService:
             logger.info(f"Processing single cloud {fid}, {filename_singlecloud} …")
             logger.info(f"Point count: {len(pts)} | Array shape: {pts.shape if hasattr(pts, 'shape') else 'N/A'}")
 
-            stats = _calc_single_cloud_stats(
+            stats = calc_single_cloud_stats(
                 pts,
                 area_m2=area_m2,
                 radius=radius,

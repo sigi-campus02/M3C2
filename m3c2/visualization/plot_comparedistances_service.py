@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 import os
 
-from m3c2.config.plot_config import PlotConfig, PlotOptionsComparedistances
+from config.plot_config import PlotConfig, PlotOptionsComparedistances
 from .bland_altman_plotter import bland_altman_plot
 from .passing_bablok_plotter import passing_bablok_plot
 from .linear_regression_plotter import linear_regression_plot

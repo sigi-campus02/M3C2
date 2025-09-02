@@ -14,13 +14,13 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from m3c2.visualization.plot_service import PlotService
-from m3c2.io.logging_utils import resolve_log_level, setup_logging
-from m3c2.config.plot_config import PlotOptions
+from visualization.plot_service import PlotService
+from io.logging_utils import resolve_log_level, setup_logging
+from config.plot_config import PlotOptions
 
-# Input and output directories for the Multi-Illumination dataset.
-DATA_DIR = os.path.join(ROOT, "data", "Multi-Illumination")
-OUT_DIR = os.path.join(ROOT, "outputs", "MARS_Multi_Illumination", "plots")
+# Input and output directories for the TUNSPEKT Labordaten_all dataset.
+DATA_DIR = os.path.join(ROOT, "data", "TUNSPEKT Labordaten_all")
+OUT_DIR = os.path.join(ROOT, "outputs", "TUNSPEKT Labordaten_all", "plots")
 
 
 def main(data_dir: str = DATA_DIR, out_dir: str = OUT_DIR) -> tuple[str, str]:

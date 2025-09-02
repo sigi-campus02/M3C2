@@ -127,13 +127,12 @@ class BatchOrchestrator:
         )
         start = time.perf_counter()
 
-        ds, mov, ref, corepoints = self.data_loader.load_data(cfg, type="multicloud")
-
-        ds_single, single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+        if cfg.stats_singleordistance == "distance":
+            ds, mov, ref, corepoints = self.data_loader.load_data(cfg, type="multicloud")
+            out_base = ds.config.folder
 
         tag = self._run_tag(cfg)
-        out_base = ds.config.folder
-
+        
 
         if cfg.process_python_CC == "python" and not cfg.only_stats:
             normal = projection = np.nan
@@ -157,32 +156,46 @@ class BatchOrchestrator:
             )
             self.visualization_runner.generate_visuals(cfg, mov, distances, out_base, tag)
 
-        try:
-            logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
-            self.outlier_handler.exclude_outliers(cfg, out_base, tag)
-        except (IOError, ValueError):
-            logger.exception("Fehler beim Entfernen von Ausreißern")
-        except Exception:
-            logger.exception("Unerwarteter Fehler beim Entfernen von Ausreißern")
-            raise
+            try:
+                logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
+                self.outlier_handler.exclude_outliers(cfg, out_base, tag)
+            except (IOError, ValueError):
+                logger.exception("Fehler beim Entfernen von Ausreißern")
+            except Exception:
+                logger.exception("Unerwarteter Fehler beim Entfernen von Ausreißern")
+                raise
 
-        try:
-            logger.info("[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …")
-            self.visualization_runner.generate_clouds_outliers(cfg, ds.config.folder, tag)
-        except (IOError, ValueError):
-            logger.exception("Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier")
-        except Exception:
-            logger.exception("Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier")
-            raise
+            try:
+                logger.info("[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …")
+                self.visualization_runner.generate_clouds_outliers(cfg, ds.config.folder, tag)
+            except (IOError, ValueError):
+                logger.exception("Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier")
+            except Exception:
+                logger.exception("Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier")
+                raise
 
         try:
             logger.info("[Statistics] Berechne Statistiken …")
-            self.statistics_runner.compute_statistics(cfg, mov, ref, tag, single_cloud)
+            self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
         except (IOError, ValueError):
             logger.exception("Fehler bei der Berechnung der Statistik")
         except Exception:
             logger.exception("Unerwarteter Fehler bei der Berechnung der Statistik")
             raise
+
+        
+        if cfg.stats_singleordistance == "single":
+            single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+
+            try:
+                logger.info("[Statistics] Berechne Statistiken …")
+                self.statistics_runner.single_cloud_statistics_handler(cfg, single_cloud)
+            except (IOError, ValueError):
+                logger.exception("Fehler bei der Berechnung der Statistik")
+            except Exception:
+                logger.exception("Unerwarteter Fehler bei der Berechnung der Statistik")
+                raise
+        
 
         logger.info("[Job] %s abgeschlossen in %.3fs", cfg.folder_id, time.perf_counter() - start)
 
