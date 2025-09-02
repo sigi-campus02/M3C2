@@ -14,7 +14,7 @@ from typing import Dict, List, Optional
 import logging
 
 import numpy as np
-from sklearn.decomposition import PCA
+from joblib import Parallel, delayed
 from sklearn.neighbors import NearestNeighbors
 
 
@@ -60,6 +60,76 @@ def _convex_hull_area_xy(xy: np.ndarray) -> float:
     return float(hull.volume)
 
 
+def _eigenfeatures(neigh: np.ndarray) -> Dict[str, float]:
+    """Compute eigen-based local geometric features for a neighbourhood.
+
+    Parameters
+    ----------
+    neigh : np.ndarray
+        Array of shape ``(n_points, 3)`` containing the coordinates of the
+        neighbouring points.
+
+    Returns
+    -------
+    Dict[str, float]
+        Dictionary with keys ``roughness``, ``linearity``, ``planarity``,
+        ``sphericity``, ``anisotropy``, ``omnivariance``, ``eigenentropy``,
+        ``curvature``, ``verticality`` and ``normal``.  Values may be ``NaN``
+        when the eigen decomposition is degenerate.
+    """
+
+    c = np.mean(neigh, axis=0)
+    U = neigh - c
+    cov = (U.T @ U) / U.shape[0]
+    evals, evecs = np.linalg.eigh(cov)
+    order = np.argsort(evals)[::-1]
+    evals = evals[order]
+    evecs = evecs[:, order]
+    n = evecs[:, -1]
+    d = np.abs(U @ n)
+    roughness = float(np.std(d))
+
+    if evals[0] <= 0:
+        return {
+            "roughness": roughness,
+            "linearity": np.nan,
+            "planarity": np.nan,
+            "sphericity": np.nan,
+            "anisotropy": np.nan,
+            "omnivariance": np.nan,
+            "eigenentropy": np.nan,
+            "curvature": np.nan,
+            "verticality": np.nan,
+            "normal": n,
+        }
+
+    linearity = (evals[0] - evals[1]) / evals[0]
+    planarity = (evals[1] - evals[2]) / evals[0]
+    sphericity = evals[2] / evals[0]
+    anisotropy = (evals[0] - evals[2]) / evals[0]
+    omnivariance = float(np.cbrt(np.prod(evals)))
+    sum_eval = float(np.sum(evals))
+    ratios = evals / sum_eval
+    eigenentropy = float(-np.sum(ratios * np.log(ratios + 1e-15)))
+    curvature = float(evals[2] / sum_eval)
+    verticality = float(
+        np.degrees(np.arccos(np.clip(np.abs(n[2]), -1.0, 1.0)))
+    )
+
+    return {
+        "roughness": roughness,
+        "linearity": float(linearity),
+        "planarity": float(planarity),
+        "sphericity": float(sphericity),
+        "anisotropy": float(anisotropy),
+        "omnivariance": omnivariance,
+        "eigenentropy": eigenentropy,
+        "curvature": curvature,
+        "verticality": verticality,
+        "normal": n,
+    }
+
+
 def calc_single_cloud_stats(
     points: np.ndarray,
     area_m2: Optional[float] = None,
@@ -67,6 +137,8 @@ def calc_single_cloud_stats(
     k: int = 24,
     sample_size: Optional[int] = 100_000,
     use_convex_hull: bool = True,
+    min_pts: int = 10,
+    max_eval: Optional[int] = 50_000,
 ) -> Dict:
     """Berechne Qualitätsmetriken für eine Punktwolke."""
 
@@ -123,57 +195,42 @@ def calc_single_cloud_stats(
     nbrs = NearestNeighbors(radius=radius).fit(S)
     ind_list = nbrs.radius_neighbors(S, return_distance=False)
     vol = 4.0 / 3.0 * np.pi * (radius ** 3)
-    local_dens: List[float] = []
-    rough: List[float] = []
-    lin_list: List[float] = []
-    pla_list: List[float] = []
-    sph_list: List[float] = []
-    anis_list: List[float] = []
-    omni_list: List[float] = []
-    eigent_list: List[float] = []
-    curv_list: List[float] = []
-    vert_list: List[float] = []
-    normals: List[np.ndarray] = []
 
-    for ind in ind_list:
-        if ind.size < 3:
-            continue
-        neigh = S[ind]
-        local_dens.append(ind.size / vol)
-        c = np.mean(neigh, axis=0)
-        U = neigh - c
-        pca = PCA(n_components=3).fit(U)
-        n = pca.components_[-1]
-        d = np.abs(U @ n)
-        rough.append(float(np.std(d)))
-        evals = np.sort(pca.explained_variance_)[::-1]
-        if evals[0] <= 0:
-            continue
-        linearity = (evals[0] - evals[1]) / evals[0]
-        planarity = (evals[1] - evals[2]) / evals[0]
-        sphericity = evals[2] / evals[0]
-        anisotropy = (evals[0] - evals[2]) / evals[0]
-        omnivariance = float(np.cbrt(np.prod(evals)))
-        sum_eval = float(np.sum(evals))
-        if sum_eval > 0:
-            ratios = evals / sum_eval
-            eigenentropy = float(-np.sum(ratios * np.log(ratios + 1e-15)))
-            curvature = float(evals[2] / sum_eval)
-        else:
-            eigenentropy = np.nan
-            curvature = np.nan
-        verticality = float(
-            np.degrees(np.arccos(np.clip(np.abs(n[2]), -1.0, 1.0)))
-        )
-        lin_list.append(float(linearity))
-        pla_list.append(float(planarity))
-        sph_list.append(float(sphericity))
-        anis_list.append(float(anisotropy))
-        omni_list.append(omnivariance)
-        eigent_list.append(eigenentropy)
-        curv_list.append(curvature)
-        vert_list.append(verticality)
-        normals.append(n)
+    counts = np.array([ind.size for ind in ind_list], dtype=int)
+    valid_mask = counts >= min_pts
+    valid_idx = np.nonzero(valid_mask)[0]
+
+    if max_eval and len(valid_idx) > max_eval:
+        valid_idx = np.random.choice(valid_idx, size=max_eval, replace=False)
+
+    logger.info(
+        "Evaluating %d neighborhoods (min_pts=%s, max_eval=%s)",
+        len(valid_idx),
+        min_pts,
+        max_eval,
+    )
+
+    if len(valid_idx) == 0:
+        logger.warning("No valid neighborhoods remain after filtering (min_pts=%s)", min_pts)
+
+    local_dens = (counts[valid_idx] / vol).tolist()
+    neighs = [S[ind_list[i]] for i in valid_idx]
+
+    if len(neighs) > 0:
+        feats = Parallel(n_jobs=-1)(delayed(_eigenfeatures)(n) for n in neighs)
+    else:
+        feats = []
+
+    rough = [f["roughness"] for f in feats]
+    lin_list = [f["linearity"] for f in feats if not np.isnan(f["linearity"])]
+    pla_list = [f["planarity"] for f in feats if not np.isnan(f["planarity"])]
+    sph_list = [f["sphericity"] for f in feats if not np.isnan(f["sphericity"])]
+    anis_list = [f["anisotropy"] for f in feats if not np.isnan(f["anisotropy"])]
+    omni_list = [f["omnivariance"] for f in feats if not np.isnan(f["omnivariance"])]
+    eigent_list = [f["eigenentropy"] for f in feats if not np.isnan(f["eigenentropy"])]
+    curv_list = [f["curvature"] for f in feats if not np.isnan(f["curvature"])]
+    vert_list = [f["verticality"] for f in feats if not np.isnan(f["verticality"])]
+    normals = [f["normal"] for f in feats if not np.isnan(f["linearity"])]
 
     def _agg(arr):
         """Aggregate statistics for a sequence.
@@ -283,3 +340,7 @@ def calc_single_cloud_stats(
         "k-NN": int(k),
         "Sampled Points": int(len(S)),
     }
+
+
+# Backwards compatible alias
+_calc_single_cloud_stats = calc_single_cloud_stats
