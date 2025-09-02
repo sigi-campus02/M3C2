@@ -99,6 +99,7 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
             messagebox.showerror("Fehler", str(exc))
 
     def on_cancel() -> None:
+        """Close the GUI without executing the selected command."""
         logger.info("Cancel pressed")
         root.destroy()
 
