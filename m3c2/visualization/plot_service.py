@@ -16,7 +16,7 @@ from typing import Dict, List, Tuple
 import numpy as np
 from scipy.stats import norm
 
-from config.plot_config import PlotConfig, PlotOptions
+from m3c2.config.plot_config import PlotConfig, PlotOptions
 from .distance_loader import scan_distance_files_by_index
 from .overlay_plotter import (
     get_common_range,

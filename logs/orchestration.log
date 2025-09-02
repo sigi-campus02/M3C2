@@ -3075,3 +3075,72 @@ TypeError: StatisticsRunner.compute_statistics() missing 1 required positional a
 2025-09-02 14:31:01,458 [INFO] m3c2.core.statistics.service - Finished compute_m3c2_statistics for 1 folders
 2025-09-02 14:31:01,458 [INFO] m3c2.pipeline.batch_orchestrator - [Job] TUNSPEKT Labordaten_all abgeschlossen in 5.267s
 2025-09-02 14:31:01,458 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 16:23:13,317 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 16:23:13,317 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-02 16:23:13,317 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-02 16:23:13,317 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-02 16:23:13,317 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 16:23:13,317 [ERROR] __main__ - Error running CLI application: 'PipelineComponentFactory' object has no attribute 'create_outlier_handler'
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\main.py", line 35, in main
+    CLIApp().run()
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\cli\cli.py", line 266, in run
+    orchestrator = BatchOrchestrator(configs, strategy=arg.scale_strategy)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 64, in __init__
+    self.outlier_handler = self.factory.create_outlier_handler()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PipelineComponentFactory' object has no attribute 'create_outlier_handler'
+2025-09-02 16:23:58,356 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 16:23:58,356 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-02 16:23:58,356 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-02 16:23:58,372 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-02 16:23:58,372 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 16:23:58,372 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 16:23:58,372 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 16:23:58,372 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, Faro_ipm_lab_pos02 - Box1, Faro_ipm_lab_pos01 - Box1, python
+2025-09-02 16:23:58,372 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Unerwarteter Fehler in Job 'TUNSPEKT Labordaten_all' (Version Faro_ipm_lab_pos01 - Box1)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 110, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 156, in _run_single
+    self._batch_process_singlecloud(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 197, in _batch_process_singlecloud
+    single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: DataLoader.load_data() got an unexpected keyword argument 'type'
+2025-09-02 16:23:58,372 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 16:24:28,486 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 16:24:28,486 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-02 16:24:28,486 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-02 16:24:28,486 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-02 16:24:28,486 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 16:24:28,486 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 16:24:28,486 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 16:24:28,486 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, Faro_ipm_lab_pos02 - Box1, Faro_ipm_lab_pos01 - Box1, python
+2025-09-02 16:24:28,486 [ERROR] m3c2.io.datasource - No suitable file found for conversion: data\TUNSPEKT Labordaten_all\mov
+2025-09-02 16:24:28,486 [ERROR] m3c2.pipeline.batch_orchestrator - [Job] Fehler in Job 'TUNSPEKT Labordaten_all' (Version Faro_ipm_lab_pos01 - Box1)
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 110, in run_all
+    self._run_single(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 156, in _run_single
+    self._batch_process_singlecloud(cfg)
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 197, in _batch_process_singlecloud
+    single_cloud = self.data_loader.load_data(cfg, mode="singlecloud")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 55, in load_data
+    return self._load_data_single(cfg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\data_loader.py", line 121, in _load_data_single
+    single_cloud = ds_single.load_points_singlecloud()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 232, in load_points_singlecloud
+    singlecloud = self._load_epochs_singlecloud()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 286, in _load_epochs_singlecloud
+    s_xyz = self._ensure_xyz(self.singlecloud_base, (s_kind, s_path))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\datasource.py", line 206, in _ensure_xyz
+    raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
+FileNotFoundError: Fehlt: data\TUNSPEKT Labordaten_all\mov.xyz/.las/.laz/.ply/.obj/.gpc
+2025-09-02 16:24:28,510 [INFO] CLIApp - Processing completed successfully.

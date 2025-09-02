@@ -19,7 +19,7 @@ import pandas as pd
 from matplotlib.backends.backend_pdf import PdfPages
 from scipy.stats import norm
 
-from config.plot_config import PlotConfig, PlotOptions
+from m3c2.config.plot_config import PlotConfig, PlotOptions
 from .distance_loader import load_1col_distances, load_coordinates_inlier_distances
 from .overlay_plotter import (
     get_common_range,

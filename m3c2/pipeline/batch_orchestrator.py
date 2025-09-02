@@ -61,7 +61,7 @@ class BatchOrchestrator:
         self.data_loader = self.factory.create_data_loader()
         self.scale_estimator = self.factory.create_scale_estimator()
         self.m3c2_executor = self.factory.create_m3c2_executor()
-        self.outlier_handler = self.factory.create_outlier_handler()
+        # self.outlier_handler = self.factory.create_outlier_handler()
         self.statistics_runner = self.factory.create_statistics_runner()
         self.visualization_runner = self.factory.create_visualization_runner()
 
@@ -194,7 +194,7 @@ class BatchOrchestrator:
     def _batch_process_singlecloud(self, cfg: PipelineConfig):
         """Compute statistics for a single cloud."""
 
-        single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+        single_cloud = self.data_loader.load_data(cfg, mode="singlecloud")
 
         try:
             logger.info("[Statistics] Berechne Statistiken …")
