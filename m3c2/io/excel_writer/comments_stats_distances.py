@@ -1,3 +1,5 @@
+"""Add explanatory comments for distance statistics columns in Excel sheets."""
+
 import logging
 
 from openpyxl import load_workbook
