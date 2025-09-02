@@ -20,6 +20,15 @@ class DummyEpoch:
 
 
 class DummyPy4DGeo:
+    """Minimal replacement for :mod:`py4dgeo` used in tests.
+
+    The real :mod:`py4dgeo` package provides various readers for different
+    point cloud formats.  This dummy implementation emulates the parts of the
+    API that :class:`~m3c2.io.datasource.DataSource` interacts with and records
+    which reader was invoked.  The recorded information allows the tests to
+    assert that the correct loading routine was selected.
+    """
+
     last_call: str | None = None
 
     @staticmethod
@@ -38,6 +47,29 @@ class DummyPy4DGeo:
 
 
 def test_detect_xyz(tmp_path: Path) -> None:
+    """Check that XYZ files are detected correctly.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory provided by ``pytest``.
+
+    Returns
+    -------
+    None
+        This test only asserts behaviour and does not return anything.
+
+    Examples
+    --------
+    >>> folder = tmp_path / 'data'
+    >>> folder.mkdir()
+    >>> (folder / 'mov.xyz').write_text('0 0 0\n')
+    >>> cfg = DataSourceConfig(str(folder))
+    >>> ds = ds_module.DataSource(cfg)
+    >>> ds._detect(ds.mov_base)[0]
+    'xyz'
+    """
+
     folder = tmp_path / "data"
     folder.mkdir()
     (folder / "mov.xyz").write_text("0 0 0\n")
@@ -51,6 +83,29 @@ def test_detect_xyz(tmp_path: Path) -> None:
 
 
 def test_ensure_xyz_from_gpc(tmp_path: Path) -> None:
+    """Ensure that GPC files are converted to XYZ format.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory containing the GPC file.
+
+    Returns
+    -------
+    None
+        The test verifies file conversion without returning anything.
+
+    Examples
+    --------
+    >>> gpc_path = tmp_path / 'mov.gpc'
+    >>> gpc_path.write_text('1 2 3\n4 5 6\n')
+    >>> cfg = DataSourceConfig(str(tmp_path))
+    >>> ds = ds_module.DataSource(cfg)
+    >>> xyz_path = ds._ensure_xyz(ds.mov_base, ('gpc', gpc_path))
+    >>> xyz_path.suffix
+    '.xyz'
+    """
+
     gpc_path = tmp_path / "mov.gpc"
     gpc_path.write_text("1 2 3\n4 5 6\n")
     cfg = DataSourceConfig(str(tmp_path))
@@ -64,6 +119,33 @@ def test_ensure_xyz_from_gpc(tmp_path: Path) -> None:
 
 
 def test_load_points_xyz(tmp_path: Path, monkeypatch) -> None:
+    """Load points from XYZ files using the data source.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory with the mock point clouds.
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to replace :mod:`py4dgeo` with a dummy implementation.
+
+    Returns
+    -------
+    None
+        The test asserts correct behaviour and returns nothing.
+
+    Examples
+    --------
+    >>> mov = np.array([[0, 0, 0], [1, 1, 1]], dtype=float)
+    >>> ref = np.array([[0, 0, 0], [2, 2, 2]], dtype=float)
+    >>> np.savetxt(tmp_path / 'mov.xyz', mov, fmt='%.6f')
+    >>> np.savetxt(tmp_path / 'ref.xyz', ref, fmt='%.6f')
+    >>> monkeypatch.setattr(ds_module, 'py4dgeo', DummyPy4DGeo)
+    >>> cfg = DataSourceConfig(str(tmp_path))
+    >>> ds = ds_module.DataSource(cfg)
+    >>> ds.load_points()[0].cloud.shape
+    (2, 3)
+    """
+
     mov = np.array([[0, 0, 0], [1, 1, 1]], dtype=float)
     ref = np.array([[0, 0, 0], [2, 2, 2]], dtype=float)
     np.savetxt(tmp_path / "mov.xyz", mov, fmt="%.6f")
@@ -83,6 +165,31 @@ def test_load_points_xyz(tmp_path: Path, monkeypatch) -> None:
 
 
 def test_load_points_ply(tmp_path: Path, monkeypatch) -> None:
+    """Load points from PLY files using the data source.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory containing dummy PLY files.
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to replace :mod:`py4dgeo` with a dummy implementation.
+
+    Returns
+    -------
+    None
+        This test only verifies behaviour and returns nothing.
+
+    Examples
+    --------
+    >>> (tmp_path / 'mov.ply').write_text('dummy')
+    >>> (tmp_path / 'ref.ply').write_text('dummy')
+    >>> monkeypatch.setattr(ds_module, 'py4dgeo', DummyPy4DGeo)
+    >>> cfg = DataSourceConfig(str(tmp_path))
+    >>> ds = ds_module.DataSource(cfg)
+    >>> ds.load_points()[2].shape
+    (1, 3)
+    """
+
     (tmp_path / "mov.ply").write_text("dummy")
     (tmp_path / "ref.ply").write_text("dummy")
 
