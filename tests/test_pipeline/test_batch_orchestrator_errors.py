@@ -1,3 +1,15 @@
+"""Error handling tests for :mod:`m3c2.pipeline.batch_orchestrator`.
+
+This module exercises the :class:`~m3c2.pipeline.batch_orchestrator.BatchOrchestrator`
+in a variety of failure scenarios to ensure robust error propagation:
+
+* ``run_all`` continues processing when a configuration raises
+  ``ValueError``.
+* ``run_all`` re-raises unexpected exceptions.
+* ``_run_single`` surfaces unexpected runtime errors from downstream
+  components.
+"""
+
 from __future__ import annotations
 
 import numpy as np
@@ -71,12 +83,16 @@ def test_run_single_propagates_unexpected(monkeypatch, tmp_path):
 
     monkeypatch.setattr(orchestrator.data_loader, "load_data", fake_load_data)
     monkeypatch.setattr(
-        orchestrator.outlier_handler, "exclude_outliers", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("bad")))
+        orchestrator.outlier_handler,
+        "exclude_outliers",
+        lambda *a, **k: (_ for _ in ()).throw(RuntimeError("bad")),
+    )
     monkeypatch.setattr(
         orchestrator.visualization_runner,
         "generate_clouds_outliers",
         lambda *a, **k: None,
-    monkeypatch.setattr( 
+    )
+    monkeypatch.setattr(
         orchestrator.statistics_runner,
         "single_cloud_statistics_handler",
         lambda *a, **k: (_ for _ in ()).throw(RuntimeError("bad")),
