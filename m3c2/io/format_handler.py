@@ -29,9 +29,11 @@ def read_xyz(path: Path) -> np.ndarray:
 
     Raises
     ------
-    Exception
-        Any error encountered while reading the file is logged and
-        re-raised.
+    OSError
+        If the file cannot be accessed. The error is logged and re-raised.
+    ValueError
+        If the file contents cannot be parsed into ``float`` values.
+        The error is logged and re-raised.
 
     Returns
     -------
@@ -42,7 +44,7 @@ def read_xyz(path: Path) -> np.ndarray:
     logger.info("Reading XYZ file %s", path)
     try:
         return np.loadtxt(path, dtype=np.float64, usecols=(0, 1, 2))
-    except Exception:
+    except (OSError, ValueError):
         logger.exception("Failed to read XYZ file %s", path)
         raise
 
