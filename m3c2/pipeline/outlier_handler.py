@@ -16,6 +16,22 @@ class OutlierHandler:
         """Remove outliers based on configuration settings.
 
         This method is part of the public pipeline API.
+
+        Parameters
+        ----------
+        cfg : PipelineConfig
+            Configuration object providing ``outlier_detection_method`` and
+            ``outlier_multiplicator``.
+        out_base : str
+            Path to the directory containing the results of the current run.
+        tag : str
+            Tag identifying the current dataset (usually based on the input
+            filenames).
+
+        Raises
+        ------
+        Exception
+            Propagated if the underlying exclusion routine fails.
         """
         logger.info("[Outlier] Entferne Ausreißer …")
         try:
