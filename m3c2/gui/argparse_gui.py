@@ -92,7 +92,7 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
             # argparse reports errors via SystemExit; show message instead
             messagebox.showerror("Ungültige Eingabe", "Bitte Eingaben prüfen.")
             return
-        except Exception as exc:
+        except (ValueError, OSError) as exc:
             logger.exception("Error parsing arguments")
             messagebox.showerror("Fehler", str(exc))
             return
