@@ -312,24 +312,30 @@ def plot_overlay_violin(
     """Generate a violin plot for comparing M3C2 distance distributions.
 
     The provided arrays are combined into a single DataFrame and plotted using
-    :mod:`seaborn`'s :func:`violinplot`. The resulting figure is written to
-    ``outdir`` with a filename based on ``fid`` and ``fname``.
+    :mod:`seaborn`'s :func:`violinplot`. If :mod:`seaborn` is unavailable, a
+    warning is logged and the plot is skipped. The resulting figure is written
+    to ``outdir`` with a filename based on ``fid`` and ``fname``.
     """
     try:
         import seaborn as sns
+    except ImportError:
+        logger.warning(
+            "[Report] Violinplot skipped (%s/%s): seaborn not installed",
+            fid,
+            fname,
+        )
+        return
 
-        records = [pd.DataFrame({"Version": v, "Distanz": arr}) for v, arr in data.items()]
-        if not records:
-            return
-        df = pd.concat(records, ignore_index=True)
-        palette = {v: colors.get(v) for v in df["Version"].unique()}
-        plt.figure(figsize=(10, 6))
-        sns.violinplot(data=df, x="Version", y="Distanz", palette=palette, cut=0, inner="quartile")
-        plt.title(title_text or f"Violinplot – {fid}/{fname}")
-        plt.xlabel("Version")
-        plt.ylabel("M3C2 distance")
-        plt.tight_layout()
-        plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Violinplot.png"))
-        plt.close()
-    except Exception as e:
-        logger.warning("[Report] Violinplot fehlgeschlagen (%s/%s): %s", fid, fname, e)
+    records = [pd.DataFrame({"Version": v, "Distanz": arr}) for v, arr in data.items()]
+    if not records:
+        return
+    df = pd.concat(records, ignore_index=True)
+    palette = {v: colors.get(v) for v in df["Version"].unique()}
+    plt.figure(figsize=(10, 6))
+    sns.violinplot(data=df, x="Version", y="Distanz", palette=palette, cut=0, inner="quartile")
+    plt.title(title_text or f"Violinplot – {fid}/{fname}")
+    plt.xlabel("Version")
+    plt.ylabel("M3C2 distance")
+    plt.tight_layout()
+    plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Violinplot.png"))
+    plt.close()
