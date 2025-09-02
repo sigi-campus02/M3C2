@@ -2,15 +2,20 @@ from __future__ import annotations
 
 from typing import Dict, Optional
 
+import logging
 import numpy as np
 import pandas as pd
 from scipy.stats import norm, weibull_min
 
 
+logger = logging.getLogger(__name__)
+
+
 def basic_stats(values: np.ndarray, tolerance: float) -> Dict[str, float]:
     """Berechne Grundkennzahlen für ein Werte-Array."""
+    logger.info("basic_stats received %d values", values.size)
     if values.size == 0:
-        return {
+        result = {
             "Valid Count": 0,
             "Valid Sum": 0.0,
             "Valid Squared Sum": 0.0,
@@ -37,6 +42,13 @@ def basic_stats(values: np.ndarray, tolerance: float) -> Dict[str, float]:
             "Jaccard Index": np.nan,
             "Dice Coefficient": np.nan,
         }
+        logger.info(
+            "basic_stats summary: min=%s, max=%s, mean=%s",
+            result["Min"],
+            result["Max"],
+            result["Mean"],
+        )
+        return result
 
     valid_count = int(values.size)
     valid_sum = float(np.sum(values))
@@ -67,7 +79,7 @@ def basic_stats(values: np.ndarray, tolerance: float) -> Dict[str, float]:
     jaccard_index = intersection / union if union > 0 else np.nan
     dice_coefficient = (2 * intersection) / (2 * union) if union > 0 else np.nan
 
-    return {
+    result = {
         "Valid Count": valid_count,
         "Valid Sum": valid_sum,
         "Valid Squared Sum": valid_squared_sum,
@@ -94,6 +106,13 @@ def basic_stats(values: np.ndarray, tolerance: float) -> Dict[str, float]:
         "Jaccard Index": jaccard_index,
         "Dice Coefficient": dice_coefficient,
     }
+    logger.info(
+        "basic_stats summary: min=%f, max=%f, mean=%f",
+        min_val,
+        max_val,
+        mean_val,
+    )
+    return result
 
 
 def fit_distributions(
@@ -130,6 +149,20 @@ def fit_distributions(
 
     skew_weibull = float(weibull_min(a, loc=loc, scale=b).stats(moments="s"))
     mode_weibull = float(loc + b * ((a - 1) / a) ** (1 / a)) if a > 1 else float(loc)
+
+    logger.info(
+        "fit_distributions Gaussian: mu=%f, std=%f, chi2=%f",
+        mu,
+        std,
+        pearson_gauss,
+    )
+    logger.info(
+        "fit_distributions Weibull: a=%f, b=%f, loc=%f, chi2=%f",
+        a,
+        b,
+        loc,
+        pearson_weib,
+    )
 
     return {
         "mu": float(mu),
