@@ -1,3 +1,11 @@
+"""Test cases for the main entry point.
+
+These tests ensure that invoking :func:`main.main` triggers the CLI
+application exactly once and remains safe to import. The behavior of
+``CLIApp.run`` is verified so that the application starts as expected
+without side effects.
+"""
+
 from importlib import reload
 from unittest.mock import patch
 
