@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 # remove_cloud_token.py
+"""CLI tool for removing `_cloud` tokens from file and directory names.
+
+The script walks a base directory and renames entries by deleting the
+`_cloud` token from their names. It supports recursive traversal,
+optionally includes directory names in the renaming process and offers a
+dry-run mode to preview changes without modifying the filesystem.
+"""
+
 import argparse, os, logging
 from pathlib import Path
 
