@@ -1,3 +1,11 @@
+"""Plotting utilities for Passing–Bablok regression.
+
+This module implements helpers to visualize the non-parametric
+Passing–Bablok regression between two sets of measurements. It provides
+functionality to compute square axis limits and to generate plots with
+confidence intervals for multiple folder identifiers.
+"""
+
 from __future__ import annotations
 
 import logging
