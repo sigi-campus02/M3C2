@@ -1,3 +1,10 @@
+"""Test suite for the :mod:`m3c2.pipeline.visualization_runner` module.
+
+These tests validate how :class:`~m3c2.pipeline.visualization_runner.VisualizationRunner`
+handles the generation of visualization artifacts both when a point cloud is
+available and when it is not.
+"""
+
 import logging
 from types import SimpleNamespace
 
@@ -8,6 +15,28 @@ from m3c2.visualization.visualization_service import VisualizationService
 
 
 def test_generate_visuals_with_cloud(monkeypatch, tmp_path):
+    """Ensure visuals are generated when a point cloud is provided.
+
+    Parameters
+    ----------
+    monkeypatch : pytest.MonkeyPatch
+        Used to replace :class:`VisualizationService` methods with fakes.
+    tmp_path : pathlib.Path
+        Temporary directory where output files are written.
+
+    Returns
+    -------
+    None
+        This test only asserts side effects.
+
+    Examples
+    --------
+    >>> runner = VisualizationRunner()
+    >>> cfg = SimpleNamespace(process_python_CC='foo')
+    >>> mov = SimpleNamespace(cloud='dummy')
+    >>> distances = np.array([1.0, 2.0])
+    >>> runner.generate_visuals(cfg, mov, distances, '/tmp', 'tag')
+    """
     runner = VisualizationRunner()
     cfg = SimpleNamespace(process_python_CC="foo")
     mov = SimpleNamespace(cloud="dummy")
@@ -36,6 +65,30 @@ def test_generate_visuals_with_cloud(monkeypatch, tmp_path):
 
 
 def test_generate_visuals_without_cloud(monkeypatch, tmp_path, caplog):
+    """Check behavior when no point cloud is supplied.
+
+    Parameters
+    ----------
+    monkeypatch : pytest.MonkeyPatch
+        Replaces :class:`VisualizationService` methods with stubs.
+    tmp_path : pathlib.Path
+        Temporary directory where output files are written.
+    caplog : pytest.LogCaptureFixture
+        Captures log output for assertions.
+
+    Returns
+    -------
+    None
+        This test only asserts side effects.
+
+    Examples
+    --------
+    >>> runner = VisualizationRunner()
+    >>> cfg = SimpleNamespace(process_python_CC='foo')
+    >>> mov = SimpleNamespace()
+    >>> distances = np.array([1.0, 2.0])
+    >>> runner.generate_visuals(cfg, mov, distances, '/tmp', 'tag')
+    """
     runner = VisualizationRunner()
     cfg = SimpleNamespace(process_python_CC="foo")
     mov = SimpleNamespace()  # no cloud attribute
