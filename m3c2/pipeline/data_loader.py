@@ -1,5 +1,5 @@
-from __future__ import annotations
 """Utility class for loading input data for the M3C2 pipeline."""
+from __future__ import annotations
 
 import logging
 import os
