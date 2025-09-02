@@ -22,6 +22,15 @@ logger = logging.getLogger(__name__)
 
 
 def _bbox_area_xy(xy: np.ndarray) -> float:
+    """Return area of axis-aligned bounding box for 2D points.
+
+    Args:
+        xy: Array of ``(x, y)`` coordinates with shape ``(N, 2)``.
+
+    Returns:
+        The area spanned by the minimal axis-aligned bounding box
+        covering the points, in square units.
+    """
     x_min, y_min = np.min(xy[:, 0]), np.min(xy[:, 1])
     x_max, y_max = np.max(xy[:, 0]), np.max(xy[:, 1])
     return float((x_max - x_min) * (y_max - y_min))
