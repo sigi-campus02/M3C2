@@ -1,3 +1,10 @@
+"""Test rename operations for converting numeric prefixes to letters.
+
+This module exercises the ``rename_filename`` utilities that rename files by
+translating numeric prefixes into alphabetic counterparts and supports dry-run
+execution.
+"""
+
 import sys
 from pathlib import Path
 
@@ -18,10 +25,30 @@ from m3c2.io.filename_services import rename_filename
     ],
 )
 def test_transform(name, expected):
+    """Ensure numeric prefixes are converted to letters.
+
+    Parameters
+    ----------
+    name : str
+        Original file name.
+    expected : str
+        Expected result after applying the transformation.
+    """
+
     assert rename_filename.transform(name) == expected
 
 
 def test_main_renames_and_dry_run(tmp_path, monkeypatch):
+    """Validate rename execution and dry-run behavior of the CLI.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory used to create example files.
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to override command-line arguments.
+    """
+
     f1 = tmp_path / "1-1_cloud.txt"
     f1.touch()
     sub = tmp_path / "sub"
