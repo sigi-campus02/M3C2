@@ -126,78 +126,104 @@ class BatchOrchestrator:
             cfg.process_python_CC,
         )
         start = time.perf_counter()
-
         if cfg.stats_singleordistance == "distance":
             ds, mov, ref, corepoints = self.data_loader.load_data(cfg, type="multicloud")
             out_base = ds.config.folder
+            tag = self._run_tag(cfg)
 
-        tag = self._run_tag(cfg)
-        
-
-        if cfg.process_python_CC == "python" and not cfg.only_stats:
-            normal = projection = np.nan
-            if cfg.use_existing_params:
-                params_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt")
-                normal, projection = StatisticsService._load_params(params_path)
-                if not np.isnan(normal) and not np.isnan(projection):
-                    logger.info(
-                        "[Params] geladen: %s (NormalScale=%.6f, SearchScale=%.6f)",
-                        params_path,
-                        normal,
-                        projection,
+            if cfg.process_python_CC == "python" and not cfg.only_stats:
+                normal = projection = np.nan
+                if cfg.use_existing_params:
+                    params_path = os.path.join(
+                        out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt"
                     )
-                else:
-                    logger.info("[Params] keine vorhandenen Parameter gefunden, berechne neu")
-            if np.isnan(normal) or np.isnan(projection):
-                normal, projection = self.scale_estimator.determine_scales(cfg, corepoints)
-                self._save_params(cfg, normal, projection, out_base)
-            distances, uncertainties, dists_path = self.m3c2_executor.run_m3c2(
-                cfg, mov, ref, corepoints, normal, projection, out_base, tag
-            )
-            self.visualization_runner.generate_visuals(cfg, mov, distances, out_base, tag)
+                    normal, projection = StatisticsService._load_params(params_path)
+                    if not np.isnan(normal) and not np.isnan(projection):
+                        logger.info(
+                            "[Params] geladen: %s (NormalScale=%.6f, SearchScale=%.6f)",
+                            params_path,
+                            normal,
+                            projection,
+                        )
+                    else:
+                        logger.info(
+                            "[Params] keine vorhandenen Parameter gefunden, berechne neu"
+                        )
+                if np.isnan(normal) or np.isnan(projection):
+                    normal, projection = self.scale_estimator.determine_scales(
+                        cfg, corepoints
+                    )
+                    self._save_params(cfg, normal, projection, out_base)
+                distances, uncertainties, dists_path = self.m3c2_executor.run_m3c2(
+                    cfg, mov, ref, corepoints, normal, projection, out_base, tag
+                )
+                self.visualization_runner.generate_visuals(
+                    cfg, mov, distances, out_base, tag
+                )
+
+                try:
+                    logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
+                    self.outlier_handler.exclude_outliers(cfg, out_base, tag)
+                except (IOError, ValueError):
+                    logger.exception("Fehler beim Entfernen von Ausreißern")
+                except Exception:
+                    logger.exception(
+                        "Unerwarteter Fehler beim Entfernen von Ausreißern"
+                    )
+                    raise
+
+                try:
+                    logger.info(
+                        "[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …"
+                    )
+                    self.visualization_runner.generate_clouds_outliers(
+                        cfg, ds.config.folder, tag
+                    )
+                except (IOError, ValueError):
+                    logger.exception(
+                        "Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
+                    )
+                except Exception:
+                    logger.exception(
+                        "Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
+                    )
+                    raise
 
             try:
-                logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
-                self.outlier_handler.exclude_outliers(cfg, out_base, tag)
+                logger.info("[Statistics] Berechne Statistiken …")
+                self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
             except (IOError, ValueError):
-                logger.exception("Fehler beim Entfernen von Ausreißern")
+                logger.exception("Fehler bei der Berechnung der Statistik")
             except Exception:
-                logger.exception("Unerwarteter Fehler beim Entfernen von Ausreißern")
+                logger.exception(
+                    "Unerwarteter Fehler bei der Berechnung der Statistik"
+                )
                 raise
 
-            try:
-                logger.info("[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …")
-                self.visualization_runner.generate_clouds_outliers(cfg, ds.config.folder, tag)
-            except (IOError, ValueError):
-                logger.exception("Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier")
-            except Exception:
-                logger.exception("Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier")
-                raise
-
-        try:
-            logger.info("[Statistics] Berechne Statistiken …")
-            self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
-        except (IOError, ValueError):
-            logger.exception("Fehler bei der Berechnung der Statistik")
-        except Exception:
-            logger.exception("Unerwarteter Fehler bei der Berechnung der Statistik")
-            raise
-
-        
-        if cfg.stats_singleordistance == "single":
+        elif cfg.stats_singleordistance == "single":
             single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
 
             try:
                 logger.info("[Statistics] Berechne Statistiken …")
-                self.statistics_runner.single_cloud_statistics_handler(cfg, single_cloud)
+                self.statistics_runner.single_cloud_statistics_handler(
+                    cfg, single_cloud
+                )
             except (IOError, ValueError):
                 logger.exception("Fehler bei der Berechnung der Statistik")
             except Exception:
-                logger.exception("Unerwarteter Fehler bei der Berechnung der Statistik")
+                logger.exception(
+                    "Unerwarteter Fehler bei der Berechnung der Statistik"
+                )
                 raise
-        
 
-        logger.info("[Job] %s abgeschlossen in %.3fs", cfg.folder_id, time.perf_counter() - start)
+        else:
+            raise ValueError("Unbekannter stats_singleordistance-Wert")
+
+        logger.info(
+            "[Job] %s abgeschlossen in %.3fs",
+            cfg.folder_id,
+            time.perf_counter() - start,
+        )
 
     def _save_params(self, cfg: PipelineConfig, normal: float, projection: float, out_base: str) -> None:
         """Persist determined scale parameters to disk.
