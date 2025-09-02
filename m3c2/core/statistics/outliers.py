@@ -90,7 +90,38 @@ def get_outlier_mask(clipped, method, outlier_multiplicator):
 
 
 def compute_outliers(inliers: np.ndarray, outliers: np.ndarray) -> Dict[str, float]:
-    """Bestimme Kennzahlen zu Inliern und Outliern."""
+    """Compute summary statistics for inlier and outlier values.
+
+    Parameters
+    ----------
+    inliers : np.ndarray
+        Array of values that are considered *inliers* (values that met the
+        filtering criteria of the outlier detection step).
+    outliers : np.ndarray
+        Array of values that are considered *outliers* (values that violated
+        the thresholds of the detection step).
+
+    Returns
+    -------
+    Dict[str, float]
+        A dictionary with counts and simple statistics:
+
+        ``outlier_count`` / ``inlier_count``
+            Number of outlier and inlier elements.
+        ``mean_out`` / ``std_out``
+            Mean and standard deviation of the ``outliers`` array.
+        ``pos_out`` / ``neg_out``
+            Counts of positive and negative outliers.
+        ``pos_in`` / ``neg_in``
+            Counts of positive and negative inliers.
+
+    Notes
+    -----
+    If either of the input arrays is empty the respective statistics are set to
+    ``NaN`` (for ``mean_out`` and ``std_out``) and the counts become zero.  This
+    allows callers to handle cases where no outliers or inliers were found
+    without raising an exception.
+    """
     mean_out = float(np.mean(outliers)) if outliers.size else np.nan
     std_out = float(np.std(outliers)) if outliers.size > 0 else np.nan
 
