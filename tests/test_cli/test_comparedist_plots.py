@@ -1,3 +1,5 @@
+"""Tests for the ``comparedist_plots`` command-line interface."""
+
 import sys
 from pathlib import Path
 
@@ -5,8 +7,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from m3c2.cli import comparedist_plots
 
-
 def test_main_creates_output(tmp_path, monkeypatch):
+    """Verify that invoking the CLI generates the expected output files.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory provided by pytest for file output.
+    monkeypatch : _pytest.monkeypatch.MonkeyPatch
+        Fixture used to replace the plotting service with a fake implementation.
+    """
+
     def fake_overlay(cls, cfg, opts):
         Path(cfg.path).mkdir(parents=True, exist_ok=True)
         Path(cfg.path, "dummy.txt").write_text("ok")
