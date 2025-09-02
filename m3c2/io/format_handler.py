@@ -146,8 +146,8 @@ def read_obj(path: Path) -> np.ndarray:
                             path,
                             line,
                         )
-    except Exception:
-        logger.exception("Failed to read OBJ file %s", path)
+    except (OSError, ValueError) as exc:
+        logger.exception("Failed to read OBJ file %s: %s", path, exc)
         raise
     return np.asarray(vertices, dtype=np.float64)
 
