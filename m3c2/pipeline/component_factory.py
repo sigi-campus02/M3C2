@@ -27,6 +27,8 @@ class PipelineComponentFactory:
         )
 
     def create_data_loader(self) -> DataLoader:
+        """Return a new :class:`DataLoader` instance."""
+
         logger.debug("Creating %s", DataLoader.__name__)
         return DataLoader()
 
