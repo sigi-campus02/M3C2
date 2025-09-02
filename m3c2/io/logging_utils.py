@@ -31,8 +31,10 @@ def resolve_log_level(level: str | None = None) -> str:
         with config_path.open("r", encoding="utf-8") as handle:
             data = json.load(handle)
         config_level = data.get("logging", {}).get("level", config_level)
-    except Exception:
-        pass
+    except (OSError, json.JSONDecodeError) as exc:
+        logging.getLogger(__name__).warning(
+            "Failed to load logging configuration, using defaults: %s", exc
+        )
 
     return os.getenv("LOG_LEVEL", config_level)
 

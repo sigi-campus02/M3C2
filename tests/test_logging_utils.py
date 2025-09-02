@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
+import json
 import logging
 from pathlib import Path
 import sys
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
-from m3c2.io.logging_utils import setup_logging
+import m3c2.io.logging_utils as logging_utils
 
 
 def test_setup_logging_idempotent(tmp_path: Path) -> None:
@@ -38,10 +39,10 @@ def test_setup_logging_idempotent(tmp_path: Path) -> None:
 
     log_file = tmp_path / "test.log"
 
-    setup_logging(log_file=str(log_file))
+    logging_utils.setup_logging(log_file=str(log_file))
     handlers_before = list(logger.handlers)
 
-    setup_logging(log_file=str(log_file))
+    logging_utils.setup_logging(log_file=str(log_file))
     handlers_after = list(logger.handlers)
 
     assert handlers_after == handlers_before
@@ -55,3 +56,23 @@ def test_setup_logging_idempotent(tmp_path: Path) -> None:
 def test_fatal_alias() -> None:
     """Ensure that the ``FATAL`` level name maps to ``CRITICAL``."""
     assert logging.getLevelName("FATAL") == logging.CRITICAL
+
+
+def test_resolve_log_level_warning(monkeypatch, caplog) -> None:
+    """Warn when configuration loading fails and use default level."""
+    # ensure environment variable does not interfere
+    monkeypatch.delenv("LOG_LEVEL", raising=False)
+
+    def bad_load(handle) -> None:  # type: ignore[unused-ignore]
+        raise json.JSONDecodeError("boom", "", 0)
+
+    monkeypatch.setattr(logging_utils.json, "load", bad_load)
+
+    with caplog.at_level(logging.WARNING):
+        level = logging_utils.resolve_log_level()
+
+    assert level == "INFO"
+    assert any(
+        "Failed to load logging configuration" in record.message
+        for record in caplog.records
+    )
