@@ -25,7 +25,29 @@ def main(
     ref_variants: list[str] | None = None,
     outdir: str = "outputs",
 ) -> None:
-    """Configure and create distance comparison plots."""
+    """Configure and create distance comparison plots.
+
+    Parameters
+    ----------
+    folder_ids : list[str] | None, optional
+        Identifiers of point cloud folders to process. Defaults to
+        ``["0342-0349"]`` when ``None``.
+    ref_variants : list[str] | None, optional
+        Reference variants to compare. Defaults to ``["ref", "ref_ai"]`` when
+        ``None``.
+    outdir : str, optional
+        Target directory for generated plots. Defaults to ``"outputs"``.
+
+    Logging
+    -------
+    Configures logging via :func:`setup_logging` at a level resolved by
+    :func:`resolve_log_level`.
+
+    Side Effects
+    ------------
+    Creates statistical comparison plots and writes them to ``outdir`` while
+    emitting log messages.
+    """
 
     setup_logging(level=resolve_log_level())
 
