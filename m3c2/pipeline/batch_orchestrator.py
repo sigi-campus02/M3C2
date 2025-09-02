@@ -387,9 +387,11 @@ class BatchOrchestrator:
             self.outlier_handler.exclude_outliers(cfg, out_base, tag)
         except (IOError, ValueError):
             logger.exception("Fehler beim Entfernen von Ausreißern")
-        except Exception:
-            logger.exception(
-                "Unerwarteter Fehler beim Entfernen von Ausreißern"
+        except (RuntimeError, OSError) as err:
+            logger.error(
+                "Unerwarteter Fehler beim Entfernen von Ausreißern: %s",
+                err,
+                exc_info=True,
             )
             raise
 
@@ -405,8 +407,10 @@ class BatchOrchestrator:
             logger.exception(
                 "Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
             )
-        except Exception:
-            logger.exception(
-                "Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
+        except (RuntimeError, OSError) as err:
+            logger.error(
+                "Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier: %s",
+                err,
+                exc_info=True,
             )
             raise
