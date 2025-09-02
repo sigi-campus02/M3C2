@@ -196,10 +196,15 @@ class BatchOrchestrator:
 
         single_cloud = self.data_loader.load_data(cfg, mode="singlecloud")
 
+        # --- Scale estimation for single cloud statistics parameters
+        normal, projection = self.scale_estimator.determine_scales(
+                cfg, single_cloud
+            )
+
         try:
             logger.info("[Statistics] Berechne Statistiken …")
             self.statistics_runner.single_cloud_statistics_handler(
-                cfg, single_cloud
+                cfg, single_cloud, normal
             )
         except (IOError, ValueError):
             logger.exception("Fehler bei der Berechnung der Statistik")

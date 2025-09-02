@@ -348,8 +348,8 @@ class StatisticsService:
         singlecloud: Optional[object] = None,
 
         area_m2: Optional[float] = None,
-        radius: float = 1.0,
-        k: int = 6,
+        radius: float = None,
+        k: int = None,
         sample_size: Optional[int] = None,
         use_convex_hull: bool = True,
         out_path: str = "m3c2_stats_clouds.xlsx",
@@ -405,8 +405,6 @@ class StatisticsService:
         for fid in folder_ids:
 
             pts = singlecloud.cloud if hasattr(singlecloud, "cloud") else singlecloud
-            logger.info(f"Processing single cloud {fid}, {filename_singlecloud} …")
-            logger.info(f"Point count: {len(pts)} | Array shape: {pts.shape if hasattr(pts, 'shape') else 'N/A'}")
 
             stats = calc_single_cloud_stats(
                 pts,

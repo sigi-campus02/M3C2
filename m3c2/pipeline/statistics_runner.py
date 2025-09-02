@@ -84,7 +84,7 @@ class StatisticsRunner:
             outlier_method=cfg.outlier_detection_method,
         )
 
-    def single_cloud_statistics_handler(self, cfg, singlecloud):
+    def single_cloud_statistics_handler(self, cfg, singlecloud, normal):
         logger.info(
             f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_singlecloud} …",
         )
@@ -103,6 +103,7 @@ class StatisticsRunner:
             folder_ids=[cfg.folder_id],
             filename_singlecloud=cfg.filename_singlecloud,
             singlecloud=singlecloud,
+            radius=normal,
             out_path=out_path,
             sheet_name="CloudStats",
             output_format=self.output_format,
