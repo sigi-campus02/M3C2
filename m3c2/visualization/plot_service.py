@@ -47,6 +47,13 @@ class PlotService:
 
     @staticmethod
     def _reorder_data(data: Dict[str, np.ndarray], labels_order: List[str]) -> "OrderedDict[str, np.ndarray]":
+        """Return ``data`` sorted according to ``labels_order``.
+
+        An :class:`~collections.OrderedDict` is constructed whose items follow
+        the sequence given by ``labels_order``. Only labels present in
+        ``data`` are included, ensuring that downstream plotting receives the
+        arrays in a predictable order.
+        """
         return OrderedDict((lbl, data[lbl]) for lbl in labels_order if lbl in data)
 
     @staticmethod
