@@ -169,6 +169,28 @@ def _plot_grouped_bar_means_stds_dual(
 # ---------------------------------------------------------------------------
 
 def overlay_plots(config: PlotConfig, options: PlotOptions) -> None:
+    """Create combined overlay plots for a set of distance files.
+
+    Parameters
+    ----------
+    config : PlotConfig
+        Configuration describing the input files and output location. The
+        ``folder_ids`` and ``versions`` are combined with ``filenames`` to
+        locate the distance data. ``config.ensure_colors`` provides a mapping
+        of plot labels to colors and ``config.path`` determines where the PNG
+        images are written.
+    options : PlotOptions
+        Flags selecting which plot types to generate. Available plots are
+        overlay histograms, Gaussian and Weibull fits, box plots, Q-Q plots,
+        grouped bar charts comparing WITH/INLIER statistics and violin plots.
+        Only plots with the corresponding flag set to ``True`` are created.
+
+    Produces
+    --------
+    For all provided folders and versions the data is aggregated into a single
+    "WITH" and an optional "INLIER" collection. For each enabled plot type a
+    PNG image is saved in ``config.path`` showing the combined distributions.
+    """
     colors = config.ensure_colors()
     os.makedirs(config.path, exist_ok=True)
 
