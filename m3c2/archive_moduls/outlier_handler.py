@@ -65,7 +65,7 @@ class OutlierHandler:
                 outlier_multiplicator=outlier_multiplicator,
             )
             logger.info("[Outlier] Entfernen abgeschlossen")
-        except Exception:
-            # Surface errors to callers while logging the stack trace
-            logger.exception("[Outlier] Fehler beim Entfernen der Ausreißer")
+        except (OSError, ValueError) as err:
+            # Surface specific errors to callers while logging the stack trace
+            logger.exception("[Outlier] Fehler beim Entfernen der Ausreißer: %s", err)
             raise
