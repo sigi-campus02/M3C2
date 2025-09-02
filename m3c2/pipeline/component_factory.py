@@ -1,5 +1,6 @@
-from __future__ import annotations
 """Factory for creating pipeline components used by :class:`BatchOrchestrator`."""
+
+from __future__ import annotations
 
 import logging
 
