@@ -1,6 +1,9 @@
+import logging
+import re
 from openpyxl import load_workbook
 from openpyxl.comments import Comment
-import re
+
+logger = logging.getLogger(__name__)
 
 # ---- feste (exakte) Header-Kommentare für Single-Cloud-Stats ----
 CLOUD_HEADER_COMMENTS = {
@@ -108,14 +111,20 @@ def add_cloud_header_comments(xlsx_path: str,
     Hängt erklärende Kommentare an die Header der Single-Cloud-Statistik an.
     Unterstützt exakte Header und dynamische (regex-basierte) Header.
     """
+    logger.info("Loading workbook '%s'", xlsx_path)
     wb = load_workbook(xlsx_path)
+    logger.info("Workbook '%s' loaded", xlsx_path)
+    logger.info("Checking for sheet '%s'", sheet_name)
     if sheet_name not in wb.sheetnames:
+        logger.warning("Sheet '%s' not found in %s", sheet_name, xlsx_path)
         raise ValueError(f"Sheet '{sheet_name}' nicht gefunden in {xlsx_path}")
     ws = wb[sheet_name]
+    logger.info("Processing headers in sheet '%s'", sheet_name)
 
     headers = [cell.value for cell in ws[header_row]]
     for col_idx, header in enumerate(headers, start=1):
         if not header or not isinstance(header, str):
+            logger.warning("Missing or invalid header at column %d", col_idx)
             continue
 
         comment_text = None
@@ -133,10 +142,12 @@ def add_cloud_header_comments(xlsx_path: str,
                     break
 
         if not comment_text:
+            logger.warning("No comment mapping found for header '%s'", header)
             continue
 
         cell = ws.cell(row=header_row, column=col_idx)
         if (cell.comment is not None) and not overwrite:
+            logger.info("Skipping header '%s'; comment exists and overwrite is False", header)
             continue
 
         c = Comment(comment_text, author)
@@ -144,8 +155,11 @@ def add_cloud_header_comments(xlsx_path: str,
         c.width = box_width
         c.height = box_height
         cell.comment = c
+        logger.info("Inserted comment for header '%s'", header)
 
+    logger.info("Saving workbook '%s'", xlsx_path)
     wb.save(xlsx_path)
+    logger.info("Workbook '%s' saved", xlsx_path)
 
 if __name__ == "__main__":
     # Beispielaufruf:

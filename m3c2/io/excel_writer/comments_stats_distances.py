@@ -1,6 +1,9 @@
+import logging
 
 from openpyxl import load_workbook
 from openpyxl.comments import Comment
+
+logger = logging.getLogger(__name__)
 
 HEADER_COMMENTS = {
     "Timestamp": "Zeitpunkt der Auswertung.",
@@ -75,29 +78,40 @@ def add_header_comments(
     box_width: float = 300,
     box_height: float = 160
 ):
+    logger.info("Loading workbook '%s'", xlsx_path)
     wb = load_workbook(xlsx_path)
+    logger.info("Workbook '%s' loaded", xlsx_path)
+    logger.info("Checking for sheet '%s'", sheet_name)
     if sheet_name not in wb.sheetnames:
+        logger.warning("Sheet '%s' not found in %s", sheet_name, xlsx_path)
         raise ValueError(f"Sheet '{sheet_name}' nicht gefunden in {xlsx_path}")
     ws = wb[sheet_name]
+    logger.info("Processing headers in sheet '%s'", sheet_name)
 
     # Lese die Überschriftenzeile
     headers = [cell.value for cell in ws[header_row]]
 
     for col_idx, header in enumerate(headers, start=1):
         if not header:
+            logger.warning("Missing header at column %d", col_idx)
             continue
         if header not in HEADER_COMMENTS:
+            logger.warning("No comment mapping found for header '%s'", header)
             continue
         cell = ws.cell(row=header_row, column=col_idx)
         if (cell.comment is not None) and not overwrite:
+            logger.info("Skipping header '%s'; comment exists and overwrite is False", header)
             continue
         c = Comment(HEADER_COMMENTS[header], author)
         c.visible = False
         c.width = box_width
         c.height = box_height
         cell.comment = c
+        logger.info("Inserted comment for header '%s'", header)
 
+    logger.info("Saving workbook '%s'", xlsx_path)
     wb.save(xlsx_path)
+    logger.info("Workbook '%s' saved", xlsx_path)
 
 if __name__ == "__main__":
     add_header_comments("m3c2_stats_all.xlsx", sheet_name="Results")
