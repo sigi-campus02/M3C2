@@ -207,6 +207,12 @@ def plot_overlay_violin(
     title_text: str | None = None,
     labels_order: List[str] | None = None,
 ) -> None:
+    """Generate a violin plot for comparing M3C2 distance distributions.
+
+    The provided arrays are combined into a single DataFrame and plotted using
+    :mod:`seaborn`'s :func:`violinplot`. The resulting figure is written to
+    ``outdir`` with a filename based on ``fid`` and ``fname``.
+    """
     try:
         import seaborn as sns
 
