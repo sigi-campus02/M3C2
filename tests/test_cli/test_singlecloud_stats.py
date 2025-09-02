@@ -1,3 +1,5 @@
+"""Tests for the :mod:`m3c2.cli.singlecloud_stats` module."""
+
 import sys
 from pathlib import Path
 
@@ -7,6 +9,17 @@ from m3c2.cli import singlecloud_stats
 
 
 def test_main_writes_output(tmp_path, monkeypatch):
+    """Test that ``main`` writes the expected output file.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory where the output file should be created.
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to replace the statistics calculation with a fake
+        implementation.
+    """
+
     out_file = tmp_path / "stats.xlsx"
 
     def fake_calc(cls, **kwargs):
