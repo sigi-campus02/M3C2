@@ -267,7 +267,7 @@ class CLIApp:
 
         try:
             orchestrator.run_all()
-        except Exception as e:
+        except RuntimeError as e:
             self.logger.error("Error occurred while running orchestrator: %s", e)
             return 1
 
