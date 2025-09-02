@@ -453,12 +453,16 @@ class StatisticsService:
         normal_scale = np.nan
         search_scale = np.nan
         if params_path and os.path.exists(params_path):
-            with open(params_path, "r") as f:
-                for line in f:
-                    if line.startswith("NormalScale="):
-                        normal_scale = float(line.strip().split("=")[1])
-                    elif line.startswith("SearchScale="):
-                        search_scale = float(line.strip().split("=")[1])
+            try:
+                with open(params_path, "r") as f:
+                    for line in f:
+                        if line.startswith("NormalScale="):
+                            normal_scale = float(line.strip().split("=")[1])
+                        elif line.startswith("SearchScale="):
+                            search_scale = float(line.strip().split("=")[1])
+            except (OSError, ValueError) as exc:
+                logger.warning("Failed to load params from %s: %s", params_path, exc)
+                return np.nan, np.nan
         return normal_scale, search_scale
 
     @staticmethod
