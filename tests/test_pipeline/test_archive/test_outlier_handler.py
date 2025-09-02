@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
-from m3c2.pipeline.outlier_handler import OutlierHandler
+from m3c2.archive_moduls.outlier_handler import OutlierHandler
 
 
 def test_exclude_outliers(monkeypatch):

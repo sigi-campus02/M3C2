@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from m3c2.cli import outlier_plots
+from m3c2.archive_moduls import outlier_plots
 
 
 def test_main_creates_plot(tmp_path, monkeypatch):

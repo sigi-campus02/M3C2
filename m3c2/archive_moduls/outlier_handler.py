@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 import os
 
-from m3c2.core.exclude_outliers import exclude_outliers
+from m3c2.archive_moduls.exclude_outliers import exclude_outliers
 
 # Module-level logger for this handler
 logger = logging.getLogger(__name__)

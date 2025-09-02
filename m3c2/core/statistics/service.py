@@ -296,70 +296,37 @@ class StatisticsService:
         rows: List[Dict] = []
 
         for fid in folder_ids:
-            if process_python_CC == "python":
-                py_dist_path = cls._resolve(
-                    fid, f"python_{filename_ref}_m3c2_distances.txt"
-                )
+            py_dist_path = cls._resolve(
+                fid, f"python_{filename_ref}_m3c2_distances.txt"
+            )
+            
+            py_params_path = cls._resolve(
+                fid, f"python_{filename_ref}_m3c2_params.txt"
+            )
+            
+            if os.path.exists(py_dist_path):
+                logger.info("Processing Python distances: %s", py_dist_path)
+                logger.info("Using Python params: %s", py_params_path)
                 
-                py_params_path = cls._resolve(
-                    fid, f"python_{filename_ref}_m3c2_params.txt"
+                values = np.loadtxt(py_dist_path)
+                stats = cls.calc_stats(
+                    values,
+                    params_path=py_params_path if os.path.exists(py_params_path) else None,
+                    bins=bins,
+                    range_override=range_override,
+                    min_expected=min_expected,
+                    outlier_multiplicator=outlier_multiplicator,
+                    outlier_method=outlier_method,
                 )
-                
-                if os.path.exists(py_dist_path):
-                    logger.info("Processing Python distances: %s", py_dist_path)
-                    logger.info("Using Python params: %s", py_params_path)
-                    
-                    values = np.loadtxt(py_dist_path)
-                    stats = cls.calc_stats(
-                        values,
-                        params_path=py_params_path if os.path.exists(py_params_path) else None,
-                        bins=bins,
-                        range_override=range_override,
-                        min_expected=min_expected,
-                        outlier_multiplicator=outlier_multiplicator,
-                        outlier_method=outlier_method,
-                    )
-                    rows.append(
-                        {
-                            "Folder": fid,
-                            "Version": filename_ref or "",
-                            "Distances Path": py_dist_path,
-                            "Params Path": py_params_path if os.path.exists(py_params_path) else "",
-                            **stats,
-                        }
-                    )
-
-            if process_python_CC == "CC":
-                cc_path = cls._resolve(fid, f"CC_{filename_ref}_m3c2_distances.txt")
-                cc_params_path = cls._resolve(fid, f"CC_{filename_ref}_m3c2_params.txt")
-                if os.path.exists(cc_path):
-                    try:
-                        df = pd.read_csv(cc_path, sep=";")
-                        col = "M3C2 distance"
-                        if col in df.columns:
-                            values = df[col].astype(float).values
-                            stats = cls.calc_stats(
-                                values,
-                                params_path=cc_params_path if os.path.exists(cc_params_path) else None,
-                                bins=bins,
-                                range_override=range_override,
-                                min_expected=min_expected,
-                                outlier_multiplicator=outlier_multiplicator,
-                                outlier_method=outlier_method,
-                            )
-                            rows.append(
-                                {
-                                    "Folder": fid,
-                                    "Version": filename_ref or "",
-                                    "Distances Path": cc_path,
-                                    "Params Path": cc_params_path if os.path.exists(cc_params_path) else "",
-                                    **stats,
-                                }
-                            )
-                        else:
-                            logger.warning("[Stats] Spalte '%s' fehlt in: %s", col, cc_path)
-                    except Exception as e:
-                        logger.error("[Stats] Konnte CC-Datei nicht lesen für %s: %s", fid, e)
+                rows.append(
+                    {
+                        "Folder": fid,
+                        "Version": filename_ref or "",
+                        "Distances Path": py_dist_path,
+                        "Params Path": py_params_path if os.path.exists(py_params_path) else "",
+                        **stats,
+                    }
+                )
 
         df_result = pd.DataFrame(rows)
 

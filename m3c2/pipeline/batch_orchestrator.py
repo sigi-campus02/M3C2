@@ -11,6 +11,7 @@ import os
 import time
 from typing import List
 
+from matplotlib.pylab import normal
 import numpy as np
 
 from m3c2.config.pipeline_config import PipelineConfig
@@ -147,69 +148,38 @@ class BatchOrchestrator:
             cfg.process_python_CC,
         )
         start = time.perf_counter()
+
         if cfg.stats_singleordistance == "distance":
-            ds, mov, ref, corepoints = self.data_loader.load_data(cfg, mode="multicloud")
-            out_base = ds.config.folder
-            tag = self._run_tag(cfg)
+            self._batch_process_multicloud(cfg)
 
-            if cfg.process_python_CC == "python" and not cfg.only_stats:
-                normal = projection = np.nan
-                if cfg.use_existing_params:
-                    params_path = os.path.join(
-                        out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt"
-                    )
-                    normal, projection = StatisticsService._load_params(params_path)
-                    if not np.isnan(normal) and not np.isnan(projection):
-                        logger.info(
-                            "[Params] geladen: %s (NormalScale=%.6f, SearchScale=%.6f)",
-                            params_path,
-                            normal,
-                            projection,
-                        )
-                    else:
-                        logger.info(
-                            "[Params] keine vorhandenen Parameter gefunden, berechne neu"
-                        )
-                if np.isnan(normal) or np.isnan(projection):
-                    normal, projection = self.scale_estimator.determine_scales(
-                        cfg, corepoints
-                    )
-                    self._save_params(cfg, normal, projection, out_base)
-                distances, uncertainties, dists_path = self.m3c2_executor.run_m3c2(
-                    cfg, mov, ref, corepoints, normal, projection, out_base, tag
-                )
-                self.visualization_runner.generate_visuals(
-                    cfg, mov, distances, out_base, tag
-                )
+        elif cfg.stats_singleordistance == "single":
+            self._batch_process_singlecloud(cfg)
 
-                try:
-                    logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
-                    self.outlier_handler.exclude_outliers(cfg, out_base, tag)
-                except (IOError, ValueError):
-                    logger.exception("Fehler beim Entfernen von Ausreißern")
-                except Exception:
-                    logger.exception(
-                        "Unerwarteter Fehler beim Entfernen von Ausreißern"
-                    )
-                    raise
+        else:
+            raise ValueError("Unbekannter stats_singleordistance-Wert")
 
-                try:
-                    logger.info(
-                        "[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …"
-                    )
-                    self.visualization_runner.generate_clouds_outliers(
-                        cfg, ds.config.folder, tag
-                    )
-                except (IOError, ValueError):
-                    logger.exception(
-                        "Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
-                    )
-                except Exception:
-                    logger.exception(
-                        "Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
-                    )
-                    raise
+        logger.info(
+            "[Job] %s abgeschlossen in %.3fs",
+            cfg.folder_id,
+            time.perf_counter() - start,
+        )
 
+    def _batch_process_multicloud(self, cfg: PipelineConfig):
+        ds, mov, ref, corepoints = self.data_loader.load_data(cfg, mode="multicloud")
+        out_base = ds.config.folder
+        tag = self._run_tag(cfg)
+
+
+        #--------------------------------------------------------
+        # Process incl. M3C2 Distance calculation
+
+        if not cfg.only_stats:
+            self._batch_process_multicloud_full(cfg, mov, ref, corepoints, out_base, tag)
+
+        #--------------------------------------------------------
+        # Process only statistics without computing distances
+        
+        else:
             try:
                 logger.info("[Statistics] Berechne Statistiken …")
                 self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
@@ -221,30 +191,23 @@ class BatchOrchestrator:
                 )
                 raise
 
-        elif cfg.stats_singleordistance == "single":
-            single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+    def _batch_process_singlecloud(self, cfg: PipelineConfig):
+        """Compute statistics for a single cloud."""
 
-            try:
-                logger.info("[Statistics] Berechne Statistiken …")
-                self.statistics_runner.single_cloud_statistics_handler(
-                    cfg, single_cloud
-                )
-            except (IOError, ValueError):
-                logger.exception("Fehler bei der Berechnung der Statistik")
-            except Exception:
-                logger.exception(
-                    "Unerwarteter Fehler bei der Berechnung der Statistik"
-                )
-                raise
+        single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
 
-        else:
-            raise ValueError("Unbekannter stats_singleordistance-Wert")
-
-        logger.info(
-            "[Job] %s abgeschlossen in %.3fs",
-            cfg.folder_id,
-            time.perf_counter() - start,
-        )
+        try:
+            logger.info("[Statistics] Berechne Statistiken …")
+            self.statistics_runner.single_cloud_statistics_handler(
+                cfg, single_cloud
+            )
+        except (IOError, ValueError):
+            logger.exception("Fehler bei der Berechnung der Statistik")
+        except Exception:
+            logger.exception(
+                "Unerwarteter Fehler bei der Berechnung der Statistik"
+            )
+            raise
 
     def _save_params(self, cfg: PipelineConfig, normal: float, projection: float, out_base: str) -> None:
         """Persist determined scale parameters to disk.
@@ -266,3 +229,101 @@ class BatchOrchestrator:
         with open(params_path, "w") as f:
             f.write(f"NormalScale={normal}\nSearchScale={projection}\n")
         logger.info("[Params] gespeichert: %s", params_path)
+
+
+    def _handle_existing_params(self, cfg: PipelineConfig, out_base: str, tag: str):
+
+        params_path = os.path.join(
+            out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt"
+        )
+        normal, projection = StatisticsService._load_params(params_path)
+
+        if not np.isnan(normal) and not np.isnan(projection):
+            logger.info(
+                "[Params] geladen: %s (NormalScale=%.6f, SearchScale=%.6f)",
+                params_path,
+                normal,
+                projection,
+            )
+            return normal, projection
+
+        return np.nan, np.nan
+    
+
+    def _batch_process_multicloud_full(self, cfg: PipelineConfig, mov: str, ref: str, corepoints: np.ndarray, out_base: str, tag: str):
+        """Process a multicloud dataset including M3C2 distance calculation, statistics, and visualizations."""
+
+        #--------------------------------------------------------
+        # Process incl. M3C2 Distance calculation / Only stats / Only visuals,plots
+        #--------------------------------------------------------
+
+        # 1. Calculate / Collect parameters for M3C2 algorithm
+
+        normal = projection = np.nan
+
+        if cfg.use_existing_params:
+            
+            normal, projection = self._handle_existing_params(cfg, out_base, tag)
+
+            if np.isnan(normal) and np.isnan(projection):
+                logger.info("[Params] keine vorhandenen Parameter gefunden, berechne neu")
+                normal, projection = self.scale_estimator.determine_scales(
+                    cfg, corepoints
+                )
+        else:
+            normal, projection = self.scale_estimator.determine_scales(
+                cfg, corepoints
+            )
+            self._save_params(cfg, normal, projection, out_base)
+
+        
+        # 3. Run M3C2 algorithm with collected parameters
+
+        distances = self.m3c2_executor.run_m3c2(
+            cfg, mov, ref, corepoints, normal, projection, out_base, tag
+        )
+
+        # 4. Generate Histogram & .Ply output files incl. calculated distances
+        self.visualization_runner.generate_visuals(
+            cfg, mov, distances, out_base, tag
+        )
+
+
+        # 5. Compute Outliers
+
+        # self._handle_outliers(cfg, out_base, tag)
+            
+
+
+    def _handle_outliers(self, cfg: PipelineConfig, out_base: str, tag: str):
+
+
+        # ----- Remove Outliers -----
+        try:
+            logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
+            self.outlier_handler.exclude_outliers(cfg, out_base, tag)
+        except (IOError, ValueError):
+            logger.exception("Fehler beim Entfernen von Ausreißern")
+        except Exception:
+            logger.exception(
+                "Unerwarteter Fehler beim Entfernen von Ausreißern"
+            )
+            raise
+
+        # ----- Generate Outlier/Inlier Clouds -----
+        try:
+            logger.info(
+                "[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …"
+            )
+            self.visualization_runner.generate_clouds_outliers(
+                cfg, ds.config.folder, tag
+            )
+        except (IOError, ValueError):
+            logger.exception(
+                "Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
+            )
+        except Exception:
+            logger.exception(
+                "Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
+            )
+            raise
