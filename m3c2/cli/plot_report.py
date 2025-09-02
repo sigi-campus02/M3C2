@@ -62,8 +62,12 @@ def main(data_dir: str = DATA_DIR, out_dir: str = OUT_DIR) -> tuple[str, str]:
         logger.info("PDF (incl. outliers): %s", pdf_incl)
         logger.info("PDF (excl. outliers): %s", pdf_excl)
         return pdf_incl, pdf_excl
-    except Exception as exc:
+    except (OSError, RuntimeError) as exc:
         logger.error("Failed to generate summary PDFs: %s", exc, exc_info=True)
+    except Exception as exc:
+        logger.exception(
+            "Unexpected error during summary PDF generation: %s", exc
+        )
         raise
 
 
