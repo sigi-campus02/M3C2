@@ -257,6 +257,26 @@ class BatchOrchestrator:
 
 
     def _handle_existing_params(self, cfg: PipelineConfig, out_base: str, tag: str):
+        """Load previously determined M3C2 scale parameters.
+
+        Parameters
+        ----------
+        cfg : PipelineConfig
+            Configuration used to derive the expected parameter file name via
+            ``cfg.process_python_CC``.
+        out_base : str
+            Directory in which the parameter file is searched.
+        tag : str
+            Run identifier appended to the file name.
+
+        Returns
+        -------
+        Tuple[float, float]
+            ``(normal_scale, search_scale)`` read from
+            ``{out_base}/{cfg.process_python_CC}_{tag}_m3c2_params.txt`` if both
+            values are present.  Otherwise ``(numpy.nan, numpy.nan)`` is
+            returned.
+        """
 
         params_path = os.path.join(
             out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt"
