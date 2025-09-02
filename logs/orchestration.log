@@ -3144,3 +3144,19 @@ Traceback (most recent call last):
     raise FileNotFoundError(f"Fehlt: {base}.xyz/.las/.laz/.ply/.obj/.gpc")
 FileNotFoundError: Fehlt: data\TUNSPEKT Labordaten_all\mov.xyz/.las/.laz/.ply/.obj/.gpc
 2025-09-02 16:24:28,510 [INFO] CLIApp - Processing completed successfully.
+2025-09-02 16:35:31,014 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-02 16:35:31,014 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-02 16:35:31,014 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-02 16:35:31,014 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-02 16:35:31,014 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-02 16:35:31,014 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-02 16:35:31,014 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-02 16:35:31,014 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, Faro_ipm_lab_pos02 - Box1, Faro_ipm_lab_pos01 - Box1, python
+2025-09-02 16:35:31,014 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-02 16:35:31,065 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos01 - Box1.xyz'
+2025-09-02 16:35:33,581 [INFO] m3c2.pipeline.data_loader - [Load] data/TUNSPEKT Labordaten_all: single_cloud=Epoch | 2.558s
+2025-09-02 16:35:33,581 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-02 16:35:33,582 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken TUNSPEKT Labordaten_all,Faro_ipm_lab_pos01 - Box1 …
+2025-09-02 16:35:33,582 [INFO] m3c2.core.statistics.service - Processing single cloud TUNSPEKT Labordaten_all, Faro_ipm_lab_pos01 - Box1 …
+2025-09-02 16:35:33,582 [INFO] m3c2.core.statistics.service - Point count: 786802 | Array shape: (786802, 3)
+2025-09-02 16:35:33,582 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 786802 points (radius=1.0, k=6, sample_size=None)

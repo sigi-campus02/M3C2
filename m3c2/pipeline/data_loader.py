@@ -76,11 +76,11 @@ class DataLoader:
         t0 = time.perf_counter()
 
         ds_config = DataSourceConfig(
-            os.path.join(cfg.data_dir, cfg.folder_id),
-            cfg.filename_mov,
-            cfg.filename_ref,
-            cfg.mov_as_corepoints,
-            cfg.use_subsampled_corepoints,
+            folder=os.path.join(cfg.data_dir, cfg.folder_id),
+            mov_basename=cfg.filename_mov,
+            ref_basename=cfg.filename_ref,
+            mov_as_corepoints=cfg.mov_as_corepoints,
+            use_subsampled_corepoints=cfg.use_subsampled_corepoints,
         )
         ds = DataSource(ds_config)
 
@@ -113,8 +113,8 @@ class DataLoader:
         t0 = time.perf_counter()
 
         ds_config = DataSourceConfig(
-            os.path.join(cfg.data_dir, cfg.folder_id),
-            cfg.filename_singlecloud,
+            folder=os.path.join(cfg.data_dir, cfg.folder_id),
+            filename_singlecloud=cfg.filename_singlecloud,
         )
         ds_single = DataSource(ds_config)
 
