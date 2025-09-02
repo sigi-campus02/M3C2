@@ -63,6 +63,35 @@ class PlotService:
         title_text: str = "Means & Std – Incl. vs. Excl. Outliers",
         labels_order: List[str] | None = None,
     ) -> None:
+        """Plot grouped bar charts comparing mean and standard deviation.
+
+        Parameters
+        ----------
+        fid : str
+            Identifier for the current part used in plot titles and file
+            names.
+        data_with : dict[str, numpy.ndarray]
+            Mapping of labels to distances including outliers.
+        data_inlier : dict[str, numpy.ndarray]
+            Mapping of labels to distances excluding outliers.
+        colors : dict[str, str]
+            Mapping of labels to hexadecimal colour codes.
+        outdir : str
+            Directory where the resulting figure will be stored.
+        title_text : str, optional
+            Title prefix for the mean plot. Defaults to
+            "Means & Std – Incl. vs. Excl. Outliers".
+        labels_order : list[str], optional
+            Explicit order of labels. If ``None``, order is inferred from the
+            provided data.
+
+        Notes
+        -----
+        Creates two stacked bar charts per label: one displaying the absolute
+        mean distance and one showing the standard deviation. Both charts
+        juxtapose measurements including and excluding outliers. The figure is
+        saved as ``<fid>_DUAL_GroupedBar_Mean_Std.png`` in ``outdir``.
+        """
         labels = labels_order or list(dict.fromkeys(list(data_with.keys()) + list(data_inlier.keys())))
         means_with, stds_with, means_inl, stds_inl, bar_colors = [], [], [], [], []
         for lbl in labels:
