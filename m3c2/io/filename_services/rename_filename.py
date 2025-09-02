@@ -13,9 +13,30 @@ BLOCK = re.compile(
 )
 
 def transform(name: str) -> str:
+    """Rename numeric group prefixes in ``*_cloud`` blocks to letters.
+
+    The function looks for filename segments matching the pattern
+    ``(^|[_-])(1|2)-<idx>(-AI)?_cloud`` and substitutes the leading group
+    identifier. Blocks starting with ``1-`` are replaced with ``a-`` and
+    those starting with ``2-`` are replaced with ``b-`` while preserving the
+    index, optional ``-AI`` marker and trailing ``_cloud``.
+
+    Parameters
+    ----------
+    name : str
+        Original filename that may contain group-prefixed cloud blocks.
+
+    Returns
+    -------
+    str
+        Filename with numeric group prefixes replaced by their alphabetical
+        equivalents.
+    """
+
     def repl(m):
         mapped = 'a' if m.group('grp') == '1' else 'b'
         return f"{m.group('pre')}{mapped}-{m.group('idx')}{m.group('ai') or ''}{m.group('cloud')}"
+
     return BLOCK.sub(repl, name)
 
 def iter_paths(base: Path, recursive: bool):
