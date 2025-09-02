@@ -78,6 +78,31 @@ def add_header_comments(
     box_width: float = 300,
     box_height: float = 160
 ):
+    """Add descriptive comments to Excel header cells.
+
+    Parameters
+    ----------
+    xlsx_path : str
+        Path to the Excel workbook whose header cells should be annotated.
+    sheet_name : str, optional
+        Name of the worksheet containing the headers. Defaults to ``"Results"``.
+    header_row : int, optional
+        Row number that holds the column headers. Defaults to ``1``.
+    author : str, optional
+        Author name stored in each comment box. Defaults to ``"StatisticsService"``.
+    overwrite : bool, optional
+        Whether existing comments in the header cells should be replaced.
+        Defaults to ``True``.
+    box_width : float, optional
+        Width of the inserted comment box in Excel units. Defaults to ``300``.
+    box_height : float, optional
+        Height of the inserted comment box in Excel units. Defaults to ``160``.
+
+    Notes
+    -----
+    The text for each comment is taken from :data:`HEADER_COMMENTS`, which maps
+    header titles to human‑readable explanations of the corresponding column.
+    """
     logger.info("Loading workbook '%s'", xlsx_path)
     wb = load_workbook(xlsx_path)
     logger.info("Workbook '%s' loaded", xlsx_path)
