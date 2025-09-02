@@ -1,3 +1,9 @@
+"""Archived tests for the outlier handler.
+
+These tests ensure that the archived :class:`~m3c2.archive_moduls.outlier_handler.OutlierHandler`
+correctly delegates outlier exclusion to the pipeline module.
+"""
+
 from __future__ import annotations
 
 from types import SimpleNamespace
@@ -6,6 +12,15 @@ from m3c2.archive_moduls.outlier_handler import OutlierHandler
 
 
 def test_exclude_outliers(monkeypatch):
+    """Ensure outliers are excluded via the pipeline module.
+
+    Parameters
+    ----------
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to replace the pipeline's ``exclude_outliers`` function with a
+        fake implementation so that the called arguments can be inspected.
+    """
+
     called = {}
 
     def fake_exclude_outliers(data_folder, ref_variant, method, outlier_multiplicator):
