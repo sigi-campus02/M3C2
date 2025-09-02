@@ -31,6 +31,17 @@ def iter_paths(base: Path, recursive: bool):
             yield p  # Dateien und Ordner
 
 def main():
+    """Rename group prefixes in ``*_cloud`` blocks from the command line.
+
+    Usage
+    -----
+    ``python -m m3c2.io.filename_services.rename_filename [PATH] [-r] [-n]``
+
+    ``PATH`` defaults to the current directory. Use ``-r``/``--recursive`` to
+    process subdirectories and ``-n``/``--dry-run`` to preview changes without
+    applying them.
+    """
+
     ap = argparse.ArgumentParser(
         description="Ersetzt in *_cloud-Blöcken die Gruppenkennung: 1-* -> a-*, 2-* -> b-* (in Dateien und Ordnern)."
     )
