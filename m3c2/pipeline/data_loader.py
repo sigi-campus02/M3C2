@@ -18,8 +18,28 @@ class DataLoader:
     """Load point cloud data and core points according to a configuration."""
 
     def load_data(self, cfg) -> Tuple[DataSource, object, object, object]:
-        """Load point clouds and core points as specified by ``cfg``.
+        """Load point clouds and core points according to ``cfg``.
 
+        Parameters
+        ----------
+        cfg : PipelineConfig
+            Configuration defining the location of the point clouds and
+            which epoch to use for the core points.
+
+        Returns
+        -------
+        tuple
+            ``(ds, mov, ref, corepoints)`` containing the :class:`DataSource`
+            used for loading, the moving and reference epochs and a NumPy array
+            of the core point coordinates.
+
+        Side Effects
+        ------------
+        Reads the point cloud files from disk and emits log messages about the
+        loaded data.
+
+        Notes
+        -----
         This method is part of the public pipeline API.
         """
         t0 = time.perf_counter()
