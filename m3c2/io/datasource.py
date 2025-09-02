@@ -38,6 +38,13 @@ class DataSource:
     # path helpers
     @property
     def mov_base(self) -> Path:
+        """Base path of the moving epoch file.
+
+        Combines the configured folder and moving filename base without
+        an extension, resulting in the path used to detect the moving
+        epoch's data file.
+        """
+
         return Path(self.config.folder) / self.config.mov_basename
 
     @property
