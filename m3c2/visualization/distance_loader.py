@@ -115,8 +115,8 @@ def scan_distance_files_by_index(data_dir: str, versions=("python", "CC")) -> Tu
                     arr = load_1col_distances(p)
                     per_index[i]["WITH"][label] = arr
                     per_index[i]["CASE_WITH"][label] = cas
-                except Exception as e:
-                    logger.warning("[Scan] Laden fehlgeschlagen (WITH: %s): %s", name, e)
+                except (OSError, ValueError):
+                    logger.warning("[Scan] Laden fehlgeschlagen (WITH: %s)", name, exc_info=True)
             continue
 
         mI = pat_inl.match(name)
@@ -130,8 +130,8 @@ def scan_distance_files_by_index(data_dir: str, versions=("python", "CC")) -> Tu
                     arr = load_coordinates_inlier_distances(p)
                     per_index[i]["INLIER"][label] = arr
                     per_index[i]["CASE_INLIER"][label] = cas
-                except Exception as e:
-                    logger.warning("[Scan] Laden fehlgeschlagen (INLIER: %s): %s", name, e)
+                except (OSError, ValueError):
+                    logger.warning("[Scan] Laden fehlgeschlagen (INLIER: %s)", name, exc_info=True)
             continue
 
     case_colors = {
