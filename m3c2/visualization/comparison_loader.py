@@ -72,8 +72,8 @@ def _load_ref_variant_data(fid: str, variant: str) -> np.ndarray | None:
         return None
     try:
         return np.loadtxt(path)
-    except Exception as e:  # pragma: no cover - logging only
-        logger.error("Failed to load %s: %s", path, e)
+    except (OSError, ValueError):  # pragma: no cover - logging only
+        logger.exception("Failed to load %s", path)
         return None
 
 
