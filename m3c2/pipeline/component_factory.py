@@ -18,6 +18,16 @@ class PipelineComponentFactory:
     """Create configured instances of pipeline helper classes."""
 
     def __init__(self, strategy_name: str, output_format: str) -> None:
+        """Configure the factory with strategy and export format.
+
+        Parameters
+        ----------
+        strategy_name:
+            Name of the scale estimation strategy used by created components.
+        output_format:
+            Output format for statistics produced in later pipeline stages,
+            e.g. ``"excel"`` or ``"json"``.
+        """
         self.strategy_name = strategy_name
         self.output_format = output_format
         logger.debug(
