@@ -362,6 +362,27 @@ class StatisticsService:
 
     @staticmethod
     def _load_params(params_path: Optional[str]) -> Tuple[float, float]:
+        """Load M3C2 configuration values from a parameter file.
+
+        The M3C2 computation writes a small text file with the parameters
+        used during the run.  This helper reads the file and extracts the
+        normal and search scales that are stored in lines beginning with
+        ``"NormalScale="`` and ``"SearchScale="``.  When no file is
+        supplied or a value is missing the respective scale defaults to
+        ``numpy.nan``.
+
+        Parameters
+        ----------
+        params_path:
+            Path to the parameter file.  If ``None`` or the file does not
+            exist, ``numpy.nan`` is returned for both values.
+
+        Returns
+        -------
+        Tuple[float, float]
+            The ``(normal_scale, search_scale)`` read from the file.
+        """
+
         normal_scale = np.nan
         search_scale = np.nan
         if params_path and os.path.exists(params_path):
