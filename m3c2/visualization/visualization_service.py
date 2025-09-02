@@ -1,6 +1,4 @@
 # visualization_service.py
-from __future__ import annotations
-
 """Utility helpers for visualising point cloud distance data.
 
 This module offers convenience functions for turning distance results into
@@ -8,6 +6,8 @@ plots or coloured PLY point clouds.  Optional dependencies such as
 ``seaborn`` or ``plyfile`` are imported lazily so that the module can be
 imported in environments where they are not installed.
 """
+
+from __future__ import annotations
 
 from typing import Optional, Tuple
 import numpy as np
