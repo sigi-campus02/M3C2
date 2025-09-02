@@ -291,6 +291,25 @@ class PlotService:
         include_with: bool = True,
         include_inlier: bool = True,
     ) -> str:
+        """Create a consolidated PDF report for all parts.
+
+        Parameters
+        ----------
+        outdir:
+            Directory containing per-part plots and PDFs.
+        pdf_path:
+            Optional destination path for the combined PDF. If ``None``, a
+            default name within ``outdir`` is used.
+        include_with:
+            Whether sections including outliers should be appended.
+        include_inlier:
+            Whether sections with inlier-only data should be appended.
+
+        Returns
+        -------
+        str
+            Path to the generated PDF file.
+        """
         return _build_parts_pdf(outdir, pdf_path=pdf_path, include_with=include_with, include_inlier=include_inlier)
 
     @staticmethod
