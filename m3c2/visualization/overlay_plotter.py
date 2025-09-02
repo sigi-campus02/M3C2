@@ -34,6 +34,24 @@ def plot_overlay_histogram(
     title_text: str | None = None,
     labels_order: List[str] | None = None,
 ) -> None:
+    """Plot histograms of several datasets in a single figure.
+
+    Args:
+        fid: Identifier of the dataset, used in the output filename.
+        fname: Name of the file being analysed, used in plot titles.
+        data: Mapping of labels to data arrays to be plotted.
+        bins: Number of bins for the histograms.
+        data_min: Lower bound of the shared value range.
+        data_max: Upper bound of the shared value range.
+        colors: Mapping of labels to colour codes for the plots.
+        outdir: Directory in which the figure will be saved.
+        title_text: Optional custom title for the figure.
+        labels_order: Optional explicit order of labels; defaults to ``data`` keys.
+
+    Saves:
+        ``<outdir>/<fid>_<fname>_OverlayHistogramm.png`` – the overlay histogram
+        showing the distributions of all provided datasets.
+    """
     plt.figure(figsize=(10, 6))
     labels = labels_order or list(data.keys())
     for v in labels:
