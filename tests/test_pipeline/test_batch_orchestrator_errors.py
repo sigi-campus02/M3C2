@@ -64,7 +64,7 @@ def test_run_single_propagates_unexpected(monkeypatch, tmp_path):
     arr = np.zeros((1, 3))
 
     monkeypatch.setattr(
-        orchestrator.data_loader, "load_data", lambda cfg: (dummy_ds, arr, arr, arr)
+        orchestrator.data_loader, "load_data", lambda cfg, mode: (dummy_ds, arr, arr, arr)
     )
     monkeypatch.setattr(
         orchestrator.outlier_handler, "exclude_outliers", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("bad")))

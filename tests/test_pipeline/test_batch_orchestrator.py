@@ -33,7 +33,7 @@ def test_load_data_uses_data_dir(tmp_path, monkeypatch):
         "m3c2.pipeline.data_loader.DataSource", DummyDS
     )
     loader = DataLoader()
-    ds, mov, ref, corepoints = loader.load_data(cfg)
+    ds, mov, ref, corepoints = loader.load_data(cfg, mode="multicloud")
 
     assert ds.config.folder == os.path.join(cfg.data_dir, cfg.folder_id)
     assert mov.shape == (1, 3)

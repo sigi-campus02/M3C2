@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 class DataLoader:
     """Load point cloud data and core points according to a configuration."""
 
-    def load_data(self, cfg, type) -> Tuple[DataSource, object, object, object]:
+    def load_data(self, cfg, mode) -> Tuple[DataSource, object, object, object]:
         """Load point clouds and core points according to ``cfg``.
 
         Parameters
@@ -25,6 +25,9 @@ class DataLoader:
         cfg : PipelineConfig
             Configuration defining the location of the point clouds and
             which epoch to use for the core points.
+        mode : str
+            ``"multicloud"`` to load moving and reference clouds or
+            ``"singlecloud"`` to load only a single epoch.
 
         Returns
         -------
@@ -43,11 +46,11 @@ class DataLoader:
         This method is part of the public pipeline API.
         """
         t0 = time.perf_counter()
-        
-        if type == "multicloud":
+
+        if mode == "multicloud":
             return self._load_data_multi(cfg)
 
-        if type == "singlecloud":
+        if mode == "singlecloud":
             return self._load_data_single(cfg)
 
 
