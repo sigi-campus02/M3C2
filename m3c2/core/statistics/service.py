@@ -36,6 +36,40 @@ class StatisticsService:
         outlier_multiplicator: float = 3.0,
         outlier_method: str = "rmse",
     ) -> Dict:
+        """Compute descriptive statistics for a set of M3C2 distances.
+
+        Parameters
+        ----------
+        distances : np.ndarray
+            Array of distance values. ``NaN`` entries are ignored.
+        params_path : Optional[str], optional
+            Path to a ``*_m3c2_params.txt`` file from which the normal and
+            search scale are loaded.
+        bins : int, default 256
+            Number of histogram bins used for distribution fitting.
+        range_override : Optional[Tuple[float, float]], optional
+            Explicit ``(min, max)`` limits used instead of the data range.
+        min_expected : Optional[float], optional
+            Minimum expected count per histogram bin. If provided it is passed
+            to the distribution fitting routine.
+        tolerance : float, default 0.01
+            Absolute distance threshold used for several ratio metrics.
+        outlier_multiplicator : float, default 3.0
+            Multiplicative factor applied to the chosen outlier metric to
+            derive an inlier threshold.
+        outlier_method : str, default "rmse"
+            Name of the method used to compute the outlier threshold.
+
+        Returns
+        -------
+        Dict
+            A mapping with numerous aggregated statistics. The dictionary
+            contains overall counts and sums, summary metrics (mean, median,
+            RMS, standard deviation, MAE, NMAD), inlier/outlier information,
+            quantiles and interquartile ranges for all data and inliers only,
+            goodness-of-fit parameters for Gaussian and Weibull distributions
+            as well as higher order moments such as skewness and kurtosis.
+        """
         total_count = len(distances)
         nan_count = int(np.isnan(distances).sum())
         valid = distances[~np.isnan(distances)]
