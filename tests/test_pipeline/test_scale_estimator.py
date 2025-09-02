@@ -1,3 +1,11 @@
+"""Tests for the scale estimation helpers and strategies.
+
+This module contains small dummy implementations of strategies and estimators
+to validate the behaviour of :class:`~m3c2.pipeline.scale_estimator.ScaleEstimator`
+and concrete strategy classes.  The tests focus on error handling and the
+integration of the scale determination pipeline.
+"""
+
 from __future__ import annotations
 
 import numpy as np
@@ -11,11 +19,27 @@ from m3c2.pipeline.strategies import ScaleScan
 
 
 class DummyStrategy:
+    """Minimal scan strategy used for testing.
+
+    Parameters
+    ----------
+    sample_size : int, optional
+        Number of points sampled from the input data.
+    """
+
     def __init__(self, sample_size=None):
         self.sample_size = sample_size
 
 
 class DummyEstimator:
+    """Estimator using ``DummyStrategy`` for the tests.
+
+    Parameters
+    ----------
+    strategy : DummyStrategy
+        The strategy instance used to compute scale statistics.
+    """
+
     def __init__(self, strategy):
         self.strategy = strategy
 
@@ -43,6 +67,8 @@ class DummyEstimator:
 
 
 class DummyEstimatorNoScans(DummyEstimator):
+    """Estimator returning no scan results to trigger error paths."""
+
     def scan_scales(self, corepoints, avg_spacing):
         return []
 
@@ -52,11 +78,25 @@ class DummyEstimatorNoScans(DummyEstimator):
 
 
 def _minimal_cfg(**kwargs) -> PipelineConfig:
+    """Create a minimal :class:`PipelineConfig` for the tests.
+
+    Parameters
+    ----------
+    **kwargs
+        Additional configuration overrides.
+
+    Returns
+    -------
+    PipelineConfig
+        Configuration object with defaults updated by ``kwargs``.
+    """
+
     defaults = dict(
         data_dir="",
         folder_id="",
         filename_mov="",
         filename_ref="",
+        filename_singlecloud="",
         mov_as_corepoints=True,
         use_subsampled_corepoints=0,
         only_stats=False,
@@ -69,6 +109,18 @@ def _minimal_cfg(**kwargs) -> PipelineConfig:
 
 
 def test_determine_scales_with_mock_strategy(monkeypatch):
+    """Test scale determination with mocked strategy and estimator.
+
+    Parameters
+    ----------
+    monkeypatch : pytest.MonkeyPatch
+        Pytest fixture for patching strategy and estimator classes.
+
+    Returns
+    -------
+    None
+    """
+
     monkeypatch.setitem(se_module.STRATEGIES, "dummy", DummyStrategy)
     monkeypatch.setattr(se_module, "ParamEstimator", DummyEstimator)
 
@@ -82,6 +134,18 @@ def test_determine_scales_with_mock_strategy(monkeypatch):
 
 
 def test_determine_scales_unknown_strategy(monkeypatch):
+    """Test error handling for unknown strategy names.
+
+    Parameters
+    ----------
+    monkeypatch : pytest.MonkeyPatch
+        Pytest fixture for removing available strategies.
+
+    Returns
+    -------
+    None
+    """
+
     monkeypatch.setattr(se_module, "STRATEGIES", {})
     cfg = _minimal_cfg()
     estimator = ScaleEstimator(strategy_name="radius")
@@ -91,6 +155,18 @@ def test_determine_scales_unknown_strategy(monkeypatch):
 
 
 def test_determine_scales_empty_scan_results(monkeypatch):
+    """Test that empty scan results raise ``ValueError``.
+
+    Parameters
+    ----------
+    monkeypatch : pytest.MonkeyPatch
+        Fixture for patching strategy and estimator implementations.
+
+    Returns
+    -------
+    None
+    """
+
     monkeypatch.setitem(se_module.STRATEGIES, "dummy", DummyStrategy)
     monkeypatch.setattr(se_module, "ParamEstimator", DummyEstimatorNoScans)
 
@@ -102,6 +178,13 @@ def test_determine_scales_empty_scan_results(monkeypatch):
 
 
 def test_radius_scan_strategy_evaluate_radius_scale_plane():
+    """Validate ``RadiusScanStrategy.evaluate_radius_scale`` on a plane.
+
+    Returns
+    -------
+    None
+    """
+
     xs, ys = np.meshgrid(range(3), range(3))
     pts = np.column_stack((xs.ravel(), ys.ravel(), np.zeros(xs.size)))
 
