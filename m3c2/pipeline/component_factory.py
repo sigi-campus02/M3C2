@@ -31,6 +31,17 @@ class PipelineComponentFactory:
         return DataLoader()
 
     def create_scale_estimator(self) -> ScaleEstimator:
+        """Create a :class:`ScaleEstimator` for the configured strategy.
+
+        The factory's ``strategy_name`` determines which scale scanning
+        strategy the estimator will employ to derive the normal and
+        projection scales for the M3C2 algorithm.
+
+        Returns
+        -------
+        ScaleEstimator
+            Estimator instance initialised with the selected strategy.
+        """
         logger.debug("Creating %s", ScaleEstimator.__name__)
         return ScaleEstimator(strategy_name=self.strategy_name)
 
