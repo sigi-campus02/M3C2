@@ -64,8 +64,11 @@ class VisualizationRunner:
         try:
             VisualizationService.export_valid(cloud, colors, distances, outply=ply_valid_path)
             logger.info("[Visual] Valid-PLY gespeichert: %s", ply_valid_path)
-        except Exception as exc:
+        except (OSError, RuntimeError, ValueError) as exc:
             logger.warning("[Visual] Export valid-only übersprungen: %s", exc)
+        except Exception as exc:  # pragma: no cover - unexpected errors
+            logger.warning("[Visual] Unerwarteter Fehler beim Export valid-only: %s", exc)
+            raise
 
 
 
