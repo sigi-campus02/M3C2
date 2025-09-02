@@ -1,9 +1,10 @@
-from __future__ import annotations
 """High level orchestration for running the complete M3C2 workflow.
 
 The :class:`BatchOrchestrator` coordinates configuration handling, parameter
 estimation, execution of the core algorithm and subsequent analysis steps.
 """
+
+from __future__ import annotations
 
 import logging
 import os
