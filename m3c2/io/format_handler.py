@@ -175,7 +175,7 @@ def read_gpc(path: Path) -> np.ndarray:
     logger.info("Reading GPC file %s", path)
     try:
         return np.loadtxt(path, dtype=np.float64, usecols=(0, 1, 2))
-    except Exception:
+    except (OSError, ValueError):
         logger.exception("Failed to read GPC file %s", path)
         raise
 
