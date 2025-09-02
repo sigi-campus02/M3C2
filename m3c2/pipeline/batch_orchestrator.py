@@ -148,7 +148,7 @@ class BatchOrchestrator:
         )
         start = time.perf_counter()
         if cfg.stats_singleordistance == "distance":
-            ds, mov, ref, corepoints = self.data_loader.load_data(cfg, type="multicloud")
+            ds, mov, ref, corepoints = self.data_loader.load_data(cfg, mode="multicloud")
             out_base = ds.config.folder
             tag = self._run_tag(cfg)
 
