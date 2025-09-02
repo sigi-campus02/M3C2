@@ -1,3 +1,5 @@
+"""Tests for Excel writer comment utilities."""
+
 import pytest
 from unittest.mock import patch, MagicMock
 from openpyxl import Workbook
@@ -13,6 +15,21 @@ from m3c2.io.excel_writer.comments_stats_distances import (
 
 
 def test_add_cloud_header_comments_sets_comments():
+    """Ensure timestamp comments are applied to the cloud stats sheet.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+
+    Examples
+    --------
+    >>> test_add_cloud_header_comments_sets_comments()
+    """
+
     wb = Workbook()
     ws = wb.active
     ws.title = "CloudStats"
@@ -31,6 +48,21 @@ def test_add_cloud_header_comments_sets_comments():
 
 
 def test_add_cloud_header_comments_missing_sheet():
+    """Raise an error when the cloud stats sheet is absent.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+
+    Examples
+    --------
+    >>> test_add_cloud_header_comments_missing_sheet()
+    """
+
     wb = Workbook()
     ws = wb.active
     ws.title = "Other"
@@ -44,6 +76,21 @@ def test_add_cloud_header_comments_missing_sheet():
 
 
 def test_add_header_comments_sets_comments():
+    """Ensure timestamp comments are applied to the distance results sheet.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+
+    Examples
+    --------
+    >>> test_add_header_comments_sets_comments()
+    """
+
     wb = Workbook()
     ws = wb.active
     ws.title = "Results"
@@ -62,6 +109,21 @@ def test_add_header_comments_sets_comments():
 
 
 def test_add_header_comments_missing_sheet():
+    """Raise an error when the distance results sheet is absent.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+
+    Examples
+    --------
+    >>> test_add_header_comments_missing_sheet()
+    """
+
     wb = Workbook()
     ws = wb.active
     ws.title = "Other"
