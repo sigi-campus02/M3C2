@@ -1,3 +1,10 @@
+"""Tests for the outlier exclusion functionality.
+
+This module verifies that synthetic distance data is correctly split into
+inliers and outliers across various statistical methods and through the
+``OutlierDetector`` class interface.
+"""
+
 import numpy as np
 
 from m3c2.archive_moduls.exclude_outliers import (
@@ -9,6 +16,14 @@ from m3c2.archive_moduls.exclude_outliers import (
 
 
 def _write_distances(path):
+    """Create a synthetic distance file.
+
+    Parameters
+    ----------
+    path : str or path-like
+        Destination for the generated distance data.
+    """
+
     data = np.array(
         [
             [0.0, 0.0, 0.0, 0.0],
@@ -26,12 +41,34 @@ def _write_distances(path):
 
 
 def _assert_result(res: OutlierResult) -> None:
+    """Check that the outlier detection result matches expectations.
+
+    Parameters
+    ----------
+    res : OutlierResult
+        Output from the outlier detection routine.
+
+    Raises
+    ------
+    AssertionError
+        If the result does not contain the expected number of inliers and
+        outliers.
+    """
+
     assert res.inliers.shape[0] == 6
     assert res.outliers.shape[0] == 2
     assert set(np.round(res.outliers[:, 3])) == {5.0, -5.0}
 
 
 def test_exclude_outliers_methods(tmp_path):
+    """Validate exclusion across multiple statistical methods.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory provided by pytest.
+    """
+
     file_path = tmp_path / "distances.txt"
     _write_distances(file_path)
 
@@ -46,6 +83,14 @@ def test_exclude_outliers_methods(tmp_path):
 
 
 def test_outlier_detector_class(tmp_path):
+    """Ensure the ``OutlierDetector`` class identifies outliers correctly.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory provided by pytest.
+    """
+
     file_path = tmp_path / "distances.txt"
     _write_distances(file_path)
 
