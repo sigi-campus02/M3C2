@@ -1,3 +1,5 @@
+"""Unit tests for scanning M3C2 distance files by index."""
+
 import sys
 from pathlib import Path
 
@@ -8,10 +10,26 @@ from m3c2.visualization.distance_loader import scan_distance_files_by_index
 
 
 def _write_file(path, content: str) -> None:
+    """Write text content to a file.
+
+    Parameters
+    ----------
+    path : pathlib.Path
+        Destination path of the file.
+    content : str
+        Text content to write.
+    """
     path.write_text(content)
 
 
 def test_scan_distance_files_by_index(tmp_path):
+    """Verify parsing of distance and inlier files by index.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory provided by pytest.
+    """
     # valid WITH file for index 1
     _write_file(tmp_path / 'python_a-1-b-1_m3c2_distances.txt', '1.0\n2.0\n3.0\n')
     # valid INLIER file for index 1
