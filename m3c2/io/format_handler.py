@@ -30,7 +30,23 @@ def read_xyz(path: Path) -> np.ndarray:
 
 
 def read_las(path: Path) -> np.ndarray:
-    """Read LAS/LAZ files using :mod:`laspy` lazily."""
+    """Read a ``.las`` or ``.laz`` file and return its point cloud.
+
+    LAS/LAZ reading requires the :mod:`laspy` package.  For compressed
+    ``.laz`` files the optional ``lazrs`` dependency of ``laspy`` must be
+    installed as well.
+
+    Parameters
+    ----------
+    path:
+        Path to the LAS/LAZ file to read.
+
+    Returns
+    -------
+    numpy.ndarray
+        Array of shape ``(N, 3)`` containing the ``x``, ``y`` and ``z``
+        coordinates of the point cloud.
+    """
     logger.info("Reading LAS/LAZ file %s", path)
     try:
         laspy = import_module("laspy")
