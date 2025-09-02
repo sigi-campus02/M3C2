@@ -135,6 +135,22 @@ def _calc_single_cloud_stats(
         normals.append(n)
 
     def _agg(arr):
+        """Aggregate statistics for a sequence.
+
+        Computes the mean, median, and the 5th and 95th percentiles of
+        the given array-like input. When the provided sequence is empty,
+        a tuple of NaN values is returned instead.
+
+        Parameters
+        ----------
+        arr : Sequence[float]
+            Values to aggregate.
+
+        Returns
+        -------
+        Tuple[float, float, float, float]
+            Mean, median, 5th percentile, and 95th percentile.
+        """
         if len(arr) == 0:
             return (np.nan, np.nan, np.nan, np.nan)
         a = np.asarray(arr, dtype=float)
