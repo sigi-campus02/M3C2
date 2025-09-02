@@ -13,6 +13,13 @@ class StatisticsRunner:
     """Run various statistical evaluations depending on configuration."""
 
     def __init__(self, output_format: str) -> None:
+        """Initialize the statistics runner.
+
+        Args:
+            output_format: Desired format for the exported statistics. Use
+                ``"excel"`` to create an Excel workbook or ``"json"`` to write
+                a JSON file.
+        """
         self.output_format = output_format
 
     def compute_statistics(self, cfg, ref, tag: str) -> None:
