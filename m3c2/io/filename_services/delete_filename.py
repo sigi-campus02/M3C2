@@ -8,7 +8,13 @@ from m3c2.io.logging_utils import resolve_log_level, setup_logging
 logger = logging.getLogger(__name__)
 
 def transform(name: str) -> str:
-    # Entfernt ALLE Vorkommen von "_validonly" im Namen (inkl. vor der Extension)
+    """Remove all occurrences of the ``python_`` marker from a name.
+
+    The function strips every ``python_`` substring from the provided file or
+    directory name.  The remainder of the name, including any extension, is
+    returned unchanged.  If the marker constitutes the entire original name an
+    empty string is returned, allowing the caller to skip renaming.
+    """
     return name.replace("python_", "")
 
 def iter_paths(base: Path, recursive: bool, include_dirs: bool):
