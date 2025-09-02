@@ -17,7 +17,22 @@ def bland_altman_plot(
     ref_variants: List[str],
     outdir: str = "BlandAltman",
 ) -> None:
-    """Create Bland–Altman plots for given folders and reference variants."""
+    """Create Bland–Altman plots for given folders and reference variants.
+
+    Parameters
+    ----------
+    folder_ids : List[str]
+        Identifiers of the folders whose comparison data should be plotted.
+    ref_variants : List[str]
+        Names of the two reference variants to compare. Must contain exactly
+        two entries.
+    outdir : str, optional
+        Directory where the generated plots are stored. Defaults to
+        ``"BlandAltman"``.
+
+    The function saves one PNG per folder in ``outdir`` with the filename
+    pattern ``bland_altman_<folder>_<ref1>_vs_<ref2>.png``.
+    """
     if len(ref_variants) != 2:
         raise ValueError("ref_variants must contain exactly two entries")
 
