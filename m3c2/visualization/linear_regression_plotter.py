@@ -1,3 +1,10 @@
+"""OLS plotting utility for visualizing linear regression between two variants.
+
+This module loads paired reference measurements, fits an ordinary least squares
+regression with confidence intervals, and saves the resulting comparison
+plots for each folder.
+"""
+
 from __future__ import annotations
 
 import logging
@@ -13,6 +20,21 @@ logger = logging.getLogger(__name__)
 
 
 def _square_limits(x: np.ndarray, y: np.ndarray, pad: float = 0.05):
+    """Return square axis limits covering the ``x`` and ``y`` data.
+
+    Parameters
+    ----------
+    x, y:
+        Arrays of x and y coordinates.
+    pad:
+        Fractional padding applied to the half-width of the square.
+
+    Returns
+    -------
+    tuple[tuple[float, float], tuple[float, float]]
+        ``(x_limits, y_limits)`` where each is a ``(min, max)`` tuple.
+    """
+
     x_min, x_max = float(np.min(x)), float(np.max(x))
     y_min, y_max = float(np.min(y)), float(np.max(y))
     v_min = min(x_min, y_min)
@@ -28,7 +50,26 @@ def linear_regression_plot(
     ref_variants: List[str],
     outdir: str = "LinearRegression",
 ) -> None:
-    """Create OLS linear regression plots for given folders."""
+    """Create OLS linear regression plots for given folders.
+
+    Parameters
+    ----------
+    folder_ids:
+        List of folder identifiers whose comparison results should be
+        visualised.
+    ref_variants:
+        Names of the two reference variants to compare.  The list must
+        contain exactly two entries.
+    outdir, optional:
+        Destination directory for the generated plots.  If not provided,
+        plots are written to ``"LinearRegression"``.
+
+    Returns
+    -------
+    None
+        For each folder ID a PNG file containing the regression plot is
+        written to *outdir*.
+    """
 
     if len(ref_variants) != 2:
         raise ValueError("ref_variants must contain exactly two entries")

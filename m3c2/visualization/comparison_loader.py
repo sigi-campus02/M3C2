@@ -1,3 +1,10 @@
+"""Utilities for loading and masking comparison distance data.
+
+This module contains small helpers used by the visualization tooling to
+discover distance files for different reference variants, read them into
+NumPy arrays and return paired arrays with invalid values removed.
+"""
+
 from __future__ import annotations
 
 import logging
@@ -10,10 +17,26 @@ logger = logging.getLogger(__name__)
 
 
 def _resolve(fid: str, filename: str) -> str:
-    """Return the path to *filename* for the given folder ID.
+    """Return the candidate path for *filename* within *fid*.
 
-    The helper searches first in ``<fid>/`` and then in ``data/<fid>/``
-    to mirror the behaviour of other services in this repository.
+    Parameters
+    ----------
+    fid:
+        Folder identifier used as the first search location.
+    filename:
+        Name of the file to resolve.
+
+    Returns
+    -------
+    str
+        Either ``<fid>/<filename>`` (if it exists) or
+        ``data/<fid>/<filename>``.  The path is returned even when the file
+        is missing so the caller can decide how to handle it.
+
+    Notes
+    -----
+    The function performs only an existence check and never raises an
+    exception.
     """
     p1 = os.path.join(fid, filename)
     if os.path.exists(p1):
@@ -22,7 +45,26 @@ def _resolve(fid: str, filename: str) -> str:
 
 
 def _load_ref_variant_data(fid: str, variant: str) -> np.ndarray | None:
-    """Load distance data for the given reference variant."""
+    """Load distance data for a specific reference variant.
+
+    Parameters
+    ----------
+    fid:
+        Folder identifier used to look up the data file.
+    variant:
+        Name of the reference variant that forms part of the filename.
+
+    Returns
+    -------
+    numpy.ndarray or None
+        The loaded distance values.  ``None`` is returned if the file is not
+        found or could not be read.
+
+    Error Handling
+    --------------
+    Missing files or loading errors are logged and result in ``None`` rather
+    than an exception being raised.
+    """
     basename = f"python_{variant}_m3c2_distances.txt"
     path = _resolve(fid, basename)
     if not os.path.exists(path):
@@ -36,7 +78,27 @@ def _load_ref_variant_data(fid: str, variant: str) -> np.ndarray | None:
 
 
 def _load_and_mask(fid: str, ref_variants: List[str]) -> tuple[np.ndarray, np.ndarray] | None:
-    """Load and mask two reference variant arrays for a folder."""
+    """Load two reference variants and remove NaN values.
+
+    Parameters
+    ----------
+    fid:
+        Folder identifier that contains the reference distance files.
+    ref_variants:
+        List containing the names of two variants to be compared.
+
+    Returns
+    -------
+    tuple[numpy.ndarray, numpy.ndarray] or None
+        Two equally sized arrays with NaN values removed.  ``None`` is
+        returned if either variant cannot be loaded or if no valid data
+        remains after masking.
+
+    Error Handling
+    --------------
+    Any issues (missing files, only NaN values) are logged and result in
+    ``None`` instead of an exception.
+    """
     data = [_load_ref_variant_data(fid, v) for v in ref_variants]
     if any(d is None for d in data):
         return None

@@ -1,3 +1,12 @@
+"""Utilities for creating overlay plots of M3C2 distance distributions.
+
+This module provides a collection of helper functions to visualize multiple
+data series in common plots such as histograms, probability density overlays,
+boxplots, Q-Q plots, and violin plots. These functions are designed to compare
+different versions or datasets by rendering them together with consistent
+styling and ranges.
+"""
+
 from __future__ import annotations
 
 import logging
@@ -34,6 +43,24 @@ def plot_overlay_histogram(
     title_text: str | None = None,
     labels_order: List[str] | None = None,
 ) -> None:
+    """Plot histograms of several datasets in a single figure.
+
+    Args:
+        fid: Identifier of the dataset, used in the output filename.
+        fname: Name of the file being analysed, used in plot titles.
+        data: Mapping of labels to data arrays to be plotted.
+        bins: Number of bins for the histograms.
+        data_min: Lower bound of the shared value range.
+        data_max: Upper bound of the shared value range.
+        colors: Mapping of labels to colour codes for the plots.
+        outdir: Directory in which the figure will be saved.
+        title_text: Optional custom title for the figure.
+        labels_order: Optional explicit order of labels; defaults to ``data`` keys.
+
+    Saves:
+        ``<outdir>/<fid>_<fname>_OverlayHistogramm.png`` – the overlay histogram
+        showing the distributions of all provided datasets.
+    """
     plt.figure(figsize=(10, 6))
     labels = labels_order or list(data.keys())
     for v in labels:
@@ -68,6 +95,36 @@ def plot_overlay_gauss(
     title_text: str | None = None,
     labels_order: List[str] | None = None,
 ) -> None:
+    """Plot Gaussian probability density functions for multiple datasets.
+
+    Parameters
+    ----------
+    fid : str
+        Identifier of the feature or dataset group, used in the plot title
+        and output filename.
+    fname : str
+        Name of the input file for display in the figure title and filename.
+    data : Dict[str, np.ndarray]
+        Mapping of labels to the underlying samples. The labels define which
+        Gaussian parameters are plotted.
+    gauss_params : Dict[str, Tuple[float, float]]
+        Pre-computed Gaussian parameters ``(mean, std)`` for each label in
+        ``data``.
+    x : np.ndarray
+        Common x-range on which the Gaussian curves are evaluated.
+    colors : Dict[str, str]
+        Mapping of labels to colors used for the curves.
+    outdir : str
+        Directory where the resulting image is stored.
+    title_text : str | None, optional
+        Custom text for the plot title. When ``None`` a default title is used.
+    labels_order : List[str] | None, optional
+        Custom order in which to plot the labels. When ``None`` the dictionary
+        order of ``data`` is used.
+
+    The function overlays the Gaussian PDF for each dataset on a single set of
+    axes, allowing visual comparison of their fitted distributions.
+    """
     plt.figure(figsize=(10, 6))
     labels = labels_order or list(data.keys())
     for v in labels:
@@ -100,6 +157,14 @@ def plot_overlay_weibull(
     title_text: str | None = None,
     labels_order: List[str] | None = None,
 ) -> None:
+    """Fit Weibull distributions and plot their probability densities.
+
+    Each array in ``data`` is fitted with :func:`scipy.stats.weibull_min.fit`
+    to estimate the shape, location, and scale parameters of a Weibull
+    distribution.  The resulting probability density functions are evaluated
+    on ``x`` and plotted together.  The combined overlay is written to
+    ``{fid}_{fname}_OverlayWeibullFits.png`` inside ``outdir``.
+    """
     weibull_params: Dict[str, Tuple[float, float, float]] = {}
     for v, arr in data.items():
         try:
@@ -139,6 +204,17 @@ def plot_overlay_boxplot(
     title_text: str | None = None,
     labels_order: List[str] | None = None,
 ) -> None:
+    """Create a box plot comparing distributions from multiple versions.
+
+    The function reorganizes the ``data`` dictionary into a pandas ``DataFrame``
+    with one column identifying the version and another holding the distance
+    values.  If :mod:`seaborn` is installed, this DataFrame is passed to
+    :func:`seaborn.boxplot` and the resulting figure is coloured using the
+    provided ``colors`` mapping.  When :mod:`seaborn` is unavailable, a manual
+    matplotlib implementation is used where each box is coloured individually.
+    In both cases the figure is saved to ``outdir`` with a name derived from
+    ``fid`` and ``fname``.
+    """
     try:
         import seaborn as sns
 
@@ -182,6 +258,32 @@ def plot_overlay_qq(
     title_text: str | None = None,
     labels_order: List[str] | None = None,
 ) -> None:
+    """Create an overlaid quantile-quantile (Q–Q) plot.
+
+    Each dataset in ``data`` is compared against a theoretical normal
+    distribution using :func:`scipy.stats.probplot`.  The function plots the
+    ordered sample values (``osr``) against the theoretical quantiles (``osm``)
+    and overlays a least-squares fit line defined by the returned ``slope`` and
+    ``intercept``.  Deviations from this line indicate departures from
+    normality.
+
+    Parameters
+    ----------
+    fid: str
+        Identifier of the file group used for labelling the output file.
+    fname: str
+        Name of the current file being processed.
+    data: Dict[str, np.ndarray]
+        Mapping from dataset label to the array of sample values to evaluate.
+    colors: Dict[str, str]
+        Colors to use for each dataset label.
+    outdir: str
+        Directory where the resulting plot image will be saved.
+    title_text: str, optional
+        Custom title for the plot; defaults to ``"Q-Q-Plot – {fid}/{fname}"``.
+    labels_order: List[str], optional
+        Explicit order in which datasets should be drawn.
+    """
     plt.figure(figsize=(10, 6))
     labels = labels_order or list(data.keys())
     for v in labels:
@@ -207,6 +309,12 @@ def plot_overlay_violin(
     title_text: str | None = None,
     labels_order: List[str] | None = None,
 ) -> None:
+    """Generate a violin plot for comparing M3C2 distance distributions.
+
+    The provided arrays are combined into a single DataFrame and plotted using
+    :mod:`seaborn`'s :func:`violinplot`. The resulting figure is written to
+    ``outdir`` with a filename based on ``fid`` and ``fname``.
+    """
     try:
         import seaborn as sns
 

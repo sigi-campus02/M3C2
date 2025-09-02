@@ -1,3 +1,10 @@
+"""Facade service for distance comparison plots.
+
+This module serves as a façade orchestrating multiple plot types—
+Bland-Altman, Passing-Bablok, and linear regression—to compare distance
+measurements.
+"""
+
 from __future__ import annotations
 
 import logging
@@ -16,6 +23,18 @@ class PlotServiceCompareDistances:
 
     @classmethod
     def overlay_plots(cls, config: PlotConfig, options: PlotOptionsComparedistances) -> None:
+        """Create comparison plots for distance measurements.
+
+        Parameters
+        ----------
+        config : PlotConfig
+            Configuration providing the output ``path`` as well as the
+            ``folder_ids`` and ``filenames`` used to locate the data.
+        options : PlotOptionsComparedistances
+            Flags controlling which optional plots to generate. Enable
+            ``plot_blandaltman``, ``plot_passingbablok`` and/or
+            ``plot_linearregression`` to create the respective diagrams.
+        """
         os.makedirs(config.path, exist_ok=True)
         folder_ids = config.folder_ids
         ref_variants = config.filenames

@@ -1,3 +1,5 @@
+"""Utilities for loading M3C2 distance data for visualisation."""
+
 from __future__ import annotations
 
 import logging
@@ -54,10 +56,33 @@ def scan_distance_files_by_index(data_dir: str, versions=("python", "CC")) -> Tu
     )
 
     def idx_of(tag: str) -> int:
+        """Return the numerical index encoded in a tag.
+
+        Tags follow the pattern ``'<prefix>-<num>'`` where ``<prefix>`` is
+        either ``a`` or ``b`` and ``<num>`` is an integer.  An optional
+        ``-AI`` suffix may be present.  This helper extracts the ``<num>``
+        portion and returns it as an integer, or ``-1`` if the tag does not
+        match the expected format.
+        """
         m = re.match(r'^[ab]-(\d+)(?:-AI)?$', tag, re.IGNORECASE)
         return int(m.group(1)) if m else -1
 
     def to_case_and_label(mov: str, ref: str, i: int) -> tuple[str, str]:
+        """Derive case identifier and label for a dataset comparison.
+
+        Both *mov* and *ref* contain tags such as ``"a-1"`` or
+        ``"b-2-AI"``.  The presence of the ``"-AI"`` suffix determines the
+        classification into one of four cases:
+
+        * ``CASE1`` – neither tag includes ``"-AI"``.
+        * ``CASE2`` – only the reference tag includes ``"-AI"``.
+        * ``CASE3`` – only the moving tag includes ``"-AI"``.
+        * ``CASE4`` – both tags include ``"-AI"``.
+
+        The returned label mirrors the underlying tags using the pattern
+        ``"a-{i}... vs b-{i}..."``.
+        """
+
         mov_ai = "-AI" in mov
         ref_ai = "-AI" in ref
         if not mov_ai and not ref_ai:

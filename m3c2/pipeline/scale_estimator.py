@@ -1,5 +1,6 @@
-from __future__ import annotations
 """Determine optimal scales for the M3C2 algorithm."""
+
+from __future__ import annotations
 
 import logging
 import time
@@ -17,10 +18,32 @@ class ScaleEstimator:
     """Estimate normal and projection scales using a scanning strategy."""
 
     def __init__(self, strategy_name: str = "radius") -> None:
+        """Initialize the scale estimator.
+
+        Parameters
+        ----------
+        strategy_name : str, default="radius"
+            Name of the scanning strategy from :data:`STRATEGIES` used to
+            determine suitable scales.
+        """
         self.strategy_name = strategy_name
 
     def determine_scales(self, cfg, corepoints) -> Tuple[float, float]:
         """Determine suitable normal and projection scales.
+
+        Parameters
+        ----------
+        cfg : object
+            Pipeline configuration supplying overrides and sampling parameters.
+        corepoints : array-like
+            Points on which to base the scale estimation.
+
+        Returns
+        -------
+        normal : float
+            Selected radius for normal computation.
+        projection : float
+            Selected radius for projection computation.
 
         This method is part of the public pipeline API.
         """

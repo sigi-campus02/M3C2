@@ -1,5 +1,5 @@
-from __future__ import annotations
 """Generate visual representations of M3C2 results."""
+from __future__ import annotations
 
 import logging
 import os
@@ -16,6 +16,32 @@ class VisualizationRunner:
 
     def generate_visuals(self, cfg, mov, distances: np.ndarray, out_base: str, tag: str) -> None:
         """Create visualisations for computed distances.
+
+        Parameters
+        ----------
+        cfg:
+            Runtime configuration providing naming conventions such as
+            ``process_python_CC``.
+        mov:
+            Moving point cloud object.  If ``mov.cloud`` is not available no
+            point cloud visualisations are generated.
+        distances:
+            Array of per-point M3C2 distances used for colouring and the
+            histogram.
+        out_base:
+            Directory in which the generated files are stored.  Created if it
+            does not yet exist.
+        tag:
+            Identifier that is appended to the filenames.
+
+        The following files are written into ``out_base``:
+
+        * ``<cfg.process_python_CC>_<tag>_histogram.png`` – histogram of
+          distances.
+        * ``<cfg.process_python_CC>_<tag>_includenonvalid.ply`` – coloured point
+          cloud containing all points.
+        * ``<cfg.process_python_CC>_<tag>.ply`` – coloured point cloud containing
+          only valid points.
 
         This method is part of the public pipeline API.
         """
@@ -42,7 +68,25 @@ class VisualizationRunner:
             logger.warning("[Visual] Export valid-only übersprungen: %s", exc)
 
     def generate_clouds_outliers(self, cfg, out_base: str, tag: str) -> None:
-        """Create coloured point clouds for inliers and outliers.
+        """Convert TXT distance outputs into colourised inlier/outlier point clouds.
+
+        Parameters
+        ----------
+        cfg : object
+            Configuration providing the ``process_python_CC`` prefix and the
+            ``outlier_detection_method`` identifier used to compose file names.
+        out_base : str
+            Directory where the TXT inputs are located and the resulting PLY
+            files will be written.
+        tag : str
+            Label appended to file names to distinguish different processing
+            runs or datasets.
+
+        Outputs
+        -------
+        Two PLY files are created in ``out_base``—one for outliers and one for
+        inliers—derived from TXT files containing coordinates and M3C2 distance
+        values.
 
         This method is part of the public pipeline API.
         """
