@@ -1,3 +1,5 @@
+"""Tests for the plot report command-line interface."""
+
 import sys
 from pathlib import Path
 
@@ -7,6 +9,16 @@ from m3c2.cli import plot_report
 
 
 def test_main_builds_pdfs(tmp_path, monkeypatch):
+    """Ensure PDFs are built and their paths are returned.
+
+    Parameters
+    ----------
+    tmp_path : pathlib.Path
+        Temporary directory provided by pytest.
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to replace functions during the test.
+    """
+
     def fake_build_parts_pdf(outdir, pdf_path=None, include_with=True, include_inlier=True):
         Path(pdf_path).write_text("pdf")
         return pdf_path
