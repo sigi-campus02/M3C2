@@ -70,13 +70,18 @@ class VisualizationService:
         RuntimeError
             If the :mod:`plyfile` dependency is not installed.
         ValueError
-            If the text file has an unexpected number of columns or contains
-            no data.
+            If the text file cannot be loaded, has an unexpected number of
+            columns, or contains no data.
         """
         if PlyData is None or PlyElement is None:
             raise RuntimeError("PLY-Export nicht verfügbar (pip install plyfile).")
-
-        arr = np.loadtxt(txt_path, skiprows=1)
+        try:
+            arr = np.loadtxt(txt_path, skiprows=1)
+        except (OSError, ValueError) as exc:
+            logger.error("Fehler beim Laden der TXT-Datei %s: %s", txt_path, exc)
+            raise ValueError(
+                f"TXT-Datei konnte nicht geladen werden: {txt_path}"
+            ) from exc
         if arr.size == 0:
             logger.warning("TXT-Datei enthält keine Werte: %s", txt_path)
             raise ValueError(f"TXT-Datei enthält keine Werte: {txt_path}")
