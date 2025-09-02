@@ -76,7 +76,25 @@ def read_ply(path: Path) -> np.ndarray:
 
 
 def read_obj(path: Path) -> np.ndarray:
-    """Parse an OBJ file and extract vertex coordinates."""
+    """Parse an OBJ file and extract vertex coordinates.
+
+    Parameters
+    ----------
+    path:
+        Path to the ``.obj`` file to read.
+
+    Notes
+    -----
+    Lines beginning with ``"v "`` are interpreted as vertex definitions. If a
+    vertex line does not contain three coordinate components, it is skipped and
+    a warning is logged.
+
+    Returns
+    -------
+    numpy.ndarray
+        Array of shape ``(N, 3)`` containing the ``x``, ``y`` and ``z``
+        coordinates of all parsed vertices.
+    """
     logger.info("Reading OBJ file %s", path)
     vertices: list[list[float]] = []
     try:
