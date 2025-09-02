@@ -52,8 +52,8 @@ def main(
                     labels.append("All Distances")
                 else:
                     logger.warning("File %s has no valid data", file_path)
-        except Exception:
-            logger.warning("File %s is missing or unreadable", file_path)
+        except (OSError, ValueError) as exc:
+            logger.warning("File %s is missing or malformed: %s", file_path, exc)
 
         for suffix, label in inlier_suffixes:
             file_path = os.path.join(
@@ -68,8 +68,8 @@ def main(
                     labels.append(label)
                 else:
                     logger.warning("File %s is empty", file_path)
-            except Exception:
-                logger.warning("File %s is missing or unreadable", file_path)
+            except (OSError, ValueError) as exc:
+                logger.warning("File %s is missing or malformed: %s", file_path, exc)
 
         plt.figure(figsize=(8, 6))
         plt.boxplot(data_list, labels=labels)
