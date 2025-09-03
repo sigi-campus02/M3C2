@@ -19,6 +19,77 @@ from scipy.stats import norm, weibull_min
 logger = logging.getLogger(__name__)
 
 
+def _counts_and_central_tendency(values: np.ndarray) -> Dict[str, float]:
+    """Compute basic counts and central tendency measures."""
+    valid_count = int(values.size)
+    valid_sum = float(np.sum(values))
+    valid_squared_sum = float(np.sum(values ** 2))
+    min_val = float(np.min(values))
+    max_val = float(np.max(values))
+    mean_val = float(np.mean(values))
+    median_val = float(np.median(values))
+    rms_val = float(np.sqrt(np.mean(values ** 2)))
+    std_emp = float(np.std(values))
+    return {
+        "Valid Count": valid_count,
+        "Valid Sum": valid_sum,
+        "Valid Squared Sum": valid_squared_sum,
+        "Min": min_val,
+        "Max": max_val,
+        "Mean": mean_val,
+        "Median": median_val,
+        "RMS": rms_val,
+        "Std Empirical": std_emp,
+    }
+
+
+def _percentile_stats(values: np.ndarray) -> Dict[str, float]:
+    """Compute percentile-based statistics."""
+    q05 = float(np.percentile(values, 5))
+    q25 = float(np.percentile(values, 25))
+    q75 = float(np.percentile(values, 75))
+    q95 = float(np.percentile(values, 95))
+    iqr = float(q75 - q25)
+    return {"Q05": q05, "Q25": q25, "Q75": q75, "Q95": q95, "IQR": iqr}
+
+
+def _error_metrics(values: np.ndarray, mean_val: float, median_val: float, std_emp: float) -> Dict[str, float]:
+    """Compute error and distribution shape metrics."""
+    mae = float(np.mean(np.abs(values)))
+    mad = float(np.median(np.abs(values - median_val)))
+    nmad = float(1.4826 * mad)
+    skew = float(pd.Series(values).skew())
+    kurt = float(pd.Series(values).kurt())
+    share_abs_gt = float(np.mean(np.abs(values) > 0.01))
+    share_2std = float(np.mean((values > -2 * std_emp) & (values < 2 * std_emp)))
+    max_abs = float(np.max(np.abs(values)))
+    bias = mean_val
+    return {
+        "MAE": mae,
+        "NMAD": nmad,
+        "Skewness": skew,
+        "Kurtosis": kurt,
+        "Anteil |Distanz| > 0.01": share_abs_gt,
+        "Anteil [-2Std,2Std]": share_2std,
+        "Max |Distanz|": max_abs,
+        "Bias": bias,
+    }
+
+
+def _tolerance_metrics(values: np.ndarray, tolerance: float) -> Dict[str, float]:
+    """Compute metrics based on a given tolerance."""
+    within_tolerance = float(np.mean(np.abs(values) <= tolerance))
+    intersection = np.sum((values > -tolerance) & (values < tolerance))
+    union = len(values)
+    jaccard_index = intersection / union if union > 0 else np.nan
+    dice_coefficient = (2 * intersection) / (2 * union) if union > 0 else np.nan
+    return {
+        "Within-Tolerance": within_tolerance,
+        "Jaccard Index": jaccard_index,
+        "Dice Coefficient": dice_coefficient,
+    }
+
+
 def basic_stats(values: np.ndarray, tolerance: float) -> Dict[str, float]:
     """Compute descriptive statistics for an array of values.
 
@@ -79,67 +150,22 @@ def basic_stats(values: np.ndarray, tolerance: float) -> Dict[str, float]:
         )
         return result
 
-    valid_count = int(values.size)
-    valid_sum = float(np.sum(values))
-    valid_squared_sum = float(np.sum(values ** 2))
-    min_val = float(np.min(values))
-    max_val = float(np.max(values))
-    mean_val = float(np.mean(values))
-    median_val = float(np.median(values))
-    rms_val = float(np.sqrt(np.mean(values ** 2)))
-    std_emp = float(np.std(values))
-    mae = float(np.mean(np.abs(values)))
-    mad = float(np.median(np.abs(values - median_val)))
-    nmad = float(1.4826 * mad)
-    q05 = float(np.percentile(values, 5))
-    q25 = float(np.percentile(values, 25))
-    q75 = float(np.percentile(values, 75))
-    q95 = float(np.percentile(values, 95))
-    iqr = float(q75 - q25)
-    skew = float(pd.Series(values).skew())
-    kurt = float(pd.Series(values).kurt())
-    share_abs_gt = float(np.mean(np.abs(values) > 0.01))
-    share_2std = float(np.mean((values > -2 * std_emp) & (values < 2 * std_emp)))
-    max_abs = float(np.max(np.abs(values)))
-    bias = mean_val
-    within_tolerance = float(np.mean(np.abs(values) <= tolerance))
-    intersection = np.sum((values > -tolerance) & (values < tolerance))
-    union = len(values)
-    jaccard_index = intersection / union if union > 0 else np.nan
-    dice_coefficient = (2 * intersection) / (2 * union) if union > 0 else np.nan
-
-    result = {
-        "Valid Count": valid_count,
-        "Valid Sum": valid_sum,
-        "Valid Squared Sum": valid_squared_sum,
-        "Min": min_val,
-        "Max": max_val,
-        "Mean": mean_val,
-        "Median": median_val,
-        "RMS": rms_val,
-        "Std Empirical": std_emp,
-        "MAE": mae,
-        "NMAD": nmad,
-        "Q05": q05,
-        "Q25": q25,
-        "Q75": q75,
-        "Q95": q95,
-        "IQR": iqr,
-        "Skewness": skew,
-        "Kurtosis": kurt,
-        "Anteil |Distanz| > 0.01": share_abs_gt,
-        "Anteil [-2Std,2Std]": share_2std,
-        "Max |Distanz|": max_abs,
-        "Bias": bias,
-        "Within-Tolerance": within_tolerance,
-        "Jaccard Index": jaccard_index,
-        "Dice Coefficient": dice_coefficient,
-    }
+    # Counts
+    counts = _counts_and_central_tendency(values)
+    # Percentiles
+    percentiles = _percentile_stats(values)
+    # Shape
+    shape = _error_metrics(
+        values, counts["Mean"], counts["Median"], counts["Std Empirical"]
+    )
+    # Tolerance
+    tolerance_metrics = _tolerance_metrics(values, tolerance)
+    result = {**counts, **percentiles, **shape, **tolerance_metrics}
     logger.info(
         "basic_stats summary: min=%f, max=%f, mean=%f",
-        min_val,
-        max_val,
-        mean_val,
+        counts["Min"],
+        counts["Max"],
+        counts["Mean"],
     )
     return result
 
