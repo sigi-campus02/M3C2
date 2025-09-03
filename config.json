@@ -6,11 +6,11 @@
     "date_format": "%Y-%m-%d %H:%M:%S"
   },
   "arguments":   {
-    "data_dir": "data",
-    "folders": ["TUNSPEKT Labordaten_all"],
-    "filename_ref": "Faro_ipm_lab_pos01 - Box1",
-    "filename_mov": "Faro_ipm_lab_pos02 - Box1",
-    "filename_singlecloud": "Faro_ipm_lab_pos01 - Box1",
+    "data_dir": "data/TUNSPEKT Labordaten_all/Handheld",
+    "folders": ["box01"],
+    "filename_ref": "",
+    "filename_mov": "",
+    "filename_singlecloud": "Handheld_georef_mw - box01",
     "mov_as_corepoints": true,
     "use_subsampled_corepoints": 1,
     "sample_size": 10000,
@@ -24,6 +24,6 @@
     "use_existing_params": false,
     "outlier_detection_method": "rmse",
     "outlier_multiplicator": 3.0,
-    "log_level": "INFO"
+    "log_level": "DEBUG"
   }
 }
