@@ -209,8 +209,9 @@ def write_cloud_stats(
         return
 
     if output_format.lower() == "json":
-        ts = _now_timestamp()
-        df.insert(0, "Timestamp", ts)
+        if "Timestamp" not in df.columns:
+            ts = _now_timestamp()
+            df.insert(0, "Timestamp", ts)
         if os.path.exists(out_path):
             try:
                 old = pd.read_json(out_path)
@@ -234,15 +235,11 @@ def write_cloud_stats(
             os.makedirs(out_dir, exist_ok=True)
         all_df.to_json(out_path, orient="records", indent=2)
     else:
-        ts = _now_timestamp()
         run_labels: List[str] = []
         for i, row in df.iterrows():
-            folder = row.get("Folder", f"run{i}")
-            run_labels.append(f"{folder}_{ts}")
+            run_labels.append(row.get("File", f"run{i}"))
         df.insert(0, "Run", run_labels)
         df = df.set_index("Run")
-        if "Folder" in df.columns:
-            df = df.drop(columns=["Folder"])
         df_t = df.T
         df_t.index.name = "Metric"
         out_dir = os.path.dirname(out_path)

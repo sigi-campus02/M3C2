@@ -33,6 +33,7 @@ from .cloud_quality import calc_single_cloud_stats
 from .exporters import (
     _append_df_to_excel,
     _append_df_to_json,
+    _now_timestamp,
     write_cloud_stats,
 )
 
@@ -423,11 +424,20 @@ class StatisticsService:
                 sample_size=sample_size,
                 use_convex_hull=use_convex_hull,
             )
-            stats.update({"File": filename_singlecloud, "Folder": fid})
+            # Ensure "Timestamp", "File" and "Folder" lead each row
+            stats = {
+                "Timestamp": _now_timestamp(),
+                "File": filename_singlecloud,
+                "Folder": fid,
+                **stats,
+            }
             rows.append(stats)
 
         df_result = pd.DataFrame(rows)
-        df_result_t = df_result.set_index("Folder").T
+        run_labels = [r.get("File", f"run{i}") for i, r in enumerate(rows)]
+        df_result.insert(0, "Run", run_labels)
+        df_result = df_result.set_index("Run")
+        df_result_t = df_result.T
         df_result_t.index.name = "Metric"
         if out_path and rows:
             write_cloud_stats(

@@ -86,7 +86,7 @@ def test_write_cloud_stats_excel():
     run identifiers as columns.
     """
 
-    rows = [{"Folder": "run1", "a": 1}]
+    rows = [{"Timestamp": "ts1", "File": "file1", "Folder": "run1", "a": 1}]
     captured = {}
 
     def fake_to_excel(self, *args, **kwargs):
@@ -101,8 +101,9 @@ def test_write_cloud_stats_excel():
 
     df_written = captured["df"]
     assert "Metric" == df_written.index.name
-    assert "a" in df_written.index
-    assert "run1_ts" in df_written.columns
+    assert list(df_written.index[:3]) == ["Timestamp", "File", "Folder"]
+    assert "file1" in df_written.columns
+    assert df_written.loc["Timestamp", "file1"] == "ts1"
 
 
 def test_write_cloud_stats_json():
