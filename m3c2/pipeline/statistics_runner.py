@@ -142,6 +142,7 @@ class StatisticsRunner:
             folder_ids=[cfg.folder_id],
             filename_singlecloud=cfg.filename_singlecloud,
             singlecloud=singlecloud,
+            data_dir=cfg.data_dir,
             radius=normal,
             out_path=out_path,
             sheet_name="CloudStats",

@@ -55,9 +55,10 @@ def _append_df_to_excel(df_new: pd.DataFrame, out_xlsx: str, sheet_name: str = "
     if df_new is None or df_new.empty:
         return
 
-    ts = _now_timestamp()
     df_new = df_new.copy()
-    df_new.insert(0, "Timestamp", ts)
+    if "Timestamp" not in df_new.columns:
+        ts = _now_timestamp()
+        df_new.insert(0, "Timestamp", ts)
 
     try:
         from openpyxl import load_workbook, Workbook
@@ -111,9 +112,10 @@ def _append_df_to_json(df_new: pd.DataFrame, out_json: str) -> None:
     if df_new is None or df_new.empty:
         return
 
-    ts = _now_timestamp()
     df_new = df_new.copy()
-    df_new.insert(0, "Timestamp", ts)
+    if "Timestamp" not in df_new.columns:
+        ts = _now_timestamp()
+        df_new.insert(0, "Timestamp", ts)
 
     out_dir = os.path.dirname(out_json)
     if out_dir:
@@ -209,8 +211,9 @@ def write_cloud_stats(
         return
 
     if output_format.lower() == "json":
-        ts = _now_timestamp()
-        df.insert(0, "Timestamp", ts)
+        if "Timestamp" not in df.columns:
+            ts = _now_timestamp()
+            df.insert(0, "Timestamp", ts)
         if os.path.exists(out_path):
             try:
                 old = pd.read_json(out_path)
@@ -220,8 +223,8 @@ def write_cloud_stats(
                     out_path,
                 )
                 old = pd.DataFrame(columns=["Timestamp"])
-            cols = list(old.columns) if not old.empty else ["Timestamp"]
-            for c in df.columns:
+            cols = list(df.columns)
+            for c in old.columns:
                 if c not in cols:
                     cols.append(c)
             old = old.reindex(columns=cols)
@@ -234,31 +237,29 @@ def write_cloud_stats(
             os.makedirs(out_dir, exist_ok=True)
         all_df.to_json(out_path, orient="records", indent=2)
     else:
-        ts = _now_timestamp()
-        run_labels: List[str] = []
-        for i, row in df.iterrows():
-            folder = row.get("Folder", f"run{i}")
-            run_labels.append(f"{folder}_{ts}")
-        df.insert(0, "Run", run_labels)
-        df = df.set_index("Run")
-        if "Folder" in df.columns:
-            df = df.drop(columns=["Folder"])
-        df_t = df.T
-        df_t.index.name = "Metric"
+        if "Timestamp" not in df.columns:
+            ts = _now_timestamp()
+            df.insert(0, "Timestamp", ts)
+        columns = list(df.columns)
         out_dir = os.path.dirname(out_path)
         if out_dir:
             os.makedirs(out_dir, exist_ok=True)
         if os.path.exists(out_path):
             try:
-                old = pd.read_excel(out_path, sheet_name=sheet_name, index_col=0)
+                old = pd.read_excel(out_path, sheet_name=sheet_name)
             except (OSError, ValueError, pd.errors.EmptyDataError):
                 logger.exception(
                     "Failed to read existing cloud stats from %s; creating empty table",
                     out_path,
                 )
                 old = pd.DataFrame()
-            all_df = old.join(df_t, how="outer")
+            for c in old.columns:
+                if c not in columns:
+                    columns.append(c)
+            old = old.reindex(columns=columns)
+            df = df.reindex(columns=columns)
+            all_df = pd.concat([old, df], ignore_index=True)
         else:
-            all_df = df_t
+            all_df = df
         with pd.ExcelWriter(out_path, engine="openpyxl", mode="w") as w:
-            all_df.to_excel(w, sheet_name=sheet_name)
+            all_df.to_excel(w, sheet_name=sheet_name, index=False)

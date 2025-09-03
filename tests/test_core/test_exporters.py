@@ -78,31 +78,29 @@ def test_append_df_to_json_handles_read_errors(tmp_path, caplog):
 
 
 def test_write_cloud_stats_excel():
-    """Ensure ``write_cloud_stats`` writes runs as columns in Excel by default.
+    """Ensure ``write_cloud_stats`` writes rows with metadata columns."""
 
-    Notes
-    -----
-    The DataFrame passed to ``to_excel`` should have metrics as rows and
-    run identifiers as columns.
-    """
-
-    rows = [{"Folder": "run1", "a": 1}]
+    rows = [{
+        "Timestamp": "ts",
+        "Data Dir": "dd",
+        "Folder": "run1",
+        "File": "f",
+        "a": 1,
+    }]
     captured = {}
 
     def fake_to_excel(self, *args, **kwargs):
         captured["df"] = self
 
     with patch("os.path.exists", return_value=False), \
-         patch("m3c2.core.statistics.exporters._now_timestamp", return_value="ts"), \
          patch("m3c2.core.statistics.exporters.pd.ExcelWriter") as m_writer, \
          patch("pandas.DataFrame.to_excel", new=fake_to_excel):
         m_writer.return_value.__enter__.return_value = MagicMock()
         exporters.write_cloud_stats(rows, out_path="dummy.xlsx")
 
     df_written = captured["df"]
-    assert "Metric" == df_written.index.name
-    assert "a" in df_written.index
-    assert "run1_ts" in df_written.columns
+    assert list(df_written.columns) == ["Timestamp", "Data Dir", "Folder", "File", "a"]
+    assert df_written.iloc[0]["Folder"] == "run1"
 
 
 def test_write_cloud_stats_json():
