@@ -16,7 +16,7 @@ class OutlierConfig:
 
     Parameters
     ----------
-    dists_path : str
+    file_path : str
         Path to a ``.txt`` file containing M3C2 distances with columns
         ``x y z distance``.
     method : str
@@ -27,9 +27,20 @@ class OutlierConfig:
         threshold. Defaults to ``3.0``.
     """
 
-    dists_path: str
+    file_path: str
     method: str
     outlier_multiplicator: float = 3.0
+
+    @property
+    def dists_path(self) -> str:
+        """Backward compatible alias for :attr:`file_path`.
+
+        The original implementation exposed the path as ``dists_path``.
+        Tests and archived modules still reference this name, therefore an
+        alias is kept for compatibility.
+        """
+
+        return self.file_path
 
 
 @dataclass
@@ -116,7 +127,7 @@ class OutlierDetector:
         :func:`numpy.savetxt` using the ``"x y z distance"`` header.
         """
 
-        base = Path(self.config.dists_path).with_suffix("")
+        base = Path(self.config.file_path).with_suffix("")
         inlier_path = f"{base}_inlier_{self.config.method}.txt"
         outlier_path = f"{base}_outlier_{self.config.method}.txt"
         header = "x y z distance"
@@ -128,7 +139,7 @@ class OutlierDetector:
     def run(self) -> OutlierResult:
         """Load distances, split into inliers/outliers and write results."""
 
-        distances_all = np.loadtxt(self.config.dists_path, skiprows=1)
+        distances_all = np.loadtxt(self.config.file_path, skiprows=1)
         valid_mask = ~np.isnan(distances_all[:, 3])
         distances_valid = distances_all[valid_mask]
         mask, _ = self._detect_outlier_mask(
@@ -161,7 +172,7 @@ def exclude_outliers(
     """Convenience wrapper around :class:`OutlierDetector`."""
 
     config = OutlierConfig(
-        dists_path=dists_path,
+        file_path=dists_path,
         method=method,
         outlier_multiplicator=outlier_multiplicator,
     )

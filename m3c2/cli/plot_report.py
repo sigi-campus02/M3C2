@@ -15,7 +15,7 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 from visualization.plot_service import PlotService
-from io.logging_utils import resolve_log_level, setup_logging
+from m3c2.io.logging_utils import resolve_log_level, setup_logging
 from config.plot_config import PlotOptions
 
 # Input and output directories for the TUNSPEKT Labordaten_all dataset.

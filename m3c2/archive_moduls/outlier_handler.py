@@ -2,9 +2,7 @@
 from __future__ import annotations
 
 import logging
-import os
-
-from m3c2.archive_moduls.exclude_outliers import exclude_outliers
+from m3c2.pipeline import outlier_handler as pipeline_outlier_handler
 
 # Module-level logger for this handler
 logger = logging.getLogger(__name__)
@@ -56,13 +54,10 @@ class OutlierHandler:
         logger.info("[Outlier] Entferne Ausreißer …")
         method = cfg.outlier_detection_method
         outlier_multiplicator = cfg.outlier_multiplicator
-        dists_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances_coordinates.txt")
 
         try:
-            exclude_outliers(
-                dists_path=dists_path,
-                method=method,
-                outlier_multiplicator=outlier_multiplicator,
+            pipeline_outlier_handler.exclude_outliers(
+                out_base, tag, method, outlier_multiplicator
             )
             logger.info("[Outlier] Entfernen abgeschlossen")
         except Exception:
