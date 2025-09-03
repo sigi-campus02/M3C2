@@ -397,65 +397,7 @@ class BatchOrchestrator:
         self.visualization_runner.generate_visuals(
             cfg, mov, distances, out_base, tag
         )
-
-
-        # 5. Compute Outliers
-
-        # self._handle_outliers(cfg, out_base, tag)
             
-
-
-    def _handle_outliers(self, cfg: PipelineConfig, out_base: str, tag: str):
-        """
-        Remove statistical outliers from the M3C2 results and generate
-        visualizations for the remaining points.
-
-        Parameters
-        ----------
-        cfg : PipelineConfig
-            Configuration describing the dataset to be processed.
-        out_base : str
-            Base output directory where outlier artefacts are written.
-        tag : str
-            Identifier of the current processing run used for file naming.
-
-        The method first delegates to :meth:`OutlierHandler.exclude_outliers`
-        to filter points and then calls
-        :meth:`VisualizationRunner.generate_clouds_outliers` to create ``.ply``
-        clouds for both outliers and inliers. ``IOError`` and ``ValueError`` are
-        logged, while unexpected runtime errors are logged and re-raised.
-        """
-
-        # ----- Remove Outliers -----
-        try:
-            logger.info("[Outlier] Entferne Ausreißer für %s", cfg.folder_id)
-            self.outlier_handler.exclude_outliers(cfg, out_base, tag)
-        except (IOError, ValueError):
-            logger.exception("Fehler beim Entfernen von Ausreißern")
-        except RuntimeError:
-            logger.exception(
-                "Unerwarteter Fehler beim Entfernen von Ausreißern"
-            )
-            raise
-
-        # ----- Generate Outlier/Inlier Clouds -----
-        try:
-            logger.info(
-                "[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …"
-            )
-            self.visualization_runner.generate_clouds_outliers(
-                cfg, ds.config.folder, tag
-            )
-        except (IOError, ValueError):
-            logger.exception(
-                "Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
-            )
-        except RuntimeError:
-            logger.exception(
-                "Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
-            )
-            raise
-
     def _handle_override_params(self, cfg: PipelineConfig):
         """Load previously determined M3C2 scale parameters in config.
 
@@ -471,7 +413,7 @@ class BatchOrchestrator:
         """
 
         # -------------------------------------------------
-        # 1. Use parameter override of config if exists
+        # Use parameter override of config if exists
         if cfg.normal_override is not None and cfg.proj_override is not None:
             normal = cfg.normal_override
             projection = cfg.proj_override
