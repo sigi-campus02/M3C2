@@ -8,7 +8,7 @@ import sys
 import types
 import importlib
 import numpy as np
-
+from m3c2.core.m3c2_runner import M3C2Runner
 
 def test_m3c2_runner(monkeypatch):
     """Test the M3C2 runner with a dummy ``py4dgeo`` implementation.
@@ -37,15 +37,11 @@ def test_m3c2_runner(monkeypatch):
     dummy_py4dgeo = types.SimpleNamespace(M3C2=DummyM3C2)
     monkeypatch.setitem(sys.modules, 'py4dgeo', dummy_py4dgeo)
 
-    runner_module = importlib.reload(
-        importlib.import_module('orchestration.m3c2_runner')
-    )
-
     mov = object()
     ref = object()
     corepoints = np.array([[0.0, 0.0, 0.0]])
 
-    distances, uncertainties = runner_module.M3C2Runner.run(
+    distances, uncertainties = M3C2Runner.run(
         mov, ref, corepoints, normal=0.5, projection=1.0
     )
 
