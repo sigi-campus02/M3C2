@@ -5,7 +5,6 @@
 *$py.class
 data/
 outputs/
-archive/
 configs_TUNSPEKT_runs/
 .coverage
 py4dgeo.log

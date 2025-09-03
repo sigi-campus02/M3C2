@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from typing import Any, List, Optional
 
-from m3c2.config.logging_config import resolve_log_level, setup_logging
+from m3c2.config.logging_config import setup_logging
 from m3c2.pipeline.batch_orchestrator import BatchOrchestrator
 from m3c2.config.pipeline_config import PipelineConfig
 
