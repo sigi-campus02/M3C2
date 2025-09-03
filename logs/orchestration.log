@@ -3526,3 +3526,465 @@ TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 2025-09-02 17:37:17,580 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=283084.914, roughness_mean=0.000
 2025-09-02 17:37:38,642 [INFO] m3c2.pipeline.batch_orchestrator - [Job] TUNSPEKT Labordaten_all abgeschlossen in 100.738s
 2025-09-02 17:37:38,642 [INFO] CLIApp - Processing completed successfully.
+2025-09-03 08:01:48,528 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-03 08:01:48,528 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-03 08:01:48,528 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-03 08:01:48,528 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-03 08:01:48,528 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-03 08:01:48,528 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-03 08:01:48,528 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-03 08:01:48,528 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, Faro_ipm_lab_pos02 - Box1, Faro_ipm_lab_pos01 - Box1, python
+2025-09-03 08:01:48,528 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-03 08:01:48,575 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos01 - Box1.xyz'
+2025-09-03 08:01:51,088 [INFO] m3c2.pipeline.data_loader - [Load] data/TUNSPEKT Labordaten_all: single_cloud=Epoch | 2.555s
+2025-09-03 08:01:51,088 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 786802 points
+2025-09-03 08:01:53,322 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.000820 (k=6) | 2.240s
+2025-09-03 08:01:53,322 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 786802 points and avg_spacing 0.000820
+2025-09-03 08:01:53,342 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/786802
+2025-09-03 08:01:53,374 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000102524 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:01:53,404 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000205047 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:01:53,442 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000410094 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:01:53,475 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000820188 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:01:53,505 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00164038 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:01:53,546 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00328075 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:01:53,585 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00656151 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:01:53,679 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.013123 | pop=11.1±1.3 | 97%>14 | valid=1535/10000 (15%) | sigma=0.000338736 | lambda_min=1.22109e-07 | Sigma/D=0.0258
+2025-09-03 08:01:54,045 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.026246 | pop=25.5±5.4 | 97%>36 | valid=9112/10000 (91%) | sigma=0.000379209 | lambda_min=1.4771e-07 | Sigma/D=0.0144
+2025-09-03 08:01:54,486 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0524921 | pop=92.4±24.9 | 97%>124 | valid=9632/10000 (96%) | sigma=0.000407563 | lambda_min=1.67691e-07 | Sigma/D=0.0078
+2025-09-03 08:01:55,098 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.104984 | pop=336.3±115.5 | 97%>461 | valid=9998/10000 (100%) | sigma=0.000437086 | lambda_min=1.92312e-07 | Sigma/D=0.0042
+2025-09-03 08:01:56,067 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.209968 | pop=1200.3±450.9 | 97%>1727 | valid=10000/10000 (100%) | sigma=0.000505415 | lambda_min=2.5858e-07 | Sigma/D=0.0024
+2025-09-03 08:01:56,067 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 2.739s
+2025-09-03 08:01:56,069 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-03 08:01:56,069 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.013123, proj=0.026246 | 0.000s
+2025-09-03 08:01:56,069 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-03 08:01:56,069 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken TUNSPEKT Labordaten_all,Faro_ipm_lab_pos01 - Box1 …
+2025-09-03 08:01:56,069 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=None, radius=0.013123012988264763, k=24, sample_size=None, use_convex_hull=True
+2025-09-03 08:01:56,069 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 786802 points (radius=0.013123012988264763, k=24, sample_size=None)
+2025-09-03 08:02:29,031 [INFO] m3c2.core.statistics.cloud_quality - Evaluating 50000 neighborhoods (min_pts=10, max_eval=50000)
+2025-09-03 08:02:58,757 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=283084.914, roughness_mean=0.000
+2025-09-03 08:03:22,111 [INFO] m3c2.pipeline.batch_orchestrator - [Job] TUNSPEKT Labordaten_all abgeschlossen in 93.581s
+2025-09-03 08:03:22,111 [INFO] CLIApp - Processing completed successfully.
+2025-09-03 08:04:46,018 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-03 08:04:46,020 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-03 08:04:46,020 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-03 08:04:46,020 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-03 08:04:46,020 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-03 08:04:46,020 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-03 08:04:46,020 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-03 08:04:46,020 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, Faro_ipm_lab_pos02 - Box1, Faro_ipm_lab_pos01 - Box1, python
+2025-09-03 08:04:46,020 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-03 08:04:46,066 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos02 - Box1.xyz'
+2025-09-03 08:04:46,760 [INFO] m3c2.pipeline.data_loader - [Load] data/TUNSPEKT Labordaten_all: single_cloud=Epoch | 0.739s
+2025-09-03 08:04:46,760 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 208982 points
+2025-09-03 08:04:47,365 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.001212 (k=6) | 0.605s
+2025-09-03 08:04:47,365 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 208982 points and avg_spacing 0.001212
+2025-09-03 08:04:47,365 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/208982
+2025-09-03 08:04:47,407 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000151527 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:04:47,437 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000303054 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:04:47,482 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000606108 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:04:47,520 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00121222 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:04:47,558 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00242443 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:04:47,600 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00484886 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:04:47,662 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00969772 | pop=11.0±1.1 | 97%>14 | valid=367/10000 (4%) | sigma=0.000342906 | lambda_min=1.25242e-07 | Sigma/D=0.0354
+2025-09-03 08:04:48,068 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0193954 | pop=16.9±5.5 | 97%>31 | valid=9283/10000 (93%) | sigma=0.000373097 | lambda_min=1.45164e-07 | Sigma/D=0.0192
+2025-09-03 08:04:48,543 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0387909 | pop=60.7±17.7 | 97%>107 | valid=9960/10000 (100%) | sigma=0.000410417 | lambda_min=1.70485e-07 | Sigma/D=0.0106
+2025-09-03 08:04:49,160 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0775818 | pop=228.1±57.4 | 97%>343 | valid=9969/10000 (100%) | sigma=0.000436197 | lambda_min=1.91559e-07 | Sigma/D=0.0056
+2025-09-03 08:04:50,084 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.155164 | pop=832.3±209.9 | 97%>1153 | valid=9997/10000 (100%) | sigma=0.000490705 | lambda_min=2.43575e-07 | Sigma/D=0.0032
+2025-09-03 08:04:51,681 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.310327 | pop=2760.7±773.3 | 97%>3963 | valid=10000/10000 (100%) | sigma=0.000605747 | lambda_min=3.73108e-07 | Sigma/D=0.0020
+2025-09-03 08:04:51,681 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 4.315s
+2025-09-03 08:04:51,681 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-03 08:04:51,681 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.009698, proj=0.019395 | 0.000s
+2025-09-03 08:04:51,681 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-03 08:04:51,681 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken TUNSPEKT Labordaten_all,Faro_ipm_lab_pos02 - Box1 …
+2025-09-03 08:04:51,681 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=None, radius=0.009697721093318082, k=24, sample_size=None, use_convex_hull=True
+2025-09-03 08:04:51,681 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 208982 points (radius=0.009697721093318082, k=24, sample_size=None)
+2025-09-03 08:04:55,843 [INFO] m3c2.core.statistics.cloud_quality - Evaluating 50000 neighborhoods (min_pts=10, max_eval=50000)
+2025-09-03 08:05:06,314 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=125659.446, roughness_mean=0.000
+2025-09-03 08:05:06,779 [INFO] m3c2.pipeline.batch_orchestrator - [Job] TUNSPEKT Labordaten_all abgeschlossen in 20.773s
+2025-09-03 08:05:06,779 [INFO] CLIApp - Processing completed successfully.
+2025-09-03 08:05:21,398 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-03 08:05:21,398 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-03 08:05:21,398 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-03 08:05:21,398 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-03 08:05:21,398 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-03 08:05:21,400 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-03 08:05:21,400 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-03 08:05:21,400 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, Faro_ipm_lab_pos02 - Box1, Faro_ipm_lab_pos01 - Box1, python
+2025-09-03 08:05:21,418 [INFO] m3c2.io.format_handler - Reading PLY file data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos03 - Box1.ply
+2025-09-03 08:05:21,597 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos03 - Box1.xyz'
+2025-09-03 08:05:21,805 [INFO] m3c2.pipeline.data_loader - [Load] data/TUNSPEKT Labordaten_all: single_cloud=Epoch | 0.409s
+2025-09-03 08:05:21,807 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 62933 points
+2025-09-03 08:05:21,969 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.002815 (k=6) | 0.162s
+2025-09-03 08:05:21,969 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 62933 points and avg_spacing 0.002815
+2025-09-03 08:05:21,971 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/62933
+2025-09-03 08:05:22,007 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000351924 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:05:22,043 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000703848 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:05:22,079 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0014077 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:05:22,112 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00281539 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:05:22,158 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00563078 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:05:22,203 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0112616 | pop=10.2±0.6 | 97%>12 | valid=22/10000 (0%) | sigma=0.000202801 | lambda_min=4.58249e-08 | Sigma/D=0.0180
+2025-09-03 08:05:22,515 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0225231 | pop=14.9±3.4 | 97%>22 | valid=6746/10000 (67%) | sigma=0.00026022 | lambda_min=7.31999e-08 | Sigma/D=0.0116
+2025-09-03 08:05:22,990 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0450463 | pop=45.5±16.5 | 97%>72 | valid=9990/10000 (100%) | sigma=0.000330172 | lambda_min=1.16127e-07 | Sigma/D=0.0073
+2025-09-03 08:05:23,553 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0900925 | pop=171.6±63.5 | 97%>263 | valid=9999/10000 (100%) | sigma=0.000364604 | lambda_min=1.38563e-07 | Sigma/D=0.0040
+2025-09-03 08:05:24,365 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.180185 | pop=623.5±244.3 | 97%>995 | valid=9999/10000 (100%) | sigma=0.000427679 | lambda_min=1.87511e-07 | Sigma/D=0.0024
+2025-09-03 08:05:25,696 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.36037 | pop=2029.1±851.4 | 97%>3575 | valid=9999/10000 (100%) | sigma=0.000526584 | lambda_min=2.85073e-07 | Sigma/D=0.0015
+2025-09-03 08:05:27,850 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.72074 | pop=4918.5±1628.5 | 97%>6870 | valid=9999/10000 (100%) | sigma=0.000641515 | lambda_min=4.26643e-07 | Sigma/D=0.0009
+2025-09-03 08:05:27,851 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 5.915s
+2025-09-03 08:05:27,851 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-03 08:05:27,852 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.011262, proj=0.022523 | 0.000s
+2025-09-03 08:05:27,852 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-03 08:05:27,852 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken TUNSPEKT Labordaten_all,Faro_ipm_lab_pos03 - Box1 …
+2025-09-03 08:05:27,853 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=None, radius=0.011261568263522896, k=24, sample_size=None, use_convex_hull=True
+2025-09-03 08:05:27,853 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 62933 points (radius=0.011261568263522896, k=24, sample_size=None)
+2025-09-03 08:05:28,703 [INFO] m3c2.core.statistics.cloud_quality - Evaluating 50000 neighborhoods (min_pts=10, max_eval=50000)
+2025-09-03 08:05:37,934 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=21943.842, roughness_mean=0.000
+2025-09-03 08:05:38,266 [INFO] m3c2.pipeline.batch_orchestrator - [Job] TUNSPEKT Labordaten_all abgeschlossen in 16.961s
+2025-09-03 08:05:38,266 [INFO] CLIApp - Processing completed successfully.
+2025-09-03 08:17:09,197 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data
+2025-09-03 08:17:09,197 [INFO] CLIApp - Folder IDs for processing: ['TUNSPEKT Labordaten_all']
+2025-09-03 08:17:09,197 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-03 08:17:09,213 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-03 08:17:09,213 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-03 08:17:09,213 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-03 08:17:09,213 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-03 08:17:09,213 [INFO] m3c2.pipeline.batch_orchestrator - TUNSPEKT Labordaten_all, Faro_ipm_lab_pos02 - Box1, Faro_ipm_lab_pos01 - Box1, python
+2025-09-03 08:17:09,213 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-03 08:17:09,252 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Faro_ipm_lab_pos03 - Box1.xyz'
+2025-09-03 08:17:09,445 [INFO] m3c2.pipeline.data_loader - [Load] data/TUNSPEKT Labordaten_all: single_cloud=Epoch | 0.232s
+2025-09-03 08:17:09,446 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 62933 points
+2025-09-03 08:17:09,595 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.002815 (k=6) | 0.152s
+2025-09-03 08:17:09,595 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 62933 points and avg_spacing 0.002815
+2025-09-03 08:17:09,595 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/62933
+2025-09-03 08:17:09,634 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000351924 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:17:09,667 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000703848 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:17:09,698 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0014077 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:17:09,738 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00281539 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:17:09,769 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00563078 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:17:09,817 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0112616 | pop=10.2±0.5 | 97%>11 | valid=46/10000 (0%) | sigma=0.000217135 | lambda_min=5.17535e-08 | Sigma/D=0.0193
+2025-09-03 08:17:10,093 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0225231 | pop=15.0±3.5 | 97%>22 | valid=6743/10000 (67%) | sigma=0.000259905 | lambda_min=7.27126e-08 | Sigma/D=0.0115
+2025-09-03 08:17:10,513 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0450463 | pop=45.8±16.8 | 97%>72 | valid=9990/10000 (100%) | sigma=0.000329363 | lambda_min=1.16108e-07 | Sigma/D=0.0073
+2025-09-03 08:17:11,033 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0900925 | pop=173.0±64.3 | 97%>264 | valid=9999/10000 (100%) | sigma=0.000363036 | lambda_min=1.37724e-07 | Sigma/D=0.0040
+2025-09-03 08:17:11,777 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.180185 | pop=627.4±248.1 | 97%>991 | valid=9999/10000 (100%) | sigma=0.000426559 | lambda_min=1.86935e-07 | Sigma/D=0.0024
+2025-09-03 08:17:13,034 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.36037 | pop=2042.8±871.5 | 97%>3610 | valid=9999/10000 (100%) | sigma=0.000526546 | lambda_min=2.84376e-07 | Sigma/D=0.0015
+2025-09-03 08:17:15,056 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.72074 | pop=4948.4±1658.8 | 97%>6908 | valid=9999/10000 (100%) | sigma=0.000637981 | lambda_min=4.20128e-07 | Sigma/D=0.0009
+2025-09-03 08:17:15,056 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 5.464s
+2025-09-03 08:17:15,062 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-03 08:17:15,062 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.011262, proj=0.022523 | 0.000s
+2025-09-03 08:17:15,062 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-03 08:17:15,062 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken TUNSPEKT Labordaten_all,Faro_ipm_lab_pos03 - Box1 …
+2025-09-03 08:17:15,062 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=None, radius=0.011261568263522896, k=24, sample_size=None, use_convex_hull=True
+2025-09-03 08:17:15,062 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 62933 points (radius=0.011261568263522896, k=24, sample_size=None)
+2025-09-03 08:17:15,863 [INFO] m3c2.core.statistics.cloud_quality - Evaluating 50000 neighborhoods (min_pts=10, max_eval=50000)
+2025-09-03 08:17:23,849 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=21943.842, roughness_mean=0.000
+2025-09-03 08:17:24,137 [INFO] m3c2.pipeline.batch_orchestrator - [Job] TUNSPEKT Labordaten_all abgeschlossen in 14.927s
+2025-09-03 08:17:24,137 [INFO] CLIApp - Processing completed successfully.
+2025-09-03 08:23:00,494 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_run_invokes_orchestrator0
+2025-09-03 08:23:00,495 [INFO] CLIApp - Folder IDs for processing: ['001']
+2025-09-03 08:23:00,495 [INFO] CLIApp - Reference filename for processing: Faro_ipm_lab_pos01 - Box1
+2025-09-03 08:23:00,495 [INFO] CLIApp - Moving filename for processing: Faro_ipm_lab_pos02 - Box1
+2025-09-03 08:23:00,495 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-03 08:23:00,496 [INFO] CLIApp - Processing completed successfully.
+2025-09-03 08:23:00,499 [INFO] m3c2.cli.comparedist_plots - Starting plot generation PlotConfig(folder_ids=['id'], filenames=['ref'], project='MARS', outdir='C:\\Users\\sieglinde.hoedl\\AppData\\Local\\Temp\\pytest-of-Sieglinde.Hoedl\\pytest-7\\test_main_creates_output0', versions=None, bins=256, colors={}, path='C:\\Users\\sieglinde.hoedl\\AppData\\Local\\Temp\\pytest-of-Sieglinde.Hoedl\\pytest-7\\test_main_creates_output0\\MARS_output\\MARS_plots'), PlotOptionsComparedistances(plot_blandaltman=True, plot_passingbablok=True, plot_linearregression=True)
+2025-09-03 08:23:00,509 [INFO] m3c2.archive_moduls.outlier_plots - Starting variant ref
+2025-09-03 08:23:00,592 [INFO] m3c2.archive_moduls.outlier_plots - Completed variant ref
+2025-09-03 08:23:00,911 [INFO] m3c2.cli.singlecloud_stats - Parameters received: folder_ids=['fid'], filename_mov=HandheldRoi, filename_ref=MavicRoi, area_m2=None, radius=1.0, k=6, sample_size=100000, use_convex_hull=True, out_path=C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_writes_output0\stats.xlsx, sheet_name=CloudStats, output_format=excel
+2025-09-03 08:23:00,911 [INFO] m3c2.cli.singlecloud_stats - Processing folders: ['fid']
+2025-09-03 08:23:00,911 [INFO] m3c2.cli.singlecloud_stats - Statistics computation completed successfully
+2025-09-03 08:23:00,919 [INFO] m3c2.core.statistics.basic_metrics - basic_stats received 0 values
+2025-09-03 08:23:00,919 [INFO] m3c2.core.statistics.basic_metrics - basic_stats summary: min=nan, max=nan, mean=nan
+2025-09-03 08:23:00,919 [INFO] m3c2.core.statistics.basic_metrics - basic_stats received 3 values
+2025-09-03 08:23:00,923 [INFO] m3c2.core.statistics.basic_metrics - basic_stats summary: min=1.000000, max=3.000000, mean=2.000000
+2025-09-03 08:23:00,932 [INFO] m3c2.core.statistics.basic_metrics - fit_distributions Gaussian: mu=0.946220, std=2.027199, chi2=58.254962
+2025-09-03 08:23:00,932 [INFO] m3c2.core.statistics.basic_metrics - fit_distributions Weibull: a=5.182183, b=10.252431, loc=-8.505403, chi2=42.907220
+2025-09-03 08:23:00,950 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=None, radius=None, k=24, sample_size=100000, use_convex_hull=True
+2025-09-03 08:23:00,950 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=None, radius=None, k=24, sample_size=100000, use_convex_hull=True
+2025-09-03 08:23:02,993 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=1.0, radius=2.0, k=2, sample_size=None, use_convex_hull=False
+2025-09-03 08:23:02,993 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 4 points (radius=2.0, k=2, sample_size=None)
+2025-09-03 08:23:03,009 [INFO] m3c2.core.statistics.cloud_quality - Evaluating 0 neighborhoods (min_pts=10, max_eval=50000)
+2025-09-03 08:23:03,009 [WARNING] m3c2.core.statistics.cloud_quality - No valid neighborhoods remain after filtering (min_pts=10)
+2025-09-03 08:23:03,009 [WARNING] m3c2.core.statistics.cloud_quality - Local density array is empty or contains NaN
+2025-09-03 08:23:03,009 [WARNING] m3c2.core.statistics.cloud_quality - Roughness array is empty or contains NaN
+2025-09-03 08:23:03,009 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=4.000, roughness_mean=nan
+2025-09-03 08:23:03,009 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] RMS: 2.504309
+2025-09-03 08:23:03,009 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 2.504309
+2025-09-03 08:23:03,009 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Inlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_exclude_outliers_methods0\distances_inlier_rmse.txt
+2025-09-03 08:23:03,009 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Outlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_exclude_outliers_methods0\distances_outlier_rmse.txt
+2025-09-03 08:23:03,009 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Gesamt: 9
+2025-09-03 08:23:03,009 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] NaN: 1
+2025-09-03 08:23:03,009 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 8
+2025-09-03 08:23:03,009 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Methode: rmse
+2025-09-03 08:23:03,009 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Outlier: 2
+2025-09-03 08:23:03,009 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Inlier: 6
+2025-09-03 08:23:03,009 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] IQR: 0.250000
+2025-09-03 08:23:03,009 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Outlier-Schwellen: -0.400000 bis 0.600000
+2025-09-03 08:23:03,027 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Inlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_exclude_outliers_methods0\distances_inlier_iqr.txt
+2025-09-03 08:23:03,027 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Outlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_exclude_outliers_methods0\distances_outlier_iqr.txt
+2025-09-03 08:23:03,028 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Gesamt: 9
+2025-09-03 08:23:03,028 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] NaN: 1
+2025-09-03 08:23:03,028 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 8
+2025-09-03 08:23:03,028 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Methode: iqr
+2025-09-03 08:23:03,028 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Outlier: 2
+2025-09-03 08:23:03,028 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Inlier: 6
+2025-09-03 08:23:03,029 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] STD: 2.502990
+2025-09-03 08:23:03,029 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Outlier-Schwelle: 2.502990
+2025-09-03 08:23:03,031 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Inlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_exclude_outliers_methods0\distances_inlier_std.txt
+2025-09-03 08:23:03,031 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Outlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_exclude_outliers_methods0\distances_outlier_std.txt
+2025-09-03 08:23:03,032 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Gesamt: 9
+2025-09-03 08:23:03,032 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] NaN: 1
+2025-09-03 08:23:03,032 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 8
+2025-09-03 08:23:03,032 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Methode: std
+2025-09-03 08:23:03,032 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Outlier: 2
+2025-09-03 08:23:03,032 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Inlier: 6
+2025-09-03 08:23:03,033 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Inlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_exclude_outliers_methods0\distances_inlier_nmad.txt
+2025-09-03 08:23:03,033 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Outlier gespeichert: C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_exclude_outliers_methods0\distances_outlier_nmad.txt
+2025-09-03 08:23:03,033 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Gesamt: 9
+2025-09-03 08:23:03,033 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] NaN: 1
+2025-09-03 08:23:03,033 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Valid (ohne NaN): 8
+2025-09-03 08:23:03,033 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Methode: nmad
+2025-09-03 08:23:03,033 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Outlier: 2
+2025-09-03 08:23:03,033 [INFO] m3c2.archive_moduls.exclude_outliers - [Exclude Outliers] Inlier: 6
+2025-09-03 08:23:03,058 [INFO] m3c2.core.statistics.exporters - Skipping writing table to dummy.xlsx - no data
+2025-09-03 08:23:03,070 [WARNING] m3c2.core.statistics.exporters - Failed to read existing JSON 'C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_append_df_to_json_handles0\data.json': Unexpected character found when decoding 'null'
+2025-09-03 08:23:03,128 [INFO] m3c2.core.statistics.exporters - Skipping writing cloud stats to dummy.xlsx - no data
+2025-09-03 08:23:03,143 [INFO] m3c2.core.m3c2_runner - Starting M3C2 run with normal=0.5 and projection=1.0
+2025-09-03 08:23:03,143 [INFO] m3c2.core.m3c2_runner - Completed M3C2 run: 1 distances (NaN ratio 0.00%)
+2025-09-03 08:23:03,146 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: rmse
+2025-09-03 08:23:03,146 [INFO] m3c2.core.statistics.outliers - [Outliers] RMSE: 5.773503, Outlier-Schwelle: 5.773503
+2025-09-03 08:23:03,147 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: iqr
+2025-09-03 08:23:03,148 [INFO] m3c2.core.statistics.outliers - [Outliers] IQR: 25.500000
+2025-09-03 08:23:03,148 [INFO] m3c2.core.statistics.outliers - [Outliers] Outlier-Schwellen: -36.500000 bis 65.500000
+2025-09-03 08:23:03,149 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: std
+2025-09-03 08:23:03,150 [INFO] m3c2.core.statistics.outliers - [Outliers] STD: 4.714045, Outlier-Schwelle: 4.714045
+2025-09-03 08:23:03,151 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: nmad
+2025-09-03 08:23:03,151 [INFO] m3c2.core.statistics.outliers - [Outliers] NMAD: 0.000000, Outlier-Schwelle: 0.000000
+2025-09-03 08:23:03,153 [INFO] m3c2.core.statistics.outliers - [Outliers] Methode: foo
+2025-09-03 08:23:03,154 [INFO] m3c2.core.statistics.outliers - [Outliers] Outlier: +1 / -1 | Inlier: +2 / -1
+2025-09-03 08:23:03,156 [INFO] m3c2.core.statistics.outliers - [Outliers] Outlier: +0 / -0 | Inlier: +2 / -0
+2025-09-03 08:23:03,160 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 4 points
+2025-09-03 08:23:03,165 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 4 points and avg_spacing 1.000000
+2025-09-03 08:23:03,167 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 2 scans
+2025-09-03 08:23:03,172 [INFO] m3c2.gui.argparse_gui - GUI window opened
+2025-09-03 08:23:03,178 [INFO] m3c2.gui.argparse_gui - Start pressed with arguments: ['--flag', '--opt', 'value', 'positional']
+2025-09-03 08:23:03,178 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Loading workbook 'dummy.xlsx'
+2025-09-03 08:23:03,178 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Workbook 'dummy.xlsx' loaded
+2025-09-03 08:23:03,178 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Checking for sheet 'CloudStats'
+2025-09-03 08:23:03,178 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Processing headers in sheet 'CloudStats'
+2025-09-03 08:23:03,178 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Inserted comment for header 'Timestamp'
+2025-09-03 08:23:03,178 [WARNING] m3c2.io.excel_writer.comments_stats_clouds - No comment mapping found for header 'Other'
+2025-09-03 08:23:03,178 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Saving workbook 'dummy.xlsx'
+2025-09-03 08:23:03,178 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Workbook 'dummy.xlsx' saved
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Loading workbook 'dummy.xlsx'
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Workbook 'dummy.xlsx' loaded
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_clouds - Checking for sheet 'CloudStats'
+2025-09-03 08:23:03,193 [WARNING] m3c2.io.excel_writer.comments_stats_clouds - Sheet 'CloudStats' not found in dummy.xlsx
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_distances - Loading workbook 'dummy.xlsx'
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_distances - Workbook 'dummy.xlsx' loaded
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_distances - Checking for sheet 'Results'
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_distances - Processing headers in sheet 'Results'
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_distances - Inserted comment for header 'Timestamp'
+2025-09-03 08:23:03,193 [WARNING] m3c2.io.excel_writer.comments_stats_distances - No comment mapping found for header 'Other'
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_distances - Saving workbook 'dummy.xlsx'
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_distances - Workbook 'dummy.xlsx' saved
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_distances - Loading workbook 'dummy.xlsx'
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_distances - Workbook 'dummy.xlsx' loaded
+2025-09-03 08:23:03,193 [INFO] m3c2.io.excel_writer.comments_stats_distances - Checking for sheet 'Results'
+2025-09-03 08:23:03,193 [WARNING] m3c2.io.excel_writer.comments_stats_distances - Sheet 'Results' not found in dummy.xlsx
+2025-09-03 08:23:03,209 [INFO] m3c2.io.filename_services.delete_filename - C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_renames_and_dry_run0\sub\python_file2.txt -> C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_renames_and_dry_run0\sub\file2.txt
+2025-09-03 08:23:03,209 [INFO] m3c2.io.filename_services.delete_filename - C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_renames_and_dry_run0\python_file1.txt -> C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_renames_and_dry_run0\file1.txt
+2025-09-03 08:23:03,209 [INFO] m3c2.io.filename_services.delete_filename - Fertig. Umbenannt: 2, Übersprungen: 0
+2025-09-03 08:23:03,209 [INFO] m3c2.io.filename_services.delete_filename - C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_renames_and_dry_run0\python_dry.txt -> C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_renames_and_dry_run0\dry.txt
+2025-09-03 08:23:03,209 [INFO] m3c2.io.filename_services.delete_filename - Fertig. (Dry-Run) Umbenannt: 1, Übersprungen: 0
+2025-09-03 08:23:03,241 [INFO] m3c2.io.filename_services.rename_filename - C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_renames_and_dry_run1\sub\2-2_cloud.txt -> C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_renames_and_dry_run1\sub\b-2_cloud.txt
+2025-09-03 08:23:03,242 [INFO] m3c2.io.filename_services.rename_filename - C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_renames_and_dry_run1\1-1_cloud.txt -> C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_renames_and_dry_run1\a-1_cloud.txt
+2025-09-03 08:23:03,243 [INFO] m3c2.io.filename_services.rename_filename - Fertig. Umbenannt: 2, Übersprungen: 0
+2025-09-03 08:23:03,246 [INFO] m3c2.io.filename_services.rename_filename - C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_renames_and_dry_run1\1-3_cloud.txt -> C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_main_renames_and_dry_run1\a-3_cloud.txt
+2025-09-03 08:23:03,246 [INFO] m3c2.io.filename_services.rename_filename - Fertig. (Dry-Run) Umbenannt: 1, Übersprungen: 0
+2025-09-03 08:23:03,271 [INFO] m3c2.io.format_handler - Reading GPC file C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_ensure_xyz_from_gpc0\mov.gpc
+2025-09-03 08:23:03,286 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-03 08:23:03,286 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-03 08:23:03,286 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_ply
+2025-09-03 08:23:03,286 [INFO] m3c2.io.datasource - Nutze mov als Corepoints und nutze Subsamling: 1
+2025-09-03 08:23:03,286 [INFO] m3c2.io.format_handler - Reading XYZ file C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_read_xyz0\points.xyz
+2025-09-03 08:23:03,302 [INFO] m3c2.io.format_handler - Reading PLY file C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_read_ply0\points.ply
+2025-09-03 08:23:03,302 [INFO] m3c2.io.format_handler - Reading OBJ file C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_read_obj0\mesh.obj
+2025-09-03 08:23:03,302 [INFO] m3c2.io.format_handler - Reading LAS/LAZ file C:\Users\sieglinde.hoedl\AppData\Local\Temp\pytest-of-Sieglinde.Hoedl\pytest-7\test_read_las_missing_dependen0\dummy.las
+2025-09-03 08:23:03,302 [ERROR] m3c2.io.format_handler - LAS/LAZ found, but 'laspy' is not installed.
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\io\format_handler.py", line 72, in read_las
+    laspy = import_module("laspy")
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\tests\test_io\test_format_handler.py", line 142, in fake_import
+    raise ImportError
+ImportError
+2025-09-03 08:46:54,690 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all
+2025-09-03 08:46:54,690 [INFO] CLIApp - Folder IDs for processing: ['Altone']
+2025-09-03 08:46:54,690 [INFO] CLIApp - Reference filename for processing: 
+2025-09-03 08:46:54,690 [INFO] CLIApp - Moving filename for processing: 
+2025-09-03 08:46:54,690 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-03 08:46:54,691 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-03 08:46:54,691 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-03 08:46:54,691 [INFO] m3c2.pipeline.batch_orchestrator - Altone, , , python
+2025-09-03 08:46:54,696 [INFO] m3c2.io.format_handler - Reading PLY file data\TUNSPEKT Labordaten_all\Altone\Altone_SessionTest1_georef_campos - box01.ply
+2025-09-03 08:46:55,285 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Altone\Altone_SessionTest1_georef_campos - box01.xyz'
+2025-09-03 08:46:56,208 [INFO] m3c2.pipeline.data_loader - [Load] data/Altone: single_cloud=Epoch | 1.518s
+2025-09-03 08:46:56,208 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 299392 points
+2025-09-03 08:46:56,999 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.000903 (k=6) | 0.789s
+2025-09-03 08:46:56,999 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 299392 points and avg_spacing 0.000903
+2025-09-03 08:46:57,004 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/299392
+2025-09-03 08:46:57,031 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000112889 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:46:57,059 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000225778 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:46:57,098 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000451556 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:46:57,131 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000903111 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:46:57,164 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00180622 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:46:57,212 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00361244 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:46:57,242 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00722489 | pop=10.0±0.0 | 97%>10 | valid=1/10000 (0%) | sigma=0.000139095 | lambda_min=1.93473e-08 | Sigma/D=0.0193
+2025-09-03 08:46:57,448 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0144498 | pop=11.8±1.8 | 97%>16 | valid=4193/10000 (42%) | sigma=0.00014385 | lambda_min=2.38323e-08 | Sigma/D=0.0100
+2025-09-03 08:46:57,851 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0288996 | pop=33.4±6.3 | 97%>45 | valid=9999/10000 (100%) | sigma=0.000178377 | lambda_min=3.53686e-08 | Sigma/D=0.0062
+2025-09-03 08:46:58,323 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0577991 | pop=127.6±19.9 | 97%>156 | valid=10000/10000 (100%) | sigma=0.000210417 | lambda_min=4.73496e-08 | Sigma/D=0.0036
+2025-09-03 08:46:58,984 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.115598 | pop=478.8±91.7 | 97%>571 | valid=10000/10000 (100%) | sigma=0.000265658 | lambda_min=7.3972e-08 | Sigma/D=0.0023
+2025-09-03 08:47:00,116 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.231196 | pop=1695.9±422.8 | 97%>2188 | valid=10000/10000 (100%) | sigma=0.000386278 | lambda_min=1.55997e-07 | Sigma/D=0.0017
+2025-09-03 08:47:00,118 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 3.119s
+2025-09-03 08:47:00,118 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-03 08:47:00,118 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.007225, proj=0.014450 | 0.000s
+2025-09-03 08:47:00,118 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-03 08:47:00,118 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken Altone,Altone_SessionTest1_georef_campos - box01 …
+2025-09-03 08:47:00,118 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=None, radius=0.007224889292906717, k=24, sample_size=None, use_convex_hull=True
+2025-09-03 08:47:00,118 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 299392 points (radius=0.007224889292906717, k=24, sample_size=None)
+2025-09-03 08:47:05,844 [INFO] m3c2.core.statistics.cloud_quality - Evaluating 50000 neighborhoods (min_pts=10, max_eval=50000)
+2025-09-03 08:47:14,449 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=109645711.105, roughness_mean=0.000
+2025-09-03 08:47:14,960 [ERROR] m3c2.pipeline.batch_orchestrator - Fehler bei der Berechnung der Statistik
+Traceback (most recent call last):
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\batch_orchestrator.py", line 253, in _batch_process_singlecloud
+    self.statistics_runner.single_cloud_statistics_handler(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\pipeline\statistics_runner.py", line 141, in single_cloud_statistics_handler
+    StatisticsService.calc_single_cloud_stats(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\service.py", line 438, in calc_single_cloud_stats
+    write_cloud_stats(
+  File "c:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\m3c2\core\statistics\exporters.py", line 263, in write_cloud_stats
+    with pd.ExcelWriter(out_path, engine="openpyxl", mode="w") as w:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python\Python312\venv\ai3d\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Python\Python312\venv\ai3d\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ^^^^^^^^^^^
+  File "C:\Python\Python312\venv\ai3d\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'outputs/TUNSPEKT_output/TUNSPEKT_m3c2_stats_clouds.xlsx'
+2025-09-03 08:47:15,000 [INFO] m3c2.pipeline.batch_orchestrator - [Job] Altone abgeschlossen in 20.308s
+2025-09-03 08:47:15,000 [INFO] CLIApp - Processing completed successfully.
+2025-09-03 08:48:13,401 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all
+2025-09-03 08:48:13,401 [INFO] CLIApp - Folder IDs for processing: ['Altone']
+2025-09-03 08:48:13,401 [INFO] CLIApp - Reference filename for processing: 
+2025-09-03 08:48:13,401 [INFO] CLIApp - Moving filename for processing: 
+2025-09-03 08:48:13,401 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-03 08:48:13,401 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-03 08:48:13,401 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-03 08:48:13,401 [INFO] m3c2.pipeline.batch_orchestrator - Altone, , , python
+2025-09-03 08:48:13,401 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-03 08:48:13,447 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Altone\Altone_SessionTest1_georef_campos - box01.xyz'
+2025-09-03 08:48:14,410 [INFO] m3c2.pipeline.data_loader - [Load] data/Altone: single_cloud=Epoch | 1.004s
+2025-09-03 08:48:14,411 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 299392 points
+2025-09-03 08:48:15,192 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.000903 (k=6) | 0.789s
+2025-09-03 08:48:15,192 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 299392 points and avg_spacing 0.000903
+2025-09-03 08:48:15,203 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/299392
+2025-09-03 08:48:15,238 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000112889 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:48:15,272 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000225778 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:48:15,307 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000451556 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:48:15,342 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000903111 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:48:15,375 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00180622 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:48:15,408 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00361244 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 08:48:15,447 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00722489 | pop=10.0±0.0 | 97%>10 | valid=2/10000 (0%) | sigma=0.000102086 | lambda_min=1.09015e-08 | Sigma/D=0.0141
+2025-09-03 08:48:15,642 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0144498 | pop=11.9±2.0 | 97%>17 | valid=4356/10000 (44%) | sigma=0.000142909 | lambda_min=2.30869e-08 | Sigma/D=0.0099
+2025-09-03 08:48:16,042 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0288996 | pop=33.6±6.5 | 97%>46 | valid=9999/10000 (100%) | sigma=0.000179124 | lambda_min=3.46276e-08 | Sigma/D=0.0062
+2025-09-03 08:48:16,522 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0577991 | pop=127.4±20.5 | 97%>159 | valid=10000/10000 (100%) | sigma=0.00020986 | lambda_min=4.64454e-08 | Sigma/D=0.0036
+2025-09-03 08:48:17,194 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.115598 | pop=476.7±89.6 | 97%>586 | valid=10000/10000 (100%) | sigma=0.000265416 | lambda_min=7.38513e-08 | Sigma/D=0.0023
+2025-09-03 08:48:18,337 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.231196 | pop=1683.0±415.8 | 97%>2212 | valid=10000/10000 (100%) | sigma=0.000386313 | lambda_min=1.56322e-07 | Sigma/D=0.0017
+2025-09-03 08:48:18,337 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 3.138s
+2025-09-03 08:48:18,338 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-03 08:48:18,338 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.007225, proj=0.014450 | 0.000s
+2025-09-03 08:48:18,338 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-03 08:48:18,339 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken Altone,Altone_SessionTest1_georef_campos - box01 …
+2025-09-03 08:48:18,339 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=None, radius=0.007224889292906717, k=24, sample_size=None, use_convex_hull=True
+2025-09-03 08:48:18,339 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 299392 points (radius=0.007224889292906717, k=24, sample_size=None)
+2025-09-03 08:48:23,927 [INFO] m3c2.core.statistics.cloud_quality - Evaluating 50000 neighborhoods (min_pts=10, max_eval=50000)
+2025-09-03 08:48:32,239 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=109645711.105, roughness_mean=0.000
+2025-09-03 08:48:32,604 [INFO] m3c2.pipeline.batch_orchestrator - [Job] Altone abgeschlossen in 19.206s
+2025-09-03 08:48:32,604 [INFO] CLIApp - Processing completed successfully.
+2025-09-03 09:10:50,807 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Handheld
+2025-09-03 09:10:50,807 [INFO] CLIApp - Folder IDs for processing: ['box01']
+2025-09-03 09:10:50,807 [INFO] CLIApp - Reference filename for processing: 
+2025-09-03 09:10:50,807 [INFO] CLIApp - Moving filename for processing: 
+2025-09-03 09:10:50,807 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-03 09:10:50,807 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-03 09:10:50,807 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-03 09:10:50,807 [INFO] m3c2.pipeline.batch_orchestrator - box01, , , python
+2025-09-03 09:10:50,807 [INFO] m3c2.io.format_handler - Reading PLY file data\TUNSPEKT Labordaten_all\Handheld\box01\Handheld_georef_mw - box01.ply
+2025-09-03 09:10:51,426 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Handheld\box01\Handheld_georef_mw - box01.xyz'
+2025-09-03 09:10:52,442 [INFO] m3c2.pipeline.data_loader - [Load] data/box01: single_cloud=Epoch | 1.634s
+2025-09-03 09:10:52,443 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 311712 points
+2025-09-03 09:10:53,348 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.000880 (k=6) | 0.908s
+2025-09-03 09:10:53,348 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 311712 points and avg_spacing 0.000880
+2025-09-03 09:10:53,357 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/311712
+2025-09-03 09:10:53,392 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000110019 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:10:53,425 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000220038 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:10:53,458 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000440076 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:10:53,492 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000880152 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:10:53,525 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0017603 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:10:53,558 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00352061 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:10:53,593 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00704122 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:10:53,778 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0140824 | pop=11.6±1.7 | 97%>16 | valid=3850/10000 (38%) | sigma=0.000139895 | lambda_min=2.1548e-08 | Sigma/D=0.0099
+2025-09-03 09:10:54,177 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0281649 | pop=31.9±6.1 | 97%>43 | valid=9998/10000 (100%) | sigma=0.000186889 | lambda_min=3.69123e-08 | Sigma/D=0.0066
+2025-09-03 09:10:54,648 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0563297 | pop=121.5±18.9 | 97%>148 | valid=10000/10000 (100%) | sigma=0.000223877 | lambda_min=5.21038e-08 | Sigma/D=0.0040
+2025-09-03 09:10:55,300 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.112659 | pop=456.5±82.5 | 97%>540 | valid=10000/10000 (100%) | sigma=0.000279966 | lambda_min=8.13756e-08 | Sigma/D=0.0025
+2025-09-03 09:10:56,409 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.225319 | pop=1614.1±385.9 | 97%>2068 | valid=10000/10000 (100%) | sigma=0.0003947 | lambda_min=1.62314e-07 | Sigma/D=0.0018
+2025-09-03 09:10:56,409 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 3.058s
+2025-09-03 09:10:56,409 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-03 09:10:56,410 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.014082, proj=0.028165 | 0.000s
+2025-09-03 09:10:56,411 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-03 09:10:56,411 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken box01,Handheld_georef_mw - box01 …
+2025-09-03 09:10:56,411 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=None, radius=0.014082436608633947, k=24, sample_size=None, use_convex_hull=True
+2025-09-03 09:10:56,412 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 311712 points (radius=0.014082436608633947, k=24, sample_size=None)
+2025-09-03 09:11:06,103 [INFO] m3c2.core.statistics.cloud_quality - Evaluating 50000 neighborhoods (min_pts=10, max_eval=50000)
+2025-09-03 09:11:16,960 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=98947238.107, roughness_mean=0.000
+2025-09-03 09:11:17,802 [INFO] m3c2.pipeline.batch_orchestrator - [Job] box01 abgeschlossen in 26.994s
+2025-09-03 09:11:17,802 [INFO] CLIApp - Processing completed successfully.
+2025-09-03 09:11:29,903 [INFO] CLIApp - Base directories for processing: C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Handheld
+2025-09-03 09:11:29,903 [INFO] CLIApp - Folder IDs for processing: ['box01']
+2025-09-03 09:11:29,903 [INFO] CLIApp - Reference filename for processing: 
+2025-09-03 09:11:29,903 [INFO] CLIApp - Moving filename for processing: 
+2025-09-03 09:11:29,903 [INFO] CLIApp - Single statistics filename for processing: mov
+2025-09-03 09:11:29,903 [INFO] m3c2.pipeline.batch_orchestrator - === BatchOrchestrator initialisiert ===
+2025-09-03 09:11:29,903 [INFO] m3c2.pipeline.batch_orchestrator - Konfigurationen: 1 Jobs
+2025-09-03 09:11:29,903 [INFO] m3c2.pipeline.batch_orchestrator - box01, , , python
+2025-09-03 09:11:29,903 [INFO] m3c2.io.datasource - Nutze py4dgeo.read_from_xyz
+2025-09-03 09:11:29,945 [INFO] py4dgeo - Reading point cloud from file 'C:\Users\sieglinde.hoedl\AI_Mars3D\src_uptodate\data\TUNSPEKT Labordaten_all\Handheld\box01\Handheld_georef_mw - box01.xyz'
+2025-09-03 09:11:30,907 [INFO] m3c2.pipeline.data_loader - [Load] data/box01: single_cloud=Epoch | 1.005s
+2025-09-03 09:11:30,907 [INFO] m3c2.core.param_estimator - [Spacing] estimate_min_spacing called with 311712 points
+2025-09-03 09:11:31,757 [INFO] m3c2.pipeline.scale_estimator - [Spacing] avg_spacing=0.000880 (k=6) | 0.844s
+2025-09-03 09:11:31,757 [INFO] m3c2.core.param_estimator - [Scan] scan_scales called with 311712 points and avg_spacing 0.000880
+2025-09-03 09:11:31,765 [INFO] m3c2.pipeline.strategies - [RadiusScan] Subsample: 10000/311712
+2025-09-03 09:11:31,789 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000110019 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:11:31,825 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000220038 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:11:31,861 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000440076 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:11:31,890 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.000880152 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:11:31,928 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0017603 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:11:31,956 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00352061 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:11:31,990 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.00704122 | pop= 0.0±0.0 | 97%>0 | valid=0/10000 (0%) | sigma=nan | lambda_min=nan | Sigma/D=nan
+2025-09-03 09:11:32,186 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0140824 | pop=11.7±1.8 | 97%>16 | valid=3891/10000 (39%) | sigma=0.000143868 | lambda_min=2.30404e-08 | Sigma/D=0.0102
+2025-09-03 09:11:32,588 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0281649 | pop=32.1±6.3 | 97%>44 | valid=9996/10000 (100%) | sigma=0.000188745 | lambda_min=3.78219e-08 | Sigma/D=0.0067
+2025-09-03 09:11:33,048 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.0563297 | pop=121.9±19.2 | 97%>147 | valid=10000/10000 (100%) | sigma=0.000223682 | lambda_min=5.18062e-08 | Sigma/D=0.0040
+2025-09-03 09:11:33,707 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.112659 | pop=457.7±85.7 | 97%>551 | valid=10000/10000 (100%) | sigma=0.000277716 | lambda_min=7.98044e-08 | Sigma/D=0.0025
+2025-09-03 09:11:34,809 [INFO] m3c2.pipeline.strategies - [RadiusScan] D=0.225319 | pop=1624.6±406.7 | 97%>2104 | valid=10000/10000 (100%) | sigma=0.000389926 | lambda_min=1.58588e-07 | Sigma/D=0.0017
+2025-09-03 09:11:34,809 [INFO] m3c2.pipeline.scale_estimator - [Scan] 12 Skalen evaluiert | 3.051s
+2025-09-03 09:11:34,809 [INFO] m3c2.core.param_estimator - [Select] select_scales called with 12 scans
+2025-09-03 09:11:34,809 [INFO] m3c2.pipeline.scale_estimator - [Select] normal=0.014082, proj=0.028165 | 0.000s
+2025-09-03 09:11:34,809 [INFO] m3c2.pipeline.batch_orchestrator - [Statistics] Berechne Statistiken …
+2025-09-03 09:11:34,809 [INFO] m3c2.pipeline.statistics_runner - [Stats on SingleClouds] Berechne M3C2-Statistiken box01,Handheld_georef_mw - box01 …
+2025-09-03 09:11:34,809 [INFO] m3c2.core.statistics.cloud_quality - Parameters used: area_m2=None, radius=0.014082436608633947, k=24, sample_size=None, use_convex_hull=True
+2025-09-03 09:11:34,809 [INFO] m3c2.core.statistics.cloud_quality - Calculating cloud stats for 311712 points (radius=0.014082436608633947, k=24, sample_size=None)
+2025-09-03 09:11:44,339 [INFO] m3c2.core.statistics.cloud_quality - Evaluating 50000 neighborhoods (min_pts=10, max_eval=50000)
+2025-09-03 09:11:55,223 [INFO] m3c2.core.statistics.cloud_quality - Computed metrics: global density=98947238.107, roughness_mean=0.000
+2025-09-03 09:11:55,964 [INFO] m3c2.pipeline.batch_orchestrator - [Job] box01 abgeschlossen in 26.060s
+2025-09-03 09:11:55,964 [INFO] CLIApp - Processing completed successfully.
