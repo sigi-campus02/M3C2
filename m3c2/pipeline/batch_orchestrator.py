@@ -59,7 +59,7 @@ class BatchOrchestrator:
         self.data_loader = self.factory.create_data_loader()
         self.scale_estimator = self.factory.create_scale_estimator()
         self.m3c2_executor = self.factory.create_m3c2_executor()
-        # self.outlier_handler = self.factory.create_outlier_handler()
+        self.outlier_handler = self.factory.create_outlier_handler()
         self.statistics_runner = self.factory.create_statistics_runner()
         self.visualization_runner = self.factory.create_visualization_runner()
 
@@ -118,8 +118,7 @@ class BatchOrchestrator:
                     cfg.folder_id,
                     cfg.filename_ref,
                 )
-                if self.fail_fast:
-                    raise
+                raise
 
     def _run_single(self, cfg: PipelineConfig) -> None:
         """Execute the pipeline for a single configuration.
@@ -182,7 +181,7 @@ class BatchOrchestrator:
         calculation and only compute statistics. Results are written to the
         output directory defined in ``cfg``.
         """
-        ds, mov, ref, corepoints = self.data_loader.load_data(cfg, mode="multicloud")
+        ds, mov, ref, corepoints = self.data_loader.load_data(cfg, type="multicloud")
         out_base = ds.config.folder
         tag = self._run_tag(cfg)
 
@@ -233,12 +232,19 @@ class BatchOrchestrator:
             computation is logged and re-raised.
         """
 
-        single_cloud = self.data_loader.load_data(cfg, mode="singlecloud")
+        single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
 
         # --- Scale estimation for single cloud statistics parameters
-        normal, projection = self.scale_estimator.determine_scales(
+        try:
+            normal, projection = self.scale_estimator.determine_scales(
                 cfg, single_cloud
             )
+        except ValueError:
+            logger.exception("Fehler bei der Berechnung der Parameter")
+            normal = projection = np.nan
+        except Exception:
+            logger.exception("Unerwarteter Fehler bei der Berechnung der Parameter")
+            raise
 
         try:
             logger.info("[Statistics] Berechne Statistiken …")
@@ -356,7 +362,7 @@ class BatchOrchestrator:
 
         # 5. Compute Outliers
 
-        # self._handle_outliers(cfg, out_base, tag)
+        self._handle_outliers(cfg, out_base, tag)
             
 
 
@@ -401,7 +407,7 @@ class BatchOrchestrator:
                 "[Outlier] Erzeuge .ply Dateien für Outliers / Inliers …"
             )
             self.visualization_runner.generate_clouds_outliers(
-                cfg, ds.config.folder, tag
+                cfg, out_base, tag
             )
         except (IOError, ValueError):
             logger.exception(

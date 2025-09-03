@@ -108,7 +108,7 @@ class StatisticsRunner:
             outlier_method=cfg.outlier_detection_method,
         )
 
-    def single_cloud_statistics_handler(self, cfg, singlecloud, normal):
+    def single_cloud_statistics_handler(self, cfg, singlecloud, normal=None):
         """Compute statistics for a single point cloud.
 
         Args:
@@ -117,6 +117,7 @@ class StatisticsRunner:
                 that results can be written to the correct output folder.
             singlecloud: The point cloud for which statistics are evaluated.
             normal: Radius used during computation of the cloud statistics.
+                If ``None`` the service is called without a specific radius.
 
         Writes
         ------
