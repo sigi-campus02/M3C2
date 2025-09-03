@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 import os
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import numpy as np
 import pandas as pd
@@ -176,42 +176,71 @@ def write_table(
 
 
 def write_cloud_stats(
-    rows: List[Dict],
+    rows: Union[List[Dict], pd.DataFrame],
     out_path: str = "m3c2_stats_clouds.xlsx",
     sheet_name: str = "CloudStats",
     output_format: str = "excel",
 ) -> None:
     """Write per-cloud statistics to an Excel or JSON file.
 
-    Parameters
-    ----------
-    rows : List[Dict]
-        Sequence of statistics dictionaries, one for each processed
-        cloud.
-    out_path : str, optional
-        Target file to create or update. Defaults to
-        ``"m3c2_stats_clouds.xlsx"``.
-    sheet_name : str, optional
-        Name of the worksheet when writing an Excel file. Defaults to
-        ``"CloudStats"``.
-    output_format : str, optional
-        Either ``"excel"`` or ``"json"`` to select the file format.
-
-    Notes
-    -----
-    The function appends the provided rows to the file at ``out_path``.
-    When ``output_format`` is ``"excel"``, the data are written to the
-    specified worksheet of an XLSX file. If ``"json"`` is requested, a
-    JSON array of records is produced instead.
+    ``rows`` may be either a list of dictionaries (one per processed
+    cloud) or a DataFrame where metrics are stored in the index and runs
+    are represented by columns.  When a DataFrame is provided, it is
+    written without injecting an additional ``Timestamp`` column so that
+    transposed results keep their structure intact.
     """
 
-    df = pd.DataFrame(rows)
+    if isinstance(rows, pd.DataFrame):
+        df = rows.copy()
+    else:
+        df = pd.DataFrame(rows)
+
     if df.empty:
         logger.info("Skipping writing cloud stats to %s - no data", out_path)
         return
 
+    if isinstance(rows, pd.DataFrame):
+        # DataFrame input: append new columns keyed by the index
+        if output_format.lower() == "json":
+            if os.path.exists(out_path):
+                try:
+                    old = pd.read_json(out_path, orient="index")
+                except (OSError, ValueError, pd.errors.EmptyDataError):
+                    logger.exception(
+                        "Failed to read existing cloud stats from %s; creating empty table",
+                        out_path,
+                    )
+                    old = pd.DataFrame()
+                all_df = old.join(df, how="outer")
+            else:
+                all_df = df
+            out_dir = os.path.dirname(out_path)
+            if out_dir:
+                os.makedirs(out_dir, exist_ok=True)
+            all_df.to_json(out_path, orient="index", indent=2)
+        else:
+            out_dir = os.path.dirname(out_path)
+            if out_dir:
+                os.makedirs(out_dir, exist_ok=True)
+            if os.path.exists(out_path):
+                try:
+                    old = pd.read_excel(out_path, sheet_name=sheet_name, index_col=0)
+                except (OSError, ValueError, pd.errors.EmptyDataError):
+                    logger.exception(
+                        "Failed to read existing cloud stats from %s; creating empty table",
+                        out_path,
+                    )
+                    old = pd.DataFrame()
+                all_df = old.join(df, how="outer")
+            else:
+                all_df = df
+            with pd.ExcelWriter(out_path, engine="openpyxl", mode="w") as w:
+                all_df.to_excel(w, sheet_name=sheet_name)
+        return
+
+    # List-of-dict input: maintain legacy behaviour with timestamp column
     if output_format.lower() == "json":
-        if "Timestamp" not in df.columns:
+        if "Timestamp" not in df.columns and "Timestamp" not in df.index:
             ts = _now_timestamp()
             df.insert(0, "Timestamp", ts)
         if os.path.exists(out_path):
@@ -237,7 +266,7 @@ def write_cloud_stats(
             os.makedirs(out_dir, exist_ok=True)
         all_df.to_json(out_path, orient="records", indent=2)
     else:
-        if "Timestamp" not in df.columns:
+        if "Timestamp" not in df.columns and "Timestamp" not in df.index:
             ts = _now_timestamp()
             df.insert(0, "Timestamp", ts)
         columns = list(df.columns)
