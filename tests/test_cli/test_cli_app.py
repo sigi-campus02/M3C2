@@ -18,6 +18,9 @@ def test_build_parser_defaults() -> None:
     args = parser.parse_args([])
     assert args.data_dir == "data"
     assert args.scale_strategy == "radius"
+    assert args.project == "PROJECT"
+    assert args.mov_as_corepoints is True
+    assert args.only_stats is True
 
 
 def test_run_invokes_orchestrator(monkeypatch, tmp_path) -> None:
