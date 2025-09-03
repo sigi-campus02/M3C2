@@ -225,14 +225,28 @@ def plot_overlay_boxplot(
         order = labels_order or list(df["Version"].unique())
         palette = {v: colors.get(v) for v in order}
         plt.figure(figsize=(10, 6))
-        sns.boxplot(data=df, x="Version", y="Distanz", palette=palette, legend=False, order=order)
+        sns.boxplot(
+            data=df,
+            x="Version",
+            y="Distanz",
+            palette=palette,
+            legend=False,
+            order=order,
+        )
         plt.title(title_text or f"Boxplot – {fid}/{fname}")
         plt.xlabel("Version")
         plt.ylabel("M3C2 distance")
         plt.tight_layout()
         plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Boxplot.png"))
         plt.close()
-    except ImportError:
+    except (ImportError, TypeError) as e:
+        if isinstance(e, TypeError):
+            logger.debug(
+                "[Report] seaborn.boxplot failed (%s/%s): %s; falling back to matplotlib",
+                fid,
+                fname,
+                e,
+            )
         labels = labels_order or list(data.keys())
         arrs = [data[v] for v in labels]
         plt.figure(figsize=(10, 6))
