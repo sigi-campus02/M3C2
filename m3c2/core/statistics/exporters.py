@@ -211,7 +211,10 @@ def write_cloud_stats(
                         out_path,
                     )
                     old = pd.DataFrame()
-                all_df = old.join(df, how="outer")
+                # Simply append new run columns without checking for
+                # duplicate column names. ``pd.concat`` allows duplicate
+                # columns and will align rows on the index.
+                all_df = pd.concat([old, df], axis=1)
             else:
                 all_df = df
             out_dir = os.path.dirname(out_path)
@@ -231,7 +234,10 @@ def write_cloud_stats(
                         out_path,
                     )
                     old = pd.DataFrame()
-                all_df = old.join(df, how="outer")
+                # Append new runs even if column names already exist.
+                # ``pd.concat`` handles duplicate columns by keeping them
+                # separate and aligning on the index.
+                all_df = pd.concat([old, df], axis=1)
             else:
                 all_df = df
             with pd.ExcelWriter(out_path, engine="openpyxl", mode="w") as w:
