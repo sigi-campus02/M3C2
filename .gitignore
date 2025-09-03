@@ -11,3 +11,5 @@ configs_TUNSPEKT_runs/
 py4dgeo.log
 orchestration.log
 logs/
+.pytest_cache/
+.vscode/
