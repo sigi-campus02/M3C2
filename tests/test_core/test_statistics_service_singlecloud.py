@@ -8,7 +8,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from m3c2.m3c2_core.statistics import service
+from m3c2.statistics import single_cloud_service as service
 
 
 def test_calc_single_cloud_stats_metadata_first(monkeypatch):
@@ -29,10 +29,10 @@ def test_calc_single_cloud_stats_metadata_first(monkeypatch):
     def fake_write_cloud_stats(df, out_path, sheet_name, output_format):
         captured_dfs.append(df)
 
-    monkeypatch.setattr(service, "calc_single_cloud_stats", fake_calc_single_cloud_stats)
+    monkeypatch.setattr(service, "_calc_single_cloud_stats", fake_calc_single_cloud_stats)
     monkeypatch.setattr(service, "write_cloud_stats", fake_write_cloud_stats)
 
-    service.StatisticsService.calc_single_cloud_stats(
+    service.calc_single_cloud_stats(
         folder_ids=["fid"],
         filename_singlecloud="file",
         singlecloud=None,

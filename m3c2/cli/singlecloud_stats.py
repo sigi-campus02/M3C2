@@ -1,8 +1,8 @@
-"""Compute statistics for a single point cloud pair using ``StatisticsService``."""
+"""Compute statistics for a single point cloud pair."""
 
 import logging
 
-from m3c2.statistics import StatisticsService
+from m3c2.statistics.single_cloud_service import calc_single_cloud_stats
 from m3c2.config.logging_config import setup_logging
 
 
@@ -22,7 +22,7 @@ def main(
     sheet_name: str = "CloudStats",
     output_format: str = "excel",
 ) -> None:
-    """Invoke :func:`StatisticsService.calc_single_cloud_stats` with defaults."""
+    """Invoke :func:`m3c2.statistics.single_cloud_service.calc_single_cloud_stats` with defaults."""
 
     # ``setup_logging`` determines the log level internally.
     setup_logging()
@@ -47,10 +47,9 @@ def main(
     logger.info("Processing folders: %s", folder_ids)
 
     try:
-        StatisticsService.calc_single_cloud_stats(
+        calc_single_cloud_stats(
             folder_ids=folder_ids,
-            filename_mov=filename_mov,
-            filename_ref=filename_ref,
+            filename_singlecloud=filename_mov,
             area_m2=area_m2,
             radius=radius,
             k=k,
