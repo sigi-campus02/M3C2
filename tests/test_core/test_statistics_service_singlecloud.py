@@ -9,8 +9,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from m3c2.core.statistics import service
 
 
-def test_calc_single_cloud_stats_file_folder_first(monkeypatch):
-    """Ensure resulting rows start with File and Folder keys."""
+def test_calc_single_cloud_stats_metadata_first(monkeypatch):
+    """Ensure resulting rows start with metadata keys."""
 
     def fake_calc_single_cloud_stats(
         pts,
@@ -34,10 +34,16 @@ def test_calc_single_cloud_stats_file_folder_first(monkeypatch):
         folder_ids=["fid"],
         filename_singlecloud="file",
         singlecloud=None,
+        data_dir="dd",
         out_path="out.json",
         output_format="json",
     )
 
     assert captured_rows, "No rows were captured"
-    assert list(captured_rows[0].keys())[:2] == ["File", "Folder"]
+    assert list(captured_rows[0].keys())[:4] == [
+        "Timestamp",
+        "Data Dir",
+        "Folder",
+        "File",
+    ]
 

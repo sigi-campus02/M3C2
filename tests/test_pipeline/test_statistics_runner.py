@@ -89,11 +89,12 @@ def test_single_cloud_statistics_handler(monkeypatch, caplog):
         folder_id="fid",
         filename_singlecloud="cloud",
         project="proj",
+        data_dir="dd",
     )
 
     runner = StatisticsRunner(output_format="json")
     caplog.set_level(logging.INFO)
-    runner.single_cloud_statistics_handler(cfg, singlecloud=None)
+    runner.single_cloud_statistics_handler(cfg, singlecloud=None, normal=1.0)
 
     assert called["out_path"].endswith("proj_m3c2_stats_clouds.json")
     assert any("Stats on SingleClouds" in rec.message for rec in caplog.records)

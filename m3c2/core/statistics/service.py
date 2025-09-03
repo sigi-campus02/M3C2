@@ -355,6 +355,7 @@ class StatisticsService:
 
         filename_singlecloud: str,
         singlecloud: Optional[object] = None,
+        data_dir: str = "",
 
         area_m2: Optional[float] = None,
         radius: float = None,
@@ -411,6 +412,8 @@ class StatisticsService:
         """
         rows: List[Dict] = []
 
+        from datetime import datetime
+
         for fid in folder_ids:
 
             pts = singlecloud.cloud if hasattr(singlecloud, "cloud") else singlecloud
@@ -423,10 +426,12 @@ class StatisticsService:
                 sample_size=sample_size,
                 use_convex_hull=use_convex_hull,
             )
-            # Ensure "File" and "Folder" appear first in the resulting row
+            ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             stats = {
-                "File": filename_singlecloud,
+                "Timestamp": ts,
+                "Data Dir": data_dir,
                 "Folder": fid,
+                "File": filename_singlecloud,
                 **stats,
             }
             rows.append(stats)
