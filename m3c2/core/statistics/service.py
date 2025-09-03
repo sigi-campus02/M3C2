@@ -427,6 +427,8 @@ class StatisticsService:
             rows.append(stats)
 
         df_result = pd.DataFrame(rows)
+        df_result_t = df_result.set_index("Folder").T
+        df_result_t.index.name = "Metric"
         if out_path and rows:
             write_cloud_stats(
                 rows,
@@ -434,7 +436,7 @@ class StatisticsService:
                 sheet_name=sheet_name,
                 output_format=output_format,
             )
-        return df_result
+        return df_result_t
 
     @staticmethod
     def _load_params(params_path: Optional[str]) -> Tuple[float, float]:

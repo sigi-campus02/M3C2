@@ -78,21 +78,31 @@ def test_append_df_to_json_handles_read_errors(tmp_path, caplog):
 
 
 def test_write_cloud_stats_excel():
-    """Ensure ``write_cloud_stats`` writes to Excel by default.
+    """Ensure ``write_cloud_stats`` writes runs as columns in Excel by default.
 
     Notes
     -----
-    This test mocks the Excel writer to validate that the DataFrame is
-    written to an Excel file when no specific format is requested.
+    The DataFrame passed to ``to_excel`` should have metrics as rows and
+    run identifiers as columns.
     """
 
-    rows = [{"a": 1}]
+    rows = [{"Folder": "run1", "a": 1}]
+    captured = {}
+
+    def fake_to_excel(self, *args, **kwargs):
+        captured["df"] = self
+
     with patch("os.path.exists", return_value=False), \
+         patch("m3c2.core.statistics.exporters._now_timestamp", return_value="ts"), \
          patch("m3c2.core.statistics.exporters.pd.ExcelWriter") as m_writer, \
-         patch("pandas.DataFrame.to_excel") as m_to_excel:
+         patch("pandas.DataFrame.to_excel", new=fake_to_excel):
         m_writer.return_value.__enter__.return_value = MagicMock()
         exporters.write_cloud_stats(rows, out_path="dummy.xlsx")
-        m_to_excel.assert_called_once()
+
+    df_written = captured["df"]
+    assert "Metric" == df_written.index.name
+    assert "a" in df_written.index
+    assert "run1_ts" in df_written.columns
 
 
 def test_write_cloud_stats_json():
