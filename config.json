@@ -9,7 +9,7 @@
     "date_format": "%Y-%m-%d %H:%M:%S"
   },
   "arguments":   {
-    "data_dir": "data/TUNSPEKT Labordaten_all/Handheld",
+    "data_dir": "data/TUNSPEKT/Handheld",
     "folders": ["box01"],
     "filename_ref": "",
     "filename_mov": "",
@@ -22,9 +22,9 @@
     "stats_singleordistance": "single",
     "output_format": "excel",
     "project": "TUNSPEKT",
-    "normal_override": null,
-    "proj_override": null,
-    "use_existing_params": false,
+    "normal_override": 0.01,
+    "proj_override": 0.01,
+    "use_existing_params": true,
     "outlier_detection_method": "rmse",
     "outlier_multiplicator": 3.0
   }

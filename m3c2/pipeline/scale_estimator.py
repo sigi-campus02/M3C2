@@ -47,7 +47,7 @@ class ScaleEstimator:
 
         This method is part of the public pipeline API.
         """
-        if cfg.normal_override is not None and cfg.proj_override is not None:
+        if cfg.normal_override is not None and cfg.proj_override is not None and cfg.stats_singleordistance == "distance":
             normal, projection = cfg.normal_override, cfg.proj_override
             logger.info("[Scales] Overrides verwendet: normal=%.6f, proj=%.6f", normal, projection)
             return normal, projection

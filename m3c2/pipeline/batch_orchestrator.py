@@ -82,7 +82,11 @@ class BatchOrchestrator:
         str
             Combination of moving and reference filenames.
         """
-        return f"{cfg.filename_mov}-{cfg.filename_ref}"
+        if cfg.filename_mov is not None and cfg.filename_ref is None:
+            return f"{cfg.filename_mov}-{cfg.filename_ref}"
+        else:
+            return f"{cfg.filename_singlecloud}"
+        
     
     def run_all(self) -> None:
         """Run the pipeline for each configured dataset.
@@ -243,10 +247,27 @@ class BatchOrchestrator:
 
         single_cloud = self.data_loader.load_data(cfg, mode="singlecloud")
 
+
         # --- Scale estimation for single cloud statistics parameters
-        normal, projection = self.scale_estimator.determine_scales(
+
+        if cfg.use_existing_params:
+            normal = projection = np.nan
+            normal, projection = self._handle_override_params(cfg)
+
+        elif not cfg.use_existing_params:
+            logger.info("[Params] keine vorhandenen Parameter gefunden, berechne neu")
+            normal, projection = self.scale_estimator.determine_scales(
                 cfg, single_cloud
             )
+            # --- Save determined parameters
+            out_base = os.path.join(cfg.data_dir, cfg.folder_id)
+
+            self._save_params(cfg, normal, projection, out_base)
+        
+        else:
+            logger.error("[Params] Ungültige/Fehlende Parameter in Config")
+
+        # --- Compute statistics
 
         try:
             logger.info("[Statistics] Berechne Statistiken …")
@@ -310,21 +331,33 @@ class BatchOrchestrator:
             returned.
         """
 
-        params_path = os.path.join(
-            out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt"
-        )
-        normal, projection = StatisticsService._load_params(params_path)
-
-        if not np.isnan(normal) and not np.isnan(projection):
-            logger.info(
-                "[Params] geladen: %s (NormalScale=%.6f, SearchScale=%.6f)",
-                params_path,
-                normal,
-                projection,
+        # -------------------------------------------------
+        # 1. Use parameter override of config if exists
+        if cfg.normal_override is not None and cfg.proj_override is not None:
+            normal, projection = self._handle_override_params(cfg)
+        
+        # -------------------------------------------------
+        # Use parameters of file if exists
+        elif cfg.normal_override is None and cfg.proj_override is None:
+            params_path = os.path.join(
+                out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt"
             )
-            return normal, projection
+            normal, projection = StatisticsService._load_params(params_path)
 
-        return np.nan, np.nan
+            if not np.isnan(normal) and not np.isnan(projection):
+                logger.info(
+                    "[Params] geladen: %s (NormalScale=%.6f, SearchScale=%.6f)",
+                    params_path,
+                    normal,
+                    projection,
+                )
+                return normal, projection
+        
+        # -------------------------------------------------
+        # Otherwise parameters don't exist
+        else:
+            logger.info("[Params] keine vorhandenen Parameter gefunden")
+            return np.nan, np.nan
     
 
     def _batch_process_multicloud_full(self, cfg: PipelineConfig, mov: str, ref: str, corepoints: np.ndarray, out_base: str, tag: str):
@@ -422,3 +455,36 @@ class BatchOrchestrator:
                 "Unerwarteter Fehler beim Erzeugen von .ply Dateien für Ausreißer / Inlier"
             )
             raise
+
+    def _handle_override_params(self, cfg: PipelineConfig):
+        """Load previously determined M3C2 scale parameters in config.
+
+        Parameters
+        ----------
+        cfg : PipelineConfig
+            Configuration used to derive the expected parameter configs.
+
+        Returns
+        -------
+        Tuple[float, float]
+
+        """
+
+        # -------------------------------------------------
+        # 1. Use parameter override of config if exists
+        if cfg.normal_override is not None and cfg.proj_override is not None:
+            normal = cfg.normal_override
+            projection = cfg.proj_override
+            logger.info(
+                "[Params] Überschreibe mit: (NormalScale=%.6f, SearchScale=%.6f)",
+                normal,
+                projection,
+            )
+            return normal, projection
+        
+        # -------------------------------------------------
+        # Otherwise parameters don't exist
+        else:
+            logger.info("[Params] keine vorhandenen Parameter gefunden")
+            return np.nan, np.nan
+    
