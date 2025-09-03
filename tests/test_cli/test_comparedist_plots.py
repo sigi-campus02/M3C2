@@ -5,7 +5,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from m3c2.cli import comparedist_plots
+import m3c2.cli.comparedist_plots as comparedist_plots
 
 def test_main_creates_output(tmp_path, monkeypatch):
     """Verify that invoking the CLI generates the expected output files.

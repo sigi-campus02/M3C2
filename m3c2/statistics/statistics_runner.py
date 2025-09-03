@@ -5,7 +5,10 @@ from __future__ import annotations
 import logging
 import os
 
-from m3c2.statistics import StatisticsService
+from m3c2.statistics import (
+    calc_single_cloud_stats,
+    compute_m3c2_statistics,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +84,7 @@ class StatisticsRunner:
           ``outputs/{project}_output`` depending on :attr:`output_format`.
         - Logs progress information to the module logger.
         - Delegates the heavy lifting to
-          :func:`m3c2.core.statistics.StatisticsService.compute_m3c2_statistics`.
+          :func:`m3c2.statistics.m3c2_aggregator.compute_m3c2_statistics`.
         """
         logger.info(
             f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …"
@@ -97,7 +100,7 @@ class StatisticsRunner:
         else:
             raise ValueError("Ungültiges Ausgabeformat. Verwenden Sie 'excel' oder 'json'.")
 
-        StatisticsService.compute_m3c2_statistics(
+        compute_m3c2_statistics(
             folder_ids=[cfg.folder_id],
             filename_ref=tag,
             process_python_CC=cfg.process_python_CC,
@@ -138,7 +141,7 @@ class StatisticsRunner:
         else:
             raise ValueError("Ungültiges Ausgabeformat. Verwenden Sie 'excel' oder 'json'.")
 
-        StatisticsService.calc_single_cloud_stats(
+        calc_single_cloud_stats(
             folder_ids=[cfg.folder_id],
             filename_singlecloud=cfg.filename_singlecloud,
             singlecloud=singlecloud,
