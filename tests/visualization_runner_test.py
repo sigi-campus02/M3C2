@@ -11,7 +11,7 @@ from types import SimpleNamespace
 import numpy as np
 
 from m3c2.visualization.services.visualization_runner import VisualizationRunner
-from m3c2.visualization.services.visualization_service import VisualizationService
+from m3c2.visualization.services import visualization_runner as vr
 
 
 def test_generate_visuals_with_cloud(monkeypatch, tmp_path):
@@ -20,7 +20,7 @@ def test_generate_visuals_with_cloud(monkeypatch, tmp_path):
     Parameters
     ----------
     monkeypatch : pytest.MonkeyPatch
-        Used to replace :class:`VisualizationService` methods with fakes.
+        Used to replace visualization helper functions with fakes.
     tmp_path : pathlib.Path
         Temporary directory where output files are written.
 
@@ -54,9 +54,9 @@ def test_generate_visuals_with_cloud(monkeypatch, tmp_path):
     def fake_export_valid(cloud, colors, dist, outply):
         calls["export_valid"] = (cloud, colors, dist, outply)
 
-    monkeypatch.setattr(VisualizationService, "histogram", fake_histogram)
-    monkeypatch.setattr(VisualizationService, "colorize", fake_colorize)
-    monkeypatch.setattr(VisualizationService, "export_valid", fake_export_valid)
+    monkeypatch.setattr(vr, "histogram", fake_histogram)
+    monkeypatch.setattr(vr, "colorize", fake_colorize)
+    monkeypatch.setattr(vr, "export_valid", fake_export_valid)
 
     runner.generate_visuals(cfg, mov, distances, str(tmp_path), "tag")
 
@@ -70,7 +70,7 @@ def test_generate_visuals_without_cloud(monkeypatch, tmp_path, caplog):
     Parameters
     ----------
     monkeypatch : pytest.MonkeyPatch
-        Replaces :class:`VisualizationService` methods with stubs.
+        Replaces visualization helper functions with stubs.
     tmp_path : pathlib.Path
         Temporary directory where output files are written.
     caplog : pytest.LogCaptureFixture
@@ -105,9 +105,9 @@ def test_generate_visuals_without_cloud(monkeypatch, tmp_path, caplog):
     def fake_export_valid(*args, **kwargs):
         calls["export_valid"] = True
 
-    monkeypatch.setattr(VisualizationService, "histogram", fake_histogram)
-    monkeypatch.setattr(VisualizationService, "colorize", fake_colorize)
-    monkeypatch.setattr(VisualizationService, "export_valid", fake_export_valid)
+    monkeypatch.setattr(vr, "histogram", fake_histogram)
+    monkeypatch.setattr(vr, "colorize", fake_colorize)
+    monkeypatch.setattr(vr, "export_valid", fake_export_valid)
 
     with caplog.at_level(logging.WARNING):
         runner.generate_visuals(cfg, mov, distances, str(tmp_path), "tag")
