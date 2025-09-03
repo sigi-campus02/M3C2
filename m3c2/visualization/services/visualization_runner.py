@@ -6,7 +6,8 @@ import os
 
 import numpy as np
 
-from m3c2.visualization.services.visualization_service import VisualizationService
+from m3c2.visualization.plot_helpers import histogram
+from m3c2.visualization.ply_exporter import colorize, export_valid
 
 logger = logging.getLogger(__name__)
 
@@ -51,18 +52,18 @@ class VisualizationRunner:
         ply_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_includenonvalid.ply")
         ply_valid_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}.ply")
 
-        VisualizationService.histogram(distances, path=hist_path)
+        histogram(distances, path=hist_path)
         logger.info("[Visual] Histogram gespeichert: %s", hist_path)
         cloud = getattr(mov, "cloud", None)
         if cloud is None:
             logger.warning("[Visual] mov besitzt kein 'cloud'-Attribut; Visualisierung übersprungen")
             return
 
-        colors = VisualizationService.colorize(cloud, distances, outply=ply_path)
+        colors = colorize(cloud, distances, outply=ply_path)
         logger.info("[Visual] Farb-PLY gespeichert: %s", ply_path)
 
         try:
-            VisualizationService.export_valid(cloud, colors, distances, outply=ply_valid_path)
+            export_valid(cloud, colors, distances, outply=ply_valid_path)
             logger.info("[Visual] Valid-PLY gespeichert: %s", ply_valid_path)
         except (OSError, RuntimeError, ValueError) as exc:
             logger.warning("[Visual] Export valid-only übersprungen: %s", exc)
