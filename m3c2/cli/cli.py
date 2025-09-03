@@ -35,6 +35,34 @@ class CLIApp:
             else Path(__file__).resolve().parents[2] / "config.json"
         )
 
+    def _load_schema_defaults(self) -> dict[str, Any]:
+        """Load default argument values from the JSON schema.
+
+        Returns
+        -------
+        dict[str, Any]
+            Mapping of argument names to their default values as defined in
+            ``config.schema.json``. If the schema cannot be read, an empty
+            dictionary is returned.
+        """
+        schema_path = self.config_path.with_name("config.schema.json")
+        try:
+            with schema_path.open("r", encoding="utf-8") as handle:
+                schema = json.load(handle)
+        except (OSError, json.JSONDecodeError):
+            return {}
+
+        arg_props = (
+            schema.get("properties", {})
+            .get("arguments", {})
+            .get("properties", {})
+        )
+        return {
+            key: value["default"]
+            for key, value in arg_props.items()
+            if "default" in value
+        }
+
     # ------------------------------------------------------------------
     def build_parser(self) -> argparse.ArgumentParser:
         """Build the argument parser for command line and GUI usage."""
@@ -42,116 +70,110 @@ class CLIApp:
             description="M3C2 Pipeline Command-Line Interface",
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
+
+        # Arguments are defined without hardcoded defaults. Defaults are
+        # populated from the JSON schema after all arguments have been added.
         parser.add_argument(
             "--data_dir",
             type=str,
-            default="data",
             help="Directory containing point cloud data folders.",
         )
         parser.add_argument(
             "--folders",
             type=str,
             nargs="+",
-            default=None,
             help="List of folder IDs to process (e.g., '0342-0349 0817-0821').",
         )
         parser.add_argument(
             "--filename_ref",
             type=str,
-            default="ref",
             help="Name of reference cloud file to be compared.",
         )
         parser.add_argument(
             "--filename_mov",
             type=str,
-            default="mov",
             help="Name of moving point cloud file.",
         )
         parser.add_argument(
-            "--filename_singlestats",
+            "--filename_singlecloud",
             type=str,
-            default="mov",
             help="Name of single statistics file.",
         )
         parser.add_argument(
             "--mov_as_corepoints",
-            action="store_true",
+            action=argparse.BooleanOptionalAction,
             help="Use moving point cloud as corepoints.",
         )
         parser.add_argument(
             "--use_subsampled_corepoints",
             type=int,
-            default=1,
             help="Subsampling factor for corepoints (1 = no subsampling).",
         )
         parser.add_argument(
             "--sample_size",
             type=int,
-            default=10000,
             help="Sample size used for parameter estimation (normal & projection scale).",
         )
         parser.add_argument(
             "--scale_strategy",
             type=str,
             choices=["radius"],
-            default="radius",
             help="Strategy for scanning normal/projection scales.",
         )
         parser.add_argument(
             "--only_stats",
-            action="store_true",
+            action=argparse.BooleanOptionalAction,
             help="Only compute statistics based on existing distance files (no M3C2 processing).",
         )
         parser.add_argument(
             "--stats_singleordistance",
             type=str,
             choices=["single", "distance"],
-            default="distance",
             help="Type of statistics to compute: 'single' for single-cloud, 'distance' for distance-based.",
         )
         parser.add_argument(
             "--output_format",
             type=str,
             choices=["excel", "json"],
-            default="excel",
             help="Output format for statistics: 'excel' or 'json'.",
         )
         parser.add_argument(
             "--project",
             type=str,
-            default="MARS",
             help="Project name used for file and folder naming.",
         )
         parser.add_argument(
             "--normal_override",
             type=float,
-            default=None,
             help="Override normal scale parameter.",
         )
         parser.add_argument(
             "--proj_override",
             type=float,
-            default=None,
             help="Override projection scale parameter.",
         )
         parser.add_argument(
             "--use_existing_params",
-            action="store_true",
+            action=argparse.BooleanOptionalAction,
             help="Use existing parameters in folder if available.",
         )
         parser.add_argument(
             "--outlier_detection_method",
             type=str,
             choices=["rmse", "iqr", "std", "nmad"],
-            default="rmse",
             help="Method for outlier detection.",
         )
         parser.add_argument(
             "--outlier_multiplicator",
             type=float,
-            default=3.0,
             help="Outlier removal threshold as a multiple of used detection method.",
         )
+
+        # Apply defaults from the configuration schema if available
+        defaults = self._load_schema_defaults()
+        if defaults:
+            parser.set_defaults(**defaults)
+
         return parser
 
 
@@ -237,8 +259,10 @@ class CLIApp:
         if not arg.filename_mov and not arg.stats_singleordistance == "single":
             self.logger.error("No mov filename specified.")
             return 1
-        if not arg.filename_singlestats and arg.stats_singleordistance == "single":
-            self.logger.error("No single stats filename specified for single-cloud statistics")
+        if not arg.filename_singlecloud and arg.stats_singleordistance == "single":
+            self.logger.error(
+                "No single stats filename specified for single-cloud statistics"
+            )
             return 1
 
         folder_ids = list(arg.folders)
@@ -247,7 +271,9 @@ class CLIApp:
         self.logger.info("Folder IDs for processing: %s", folder_ids)
         self.logger.info("Reference filename for processing: %s", arg.filename_ref)
         self.logger.info("Moving filename for processing: %s", arg.filename_mov)
-        self.logger.info("Single statistics filename for processing: %s", arg.filename_singlestats)
+        self.logger.info(
+            "Single statistics filename for processing: %s", arg.filename_singlecloud
+        )
     
         # Building pipeline configuration
 
