@@ -13,7 +13,7 @@ from typing import List
 import numpy as np
 
 from m3c2.config.pipeline_config import PipelineConfig
-from m3c2.statistics import _load_params
+from m3c2.statistics.distance_stats import _load_params
 from m3c2.pipeline.component_factory import PipelineComponentFactory
 
 logger = logging.getLogger(__name__)
