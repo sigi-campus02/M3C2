@@ -103,6 +103,27 @@ def test_write_cloud_stats_excel():
     assert df_written.iloc[0]["Folder"] == "run1"
 
 
+def test_write_cloud_stats_transposed_df(monkeypatch):
+    """DataFrame inputs keep index and no timestamp column is injected."""
+
+    df = pd.DataFrame({"run1": [1]}, index=["metric"])
+    df.index.name = "Metric"
+    captured = {}
+
+    def fake_to_excel(self, *args, **kwargs):
+        captured["df"] = self
+
+    with patch("os.path.exists", return_value=False), \
+         patch("m3c2.core.statistics.exporters.pd.ExcelWriter") as m_writer, \
+         patch("pandas.DataFrame.to_excel", new=fake_to_excel):
+        m_writer.return_value.__enter__.return_value = MagicMock()
+        exporters.write_cloud_stats(df, out_path="dummy.xlsx")
+
+    df_written = captured["df"]
+    assert "Timestamp" not in df_written.columns
+    assert list(df_written.index) == ["metric"]
+
+
 def test_write_cloud_stats_json():
     """Ensure ``write_cloud_stats`` dispatches to JSON when requested.
 

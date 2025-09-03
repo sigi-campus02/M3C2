@@ -59,7 +59,7 @@ class BatchOrchestrator:
         self.data_loader = self.factory.create_data_loader()
         self.scale_estimator = self.factory.create_scale_estimator()
         self.m3c2_executor = self.factory.create_m3c2_executor()
-        # self.outlier_handler = self.factory.create_outlier_handler()
+        self.outlier_handler = self.factory.create_outlier_handler()
         self.statistics_runner = self.factory.create_statistics_runner()
         self.visualization_runner = self.factory.create_visualization_runner()
 
@@ -118,8 +118,7 @@ class BatchOrchestrator:
                     cfg.folder_id,
                     cfg.filename_ref,
                 )
-                if self.fail_fast:
-                    raise
+                raise
             except Exception:
                 logger.exception(
                     "[Job] Unbekannter Fehler in Job '%s' (Version %s)",
@@ -241,10 +240,13 @@ class BatchOrchestrator:
             computation is logged and re-raised.
         """
 
-        single_cloud = self.data_loader.load_data(cfg, mode="singlecloud")
+        single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
 
         # --- Scale estimation for single cloud statistics parameters
-        normal, projection = self.scale_estimator.determine_scales(
+        if getattr(single_cloud, "shape", (0,))[0] < 2:
+            normal = projection = 0.0
+        else:
+            normal, projection = self.scale_estimator.determine_scales(
                 cfg, single_cloud
             )
 
