@@ -8,7 +8,7 @@ distributions.
 
 from __future__ import annotations
 
-from typing import Dict
+from typing import Callable, Dict
 
 import logging
 import numpy as np
@@ -17,7 +17,56 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 
-def get_outlier_mask(clipped, method, outlier_multiplicator):
+def _mask_rmse(clipped: np.ndarray, factor: float) -> tuple[np.ndarray, float]:
+    rmse = float(np.sqrt(np.mean(clipped**2)))
+    threshold = factor * rmse
+    mask = np.abs(clipped) > threshold
+    logger.info("[Outliers] RMSE: %.6f, Threshold: %.6f", rmse, threshold)
+    return mask, threshold
+
+
+def _mask_iqr(clipped: np.ndarray, factor: float) -> tuple[np.ndarray, str]:
+    q1 = np.percentile(clipped, 25)
+    q3 = np.percentile(clipped, 75)
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+    threshold = f"({lower_bound:.3f}, {upper_bound:.3f})"
+    mask = (clipped < lower_bound) | (clipped > upper_bound)
+    logger.info("[Outliers] IQR: %.6f", iqr)
+    logger.info("[Outliers] Thresholds: %.6f to %.6f", lower_bound, upper_bound)
+    return mask, threshold
+
+
+def _mask_std(clipped: np.ndarray, factor: float) -> tuple[np.ndarray, float]:
+    mu = np.mean(clipped)
+    std = np.std(clipped)
+    threshold = factor * std
+    mask = np.abs(clipped - mu) > threshold
+    logger.info("[Outliers] STD: %.6f, Threshold: %.6f", std, threshold)
+    return mask, threshold
+
+
+def _mask_nmad(clipped: np.ndarray, factor: float) -> tuple[np.ndarray, float]:
+    med = np.median(clipped)
+    nmad = 1.4826 * np.median(np.abs(clipped - med))
+    threshold = factor * nmad
+    mask = np.abs(clipped - med) > threshold
+    logger.info("[Outliers] NMAD: %.6f, Threshold: %.6f", nmad, threshold)
+    return mask, threshold
+
+
+_MASK_DISPATCH: Dict[str, Callable[[np.ndarray, float], tuple[np.ndarray, float | str]]] = {
+    "rmse": _mask_rmse,
+    "iqr": _mask_iqr,
+    "std": _mask_std,
+    "nmad": _mask_nmad,
+}
+
+
+def get_outlier_mask(
+    clipped: np.ndarray, method: str, factor: float
+) -> tuple[np.ndarray, float | str]:
     """Create a boolean mask marking elements considered outliers.
 
     Parameters
@@ -27,7 +76,7 @@ def get_outlier_mask(clipped, method, outlier_multiplicator):
     method : str
         Outlier detection algorithm to use; one of ``"rmse"``, ``"iqr"``,
         ``"std"`` or ``"nmad"``.
-    outlier_multiplicator : float
+    factor : float
         Multiplier applied to the base statistic of the selected method to
         derive the outlier threshold.
 
@@ -35,58 +84,17 @@ def get_outlier_mask(clipped, method, outlier_multiplicator):
     -------
     tuple[np.ndarray, float | str]
         A tuple containing the boolean mask of detected outliers and the
-        threshold used for classification.  For the ``"iqr"`` method the
+        threshold used for classification. For the ``"iqr"`` method the
         threshold is returned as a formatted string ``"(lower, upper)"``.
     """
-    logger.info("[Outliers] Methode: %s", method)
-    if method == "rmse":
-        rmse = np.sqrt(np.mean(clipped**2))
-        outlier_threshold = outlier_multiplicator * rmse
-        outlier_mask = np.abs(clipped) > outlier_threshold
-        logger.info(
-            "[Outliers] RMSE: %.6f, Outlier-Schwelle: %.6f",
-            rmse,
-            outlier_threshold,
-        )
-    elif method == "iqr":
-        q1 = np.percentile(clipped, 25)
-        q3 = np.percentile(clipped, 75)
-        iqr = q3 - q1
-        lower_bound = q1 - 1.5 * iqr
-        upper_bound = q3 + 1.5 * iqr
-        outlier_threshold = f"({lower_bound:.3f}, {upper_bound:.3f})"
-        outlier_mask = (clipped < lower_bound) | (clipped > upper_bound)
-        logger.info("[Outliers] IQR: %.6f", iqr)
-        logger.info(
-            "[Outliers] Outlier-Schwellen: %.6f bis %.6f",
-            lower_bound,
-            upper_bound,
-        )
-    elif method == "std":
-        mu = np.mean(clipped)
-        std = np.std(clipped)
-        outlier_threshold = outlier_multiplicator * std
-        outlier_mask = np.abs(clipped - mu) > outlier_threshold
-        logger.info(
-            "[Outliers] STD: %.6f, Outlier-Schwelle: %.6f",
-            std,
-            outlier_threshold,
-        )
-    elif method == "nmad":
-        med = np.median(clipped)
-        nmad = 1.4826 * np.median(np.abs(clipped - med))
-        outlier_threshold = outlier_multiplicator * nmad
-        outlier_mask = np.abs(clipped - med) > outlier_threshold
-        logger.info(
-            "[Outliers] NMAD: %.6f, Outlier-Schwelle: %.6f",
-            nmad,
-            outlier_threshold,
-        )
-    else:
+    logger.info("[Outliers] Method: %s", method)
+    try:
+        func = _MASK_DISPATCH[method]
+    except KeyError as exc:
         raise ValueError(
-            "Unbekannte Methode für Ausreißer-Erkennung: 'rmse', 'iqr', 'std', 'nmad'"
-        )
-    return outlier_mask, outlier_threshold
+            "Unknown method for outlier detection: 'rmse', 'iqr', 'std', 'nmad'"
+        ) from exc
+    return func(clipped, factor)
 
 
 def compute_outliers(inliers: np.ndarray, outliers: np.ndarray) -> Dict[str, float]:
@@ -118,7 +126,7 @@ def compute_outliers(inliers: np.ndarray, outliers: np.ndarray) -> Dict[str, flo
     Notes
     -----
     If either of the input arrays is empty the respective statistics are set to
-    ``NaN`` (for ``mean_out`` and ``std_out``) and the counts become zero.  This
+    ``NaN`` (for ``mean_out`` and ``std_out``) and the counts become zero. This
     allows callers to handle cases where no outliers or inliers were found
     without raising an exception.
     """
@@ -148,3 +156,4 @@ def compute_outliers(inliers: np.ndarray, outliers: np.ndarray) -> Dict[str, flo
         "pos_in": pos_in,
         "neg_in": neg_in,
     }
+
