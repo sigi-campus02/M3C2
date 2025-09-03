@@ -95,7 +95,7 @@ def test_outlier_detector_class(tmp_path):
     _write_distances(file_path)
 
     config = OutlierConfig(
-        file_path=str(file_path), method="rmse", outlier_multiplicator=1.0
+        dists_path=str(file_path), method="rmse", outlier_multiplicator=1.0
     )
     detector = OutlierDetector(config)
     res = detector.run()
