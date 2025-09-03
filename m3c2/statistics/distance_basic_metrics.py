@@ -14,6 +14,7 @@ import logging
 import numpy as np
 import pandas as pd
 from scipy.stats import norm, weibull_min
+from .distance_outlier_metrics import NMAD_SCALE
 
 
 logger = logging.getLogger(__name__)
@@ -90,7 +91,7 @@ def basic_stats(values: np.ndarray, tolerance: float) -> Dict[str, float]:
     std_emp = float(np.std(values))
     mae = float(np.mean(np.abs(values)))
     mad = float(np.median(np.abs(values - median_val)))
-    nmad = float(1.4826 * mad)
+    nmad = float(NMAD_SCALE * mad)
     q05 = float(np.percentile(values, 5))
     q25 = float(np.percentile(values, 25))
     q75 = float(np.percentile(values, 75))

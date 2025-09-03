@@ -16,6 +16,9 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
+# Scale factor to convert median absolute deviation to normalized MAD
+NMAD_SCALE = 1.4826
+
 
 def get_outlier_mask(clipped, method, outlier_multiplicator):
     """Create a boolean mask marking elements considered outliers.
@@ -74,7 +77,7 @@ def get_outlier_mask(clipped, method, outlier_multiplicator):
         )
     elif method == "nmad":
         med = np.median(clipped)
-        nmad = 1.4826 * np.median(np.abs(clipped - med))
+        nmad = NMAD_SCALE * np.median(np.abs(clipped - med))
         outlier_threshold = outlier_multiplicator * nmad
         outlier_mask = np.abs(clipped - med) > outlier_threshold
         logger.info(
