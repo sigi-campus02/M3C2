@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 import numpy as np
-from m3c2.visualization.distance_loader import scan_distance_files_by_index
+from m3c2.visualization.loaders.distance_loader import scan_distance_files_by_index
 
 
 def _write_file(path, content: str) -> None:

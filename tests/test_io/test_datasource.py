@@ -8,7 +8,7 @@ import sys
 import numpy as np
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
-import m3c2.io.datasource as ds_module
+import m3c2.importer.datasource as ds_module
 from m3c2.config.datasource_config import DataSourceConfig
 
 

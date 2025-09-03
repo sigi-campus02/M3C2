@@ -9,7 +9,7 @@ from typing import Tuple
 
 import numpy as np
 
-from m3c2.core.m3c2_runner import M3C2Runner
+from m3c2.m3c2_core.m3c2_runner import M3C2Runner
 
 logger = logging.getLogger(__name__)
 
@@ -100,14 +100,23 @@ class M3C2Executor:
 
         This method is part of the public pipeline API.
         """
+
+        #------------------------------------------
+        # M3C2 computation
         t0 = time.perf_counter()
         runner = M3C2Runner()
         distances, uncertainties = runner.run(mov, ref, corepoints, normal, projection)
+
+        #------------------------------------------
+        # Logging for quick overview of distance cloud metrics and computation time
         duration = time.perf_counter() - t0
         n = len(distances)
         nan_share = float(np.isnan(distances).sum()) / n if n else 0.0
+
         logger.info("[Run] Punkte=%d | NaN=%.2f%% | Zeit=%.3fs", n, 100.0 * nan_share, duration)
 
+        #------------------------------------------
+        # Results saving
         dists_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances.txt")
         np.savetxt(dists_path, distances, fmt="%.6f")
         logger.info("[Run] Distanzen gespeichert: %s (%d Werte, %.2f%% NaN)", dists_path, n, 100.0 * nan_share)

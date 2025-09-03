@@ -3,8 +3,8 @@
 import numpy as np
 import pytest
 
-from m3c2.pipeline.strategies import ScaleScan
-from m3c2.core.param_estimator import ParamEstimator
+from m3c2.m3c2_core.param_handler.strategies import ScaleScan
+from m3c2.m3c2_core.param_handler.param_estimator import ParamEstimator
 
 
 class DummyStrategy:

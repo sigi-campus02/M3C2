@@ -8,7 +8,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from m3c2.core.statistics import service
+from m3c2.m3c2_core.statistics import service
 
 
 def test_calc_single_cloud_stats_metadata_first(monkeypatch):

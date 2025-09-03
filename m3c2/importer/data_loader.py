@@ -8,7 +8,7 @@ import time
 import numpy as np
 
 from m3c2.config.datasource_config import DataSourceConfig
-from m3c2.io.datasource import DataSource
+from m3c2.importer.datasource import DataSource
 
 logger = logging.getLogger(__name__)
 

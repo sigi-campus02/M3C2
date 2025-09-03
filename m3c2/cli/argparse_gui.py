@@ -10,7 +10,7 @@ import argparse
 import tkinter as tk
 from tkinter import messagebox
 import logging
-from m3c2.io.logging_utils import setup_logging
+from m3c2.config.logging_config import setup_logging
 from m3c2.cli.cli import CLIApp
 
 
@@ -116,12 +116,3 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
     tk.Button(root, text="Abbrechen", command=on_cancel).grid(row=row, column=1, padx=5, pady=10)
 
     root.mainloop()
-
-
-# ---------------------------------------------------------------------------
-# Example integration with the CLI application
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    app = CLIApp()
-    run_gui(app.build_parser(), app.run)

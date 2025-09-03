@@ -9,8 +9,8 @@ from __future__ import annotations
 import logging
 from types import SimpleNamespace
 
-from m3c2.pipeline.statistics_runner import StatisticsRunner
-from m3c2.core.statistics import StatisticsService
+from m3c2.statistics.statistics_runner import StatisticsRunner
+from m3c2.m3c2_core.statistics import StatisticsService
 
 
 def test_compute_statistics_distance(monkeypatch, caplog):

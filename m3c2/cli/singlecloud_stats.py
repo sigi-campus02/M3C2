@@ -2,8 +2,8 @@
 
 import logging
 
-from m3c2.core.statistics import StatisticsService
-from m3c2.io.logging_utils import setup_logging
+from m3c2.m3c2_core.statistics import StatisticsService
+from m3c2.config.logging_config import setup_logging
 
 
 logger = logging.getLogger(__name__)

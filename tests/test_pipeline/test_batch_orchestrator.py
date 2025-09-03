@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 import numpy as np
 from m3c2.config.pipeline_config import PipelineConfig
-from m3c2.pipeline.data_loader import DataLoader
+from m3c2.importer.data_loader import DataLoader
 
 
 class DummyDS:

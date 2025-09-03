@@ -6,7 +6,7 @@ summaries.  The :class:`~m3c2.core.statistics.service.StatisticsService`
 coordinates these helpers for use in the higher level pipeline.
 """
 
-from .service import StatisticsService
+from .statistics_service import StatisticsService
 from .exporters import CANONICAL_COLUMNS, write_table, write_cloud_stats
 
 __all__ = [

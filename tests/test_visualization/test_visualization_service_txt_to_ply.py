@@ -13,8 +13,8 @@ import matplotlib
 
 matplotlib.use("Agg")
 
-import m3c2.visualization.visualization_service as vs
-from m3c2.visualization.visualization_service import VisualizationService
+import m3c2.visualization.services.visualization_service as vs
+from m3c2.visualization.services.visualization_service import VisualizationService
 import pytest
 
 

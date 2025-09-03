@@ -1,7 +1,7 @@
 """Tests for the comparison loader utilities."""
 
 import numpy as np
-from m3c2.visualization.comparison_loader import _load_and_mask
+from m3c2.visualization.loaders.comparison_loader import _load_and_mask
 
 
 def test_load_and_mask_removes_nan(tmp_path):

@@ -24,12 +24,12 @@ import logging
 import numpy as np
 import pandas as pd
 
-from m3c2.io.datasource import DataSource
+from m3c2.importer.datasource import DataSource
 from m3c2.config.datasource_config import DataSourceConfig
 
 from .basic_metrics import basic_stats, fit_distributions
 from .outliers import compute_outliers, get_outlier_mask
-from .cloud_quality import calc_single_cloud_stats
+from .singlecloud_metrics import calc_single_cloud_stats
 from .exporters import (
     _append_df_to_excel,
     _append_df_to_json,

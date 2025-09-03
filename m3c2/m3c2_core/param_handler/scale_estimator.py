@@ -8,8 +8,8 @@ from typing import List, Tuple
 
 import numpy as np
 
-from m3c2.core.param_estimator import ParamEstimator
-from m3c2.pipeline.strategies import ScaleScan, STRATEGIES
+from m3c2.m3c2_core.param_handler.param_estimator import ParamEstimator
+from m3c2.m3c2_core.param_handler.strategies import ScaleScan, STRATEGIES
 
 logger = logging.getLogger(__name__)
 

@@ -12,10 +12,10 @@ import numpy as np
 import pytest
 
 from m3c2.config.pipeline_config import PipelineConfig
-from m3c2.pipeline.scale_estimator import ScaleEstimator
-from m3c2.pipeline import scale_estimator as se_module
-from m3c2.pipeline.strategies import RadiusScanStrategy
-from m3c2.pipeline.strategies import ScaleScan
+from m3c2.m3c2_core.param_handler.scale_estimator import ScaleEstimator
+from m3c2.m3c2_core.param_handler import scale_estimator as se_module
+from m3c2.m3c2_core.param_handler.strategies import RadiusScanStrategy
+from m3c2.m3c2_core.param_handler.strategies import ScaleScan
 
 
 class DummyStrategy:

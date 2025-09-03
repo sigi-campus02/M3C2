@@ -6,7 +6,7 @@ import os
 
 import numpy as np
 
-from m3c2.visualization.visualization_service import VisualizationService
+from m3c2.visualization.services.visualization_service import VisualizationService
 
 logger = logging.getLogger(__name__)
 
@@ -71,56 +71,3 @@ class VisualizationRunner:
             raise
 
 
-
-
-    # def generate_clouds_outliers(self, cfg, out_base: str, tag: str) -> None:
-    #     """Convert TXT distance outputs into colourised inlier/outlier point clouds.
-
-    #     Parameters
-    #     ----------
-    #     cfg : object
-    #         Configuration providing the ``process_python_CC`` prefix and the
-    #         ``outlier_detection_method`` identifier used to compose file names.
-    #     out_base : str
-    #         Directory where the TXT inputs are located and the resulting PLY
-    #         files will be written.
-    #     tag : str
-    #         Label appended to file names to distinguish different processing
-    #         runs or datasets.
-
-    #     Outputs
-    #     -------
-    #     Two PLY files are created in ``out_base``—one for outliers and one for
-    #     inliers—derived from TXT files containing coordinates and M3C2 distance
-    #     values.
-
-    #     This method is part of the public pipeline API.
-    #     """
-    #     logger.info("[Visual] Erzeuge .ply Dateien für Outliers / Inliers …")
-    #     os.makedirs(out_base, exist_ok=True)
-    #     ply_valid_path_outlier = os.path.join(
-    #         out_base, f"{cfg.process_python_CC}_{tag}_outlier_{cfg.outlier_detection_method}.ply"
-    #     )
-    #     ply_valid_path_inlier = os.path.join(
-    #         out_base, f"{cfg.process_python_CC}_{tag}_inlier_{cfg.outlier_detection_method}.ply"
-    #     )
-    #     txt_path_outlier = os.path.join(
-    #         out_base, f"python_{tag}_m3c2_distances_coordinates_outlier_{cfg.outlier_detection_method}.txt"
-    #     )
-    #     txt_path_inlier = os.path.join(
-    #         out_base, f"python_{tag}_m3c2_distances_coordinates_inlier_{cfg.outlier_detection_method}.txt"
-    #     )
-
-    #     try:
-    #         VisualizationService.txt_to_ply_with_distance_color(
-    #             txt_path=txt_path_outlier, outply=ply_valid_path_outlier
-    #         )
-    #     except Exception as exc:
-    #         logger.warning("[Visual] Export valid-only übersprungen: %s", exc)
-
-    #     try:
-    #         VisualizationService.txt_to_ply_with_distance_color(
-    #             txt_path=txt_path_inlier, outply=ply_valid_path_inlier
-    #         )
-    #     except Exception as exc:
-    #         logger.warning("[Visual] Export valid-only übersprungen: %s", exc)

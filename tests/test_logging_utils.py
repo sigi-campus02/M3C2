@@ -6,7 +6,7 @@ import json
 import logging
 from pathlib import Path
 
-import m3c2.io.logging_utils as logging_utils
+import m3c2.config.logging_config as logging_config
 
 
 def test_setup_logging_idempotent(tmp_path: Path, monkeypatch) -> None:
@@ -37,10 +37,10 @@ def test_setup_logging_idempotent(tmp_path: Path, monkeypatch) -> None:
     log_file = tmp_path / "test.log"
     monkeypatch.setenv("LOG_FILE", str(log_file))
 
-    logging_utils.setup_logging()
+    logging_config.setup_logging()
     handlers_before = list(logger.handlers)
 
-    logging_utils.setup_logging()
+    logging_config.setup_logging()
     handlers_after = list(logger.handlers)
 
     assert handlers_after == handlers_before
@@ -65,10 +65,10 @@ def test_resolve_log_level_warning(monkeypatch, caplog) -> None:
     def bad_load(handle) -> None:  # type: ignore[unused-ignore]
         raise json.JSONDecodeError("boom", "", 0)
 
-    monkeypatch.setattr(logging_utils.json, "load", bad_load)
+    monkeypatch.setattr(logging_config.json, "load", bad_load)
 
     with caplog.at_level(logging.WARNING):
-        level = logging_utils.resolve_log_level()
+        level = logging_config.resolve_log_level()
 
     assert level == "INFO"
     assert any(

@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 
 sys.path.append(str(Path(__file__).resolve().parents[2]))
-import m3c2.io.format_handler as fh
+import m3c2.importer.format_handler as fh
 
 
 def test_read_xyz(tmp_path: Path) -> None:

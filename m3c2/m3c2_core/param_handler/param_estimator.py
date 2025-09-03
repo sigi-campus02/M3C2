@@ -21,7 +21,7 @@ import numpy as np
 from sklearn.exceptions import NotFittedError
 from sklearn.neighbors import NearestNeighbors
 
-from m3c2.pipeline.strategies import ScaleScan, ScanStrategy
+from m3c2.m3c2_core.param_handler.strategies import ScaleScan, ScanStrategy
 
 
 logger = logging.getLogger(__name__)

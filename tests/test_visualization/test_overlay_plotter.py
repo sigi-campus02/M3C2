@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 
-from m3c2.visualization.overlay_plotter import (
+from m3c2.visualization.plotters.overlay_plotter import (
     get_common_range,
     plot_overlay_histogram,
     plot_overlay_gauss,

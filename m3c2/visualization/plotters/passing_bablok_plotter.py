@@ -15,7 +15,7 @@ from typing import List
 import matplotlib.pyplot as plt
 import numpy as np
 
-from .comparison_loader import _load_and_mask
+from ..loaders.comparison_loader import _load_and_mask
 
 logger = logging.getLogger(__name__)
 

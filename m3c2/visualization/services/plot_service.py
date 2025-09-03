@@ -17,8 +17,8 @@ import numpy as np
 from scipy.stats import norm
 
 from m3c2.config.plot_config import PlotConfig, PlotOptions
-from .distance_loader import scan_distance_files_by_index
-from .overlay_plotter import (
+from ..loaders.distance_loader import scan_distance_files_by_index
+from ..plotters.overlay_plotter import (
     get_common_range,
     plot_overlay_boxplot,
     plot_overlay_gauss,
@@ -27,7 +27,7 @@ from .overlay_plotter import (
     plot_overlay_violin,
     plot_overlay_weibull,
 )
-from .report_builder import (
+from .report_service import (
     overlay_plots as _overlay_plots,
     summary_pdf as _summary_pdf,
     build_parts_pdf as _build_parts_pdf,

@@ -9,7 +9,7 @@ from sklearn.neighbors import NearestNeighbors
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from m3c2.core.statistics.cloud_quality import _calc_single_cloud_stats
+from m3c2.m3c2_core.statistics.cloud_quality import _calc_single_cloud_stats
 
 def test_calc_single_cloud_stats_empty():
     """Ensure empty arrays raise ``ValueError``.

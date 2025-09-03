@@ -11,9 +11,9 @@ import logging
 import os
 
 from m3c2.config.plot_config import PlotConfig, PlotOptionsComparedistances
-from .bland_altman_plotter import bland_altman_plot
-from .passing_bablok_plotter import passing_bablok_plot
-from .linear_regression_plotter import linear_regression_plot
+from ..plotters.bland_altman_plotter import bland_altman_plot
+from ..plotters.passing_bablok_plotter import passing_bablok_plot
+from ..plotters.linear_regression_plotter import linear_regression_plot
 
 logger = logging.getLogger(__name__)
 

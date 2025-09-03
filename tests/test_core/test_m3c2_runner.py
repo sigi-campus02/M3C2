@@ -8,7 +8,7 @@ import sys
 import types
 import importlib
 import numpy as np
-from m3c2.core.m3c2_runner import M3C2Runner
+from m3c2.m3c2_core.m3c2_runner import M3C2Runner
 
 def test_m3c2_runner(monkeypatch):
     """Test the M3C2 runner with a dummy ``py4dgeo`` implementation.

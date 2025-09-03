@@ -10,8 +10,8 @@ from types import SimpleNamespace
 
 import numpy as np
 
-from m3c2.pipeline.visualization_runner import VisualizationRunner
-from m3c2.visualization.visualization_service import VisualizationService
+from m3c2.visualization.services.visualization_runner import VisualizationRunner
+from m3c2.visualization.services.visualization_service import VisualizationService
 
 
 def test_generate_visuals_with_cloud(monkeypatch, tmp_path):

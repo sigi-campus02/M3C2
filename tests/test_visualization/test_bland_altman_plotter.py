@@ -8,8 +8,8 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 
-from m3c2.visualization import bland_altman_plotter
-from m3c2.visualization.bland_altman_plotter import bland_altman_plot
+from m3c2.visualization.plotters import bland_altman_plotter
+from m3c2.visualization.plotters.bland_altman_plotter import bland_altman_plot
 
 
 def test_bland_altman_plot_creates_file(tmp_path, monkeypatch):

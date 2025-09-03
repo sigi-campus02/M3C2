@@ -11,7 +11,7 @@ dry-run mode to preview changes without modifying the filesystem.
 import argparse, os, logging
 from pathlib import Path
 
-from m3c2.io.logging_utils import setup_logging
+from m3c2.config.logging_config import setup_logging
 
 logger = logging.getLogger(__name__)
 

@@ -13,7 +13,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from m3c2.core.statistics.basic_metrics import basic_stats, fit_distributions
+from m3c2.m3c2_core.statistics.basic_metrics import basic_stats, fit_distributions
 
 
 def test_basic_stats_empty_array():

@@ -12,7 +12,7 @@ from types import SimpleNamespace
 
 import numpy as np
 
-from m3c2.pipeline.m3c2_executor import M3C2Executor
+from m3c2.m3c2_core.m3c2_executor import M3C2Executor
 
 
 def test_run_m3c2_writes_outputs(tmp_path, monkeypatch, caplog):

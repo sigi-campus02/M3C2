@@ -70,7 +70,7 @@ dummy_o3d = SimpleNamespace(
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 sys.modules.setdefault("open3d", dummy_o3d)
 
-from m3c2.core.boundingbox_service import (
+from m3c2.m3c2_core.boundingbox_service import (
     read_ply,
     to_local_frame,
     to_world_frame,

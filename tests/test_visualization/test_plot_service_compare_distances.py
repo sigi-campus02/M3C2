@@ -6,8 +6,8 @@ configuration and that no plots are generated when all options are disabled.
 """
 
 from m3c2.config.plot_config import PlotConfig, PlotOptionsComparedistances
-from m3c2.visualization import plot_comparedistances_service
-from m3c2.visualization.plot_comparedistances_service import (
+from m3c2.visualization.services import plot_comparedistances_service
+from m3c2.visualization.services.plot_comparedistances_service import (
     PlotServiceCompareDistances,
 )
 

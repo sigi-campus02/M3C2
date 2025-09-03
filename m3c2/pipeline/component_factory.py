@@ -4,12 +4,11 @@ from __future__ import annotations
 
 import logging
 
-from m3c2.pipeline.data_loader import DataLoader
-from m3c2.pipeline.scale_estimator import ScaleEstimator
-from m3c2.pipeline.m3c2_executor import M3C2Executor
-# from archive.outlier_handler import OutlierHandler
-from m3c2.pipeline.statistics_runner import StatisticsRunner
-from m3c2.pipeline.visualization_runner import VisualizationRunner
+from m3c2.importer.data_loader import DataLoader
+from m3c2.m3c2_core.param_handler.scale_estimator import ScaleEstimator
+from m3c2.m3c2_core.m3c2_executor import M3C2Executor
+from m3c2.statistics.statistics_runner import StatisticsRunner
+from m3c2.visualization.services.visualization_runner import VisualizationRunner
 
 
 logger = logging.getLogger(__name__)

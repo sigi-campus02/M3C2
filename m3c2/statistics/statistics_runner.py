@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import os
 
-from m3c2.core.statistics import StatisticsService
+from m3c2.m3c2_core.statistics import StatisticsService
 
 logger = logging.getLogger(__name__)
 

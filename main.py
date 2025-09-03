@@ -19,7 +19,7 @@ Run Pipeline using the command line:
 
 import logging
 
-from m3c2.io.logging_utils import resolve_log_level, setup_logging
+from m3c2.config.logging_config import resolve_log_level, setup_logging
 
 logger = logging.getLogger(__name__)
 

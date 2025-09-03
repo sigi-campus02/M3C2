@@ -14,8 +14,8 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from m3c2.visualization.plot_service import PlotService
-from m3c2.io.logging_utils import setup_logging
+from m3c2.visualization.services.plot_service import PlotService
+from m3c2.config.logging_config import setup_logging
 from m3c2.config.plot_config import PlotOptions
 
 # Input and output directories for the TUNSPEKT Labordaten_all dataset.
