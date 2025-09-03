@@ -10,8 +10,8 @@ import argparse
 import tkinter as tk
 from tkinter import messagebox
 import logging
-
 from m3c2.io.logging_utils import setup_logging
+from m3c2.cli.cli import CLIApp
 
 
 logger = logging.getLogger(__name__)
@@ -123,7 +123,5 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    from m3c2.cli.cli import CLIApp
-
     app = CLIApp()
     run_gui(app.build_parser(), app.run)

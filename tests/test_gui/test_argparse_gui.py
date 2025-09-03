@@ -10,7 +10,7 @@ import types
 
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
-from m3c2.gui.argparse_gui import run_gui
+from m3c2.cli.argparse_gui import run_gui
 
 
 def test_run_gui_invokes_parse_args_and_main_func() -> None:
