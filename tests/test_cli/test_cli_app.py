@@ -59,14 +59,14 @@ def test_run_invokes_orchestrator(monkeypatch, tmp_path) -> None:
     orchestrator_instance.run_all.assert_called_once_with()
 
 
-def test_run_handles_runtime_error(monkeypatch, tmp_path) -> None:
+def test_run_handles_run_all_exception(monkeypatch, tmp_path) -> None:
     """``CLIApp.run`` returns a non-zero status on orchestrator failure."""
 
     folder = tmp_path / "001"
     folder.mkdir()
 
     orchestrator_cls = MagicMock()
-    orchestrator_cls.return_value.run_all.side_effect = RuntimeError("boom")
+    orchestrator_cls.return_value.run_all.side_effect = Exception("boom")
     monkeypatch.setattr("m3c2.cli.cli.BatchOrchestrator", orchestrator_cls)
 
     app = CLIApp()
