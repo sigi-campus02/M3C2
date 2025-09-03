@@ -1,16 +1,21 @@
 """Compute and export statistics for point cloud analysis.
 
-This subpackage bundles utilities for deriving descriptive metrics, assessing
-cloud quality, detecting statistical outliers, and exporting tabular
-summaries.  The :class:`~m3c2.core.statistics.service.StatisticsService`
-coordinates these helpers for use in the higher level pipeline.
+The refactored subpackage exposes focused helper functions for computing
+distance statistics, aggregating results across folders and evaluating single
+point clouds.  These utilities can be combined by higher level components to
+assemble complete workflows.
 """
 
-from .statistics_service import StatisticsService
+from .distance_stats import calc_stats, _load_params
+from .m3c2_aggregator import compute_m3c2_statistics
+from .single_cloud_service import calc_single_cloud_stats
 from .exporters import CANONICAL_COLUMNS, write_table, write_cloud_stats
 
 __all__ = [
-    "StatisticsService",
+    "calc_stats",
+    "_load_params",
+    "compute_m3c2_statistics",
+    "calc_single_cloud_stats",
     "CANONICAL_COLUMNS",
     "write_table",
     "write_cloud_stats",

@@ -10,7 +10,6 @@ from m3c2.pipeline.component_factory import PipelineComponentFactory
 from m3c2.importer.data_loader import DataLoader
 from m3c2.m3c2_core.param_handler.scale_estimator import ScaleEstimator
 from m3c2.m3c2_core.m3c2_executor import M3C2Executor
-from archive.outlier_handler import OutlierHandler
 from m3c2.statistics.statistics_runner import StatisticsRunner
 from m3c2.visualization.services.visualization_runner import VisualizationRunner
 

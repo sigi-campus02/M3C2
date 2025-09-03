@@ -1,6 +1,6 @@
 """Tests for the statistics exporters utilities.
 
-These tests validate that the :mod:`m3c2.core.statistics.exporters`
+These tests validate that the :mod:`m3c2.statistics.exporters`
 module writes tabular results using the appropriate backend depending on
 requested file format and that it gracefully handles empty inputs.
 """
@@ -14,7 +14,7 @@ import logging
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from m3c2.m3c2_core.statistics import exporters
+from m3c2.statistics import exporters
 
 
 def test_write_table_calls_excel_by_default():
@@ -27,7 +27,7 @@ def test_write_table_calls_excel_by_default():
     """
 
     rows = [{"a": 1}]
-    with patch("m3c2.core.statistics.exporters._append_df_to_excel") as m_excel:
+    with patch("m3c2.statistics.exporters._append_df_to_excel") as m_excel:
         exporters.write_table(rows, out_path="dummy.xlsx")
         m_excel.assert_called_once()
         df_arg = m_excel.call_args.args[0]
@@ -45,7 +45,7 @@ def test_write_table_calls_json_when_requested():
     """
 
     rows = [{"a": 1}]
-    with patch("m3c2.core.statistics.exporters._append_df_to_json") as m_json:
+    with patch("m3c2.statistics.exporters._append_df_to_json") as m_json:
         exporters.write_table(rows, out_path="dummy.json", output_format="json")
         m_json.assert_called_once()
 
@@ -59,7 +59,7 @@ def test_write_table_empty_rows():
     list is empty.
     """
 
-    with patch("m3c2.core.statistics.exporters._append_df_to_excel") as m_excel:
+    with patch("m3c2.statistics.exporters._append_df_to_excel") as m_excel:
         exporters.write_table([], out_path="dummy.xlsx")
         m_excel.assert_not_called()
 
@@ -93,7 +93,7 @@ def test_write_cloud_stats_excel():
         captured["df"] = self
 
     with patch("os.path.exists", return_value=False), \
-         patch("m3c2.core.statistics.exporters.pd.ExcelWriter") as m_writer, \
+         patch("m3c2.statistics.exporters.pd.ExcelWriter") as m_writer, \
          patch("pandas.DataFrame.to_excel", new=fake_to_excel):
         m_writer.return_value.__enter__.return_value = MagicMock()
         exporters.write_cloud_stats(rows, out_path="dummy.xlsx")
@@ -114,7 +114,7 @@ def test_write_cloud_stats_transposed_df(monkeypatch):
         captured["df"] = self
 
     with patch("os.path.exists", return_value=False), \
-         patch("m3c2.core.statistics.exporters.pd.ExcelWriter") as m_writer, \
+         patch("m3c2.statistics.exporters.pd.ExcelWriter") as m_writer, \
          patch("pandas.DataFrame.to_excel", new=fake_to_excel):
         m_writer.return_value.__enter__.return_value = MagicMock()
         exporters.write_cloud_stats(df, out_path="dummy.xlsx")

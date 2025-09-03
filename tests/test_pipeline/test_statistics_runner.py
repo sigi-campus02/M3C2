@@ -10,7 +10,7 @@ import logging
 from types import SimpleNamespace
 
 from m3c2.statistics.statistics_runner import StatisticsRunner
-from m3c2.m3c2_core.statistics import StatisticsService
+from m3c2.statistics import statistics_runner
 
 
 def test_compute_statistics_distance(monkeypatch, caplog):
@@ -35,9 +35,9 @@ def test_compute_statistics_distance(monkeypatch, caplog):
         called.update(kwargs)
 
     monkeypatch.setattr(
-        StatisticsService,
+        statistics_runner,
         "compute_m3c2_statistics",
-        staticmethod(fake_compute_m3c2_statistics),
+        fake_compute_m3c2_statistics,
     )
 
     cfg = SimpleNamespace(
@@ -80,9 +80,9 @@ def test_single_cloud_statistics_handler(monkeypatch, caplog):
         called.update(kwargs)
 
     monkeypatch.setattr(
-        StatisticsService,
+        statistics_runner,
         "calc_single_cloud_stats",
-        classmethod(lambda cls, **kwargs: fake_calc_single_cloud_stats(**kwargs)),
+        lambda **kwargs: fake_calc_single_cloud_stats(**kwargs),
     )
 
     cfg = SimpleNamespace(

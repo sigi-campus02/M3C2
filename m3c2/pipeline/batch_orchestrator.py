@@ -13,7 +13,7 @@ from typing import List
 import numpy as np
 
 from m3c2.config.pipeline_config import PipelineConfig
-from m3c2.statistics import StatisticsService
+from m3c2.statistics import _load_params
 from m3c2.pipeline.component_factory import PipelineComponentFactory
 
 logger = logging.getLogger(__name__)
@@ -342,7 +342,7 @@ class BatchOrchestrator:
             params_path = os.path.join(
                 out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt"
             )
-            normal, projection = StatisticsService._load_params(params_path)
+            normal, projection = _load_params(params_path)
 
             if not np.isnan(normal) and not np.isnan(projection):
                 logger.info(
