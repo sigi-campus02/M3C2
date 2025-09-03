@@ -74,8 +74,8 @@ def test_run_gui_invokes_parse_args_and_main_func() -> None:
     parser.parse_args = parse_mock
     main_mock = mock.MagicMock()
 
-    with mock.patch("m3c2.gui.argparse_gui.tk", fake_tk), mock.patch(
-        "m3c2.gui.argparse_gui.messagebox"
+    with mock.patch("m3c2.cli.argparse_gui.tk", fake_tk), mock.patch(
+        "m3c2.cli.argparse_gui.messagebox"
     ):
         run_gui(parser, main_mock)
 

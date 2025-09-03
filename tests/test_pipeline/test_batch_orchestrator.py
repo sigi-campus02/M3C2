@@ -44,7 +44,7 @@ def test_load_data_uses_data_dir(tmp_path, monkeypatch):
     )
 
     monkeypatch.setattr(
-        "m3c2.pipeline.data_loader.DataSource", DummyDS
+        "m3c2.importer.data_loader.DataSource", DummyDS
     )
     loader = DataLoader()
     ds, mov, ref, corepoints = loader.load_data(cfg, mode="multicloud")

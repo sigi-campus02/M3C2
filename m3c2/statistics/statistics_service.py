@@ -27,8 +27,8 @@ import pandas as pd
 from m3c2.importer.datasource import DataSource
 from m3c2.config.datasource_config import DataSourceConfig
 
-from .basic_metrics import basic_stats, fit_distributions
-from .outliers import compute_outliers, get_outlier_mask
+from .distance_basic_metrics import basic_stats, fit_distributions
+from .distance_outlier_metrics import compute_outliers, get_outlier_mask
 from .singlecloud_metrics import calc_single_cloud_stats
 from .exporters import (
     _append_df_to_excel,

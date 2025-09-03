@@ -24,7 +24,6 @@ from ..plotters.overlay_plotter import (
     plot_overlay_gauss,
     plot_overlay_histogram,
     plot_overlay_qq,
-    plot_overlay_violin,
     plot_overlay_weibull,
 )
 from .report_service import (

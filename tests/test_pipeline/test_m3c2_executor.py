@@ -39,7 +39,7 @@ def test_run_m3c2_writes_outputs(tmp_path, monkeypatch, caplog):
         def run(self, mov, ref, corepoints, normal, projection):
             return distances, uncertainties
 
-    monkeypatch.setattr("m3c2.pipeline.m3c2_executor.M3C2Runner", DummyRunner)
+    monkeypatch.setattr("m3c2.m3c2_core.m3c2_executor.M3C2Runner", DummyRunner)
 
     cfg = SimpleNamespace(process_python_CC="cfg")
     mov = np.array([[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]])
