@@ -326,16 +326,26 @@ def plot_overlay_violin(
         )
         return
 
-    records = [pd.DataFrame({"Version": v, "Distanz": arr}) for v, arr in data.items()]
-    if not records:
-        return
-    df = pd.concat(records, ignore_index=True)
-    palette = {v: colors.get(v) for v in df["Version"].unique()}
-    plt.figure(figsize=(10, 6))
-    sns.violinplot(data=df, x="Version", y="Distanz", palette=palette, cut=0, inner="quartile")
-    plt.title(title_text or f"Violinplot – {fid}/{fname}")
-    plt.xlabel("Version")
-    plt.ylabel("M3C2 distance")
-    plt.tight_layout()
-    plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Violinplot.png"))
-    plt.close()
+    try:
+        records = [pd.DataFrame({"Version": v, "Distanz": arr}) for v, arr in data.items()]
+        if not records:
+            return
+        df = pd.concat(records, ignore_index=True)
+        palette = {v: colors.get(v) for v in df["Version"].unique()}
+        plt.figure(figsize=(10, 6))
+        sns.violinplot(
+            data=df,
+            x="Version",
+            y="Distanz",
+            palette=palette,
+            cut=0,
+            inner="quartile",
+        )
+        plt.title(title_text or f"Violinplot – {fid}/{fname}")
+        plt.xlabel("Version")
+        plt.ylabel("M3C2 distance")
+        plt.tight_layout()
+        plt.savefig(os.path.join(outdir, f"{fid}_{fname}_Violinplot.png"))
+        plt.close()
+    except Exception as e:
+        logger.warning("[Report] Violinplot failed (%s/%s): %s", fid, fname, e)
