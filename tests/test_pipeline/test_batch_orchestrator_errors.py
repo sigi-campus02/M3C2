@@ -56,7 +56,7 @@ def test_run_all_continues_on_value_error(monkeypatch, tmp_path):
     assert calls == ["a", "b"]
 
 
-def test_run_all_reraises_unexpected(monkeypatch, tmp_path):
+def test_run_all_logs_unexpected(monkeypatch, tmp_path, caplog):
     cfg = _cfg(tmp_path, "a")
     orchestrator = BatchOrchestrator([cfg])
 
@@ -65,8 +65,10 @@ def test_run_all_reraises_unexpected(monkeypatch, tmp_path):
 
     monkeypatch.setattr(orchestrator, "_run_single", side_effect)
 
-    with pytest.raises(RuntimeError):
+    with caplog.at_level("ERROR"):
         orchestrator.run_all()
+
+    assert any("Unerwarteter Fehler" in r.message for r in caplog.records)
 
 
 def test_run_single_propagates_unexpected(monkeypatch, tmp_path):
@@ -76,29 +78,21 @@ def test_run_single_propagates_unexpected(monkeypatch, tmp_path):
     dummy_ds = SimpleNamespace(config=SimpleNamespace(folder=str(tmp_path)))
     arr = np.zeros((1, 3))
 
-    def fake_load_data(cfg, type="multicloud"):
-        if type == "singlecloud":
+    def fake_load_data(cfg, mode="multicloud"):
+        if mode == "singlecloud":
             return arr
         return (dummy_ds, arr, arr, arr)
 
     monkeypatch.setattr(orchestrator.data_loader, "load_data", fake_load_data)
     monkeypatch.setattr(
-        orchestrator.outlier_handler,
-        "exclude_outliers",
-        lambda *a, **k: (_ for _ in ()).throw(RuntimeError("bad")),
-    )
-    monkeypatch.setattr(
-        orchestrator.visualization_runner,
-        "generate_clouds_outliers",
-        lambda *a, **k: None,
+        orchestrator.scale_estimator,
+        "determine_scales",
+        lambda *a, **k: (0.0, 0.0),
     )
     monkeypatch.setattr(
         orchestrator.statistics_runner,
         "single_cloud_statistics_handler",
         lambda *a, **k: (_ for _ in ()).throw(RuntimeError("bad")),
-    )
-    monkeypatch.setattr(
-        orchestrator.statistics_runner, "compute_statistics", lambda *a, **k: None
     )
 
     with pytest.raises(RuntimeError):

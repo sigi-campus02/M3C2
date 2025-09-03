@@ -192,8 +192,10 @@ def write_cloud_stats(
 
     if isinstance(rows, pd.DataFrame):
         df = rows.copy()
-    else:
+    elif rows:
         df = pd.DataFrame(rows, columns=list(rows[0].keys()))
+    else:
+        df = pd.DataFrame()
 
     if df.empty:
         logger.info("Skipping writing cloud stats to %s - no data", out_path)
