@@ -10,6 +10,8 @@ import argparse
 import tkinter as tk
 from tkinter import messagebox
 import logging
+import os
+import json
 from m3c2.config.logging_config import setup_logging
 from m3c2.cli.cli import CLIApp
 
@@ -31,12 +33,20 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
 
     widgets: dict[str, tk.Variable] = {}
     row = 0
+
+    descriptions = _load_arg_descriptions("config.schema.json")
+
+
     for action in parser._actions:
         # Skip help actions – they are not user facing parameters
         if isinstance(action, argparse._HelpAction):
             continue
 
         tk.Label(root, text=action.dest).grid(row=row, column=0, sticky="w", padx=5, pady=5)
+        desc = descriptions.get(action.dest, "")
+
+        if desc:
+            tk.Label(root, text=desc, fg="gray", wraplength=350, justify="left").grid(row=row, column=2, sticky="w", padx=5, pady=5)
 
         if action.option_strings and action.nargs == 0 and action.const is True:
             var = tk.BooleanVar(value=bool(action.default))
@@ -116,3 +126,13 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
     tk.Button(root, text="Abbrechen", command=on_cancel).grid(row=row, column=1, padx=5, pady=10)
 
     root.mainloop()
+
+
+def _load_arg_descriptions(schema_path):
+    # Absoluten Pfad berechnen
+    abs_path = os.path.join(os.path.dirname(__file__), "..", "..", "config.schema.json")
+    abs_path = os.path.abspath(abs_path)
+    with open(abs_path, "r", encoding="utf-8") as f:
+        schema = json.load(f)
+    arg_props = schema.get("properties", {}).get("arguments", {}).get("properties", {})
+    return {key: value.get("description", "") for key, value in arg_props.items()}
