@@ -8,7 +8,7 @@ import logging
 import sys
 import os
 
-from m3c2.io.logging_utils import resolve_log_level, setup_logging
+from m3c2.io.logging_utils import setup_logging
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +49,9 @@ def main(
     emitting log messages.
     """
 
-    setup_logging(level=resolve_log_level())
+    # ``setup_logging`` reads the desired log level from configuration and the
+    # environment, so no explicit level argument is required here.
+    setup_logging()
 
     folder_ids = folder_ids or ["0342-0349"]
     ref_variants = ref_variants or ["ref", "ref_ai"]

@@ -3,7 +3,7 @@
 import logging
 
 from m3c2.core.statistics import StatisticsService
-from m3c2.io.logging_utils import resolve_log_level, setup_logging
+from m3c2.io.logging_utils import setup_logging
 
 
 logger = logging.getLogger(__name__)
@@ -24,7 +24,8 @@ def main(
 ) -> None:
     """Invoke :func:`StatisticsService.calc_single_cloud_stats` with defaults."""
 
-    setup_logging(level=resolve_log_level())
+    # ``setup_logging`` determines the log level internally.
+    setup_logging()
     logger.info(
         "Parameters received: folder_ids=%s, filename_mov=%s, filename_ref=%s, "
         "area_m2=%s, radius=%s, k=%s, sample_size=%s, use_convex_hull=%s, "

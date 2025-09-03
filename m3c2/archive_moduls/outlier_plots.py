@@ -20,7 +20,9 @@ def main(
 ) -> None:
     """Create boxplots comparing full and inlier-filtered distances."""
 
-    setup_logging(level=os.getenv("LOG_LEVEL", "INFO"))
+    # Logging configuration relies on environment variables or configuration
+    # files; no explicit level argument is necessary.
+    setup_logging()
 
     variants = variants or [
         ("ref", "python_ref_m3c2_distances.txt"),

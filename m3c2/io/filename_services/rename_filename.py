@@ -11,7 +11,7 @@ dry-run mode and optional recursion into subdirectories.
 import re, argparse, os, logging
 from pathlib import Path
 
-from m3c2.io.logging_utils import resolve_log_level, setup_logging
+from m3c2.io.logging_utils import setup_logging
 
 logger = logging.getLogger(__name__)
 
@@ -86,7 +86,8 @@ def main():
     ap.add_argument("-n", "--dry-run", action="store_true", help="Nur anzeigen, nichts ändern")
     args = ap.parse_args()
 
-    setup_logging(level=resolve_log_level())
+    # Logging configuration uses project defaults; no explicit level required.
+    setup_logging()
 
     base = Path(args.path).resolve()
     changed = skipped = 0
