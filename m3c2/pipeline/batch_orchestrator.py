@@ -240,7 +240,7 @@ class BatchOrchestrator:
             computation is logged and re-raised.
         """
 
-        single_cloud = self.data_loader.load_data(cfg, type="singlecloud")
+        single_cloud = self.data_loader.load_data(cfg, mode="singlecloud")
 
         # --- Scale estimation for single cloud statistics parameters
         if getattr(single_cloud, "shape", (0,))[0] < 2:
