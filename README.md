@@ -58,7 +58,7 @@ If neither is provided, the log level defaults to the `logging.level` entry in
 - `services/` – parameter estimation, statistics, outlier handling, visualization
 - `tests/` – unit tests covering key functionality
 
-For detailed descriptions of the calculated statistics, see `docu/README.md`.
+
 
 
 ## Configuration Parameters
