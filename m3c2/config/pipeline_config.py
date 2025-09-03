@@ -43,17 +43,21 @@ class PipelineConfig:
         Backend implementation to use: ``"python"`` or ``"CC"``.
     """
 
+    # ---- Input/Output Files ----
     data_dir: str
     folder_id: str
     filename_mov: str
     filename_ref: str
     filename_singlecloud: str
+    project: str
+
+    # ----- Processing Options -----
     mov_as_corepoints: bool
     use_subsampled_corepoints: int
     only_stats: bool
     stats_singleordistance: str
     sample_size: int
-    project: str
+    
     normal_override: Optional[float] = None
     proj_override: Optional[float] = None
     use_existing_params: bool = False
@@ -62,5 +66,4 @@ class PipelineConfig:
     process_python_CC: str = "python"
     output_format: str = "excel"
     log_level: str = "INFO"
-
 
