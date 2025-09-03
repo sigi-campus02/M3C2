@@ -8,7 +8,7 @@ characteristics.
 
 from __future__ import annotations
 
-from typing import Dict, Optional
+from typing import Dict, Optional, Tuple
 
 import logging
 import numpy as np
@@ -170,38 +170,87 @@ def basic_stats(values: np.ndarray, tolerance: float) -> Dict[str, float]:
     return result
 
 
+def _fit_gaussian(
+    clipped: np.ndarray,
+    hist: np.ndarray,
+    bin_edges: np.ndarray,
+    N: int,
+    thr: float,
+) -> Tuple[Tuple[float, float], float]:
+    """Fit a Gaussian distribution and compute its Chi² value."""
+    mu, std = norm.fit(clipped)
+    cdfL = norm.cdf(bin_edges[:-1], mu, std)
+    cdfR = norm.cdf(bin_edges[1:], mu, std)
+    expected = N * (cdfR - cdfL)
+    mask = expected > thr
+    chi2 = float(np.sum((hist[mask] - expected[mask]) ** 2 / expected[mask]))
+    return (float(mu), float(std)), chi2
+
+
+def _fit_weibull(
+    clipped: np.ndarray,
+    hist: np.ndarray,
+    bin_edges: np.ndarray,
+    N: int,
+    thr: float,
+) -> Tuple[Tuple[float, float, float], float]:
+    """Fit a Weibull distribution and compute its Chi² value."""
+    a, loc, b = weibull_min.fit(clipped)
+    cdfL = weibull_min.cdf(bin_edges[:-1], a, loc=loc, scale=b)
+    cdfR = weibull_min.cdf(bin_edges[1:], a, loc=loc, scale=b)
+    expected = N * (cdfR - cdfL)
+    mask = expected > thr
+    chi2 = float(np.sum((hist[mask] - expected[mask]) ** 2 / expected[mask]))
+    return (float(a), float(loc), float(b)), chi2
+
+
 def fit_distributions(
     clipped: np.ndarray,
     hist: np.ndarray,
     bin_edges: np.ndarray,
     min_expected: Optional[float],
 ) -> Dict[str, float]:
-    """Fit Gaussian and Weibull distributions and compute Chi² metrics."""
+    """Fit Gaussian and Weibull distributions and compute Chi² metrics.
+
+    Parameters
+    ----------
+    clipped : np.ndarray
+        Sample values used for fitting the distributions.
+    hist : np.ndarray
+        Histogram counts derived from ``clipped`` and ``bin_edges``.
+    bin_edges : np.ndarray
+        Edges of the histogram bins associated with ``hist``.
+    min_expected : Optional[float]
+        Minimum expected count per bin to be considered in the Chi²
+        calculation. If ``None``, a tiny epsilon is used instead.
+
+    Returns
+    -------
+    Dict[str, float]
+        Mapping of fitted parameters and Chi² statistics. Keys include
+        ``mu`` and ``std`` for the Gaussian fit as well as ``a``, ``loc``
+        and ``b`` for the Weibull fit. The associated Chi² values are
+        provided in ``pearson_gauss`` and ``pearson_weib``. Additional
+        Weibull characteristics such as skewness and mode are also
+        included.
+
+    Notes
+    -----
+    Bins with an expected count below ``min_expected`` are ignored when
+    computing the Chi² statistic to avoid divisions by values close to
+    zero.
+    """
     N = int(hist.sum())
     assert N == len(clipped), f"Histogram N ({N}) != len(clipped) ({len(clipped)})"
 
-    mu, std = norm.fit(clipped)
-
-    cdfL = norm.cdf(bin_edges[:-1], mu, std)
-    cdfR = norm.cdf(bin_edges[1:], mu, std)
-    expected_gauss = N * (cdfR - cdfL)
-
     eps = 1e-12
     thr = min_expected if min_expected is not None else eps
-    maskG = expected_gauss > thr
-    pearson_gauss = float(
-        np.sum((hist[maskG] - expected_gauss[maskG]) ** 2 / expected_gauss[maskG])
-    )
 
-    a, loc, b = weibull_min.fit(clipped)
-    cdfL = weibull_min.cdf(bin_edges[:-1], a, loc=loc, scale=b)
-    cdfR = weibull_min.cdf(bin_edges[1:], a, loc=loc, scale=b)
-    expected_weib = N * (cdfR - cdfL)
-    maskW = expected_weib > thr
-    pearson_weib = float(
-        np.sum((hist[maskW] - expected_weib[maskW]) ** 2 / expected_weib[maskW])
-    )
+    # Gaussian fit
+    (mu, std), pearson_gauss = _fit_gaussian(clipped, hist, bin_edges, N, thr)
 
+    # Weibull fit
+    (a, loc, b), pearson_weib = _fit_weibull(clipped, hist, bin_edges, N, thr)
     skew_weibull = float(weibull_min(a, loc=loc, scale=b).stats(moments="s"))
     mode_weibull = float(loc + b * ((a - 1) / a) ** (1 / a)) if a > 1 else float(loc)
 
@@ -220,12 +269,12 @@ def fit_distributions(
     )
 
     return {
-        "mu": float(mu),
-        "std": float(std),
+        "mu": mu,
+        "std": std,
         "pearson_gauss": pearson_gauss,
-        "a": float(a),
-        "loc": float(loc),
-        "b": float(b),
+        "a": a,
+        "loc": loc,
+        "b": b,
         "pearson_weib": pearson_weib,
         "skew_weibull": skew_weibull,
         "mode_weibull": mode_weibull,
