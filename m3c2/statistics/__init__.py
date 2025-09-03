@@ -2,15 +2,22 @@
 
 This subpackage bundles utilities for deriving descriptive metrics, assessing
 cloud quality, detecting statistical outliers, and exporting tabular
-summaries.  The :class:`~m3c2.core.statistics.service.StatisticsService`
-coordinates these helpers for use in the higher level pipeline.
+summaries.  Functions are organised by responsibility to keep the
+codebase maintainable and composable.
 """
 
-from .statistics_service import StatisticsService
+from .distance_stats import calc_stats, _load_params
+from .m3c2_aggregator import compute_m3c2_statistics
+from .single_cloud_service import calc_single_cloud_stats
+from .path_utils import _resolve
 from .exporters import CANONICAL_COLUMNS, write_table, write_cloud_stats
 
 __all__ = [
-    "StatisticsService",
+    "calc_stats",
+    "compute_m3c2_statistics",
+    "calc_single_cloud_stats",
+    "_load_params",
+    "_resolve",
     "CANONICAL_COLUMNS",
     "write_table",
     "write_cloud_stats",

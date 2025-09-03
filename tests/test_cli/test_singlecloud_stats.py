@@ -22,14 +22,10 @@ def test_main_writes_output(tmp_path, monkeypatch):
 
     out_file = tmp_path / "stats.xlsx"
 
-    def fake_calc(cls, **kwargs):
+    def fake_calc(**kwargs):
         Path(kwargs["out_path"]).write_text("stats")
 
-    monkeypatch.setattr(
-        singlecloud_stats.StatisticsService,
-        "calc_single_cloud_stats",
-        classmethod(fake_calc),
-    )
+    monkeypatch.setattr(singlecloud_stats, "calc_single_cloud_stats", fake_calc)
 
     singlecloud_stats.main(folder_ids=["fid"], out_path=str(out_file))
 

@@ -143,6 +143,6 @@ def test_clip_obbf_aligned_many_mismatched_input_lengths(monkeypatch):
         Fixture used to replace the ``open3d`` module dependency.
     """
 
-    monkeypatch.setattr("m3c2.core.boundingbox_service.o3d", MagicMock())
+    monkeypatch.setattr("m3c2.m3c2_core.boundingbox_service.o3d", MagicMock())
     with pytest.raises(ValueError):
         clip_obbf_aligned_many(["a.ply", "b.ply"], ["out.ply"])
