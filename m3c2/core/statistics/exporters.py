@@ -245,17 +245,38 @@ def write_cloud_stats(
         out_dir = os.path.dirname(out_path)
         if out_dir:
             os.makedirs(out_dir, exist_ok=True)
+
         if os.path.exists(out_path):
             try:
                 old = pd.read_excel(out_path, sheet_name=sheet_name, index_col=0)
+                existing_cols = list(old.columns)
             except (OSError, ValueError, pd.errors.EmptyDataError):
                 logger.exception(
                     "Failed to read existing cloud stats from %s; creating empty table",
                     out_path,
                 )
                 old = pd.DataFrame()
+                existing_cols = []
+        else:
+            old = pd.DataFrame()
+            existing_cols = []
+
+        used = set(existing_cols)
+        new_cols: List[str] = []
+        for col in df_t.columns:
+            base = col
+            idx = 1
+            while col in used:
+                col = f"{base}_{idx}"
+                idx += 1
+            new_cols.append(col)
+            used.add(col)
+        df_t.columns = new_cols
+
+        if not old.empty:
             all_df = old.join(df_t, how="outer")
         else:
             all_df = df_t
+
         with pd.ExcelWriter(out_path, engine="openpyxl", mode="w") as w:
             all_df.to_excel(w, sheet_name=sheet_name)
