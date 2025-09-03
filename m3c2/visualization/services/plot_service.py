@@ -13,7 +13,7 @@ from typing import List
 from m3c2.config.plot_config import PlotConfig, PlotOptions
 
 from .overlay_plot_service import overlay_by_index as _overlay_by_index
-from .report_service import overlay_plots as _overlay_plots
+from .report_service import ReportBuilder
 from .report_builder import (
     build_parts_pdf as _build_parts_pdf,
     merge_pdfs as _merge_pdfs,
@@ -47,8 +47,9 @@ class PlotService:
 
     @staticmethod
     def overlay_plots(config: PlotConfig, options: PlotOptions) -> None:
-        """Proxy to :func:`report_service.overlay_plots`."""
-        _overlay_plots(config, options)
+        """Create overlay plots via :class:`~ReportBuilder`."""
+        builder = ReportBuilder(config, options)
+        builder.build()
 
     @staticmethod
     def summary_pdf(config: PlotConfig) -> None:
