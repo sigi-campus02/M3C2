@@ -152,13 +152,6 @@ class CLIApp:
             default=3.0,
             help="Outlier removal threshold as a multiple of used detection method.",
         )
-        parser.add_argument(
-            "--log_level",
-            type=str,
-            choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
-            default=None,
-            help="Logging level (falls back to LOG_LEVEL env var).",
-        )
         return parser
 
 
@@ -209,8 +202,7 @@ class CLIApp:
                 use_existing_params=args.use_existing_params,
                 outlier_detection_method=args.outlier_detection_method,
                 outlier_multiplicator=args.outlier_multiplicator,
-                output_format=args.output_format,
-                log_level=args.log_level,
+                output_format=args.output_format
             )
             configs.append(config)
         return configs
@@ -221,8 +213,7 @@ class CLIApp:
        
         arg = self.parse_args(argv)
 
-        log_file = "logs/orchestration.log"
-        setup_logging(level=resolve_log_level(arg.log_level), log_file=log_file)
+        setup_logging()
 
         base_dir = Path(arg.data_dir).expanduser().resolve()
         
