@@ -439,13 +439,15 @@ class StatisticsService:
         df_result = pd.DataFrame(rows)
         df_result_t = df_result.set_index("Folder").T
         df_result_t.index.name = "Metric"
+
         if out_path and rows:
             write_cloud_stats(
-                rows,
+                df_result_t,
                 out_path=out_path,
                 sheet_name=sheet_name,
                 output_format=output_format,
             )
+
         return df_result_t
 
     @staticmethod
