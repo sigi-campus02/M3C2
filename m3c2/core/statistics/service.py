@@ -423,7 +423,12 @@ class StatisticsService:
                 sample_size=sample_size,
                 use_convex_hull=use_convex_hull,
             )
-            stats.update({"File": filename_singlecloud, "Folder": fid})
+            # Ensure "File" and "Folder" appear first in the resulting row
+            stats = {
+                "File": filename_singlecloud,
+                "Folder": fid,
+                **stats,
+            }
             rows.append(stats)
 
         df_result = pd.DataFrame(rows)
