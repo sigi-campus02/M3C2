@@ -28,7 +28,8 @@ def test_main_builds_pdfs(tmp_path, monkeypatch):
         "build_parts_pdf",
         staticmethod(fake_build_parts_pdf),
     )
-    monkeypatch.setattr(plot_report, "setup_logging", lambda level=None: None)
+    # ``setup_logging`` no longer accepts parameters.
+    monkeypatch.setattr(plot_report, "setup_logging", lambda: None)
 
     pdf_incl, pdf_excl = plot_report.main(data_dir=str(tmp_path), out_dir=str(tmp_path))
 
