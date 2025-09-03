@@ -1,0 +1,20 @@
+from __future__ import annotations
+
+"""Loader for PLY point cloud files."""
+
+from pathlib import Path
+
+
+class PLYLoader:
+    """Read point clouds from PLY files using :mod:`py4dgeo`."""
+
+    def __init__(self, backend):
+        if not hasattr(backend, "read_from_ply"):
+            raise RuntimeError("'py4dgeo' lacks PLY support")
+        self.backend = backend
+
+    def load_pair(self, mov_path: Path, ref_path: Path):
+        return self.backend.read_from_ply(str(mov_path), str(ref_path))
+
+    def load_single(self, path: Path):
+        return self.backend.read_from_ply(str(path))

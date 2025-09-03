@@ -10,6 +10,8 @@ import numpy as np
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 import m3c2.importer.datasource as ds_module
 from m3c2.config.datasource_config import DataSourceConfig
+from m3c2.importer.file_detection import detect
+from m3c2.importer.converters import ensure_xyz
 
 
 class DummyEpoch:
@@ -64,9 +66,7 @@ def test_detect_xyz(tmp_path: Path) -> None:
     >>> folder = tmp_path / 'data'
     >>> folder.mkdir()
     >>> (folder / 'mov.xyz').write_text('0 0 0\n')
-    >>> cfg = DataSourceConfig(str(folder))
-    >>> ds = ds_module.DataSource(cfg)
-    >>> ds._detect(ds.mov_base)[0]
+    >>> detect(folder / 'mov')[0]
     'xyz'
     """
 
@@ -74,9 +74,7 @@ def test_detect_xyz(tmp_path: Path) -> None:
     folder.mkdir()
     (folder / "mov.xyz").write_text("0 0 0\n")
 
-    cfg = DataSourceConfig(str(folder))
-    ds = ds_module.DataSource(cfg)
-    kind, path = ds._detect(ds.mov_base)
+    kind, path = detect(folder / "mov")
 
     assert kind == "xyz"
     assert path == folder / "mov.xyz"
@@ -99,19 +97,16 @@ def test_ensure_xyz_from_gpc(tmp_path: Path) -> None:
     --------
     >>> gpc_path = tmp_path / 'mov.gpc'
     >>> gpc_path.write_text('1 2 3\n4 5 6\n')
-    >>> cfg = DataSourceConfig(str(tmp_path))
-    >>> ds = ds_module.DataSource(cfg)
-    >>> xyz_path = ds._ensure_xyz(ds.mov_base, ('gpc', gpc_path))
+    >>> xyz_path = ensure_xyz(tmp_path / 'mov', ('gpc', gpc_path))
     >>> xyz_path.suffix
     '.xyz'
     """
 
     gpc_path = tmp_path / "mov.gpc"
     gpc_path.write_text("1 2 3\n4 5 6\n")
-    cfg = DataSourceConfig(str(tmp_path))
-    ds = ds_module.DataSource(cfg)
+    base = tmp_path / "mov"
 
-    xyz_path = ds._ensure_xyz(ds.mov_base, ("gpc", gpc_path))
+    xyz_path = ensure_xyz(base, ("gpc", gpc_path))
 
     assert xyz_path.exists()
     data = np.loadtxt(xyz_path)
