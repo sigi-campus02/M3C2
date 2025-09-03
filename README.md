@@ -78,22 +78,22 @@ For detailed descriptions of the calculated statistics, see `docu/README.md`.
 
 | Parameter                 | Type           | Default / Example | Description |
 |---------------------------|----------------|------------------|-------------|
-| `data_dir`                | string         | `"data/TUNSPEKT Labordaten_all/Handheld"` | Input directory containing point cloud folders. |
-| `folders`                 | list\[string]  | `["box01"]`      | List of folders containing point clouds. |
+| `data_dir`                | string         | `"data"` | Input directory containing point cloud folders. |
+| `folders`                 | list\[string]  | `["pointclouds"]`      | List of folders containing point clouds. |
 | `filename_ref`            | string         | `""`             | Reference point cloud file for distance calculation (not used for single cloud statistics). |
 | `filename_mov`            | string         | `""`             | Moving point cloud file for distance calculation (not used for single cloud statistics). |
-| `filename_singlecloud`    | string         | `"Handheld_georef_mw - box01"` | Single point cloud file used for single cloud statistics. |
-| `mov_as_corepoints`       | boolean        | `true`           | Use moving point cloud as core points (reference cloud will be compared to this one). |
-| `use_subsampled_corepoints` | int          | `1`              | Use subsampled core points for distance computation (`1` = enabled). |
-| `sample_size`             | int            | `10000`          | Number of core points used for parameter estimation (not for distance subsampling). |
-| `scale_strategy`          | string         | `"radius"`       | Strategy for parameter estimation (currently only `radius` supported). |
-| `only_stats`              | boolean        | `true`           | If `true`, only statistics will be computed (no parameter estimation or M3C2 distance calculation). |
-| `stats_singleordistance`  | string         | `"single"`       | Statistics type: `"single"` for single cloud statistics, `"distance"` for distance calculation. |
-| `output_format`           | string         | `"excel"`        | Output format (`excel`, `json`). |
-| `project`                 | string         | `"TUNSPEKT"`     | Project name used as prefix for folders & output files. |
+| `filename_singlecloud`    | string         | `""` | Single point cloud filename used for single-cloud statistics. |
+| `mov_as_corepoints`       | boolean        | `true`           | Use moving cloud as core points (the reference will be compared to this set). |
+| `use_subsampled_corepoints` | int          | `1`              | Use subsampled core points for distance computation. Eg. 3: Every 3rd point is used for the subsample. |
+| `sample_size`             | int            | `10000`          | Number of core points used for parameter estimation (normal & projection scale). Not used to subsample distances. |
+| `scale_strategy`          | string         | `"radius"`       | Strategy used for parameter estimation (currently only 'radius' is supported). |
+| `only_stats`              | boolean        | `true`           | If true, compute only statistics (no parameter estimation or M3C2 distance calculation). |
+| `stats_singleordistance`  | string         | `"single"`       | "Statistics type: 'single' for single-cloud statistics or 'distance' for pairwise distance analysis." |
+| `output_format`           | string         | `"excel"`        | Output format for results. |
+| `project`                 | string         | `"PROJECT"`     | Project name used as prefix for folders and output files. |
 | `normal_override`         | float / null   | `null`           | Manual override for normal scale instead of automatic estimation. |
 | `proj_override`           | float / null   | `null`           | Manual override for projection scale instead of automatic estimation. |
-| `use_existing_params`     | boolean        | `false`          | If `true`, existing parameters are loaded from file instead of recalculated. |
+| `use_existing_params`     | boolean        | `false`          | If true, use existing parameter file instead of recalculating. |
 | `outlier_detection_method`| string         | `"rmse"`         | Outlier detection method (`rmse`, `mad`, `nmad`, `std`). |
-| `outlier_multiplicator`   | float          | `3.0`            | Multiplicator for outlier detection method. |
+| `outlier_multiplicator`   | float          | `3.0`            | Multiplicator applied by the chosen outlier method. |
 | `log_level`               | string         | `"INFO"`         | Logging level for output (overrides `logging.level`). |
