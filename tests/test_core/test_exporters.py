@@ -106,6 +106,28 @@ def test_write_cloud_stats_excel():
     assert df_written.loc["Timestamp", "file1"] == "ts1"
 
 
+def test_write_cloud_stats_excel_duplicate_run_labels():
+    """Run labels colliding with existing ones are suffixed to stay unique."""
+
+    rows = [{"Timestamp": "ts2", "File": "file1", "Folder": "run1", "a": 2}]
+    captured = {}
+    old_df = pd.DataFrame({"file1": [1]}, index=pd.Index(["Metric"], name="Metric"))
+
+    def fake_to_excel(self, *args, **kwargs):
+        captured["df"] = self
+
+    with patch("os.path.exists", return_value=True), \
+         patch("pandas.read_excel", return_value=old_df), \
+         patch("m3c2.core.statistics.exporters._now_timestamp", return_value="ts"), \
+         patch("m3c2.core.statistics.exporters.pd.ExcelWriter") as m_writer, \
+         patch("pandas.DataFrame.to_excel", new=fake_to_excel):
+        m_writer.return_value.__enter__.return_value = MagicMock()
+        exporters.write_cloud_stats(rows, out_path="dummy.xlsx")
+
+    df_written = captured["df"]
+    assert set(df_written.columns) == {"file1", "file1_1"}
+
+
 def test_write_cloud_stats_json():
     """Ensure ``write_cloud_stats`` dispatches to JSON when requested.
 
