@@ -59,3 +59,41 @@ If neither is provided, the log level defaults to the `logging.level` entry in
 - `tests/` – unit tests covering key functionality
 
 For detailed descriptions of the calculated statistics, see `docu/README.md`.
+
+
+## Configuration Parameters
+
+### Logging
+
+| Parameter            | Type    | Default / Example                                   | Description |
+|----------------------|---------|----------------------------------------------------|-------------|
+| `logging.level`      | string  | `"INFO"`                                           | Logging level (`DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`). |
+| `logging.file`       | string  | `"logs/orchestration.log"`                         | File path for log output. |
+| `logging.format`     | string  | `"%(asctime)s [%(levelname)-8s] %(name)s - %(message)s"` | Format string for log messages. |
+| `logging.date_format`| string  | `"%Y-%m-%d %H:%M:%S"`                              | Date format for log messages. |
+
+---
+
+### Arguments
+
+| Parameter                 | Type           | Default / Example | Description |
+|---------------------------|----------------|------------------|-------------|
+| `data_dir`                | string         | `"data/TUNSPEKT Labordaten_all/Handheld"` | Input directory containing point cloud folders. |
+| `folders`                 | list\[string]  | `["box01"]`      | List of folders containing point clouds. |
+| `filename_ref`            | string         | `""`             | Reference point cloud file for distance calculation (not used for single cloud statistics). |
+| `filename_mov`            | string         | `""`             | Moving point cloud file for distance calculation (not used for single cloud statistics). |
+| `filename_singlecloud`    | string         | `"Handheld_georef_mw - box01"` | Single point cloud file used for single cloud statistics. |
+| `mov_as_corepoints`       | boolean        | `true`           | Use moving point cloud as core points (reference cloud will be compared to this one). |
+| `use_subsampled_corepoints` | int          | `1`              | Use subsampled core points for distance computation (`1` = enabled). |
+| `sample_size`             | int            | `10000`          | Number of core points used for parameter estimation (not for distance subsampling). |
+| `scale_strategy`          | string         | `"radius"`       | Strategy for parameter estimation (currently only `radius` supported). |
+| `only_stats`              | boolean        | `true`           | If `true`, only statistics will be computed (no parameter estimation or M3C2 distance calculation). |
+| `stats_singleordistance`  | string         | `"single"`       | Statistics type: `"single"` for single cloud statistics, `"distance"` for distance calculation. |
+| `output_format`           | string         | `"excel"`        | Output format (`excel`, `json`). |
+| `project`                 | string         | `"TUNSPEKT"`     | Project name used as prefix for folders & output files. |
+| `normal_override`         | float / null   | `null`           | Manual override for normal scale instead of automatic estimation. |
+| `proj_override`           | float / null   | `null`           | Manual override for projection scale instead of automatic estimation. |
+| `use_existing_params`     | boolean        | `false`          | If `true`, existing parameters are loaded from file instead of recalculated. |
+| `outlier_detection_method`| string         | `"rmse"`         | Outlier detection method (`rmse`, `mad`, `nmad`, `std`). |
+| `outlier_multiplicator`   | float          | `3.0`            | Multiplicator for outlier detection method. |
+| `log_level`               | string         | `"INFO"`         | Logging level for output (overrides `logging.level`). |

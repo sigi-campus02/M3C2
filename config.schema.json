@@ -1,0 +1,211 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "M3C2 Pipeline Configuration",
+  "type": "object",
+  "additionalProperties": false,
+
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optional JSON Schema reference for editor validation"
+    },
+    "logging": {
+      "type": "object",
+      "title": "Logging Settings",
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "type": "string",
+          "description": "Logging level.",
+          "enum": ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+          "default": "INFO"
+        },
+        "file": {
+          "type": "string",
+          "description": "File path for log output.",
+          "default": "logs/orchestration.log"
+        },
+        "format": {
+          "type": "string",
+          "description": "Format string for log messages.",
+          "default": "%(asctime)s [%(levelname)-8s] %(name)s - %(message)s"
+        },
+        "date_format": {
+          "type": "string",
+          "description": "Datetime format for log messages.",
+          "default": "%Y-%m-%d %H:%M:%S"
+        }
+      },
+      "required": ["level", "file", "format", "date_format"]
+    },
+
+    "arguments": {
+      "type": "object",
+      "title": "Pipeline Arguments",
+      "additionalProperties": false,
+      "properties": {
+        "data_dir": {
+          "type": "string",
+          "description": "Input directory containing folders with point clouds.",
+          "default": "data/TUNSPEKT Labordaten_all/Handheld"
+        },
+        "folders": {
+          "type": "array",
+          "description": "List of folders containing point clouds.",
+          "items": { "type": "string" },
+          "default": ["box01"]
+        },
+        "filename_ref": {
+          "type": "string",
+          "description": "Reference point cloud filename for distance calculation (unused for single-cloud statistics).",
+          "default": ""
+        },
+        "filename_mov": {
+          "type": "string",
+          "description": "Moving point cloud filename for distance calculation (unused for single-cloud statistics).",
+          "default": ""
+        },
+        "filename_singlecloud": {
+          "type": "string",
+          "description": "Single point cloud filename used for single-cloud statistics.",
+          "default": ""
+        },
+        "mov_as_corepoints": {
+          "type": "boolean",
+          "description": "Use moving cloud as core points (the reference will be compared to this set).",
+          "default": true
+        },
+        "use_subsampled_corepoints": {
+          "type": "integer",
+          "description": "Use subsampled core points for distance computation. Eg. 3: Every 3rd point is used for the subsample.",
+          "minimum": 1,
+          "default": 1
+        },
+        "sample_size": {
+          "type": "integer",
+          "description": "Number of core points used for parameter estimation (normal & projection scale). Not used to subsample distances.",
+          "minimum": 1,
+          "default": 10000
+        },
+        "scale_strategy": {
+          "type": "string",
+          "description": "Strategy used for parameter estimation (currently only 'radius' is supported).",
+          "enum": ["radius"],
+          "default": "radius"
+        },
+        "only_stats": {
+          "type": "boolean",
+          "description": "If true, compute only statistics (no parameter estimation or M3C2 distance calculation).",
+          "default": true
+        },
+        "stats_singleordistance": {
+          "type": "string",
+          "description": "Statistics type: 'single' for single-cloud statistics or 'distance' for pairwise distance analysis.",
+          "enum": ["single", "distance"],
+          "default": "single"
+        },
+        "output_format": {
+          "type": "string",
+          "description": "Output format for results.",
+          "enum": ["excel", "json"],
+          "default": "excel"
+        },
+        "project": {
+          "type": "string",
+          "description": "Project name used as prefix for folders and output files.",
+          "default": "PROJECT"
+        },
+        "normal_override": {
+          "type": ["number", "null"],
+          "description": "Manual override for normal scale instead of automatic estimation.",
+          "default": null,
+          "minimum": 0
+        },
+        "proj_override": {
+          "type": ["number", "null"],
+          "description": "Manual override for projection scale instead of automatic estimation.",
+          "default": null,
+          "minimum": 0
+        },
+        "use_existing_params": {
+          "type": "boolean",
+          "description": "If true, use existing parameter file instead of recalculating.",
+          "default": false
+        },
+        "outlier_detection_method": {
+          "type": "string",
+          "description": "Method for outlier detection.",
+          "enum": ["rmse", "mad", "nmad", "std"],
+          "default": "rmse"
+        },
+        "outlier_multiplicator": {
+          "type": "number",
+          "description": "Multiplicator applied by the chosen outlier method.",
+          "minimum": 0,
+          "default": 3.0
+        },
+        "log_level": {
+          "type": "string",
+          "description": "Logging level for pipeline output (can override logging.level).",
+          "enum": ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+          "default": "INFO"
+        }
+      },
+      "required": [
+        "data_dir",
+        "folders",
+        "filename_ref",
+        "filename_mov",
+        "filename_singlecloud",
+        "mov_as_corepoints",
+        "use_subsampled_corepoints",
+        "sample_size",
+        "scale_strategy",
+        "only_stats",
+        "stats_singleordistance",
+        "output_format",
+        "project",
+        "normal_override",
+        "proj_override",
+        "use_existing_params",
+        "outlier_detection_method",
+        "outlier_multiplicator",
+        "log_level"
+      ]
+    }
+  },
+
+  "required": ["logging", "arguments"],
+
+  "examples": [
+    {
+      "logging": {
+        "level": "INFO",
+        "file": "logs/orchestration.log",
+        "format": "%(asctime)s [%(levelname)-8s] %(name)s - %(message)s",
+        "date_format": "%Y-%m-%d %H:%M:%S"
+      },
+      "arguments": {
+        "data_dir": "data",
+        "folders": ["cloudfolder"],
+        "filename_ref": "cloud_i_want_to_compare",
+        "filename_mov": "second_cloud_to_compare",
+        "filename_singlecloud": "If_I_only_want_cloud_stats",
+        "mov_as_corepoints": true,
+        "use_subsampled_corepoints": 1,
+        "sample_size": 10000,
+        "scale_strategy": "radius",
+        "only_stats": true,
+        "stats_singleordistance": "single",
+        "output_format": "excel",
+        "project": "TUNSPEKT",
+        "normal_override": null,
+        "proj_override": null,
+        "use_existing_params": false,
+        "outlier_detection_method": "rmse",
+        "outlier_multiplicator": 3.0,
+        "log_level": "INFO"
+      }
+    }
+  ]
+}
