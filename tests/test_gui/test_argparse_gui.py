@@ -88,3 +88,79 @@ def test_run_gui_invokes_parse_args_and_main_func() -> None:
 
     parse_mock.assert_called_once_with(["--flag", "--opt", "value", "positional"])
     main_mock.assert_called_once_with(["--flag", "--opt", "value", "positional"])
+
+
+def test_run_gui_mode_selection_sets_stats_arg() -> None:
+    """Ensure that selecting a mode passes the stats argument to the parser."""
+
+    parser = argparse.ArgumentParser(prog="prog")
+    parser.add_argument("--stats_singleordistance", choices=["single", "distance"])
+    parser.add_argument("--only_stats", action="store_true")
+    parser.add_argument("--filename_ref")
+    parser.add_argument("--filename_singlecloud")
+
+    button_cmds: dict[str, mock.Mock] = {}
+    vars_created: list[object] = []
+
+    class FakeStringVar:
+        def __init__(self, value: object | None = None) -> None:
+            self.value = value
+            vars_created.append(self)
+
+        def get(self) -> object:
+            return self.value
+
+        def set(self, value: object) -> None:
+            self.value = value
+
+    class FakeBooleanVar(FakeStringVar):
+        pass
+
+    def fake_widget(*args, **kwargs):
+        widget = mock.MagicMock()
+        widget.grid = mock.MagicMock()
+        widget.configure = mock.MagicMock()
+        return widget
+
+    def fake_button(root, text: str, command):
+        btn = mock.MagicMock()
+        btn.grid = mock.MagicMock()
+        button_cmds[text] = command
+        return btn
+
+    fake_tk = types.SimpleNamespace(
+        Tk=lambda: mock.MagicMock(mainloop=lambda: None, destroy=lambda: None, title=lambda *args, **kwargs: None),
+        Label=fake_widget,
+        Entry=fake_widget,
+        Checkbutton=fake_widget,
+        OptionMenu=fake_widget,
+        Radiobutton=fake_widget,
+        Button=fake_button,
+        StringVar=FakeStringVar,
+        BooleanVar=FakeBooleanVar,
+    )
+
+    parse_mock = mock.MagicMock()
+    parser.parse_args = parse_mock
+    main_mock = mock.MagicMock()
+
+    with mock.patch("m3c2.cli.argparse_gui.tk", fake_tk), mock.patch(
+        "m3c2.cli.argparse_gui.messagebox"
+    ):
+        run_gui(parser, main_mock)
+
+        mode_var, only_stats_var, filename_ref_var, filename_singlecloud_var = vars_created
+        mode_var.set("single")
+        filename_singlecloud_var.set("cloud.las")
+
+        button_cmds["Start"]()
+
+    expected = [
+        "--only_stats",
+        "--filename_singlecloud",
+        "cloud.las",
+        "--stats_singleordistance",
+        "single",
+    ]
+    parse_mock.assert_called_once_with(expected)
+    main_mock.assert_called_once_with(expected)
