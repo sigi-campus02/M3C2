@@ -59,8 +59,10 @@ def main(
             sheet_name=sheet_name,
             output_format=output_format,
         )
-    except Exception:
+    except (OSError, ValueError):
         logger.exception("Statistics computation failed")
+    except Exception:
+        logger.exception("Unexpected error during statistics computation")
         raise
     else:
         logger.info("Statistics computation completed successfully")
