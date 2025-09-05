@@ -79,9 +79,11 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
             ).grid(row=row, column=1, sticky="w", padx=5, pady=5)
             row += 1
             if plot_action is not None:
+
                 plot_label = tk.Label(root, text="Plot Strategie")
                 plot_label.grid(row=row, column=0, sticky="w", padx=5, pady=5)
                 plot_widgets.append(plot_label)
+
                 plot_var = tk.StringVar(value=str(plot_action.default or "specificfile"))
                 rb = tk.Radiobutton(
                     root,
@@ -269,6 +271,7 @@ def _update_mode_fields(
 ) -> None:
     """Show only widgets relevant for the selected mode and strategy."""
 
+
     mode = mode_var.get()
     dist_fields = [
         "filename_reference",
@@ -321,13 +324,17 @@ def _update_mode_fields(
             if mode == "single":
                 _show(widget, label, desc)
             else:
+
                 _hide(var, widget, label, desc)
+
 
     # Plot-Mode-Felder
     all_plot_fields = set(plot_specific + plot_onefolder + plot_several)
     for name in all_plot_fields:
         if name in widgets:
+
             var, widget, label, desc = widgets[name]
+
             if mode == "plot":
                 strategy = plot_var.get() if plot_var is not None else "specificfile"
                 if (
@@ -335,6 +342,7 @@ def _update_mode_fields(
                     or (strategy == "onefolder" and name in plot_onefolder)
                     or (strategy == "severalfolders" and name in plot_several)
                 ):
+
                     _show(widget, label, desc)
                 else:
                     _hide(var, widget, label, desc)
@@ -345,6 +353,7 @@ def _update_mode_fields(
         for w in plot_widgets:
             if mode == "plot":
                 w.grid()
+
                 try:
                     w.configure(state="normal")
                 except tk.TclError:
