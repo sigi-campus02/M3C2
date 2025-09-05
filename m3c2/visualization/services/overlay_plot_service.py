@@ -138,6 +138,100 @@ def _plot_grouped_bar_means_stds_dual_by_case(
 # Public API
 # ---------------------------------------------------------------------------
 
+def overlay_from_data(data: Dict[str, np.ndarray], outdir: str, bins: int = 256) -> List[str]:
+    """Generate overlay plots for arbitrary distance arrays.
+
+    Parameters
+    ----------
+    data:
+        Mapping of labels to numeric arrays.
+    outdir:
+        Directory where resulting PNG images will be written.
+    bins:
+        Number of histogram bins. Defaults to ``256``.
+
+    Returns
+    -------
+    list[str]
+        Paths to the generated image files.
+    """
+
+    if len(data) < 2:
+        raise ValueError("At least two datasets are required for overlay plots")
+
+    os.makedirs(outdir, exist_ok=True)
+
+    labels = list(data.keys())
+    colors = {lbl: col for lbl, col in zip(labels, ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"])}
+
+    data_min, data_max, x = get_common_range(data)
+    gauss = {k: norm.fit(v) for k, v in data.items()}
+
+    fid, fname = "Part_0", "WITH"
+    title = " vs ".join(labels)
+
+    plot_overlay_histogram(
+        fid,
+        fname,
+        data,
+        bins,
+        data_min,
+        data_max,
+        colors,
+        outdir,
+        labels_order=labels,
+        title_text=f"Histogram – {title}",
+    )
+    plot_overlay_gauss(
+        fid,
+        fname,
+        data,
+        gauss,
+        x,
+        colors,
+        outdir,
+        labels_order=labels,
+        title_text=f"Gauss-Fit – {title}",
+    )
+    plot_overlay_weibull(
+        fid,
+        fname,
+        data,
+        x,
+        colors,
+        outdir,
+        labels_order=labels,
+        title_text=f"Weibull-Fit – {title}",
+    )
+    plot_overlay_boxplot(
+        fid,
+        fname,
+        data,
+        colors,
+        outdir,
+        labels_order=labels,
+        title_text=f"Boxplot – {title}",
+    )
+    plot_overlay_qq(
+        fid,
+        fname,
+        data,
+        colors,
+        outdir,
+        labels_order=labels,
+        title_text=f"Q-Q-Plot – {title}",
+    )
+
+    files = [
+        os.path.join(outdir, f"{fid}_{fname}_OverlayHistogramm.png"),
+        os.path.join(outdir, f"{fid}_{fname}_OverlayGaussFits.png"),
+        os.path.join(outdir, f"{fid}_{fname}_OverlayWeibullFits.png"),
+        os.path.join(outdir, f"{fid}_{fname}_Boxplot.png"),
+        os.path.join(outdir, f"{fid}_{fname}_QQPlot.png"),
+    ]
+    return files
+
+
 def overlay_by_index(
     data_dir: str,
     outdir: str,

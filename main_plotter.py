@@ -1,0 +1,31 @@
++28
+-0
+
+"""Entry point for visualization utilities.
+
+This script provides a thin wrapper around the plotting CLI so that
+visualisations can be triggered directly via ``python -m main_plotter``.
+"""
+
+import logging
+
+from m3c2.config.logging_config import setup_logging
+
+logger = logging.getLogger(__name__)
+
+
+def main() -> None:
+    """Execute the plotting command line interface."""
+
+    setup_logging()
+    logger.info("Starting plotter CLI")
+
+    from m3c2.cli import overlay_report
+
+    parser = overlay_report.build_arg_parser()
+    args = parser.parse_args()
+    overlay_report.main(args.file_a, args.file_b, args.outdir)
+
+
+if __name__ == "__main__":
+    main()

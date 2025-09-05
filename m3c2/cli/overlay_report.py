@@ -20,19 +20,9 @@ import argparse
 import logging
 import os
 from typing import Dict, List
-
 import numpy as np
-from scipy.stats import norm
 
 from m3c2.visualization.loaders.distance_loader import load_1col_distances
-from m3c2.visualization.plotters.overlay_plotter import (
-    get_common_range,
-    plot_overlay_boxplot,
-    plot_overlay_gauss,
-    plot_overlay_histogram,
-    plot_overlay_qq,
-    plot_overlay_weibull,
-)
 from m3c2.visualization.services.plot_service import PlotService
 
 logger = logging.getLogger(__name__)
@@ -80,92 +70,13 @@ def load_distance_file(path: str) -> np.ndarray:
 # ---------------------------------------------------------------------------
 
 def generate_overlay_plots(data: Dict[str, np.ndarray], outdir: str) -> List[str]:
-    """Create overlay plots for ``data`` and return the image paths.
+    """Delegate plot creation to :func:`overlay_from_data`.
 
-    Parameters
-    ----------
-    data:
-        Mapping of labels to numeric arrays.
-    outdir:
-        Directory where PNG images will be written.
+    Keeping this function allows tests to monkeypatch the plotting routine
+    while the implementation is provided by the service layer.
     """
 
-    if len(data) < 2:
-        raise ValueError("At least two datasets are required for overlay plots")
-
-    os.makedirs(outdir, exist_ok=True)
-
-    # Deterministic order of labels and colour assignment
-    labels = list(data.keys())
-    colors = {lbl: col for lbl, col in zip(labels, ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"])}
-
-    data_min, data_max, x = get_common_range(data)
-    gauss = {k: norm.fit(v) for k, v in data.items()}
-
-    # Use naming scheme compatible with ``report_builder.build_parts_pdf``
-    fid, fname = "Part_0", "WITH"
-
-    title = " vs ".join(labels)
-    plot_overlay_histogram(
-        fid,
-        fname,
-        data,
-        bins=256,
-        data_min=data_min,
-        data_max=data_max,
-        colors=colors,
-        outdir=outdir,
-        labels_order=labels,
-        title_text=f"Histogramm – {title}",
-    )
-    plot_overlay_gauss(
-        fid,
-        fname,
-        data,
-        gauss,
-        x,
-        colors,
-        outdir,
-        labels_order=labels,
-        title_text=f"Gauss-Fit – {title}",
-    )
-    plot_overlay_weibull(
-        fid,
-        fname,
-        data,
-        x,
-        colors,
-        outdir,
-        labels_order=labels,
-        title_text=f"Weibull-Fit – {title}",
-    )
-    plot_overlay_boxplot(
-        fid,
-        fname,
-        data,
-        colors,
-        outdir,
-        labels_order=labels,
-        title_text=f"Boxplot – {title}",
-    )
-    plot_overlay_qq(
-        fid,
-        fname,
-        data,
-        colors,
-        outdir,
-        labels_order=labels,
-        title_text=f"Q-Q-Plot – {title}",
-    )
-
-    files = [
-        os.path.join(outdir, f"{fid}_{fname}_OverlayHistogramm.png"),
-        os.path.join(outdir, f"{fid}_{fname}_OverlayGaussFits.png"),
-        os.path.join(outdir, f"{fid}_{fname}_OverlayWeibullFits.png"),
-        os.path.join(outdir, f"{fid}_{fname}_Boxplot.png"),
-        os.path.join(outdir, f"{fid}_{fname}_QQPlot.png"),
-    ]
-    return files
+    return overlay_from_data(data, outdir)
 
 
 # ---------------------------------------------------------------------------
@@ -192,10 +103,19 @@ def main(file_a: str, file_b: str, outdir: str = "overlay_report") -> str:
     return pdf
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Create overlay plot report for two distance files")
+def build_arg_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Create overlay plot report for two distance files"
+    )
     parser.add_argument("file_a", help="First distance file (.txt or .csv)")
     parser.add_argument("file_b", help="Second distance file (.txt or .csv)")
-    parser.add_argument("--outdir", default="overlay_report", help="Directory for plots and PDF")
+    parser.add_argument(
+        "--outdir", default="overlay_report", help="Directory for plots and PDF"
+    )
+    return parser
+
+
+if __name__ == "__main__":
+    parser = build_arg_parser()
     args = parser.parse_args()
     main(args.file_a, args.file_b, args.outdir)
