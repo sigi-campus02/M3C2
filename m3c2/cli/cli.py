@@ -181,8 +181,14 @@ class CLIApp:
         """Parse command line arguments using the configured parser."""
         parser = self.build_parser()
 
-        # Load defaults from configuration file if available
-        if self.config_path.exists():
+        # Load defaults from configuration file only when no explicit
+        # argument list is provided. The GUI supplies an ``argv`` list
+        # built from user input. If a field is left empty in the GUI, it
+        # should not fall back to values from ``config.json``. By skipping
+        # the config defaults when ``argv`` is given, empty GUI fields
+        # retain the parser's defaults (typically ``""`` or ``None``),
+        # thus truly overriding any config settings.
+        if argv is None and self.config_path.exists():
             try:
                 with self.config_path.open("r", encoding="utf-8") as handle:
                     data: dict[str, Any] = json.load(handle)
