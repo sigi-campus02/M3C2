@@ -36,10 +36,13 @@ def scan_distance_files_by_index(data_dir: str) -> Tuple[Dict[int, Dict[str, Dic
     project and returns a mapping ``index -> data`` as well as a mapping of
     case identifiers to colours that remain stable across parts.
     """
-    logger.info("[Scan] Scanne Distanzdateien in %s für Versionen: %s", data_dir)
-    version = "python"
+    versions = ["python", "CC"]
+    logger.info(
+        "[Scan] Scanne Distanzdateien in %s für Versionen: %s", data_dir, versions
+    )
+    versions_pattern = "|".join(versions)
     pat_with = re.compile(
-        r'^(?P<ver>(?:' + "|".join(version) + r'))_'
+        r'^(?P<ver>(?:' + versions_pattern + r'))_'
         r'(?P<comparison>[ab]-\d+(?:-AI)?)'
         r'-'
         r'(?P<reference>[ab]-\d+(?:-AI)?)'
@@ -47,7 +50,7 @@ def scan_distance_files_by_index(data_dir: str) -> Tuple[Dict[int, Dict[str, Dic
         re.IGNORECASE,
     )
     pat_inl = re.compile(
-        r'^(?P<ver>(?:' + "|".join(version) + r'))_'
+        r'^(?P<ver>(?:' + versions_pattern + r'))_'
         r'(?P<comparison>[ab]-\d+(?:-AI)?)'
         r'-'
         r'(?P<reference>[ab]-\d+(?:-AI)?)'
@@ -66,7 +69,7 @@ def scan_distance_files_by_index(data_dir: str) -> Tuple[Dict[int, Dict[str, Dic
         """
         m = re.match(r'^[ab]-(\d+)(?:-AI)?$', tag, re.IGNORECASE)
         logger.debug("idx_of: tag=%s -> %s", tag, m.group(1) if m else None)
-        
+
         return int(m.group(1)) if m else -1
 
     def to_case_and_label(comparison: str, reference: str, i: int) -> tuple[str, str]:

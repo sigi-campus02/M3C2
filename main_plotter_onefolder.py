@@ -28,7 +28,7 @@ def main() -> None:
 
     folder_arg = args.folder or getattr(args, "folder", None)
     overlay_outdir_arg = args.overlay_outdir or getattr(args, "outdir", None)
-    plot_types_arg = args.plot_types or getattr(args, "plot_types", None)
+    options_arg = args.options or getattr(args, "options", None)
 
     if folder_arg is None or overlay_outdir_arg is None:
         parser.error("folder and overlay_outdir are required (via CLI or config)")
@@ -43,14 +43,14 @@ def main() -> None:
         overlay_outdir.mkdir(parents=True, exist_ok=True)
         logger.info("Created output directory %s", overlay_outdir)
 
-    logger.debug("Plot types: %s", plot_types_arg)
+    logger.debug("Plot types: %s", options_arg)
     logger.debug("Folder: %s", folder)
     logger.debug("Output directory: %s", overlay_outdir)
-    
+
     PlotService.overlay_by_index(
         data_dir=folder,
         outdir=overlay_outdir,
-        options=plot_types_arg
+        options=options_arg
     )
 
 if __name__ == "__main__":

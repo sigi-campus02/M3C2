@@ -184,7 +184,7 @@ def build_arg_parser_onefolder(config_path: str | Path | None = None) -> argpars
         help="Directory for output plots and reports.",
     )
     parser.add_argument(
-        "--plot_types",
+        "--options",
         type=str,
         nargs="+",
         help="List of plot types to generate.",
@@ -207,9 +207,9 @@ def build_arg_parser_onefolder(config_path: str | Path | None = None) -> argpars
             logger.debug(f"Could not load config from {cfg_path}")
         folder_default = data.get("folder")
         outdir_default = data.get("overlay_outdir")
-        plot_types_default = data.get("plot_types")
-        if plot_types_default:
-            parser.set_defaults(plot_types=plot_types_default)
+        options_default = data.get("options")
+        if options_default:
+            parser.set_defaults(options=options_default)
         if folder_default:
             parser.set_defaults(folder=folder_default)
         if outdir_default:
@@ -221,4 +221,4 @@ def build_arg_parser_onefolder(config_path: str | Path | None = None) -> argpars
 if __name__ == "__main__":
     parser = build_arg_parser()
     args = parser.parse_args()
-    main(args.folder, args.overlay_outdir, args.plot_types)
+    main(args.folder, args.overlay_outdir, args.options)

@@ -41,7 +41,7 @@
     "arguments_plot_files_in_folder": {
     "folder": "data/Multi-Illumination",
     "overlay_outdir": "outputs/Test_Plots",
-    "plot_types": ["plot_hist", "plot_gauss", "plot_weibull", "plot_box", "plot_qq", "plot_grouped_bar"]
+    "options": ["plot_hist", "plot_gauss", "plot_weibull", "plot_box", "plot_qq", "plot_grouped_bar"]
   }
 
 }

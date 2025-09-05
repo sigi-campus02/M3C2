@@ -212,7 +212,7 @@
           "description": "Output directory for plots.",
           "default": "output/plots"
         },
-        "plot_types": {
+        "options": {
           "type": "array",
           "description": "Types of plots to generate (comma-separated in GUI).",
           "items": { 
@@ -225,7 +225,7 @@
       "required": [
         "folder",
         "overlay_outdir",
-        "plot_types"
+        "options"
       ]
     }
   },
