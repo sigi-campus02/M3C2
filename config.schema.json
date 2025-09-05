@@ -9,7 +9,7 @@
       "type": "string",
       "description": "Optional JSON Schema reference for editor validation"
     },
-    
+
     "logging": {
       "type": "object",
       "title": "Logging Settings",
@@ -167,12 +167,12 @@
       "title": "Plotting Arguments",
       "additionalProperties": false,
       "properties": {
-        "outdir": {
+        "overlay_outdir": {
           "type": "string",
           "description": "Output directory for plots.",
           "default": "output/plots"
         },
-        "files": {
+        "overlay_files": {
           "type": "array",
           "description": "List of distance.txt files for overlay plots.",
           "items": {
@@ -191,8 +191,8 @@
         }
       },
       "required": [
-        "outdir",
-        "files",
+        "overlay_outdir",
+        "overlay_files",
         "plot_types"
       ]
     }

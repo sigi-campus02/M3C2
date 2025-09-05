@@ -87,21 +87,21 @@ def generate_overlay_plots(data: Dict[str, np.ndarray], outdir: str) -> List[str
 # Main workflow
 # ---------------------------------------------------------------------------
 
-def main(files: List[str], outdir: str = "overlay_report") -> str:
+def main(overlay_files: List[str], overlay_outdir: str = "overlay_report") -> str:
     """Generate overlay plots for *files* and return the PDF path."""
 
-    if len(files) < 2:
+    if len(overlay_files) < 2:
         raise ValueError("At least two distance files are required")
 
     data: Dict[str, np.ndarray] = {}
-    for f in files:
+    for f in overlay_files:
         label = os.path.splitext(os.path.basename(f))[0]
         data[label] = load_distance_file(f)
 
-    generate_overlay_plots(data, outdir)
+    generate_overlay_plots(data, overlay_outdir)
     pdf = PlotService.build_parts_pdf(
-        outdir,
-        pdf_path=os.path.join(outdir, "report.pdf"),
+        overlay_outdir,
+        pdf_path=os.path.join(overlay_outdir, "report.pdf"),
         include_with=True,
         include_inlier=False,
     )
@@ -115,13 +115,13 @@ def build_arg_parser(config_path: str | Path | None = None) -> argparse.Argument
         description="Create overlay plot report for multiple distance files"
     )
     parser.add_argument(
-        "--files",
+        "--overlay_files",
         type=str,
         nargs="+",
         help="List of distance files to process.",
     )
     parser.add_argument(
-        "--outdir",
+        "--overlay_outdir",
         type=str,
         help="Directory for output plots and reports.",
     )
@@ -154,4 +154,4 @@ def build_arg_parser(config_path: str | Path | None = None) -> argparse.Argument
 if __name__ == "__main__":
     parser = build_arg_parser()
     args = parser.parse_args()
-    main(args.files, args.outdir)
+    main(args.overlay_files, args.overlay_outdir)

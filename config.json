@@ -30,10 +30,11 @@
   },
 
   "arguments_plotting": {
-    "outdir": "output/plots",
-    "files": [
-      "data/1130-1133/python_ref_m3c2_distances", 
-      "data/1130-1133/python_ref_ai_m3c2_distances"],
+    "overlay_files": [
+      "data/1130-1133/python_ref_m3c2_distances",
+      "data/1130-1133/python_ref_ai_m3c2_distances"
+    ],
+    "overlay_outdir": "output/plots",
     "plot_types": ["histogram", "boxplot", "scatter", "heatmap"]
   }
 }
