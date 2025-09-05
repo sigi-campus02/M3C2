@@ -23,17 +23,28 @@ def main() -> None:
     from m3c2.cli import overlay_report
     parser = overlay_report.build_arg_parser()
     args = parser.parse_args()
-    logger.debug(f"Arguments: {args}")
-    logger.info(f"Generating overlay report in {args.overlay_outdir}")
-    logger.info(f"Using distance files: {args.overlay_files}")
+    logger.debug("Arguments: %s", args)
 
-    overlay_outdir = Path(args.overlay_outdir).expanduser().resolve()
-    overlay_files = [Path(f).expanduser().resolve() for f in args.overlay_files]
+    # ``build_arg_parser`` may populate defaults via the config file. Older
+    # versions used the keys ``files``/``outdir`` which we still honour as
+    # fallbacks to remain backwards compatible.
+    overlay_files_arg = args.overlay_files or getattr(args, "files", None)
+    overlay_outdir_arg = args.overlay_outdir or getattr(args, "outdir", None)
+
+    if overlay_files_arg is None or overlay_outdir_arg is None:
+        parser.error("overlay_files and overlay_outdir are required (via CLI or config)")
+
+    logger.info("Generating overlay report in %s", overlay_outdir_arg)
+    logger.info("Using distance files: %s", overlay_files_arg)
+
+    overlay_outdir = Path(overlay_outdir_arg).expanduser().resolve()
+    overlay_files = [Path(f).expanduser().resolve() for f in overlay_files_arg]
+
     if not overlay_outdir.exists():
         overlay_outdir.mkdir(parents=True, exist_ok=True)
-        logger.info(f"Created output directory {overlay_outdir}")
+        logger.info("Created output directory %s", overlay_outdir)
 
-    overlay_report.main(overlay_files, overlay_outdir)
+    overlay_report.main([str(f) for f in overlay_files], str(overlay_outdir))
 
 
 if __name__ == "__main__":

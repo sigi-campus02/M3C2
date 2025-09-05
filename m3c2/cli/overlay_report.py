@@ -87,8 +87,27 @@ def generate_overlay_plots(data: Dict[str, np.ndarray], outdir: str) -> List[str
 # Main workflow
 # ---------------------------------------------------------------------------
 
-def main(overlay_files: List[str], overlay_outdir: str = "overlay_report") -> str:
-    """Generate overlay plots for *files* and return the PDF path."""
+def main(
+    overlay_files: List[str],
+    overlay_outdir: str | None = None,
+    *,
+    outdir: str | None = None,
+) -> str:
+    """Generate overlay plots for ``overlay_files`` and return the PDF path.
+
+    Parameters
+    ----------
+    overlay_files:
+        List of distance files that will be compared.
+    overlay_outdir, outdir:
+        Target directory for generated plots. ``outdir`` is supported for
+        backwards compatibility; if both parameters are supplied a
+        :class:`TypeError` is raised.
+    """
+
+    if overlay_outdir and outdir:
+        raise TypeError("Specify only one of overlay_outdir or outdir")
+    overlay_outdir = overlay_outdir or outdir or "overlay_report"
 
     if len(overlay_files) < 2:
         raise ValueError("At least two distance files are required")
@@ -144,9 +163,9 @@ def build_arg_parser(config_path: str | Path | None = None) -> argparse.Argument
         files_default = data.get("overlay_files")
         outdir_default = data.get("overlay_outdir")
         if files_default:
-            parser.set_defaults(files=files_default)
+            parser.set_defaults(overlay_files=files_default)
         if outdir_default:
-            parser.set_defaults(outdir=outdir_default)
+            parser.set_defaults(overlay_outdir=outdir_default)
 
     return parser
 
