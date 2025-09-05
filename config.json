@@ -11,10 +11,10 @@
   "arguments":   {
     "data_dir": "data",
     "folders": ["0342-0349"],
-    "filename_reference": "reference",
-    "filename_comparison": "comparison",
+    "filename_reference": "mov",
+    "filename_comparison": "ref",
     "filename_singlecloud": "",
-    "use_subsampled_corepoints": 100,
+    "use_subsampled_corepoints": 1,
     "sample_size": 10000,
     "scale_strategy": "radius",
     "only_stats": false,
@@ -23,7 +23,7 @@
     "project": "TEST",
     "normal_override": null,
     "proj_override": null,
-    "use_existing_params": false,
+    "use_existing_params": true,
     "outlier_detection_method": "rmse",
     "outlier_multiplicator": 3.0
   }
