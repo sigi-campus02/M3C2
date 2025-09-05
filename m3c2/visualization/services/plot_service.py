@@ -31,19 +31,13 @@ class PlotService:
     def overlay_by_index(
         data_dir: str,
         outdir: str,
-        versions=("python",),
-        bins: int = 256,
         options: PlotOptions | None = None,
-        skip_existing: bool = True,
     ) -> None:
         """Scan ``data_dir`` and create overlay plots grouped by part index."""
         _overlay_by_index(
             data_dir,
             outdir,
-            versions=versions,
-            bins=bins,
-            options=options,
-            skip_existing=skip_existing,
+            options=options
         )
 
     @staticmethod

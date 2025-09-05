@@ -29,17 +29,17 @@ def load_coordinates_inlier_distances(path: str) -> np.ndarray:
     return vals[np.isfinite(vals)]
 
 
-def scan_distance_files_by_index(data_dir: str, versions=("python", "CC")) -> Tuple[Dict[int, Dict[str, Dict[str, np.ndarray]]], Dict[str, str]]:
+def scan_distance_files_by_index(data_dir: str) -> Tuple[Dict[int, Dict[str, Dict[str, np.ndarray]]], Dict[str, str]]:
     """Scan *data_dir* for distance files and group them by index.
 
     The function recognises files matching the naming scheme used in the
     project and returns a mapping ``index -> data`` as well as a mapping of
     case identifiers to colours that remain stable across parts.
     """
-    logger.info("[Scan] Scanne Distanzdateien in %s für Versionen: %s", data_dir, versions)
+    logger.info("[Scan] Scanne Distanzdateien in %s für Versionen: %s", data_dir)
 
     pat_with = re.compile(
-        r'^(?P<ver>(?:' + "|".join(versions) + r'))_'
+        r'^(?P<ver>(?:' + "|".join("python") + r'))_'
         r'(?P<comparison>[ab]-\d+(?:-AI)?)'
         r'-'
         r'(?P<reference>[ab]-\d+(?:-AI)?)'
@@ -47,7 +47,7 @@ def scan_distance_files_by_index(data_dir: str, versions=("python", "CC")) -> Tu
         re.IGNORECASE,
     )
     pat_inl = re.compile(
-        r'^(?P<ver>(?:' + "|".join(versions) + r'))_'
+        r'^(?P<ver>(?:' + "|".join("python") + r'))_'
         r'(?P<comparison>[ab]-\d+(?:-AI)?)'
         r'-'
         r'(?P<reference>[ab]-\d+(?:-AI)?)'

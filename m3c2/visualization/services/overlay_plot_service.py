@@ -235,15 +235,13 @@ def overlay_from_data(data: Dict[str, np.ndarray], outdir: str, bins: int = 256)
 def overlay_by_index(
     data_dir: str,
     outdir: str,
-    versions=("python",),
     bins: int = 256,
     options: PlotOptions | None = None,
-    skip_existing: bool = True,
 ) -> None:
     """Scan *data_dir* and create overlay plots grouped by part index."""
     options = options or PlotOptions()
     os.makedirs(outdir, exist_ok=True)
-    per_index, case_colors = scan_distance_files_by_index(data_dir, versions=versions)
+    per_index, case_colors = scan_distance_files_by_index(data_dir)
     if not per_index:
         logger.warning("[Report] Keine Distanzdateien gefunden in %s.", data_dir)
         return

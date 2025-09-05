@@ -154,7 +154,7 @@ def build_arg_parser(config_path: str | Path | None = None) -> argparse.Argument
     if cfg_path.exists():
         try:
             with cfg_path.open("r", encoding="utf-8") as handle:
-                data = json.load(handle).get("arguments_plotting", {})
+                data = json.load(handle).get("arguments_plot_specific_files", {})
                 logger.debug(f"Loaded config from {cfg_path}")
                 logger.debug(f"Config data: {data}")
         except (OSError, json.JSONDecodeError):
@@ -169,8 +169,56 @@ def build_arg_parser(config_path: str | Path | None = None) -> argparse.Argument
 
     return parser
 
+def build_arg_parser_onefolder(config_path: str | Path | None = None) -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Create overlay plot report for multiple distance files"
+    )
+    parser.add_argument(
+        "--folder",
+        type=str,
+        help="Folder containing distance files to process.",
+    )
+    parser.add_argument(
+        "--overlay_outdir",
+        type=str,
+        help="Directory for output plots and reports.",
+    )
+    parser.add_argument(
+        "--plot_types",
+        type=str,
+        nargs="+",
+        help="List of plot types to generate.",
+    )
+
+    # Load defaults from config file if available
+    cfg_path = (
+        Path(config_path)
+        if config_path is not None
+        else Path(__file__).resolve().parents[2] / "config.json"
+    )
+    if cfg_path.exists():
+        try:
+            with cfg_path.open("r", encoding="utf-8") as handle:
+                data = json.load(handle).get("arguments_plot_files_in_folder", {})
+                logger.debug(f"Loaded config from {cfg_path}")
+                logger.debug(f"Config data: {data}")
+        except (OSError, json.JSONDecodeError):
+            data = {}
+            logger.debug(f"Could not load config from {cfg_path}")
+        folder_default = data.get("folder")
+        outdir_default = data.get("overlay_outdir")
+        plot_types_default = data.get("plot_types")
+        if plot_types_default:
+            parser.set_defaults(plot_types=plot_types_default)
+        if folder_default:
+            parser.set_defaults(folder=folder_default)
+        if outdir_default:
+            parser.set_defaults(overlay_outdir=outdir_default)
+
+    return parser
+
 
 if __name__ == "__main__":
     parser = build_arg_parser()
     args = parser.parse_args()
-    main(args.overlay_files, args.overlay_outdir)
+    main(args.folder, args.overlay_outdir, args.plot_types)

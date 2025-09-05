@@ -162,7 +162,7 @@
       ]
     },
 
-    "arguments_plotting": {
+    "arguments_plot_specific_files": {
       "type": "object",
       "title": "Plotting Arguments",
       "additionalProperties": false,
@@ -193,6 +193,38 @@
       "required": [
         "overlay_outdir",
         "overlay_files",
+        "plot_types"
+      ]
+    },
+
+    "arguments_plot_files_in_folder": {
+      "type": "object",
+      "title": "Plotting Arguments for All Files in a Folder",
+      "additionalProperties": false,
+      "properties": {
+        "folder": {
+          "type": "string",
+          "description": "Input folder containing distance.txt files for overlay plots.",
+          "default": "data/pointclouds"
+        },
+        "overlay_outdir": {
+          "type": "string",
+          "description": "Output directory for plots.",
+          "default": "output/plots"
+        },
+        "plot_types": {
+          "type": "array",
+          "description": "Types of plots to generate (comma-separated in GUI).",
+          "items": { 
+            "type": "string",
+            "enum": ["plot_hist", "plot_gauss", "plot_weibull", "plot_box", "plot_qq", "plot_grouped_bar"]
+          },
+          "default": ["plot_hist", "plot_gauss", "plot_weibull", "plot_box", "plot_qq", "plot_grouped_bar"]
+        }
+      },
+      "required": [
+        "folder",
+        "overlay_outdir",
         "plot_types"
       ]
     }

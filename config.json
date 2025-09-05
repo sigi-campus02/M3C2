@@ -29,12 +29,19 @@
     "outlier_multiplicator": 3.0
   },
 
-  "arguments_plotting": {
+  "arguments_plot_specific_files": {
     "overlay_files": [
       "data/1130-1133/python_ref_m3c2_distances.txt",
       "data/1130-1133/python_ref_ai_m3c2_distances.txt"
     ],
-    "overlay_outdir": "output/plots",
+    "overlay_outdir": "outputs/Test_Plots",
     "plot_types": ["histogram", "boxplot", "scatter", "heatmap"]
+  },
+
+    "arguments_plot_files_in_folder": {
+    "folder": "data/Multi-Illumination",
+    "overlay_outdir": "outputs/Test_Plots",
+    "plot_types": ["plot_hist", "plot_gauss", "plot_weibull", "plot_box", "plot_qq", "plot_grouped_bar"]
   }
+
 }
