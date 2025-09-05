@@ -205,28 +205,47 @@ def _update_mode_fields(mode_var: tk.StringVar, widgets: dict[str, Tuple[tk.Vari
     ]
     single_fields = ["filename_singlecloud"]
 
+    def _disable(var: tk.Variable, widget: tk.Widget) -> None:
+        widget.configure(state="disabled")
+        # WICHTIG: BooleanVar nicht auf "" setzen!
+        if isinstance(var, tk.BooleanVar):
+            var.set(False)  # oder True, falls gewünscht
+        else:
+            var.set("")
+
+    def _enable(widget: tk.Widget) -> None:
+        widget.configure(state="normal")
+
+    # Distanz-Mode-Felder
     for name in dist_fields:
         if name in widgets:
             var, widget = widgets[name]
             if mode == "distance":
-                widget.configure(state="normal")
+                _enable(widget)
             else:
-                widget.configure(state="disabled")
-                var.set("")
+                _disable(var, widget)
 
+    # Single-Mode-Felder
     for name in single_fields:
         if name in widgets:
             var, widget = widgets[name]
             if mode == "single":
-                widget.configure(state="normal")
+                _enable(widget)
             else:
-                widget.configure(state="disabled")
-                var.set("")
+                _disable(var, widget)
 
+    # only_stats im Single-Mode fix auf True setzen und sperren
     if "only_stats" in widgets:
         only_var, only_widget = widgets["only_stats"]
         if mode == "single":
-            only_var.set(True)
+            if isinstance(only_var, tk.BooleanVar):
+                only_var.set(True)
+            else:
+                # falls aus irgendeinem Grund kein BooleanVar
+                try:
+                    only_var.set("1")
+                except Exception:
+                    pass
             only_widget.configure(state="disabled")
         else:
             only_widget.configure(state="normal")
