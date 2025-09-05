@@ -98,7 +98,7 @@ class BatchOrchestrator:
         str
             Combination of moving and reference filenames.
         """
-        if cfg.filename_mov is not None and cfg.filename_ref is None:
+        if cfg.filename_mov and cfg.filename_ref:
             return f"{cfg.filename_mov}-{cfg.filename_ref}"
         else:
             return f"{cfg.filename_singlecloud}"

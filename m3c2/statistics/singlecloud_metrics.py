@@ -8,12 +8,11 @@ be used to assess the quality and structure of point cloud data.
 """
 
 from __future__ import annotations
-
 from typing import Dict, List, Optional
 
 import logging
-
 import numpy as np
+
 from joblib import Parallel, delayed
 from sklearn.neighbors import NearestNeighbors
 
@@ -31,6 +30,7 @@ def _bbox_area_xy(xy: np.ndarray) -> float:
         The area spanned by the minimal axis-aligned bounding box
         covering the points, in square units.
     """
+
     x_min, y_min = np.min(xy[:, 0]), np.min(xy[:, 1])
     x_max, y_max = np.max(xy[:, 0]), np.max(xy[:, 1])
     return float((x_max - x_min) * (y_max - y_min))
@@ -141,6 +141,7 @@ def calc_single_cloud_stats(
     min_pts: int = 10,
     max_eval: Optional[int] = 50_000,
 ) -> Dict:
+    
     """Compute a suite of quality metrics for a single point cloud.
 
     The function estimates global characteristics of the input points and
@@ -294,6 +295,7 @@ def calc_single_cloud_stats(
         Tuple[float, float, float, float]
             Mean, median, 5th percentile, and 95th percentile.
         """
+        
         if len(arr) == 0:
             return (np.nan, np.nan, np.nan, np.nan)
         a = np.asarray(arr, dtype=float)
