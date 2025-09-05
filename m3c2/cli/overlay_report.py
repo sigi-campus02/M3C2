@@ -115,15 +115,18 @@ def build_arg_parser(config_path: str | Path | None = None) -> argparse.Argument
         description="Create overlay plot report for multiple distance files"
     )
     parser.add_argument(
-        "files",
-        nargs="*",
-        help="Distance files (.txt or .csv) to include in the overlay",
+        "--files",
+        type=str,
+        nargs="+",
+        help="List of distance files to process.",
     )
     parser.add_argument(
-        "--outdir", default="overlay_report", help="Directory for plots and PDF"
+        "--outdir",
+        type=str,
+        help="Directory for output plots and reports.",
     )
 
-    
+    # Load defaults from config file if available
     cfg_path = (
         Path(config_path)
         if config_path is not None
@@ -133,8 +136,11 @@ def build_arg_parser(config_path: str | Path | None = None) -> argparse.Argument
         try:
             with cfg_path.open("r", encoding="utf-8") as handle:
                 data = json.load(handle).get("arguments_plotting", {})
+                logger.debug(f"Loaded config from {cfg_path}")
+                logger.debug(f"Config data: {data}")
         except (OSError, json.JSONDecodeError):
             data = {}
+            logger.debug(f"Could not load config from {cfg_path}")
         files_default = data.get("overlay_files")
         outdir_default = data.get("overlay_outdir")
         if files_default:

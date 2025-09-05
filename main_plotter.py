@@ -23,6 +23,9 @@ def main() -> None:
 
     parser = overlay_report.build_arg_parser()
     args = parser.parse_args()
+    logger.debug(f"Arguments: {args}")
+    logger.info(f"Generating overlay report in {args.outdir}")
+    logger.info(f"Using distance files: {args.files}")
     overlay_report.main(args.files, args.outdir)
 
 

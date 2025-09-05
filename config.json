@@ -32,8 +32,8 @@
   "arguments_plotting": {
     "outdir": "output/plots",
     "files": [
-      "C:\\Users\\sieglinde.hoedl\\AI_Mars3D\\src_uptodate\\data\\1130-1133\\python_ref_m3c2_distances.txt", 
-      "C:\\Users\\sieglinde.hoedl\\AI_Mars3D\\src_uptodate\\data\\1130-1133\\python_ref_ai_m3c2_distances.txt"],
+      "data/1130-1133/python_ref_m3c2_distances", 
+      "data/1130-1133/python_ref_ai_m3c2_distances"],
     "plot_types": ["histogram", "boxplot", "scatter", "heatmap"]
   }
 }
