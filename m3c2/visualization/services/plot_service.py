@@ -13,6 +13,7 @@ from typing import List
 from m3c2.config.plot_config import PlotConfig, PlotOptions
 
 from .overlay_plot_service import overlay_by_index as _overlay_by_index
+from .overlay_plot_service import overlay_from_data as _overlay_from_data
 from .report_service import ReportBuilder
 from .report_builder import (
     build_parts_pdf as _build_parts_pdf,
@@ -37,6 +38,24 @@ class PlotService:
     ) -> None:
         """Scan ``data_dir`` and create overlay plots grouped by part index."""
         _overlay_by_index(
+            data_dir,
+            outdir,
+            versions=versions,
+            bins=bins,
+            options=options,
+            skip_existing=skip_existing,
+        )
+
+    @staticmethod
+    def overlay_from_data(
+        data_dir: str,
+        outdir: str,
+        versions=("python",),
+        bins: int = 256,
+        options: PlotOptions | None = None,
+        skip_existing: bool = True,
+    ) -> None:
+        _overlay_from_data(
             data_dir,
             outdir,
             versions=versions,

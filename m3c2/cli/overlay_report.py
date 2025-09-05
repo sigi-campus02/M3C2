@@ -75,8 +75,9 @@ def generate_overlay_plots(data: Dict[str, np.ndarray], outdir: str) -> List[str
     Keeping this function allows tests to monkeypatch the plotting routine
     while the implementation is provided by the service layer.
     """
-
-    return overlay_from_data(data, outdir)
+    os.makedirs(outdir, exist_ok=True)
+    overlays = PlotService.overlay_from_data(data, outdir)
+    return overlays
 
 
 # ---------------------------------------------------------------------------
