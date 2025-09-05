@@ -28,112 +28,6 @@ except ImportError:  # pragma: no cover - informative logging only
     logger.info("Missing optional dependency 'plyfile'.")
 
 
-def txt_to_ply_with_distance_color(
-    txt_path: str,
-    outply: str,
-    nan_color: Tuple[int, int, int] = (255, 255, 255),
-    percentile_range: Tuple[float, float] = (0.0, 100.0),
-    scalar_name: str = "distance",
-    write_binary: bool = True,
-) -> None:
-    """Convert a distance text file to a colourised PLY file.
-
-    Parameters
-    ----------
-    txt_path:
-        Path to the text file containing four columns ``x``, ``y``, ``z``
-        and ``distance``.
-    outply:
-        Destination path of the generated PLY file.
-    nan_color:
-        RGB colour used for points where the distance value is ``NaN``.
-    percentile_range:
-        Percentile range used to clip distance values before colour mapping.
-        This helps to reduce the effect of outliers.
-    scalar_name:
-        Name of the scalar field written to the PLY file.
-    write_binary:
-        If ``True`` the PLY file is written in binary format; otherwise ASCII.
-
-    Raises
-    ------
-    RuntimeError
-        If the :mod:`plyfile` dependency is not installed.
-    ValueError
-        If the text file cannot be loaded, has an unexpected number of
-        columns, or contains no data.
-    """
-
-    if PlyData is None or PlyElement is None:
-        raise RuntimeError("PLY-Export nicht verfügbar (pip install plyfile).")
-
-    try:
-        arr = np.loadtxt(txt_path, skiprows=1)
-    except (OSError, ValueError) as exc:
-        logger.error("Fehler beim Laden der TXT-Datei %s: %s", txt_path, exc)
-        raise ValueError(f"TXT-Datei konnte nicht geladen werden: {txt_path}") from exc
-
-    if arr.size == 0:
-        logger.warning("TXT-Datei enthält keine Werte: %s", txt_path)
-        raise ValueError(f"TXT-Datei enthält keine Werte: {txt_path}")
-    if arr.ndim == 1:
-        logger.warning("TXT-Datei hat nur eine Zeile: %s", txt_path)
-        arr = arr.reshape(1, -1)
-    if arr.shape[1] != 4:
-        logger.warning(
-            "TXT-Datei muss 4 Spalten haben (%s hat %d)", txt_path, arr.shape[1]
-        )
-        raise ValueError(f"TXT-Datei muss 4 Spalten haben: {txt_path}")
-
-    points = arr[:, :3]
-    distances = arr[:, 3]
-    n = len(distances)
-
-    # Compute per-point colours based on distance percentiles
-    colors = np.zeros((n, 3), dtype=np.uint8)
-    valid_mask = ~np.isnan(distances)
-    if valid_mask.any():
-        v = distances[valid_mask]
-        p_lo, p_hi = percentile_range
-        vmin = float(np.percentile(v, p_lo))
-        vmax = float(np.percentile(v, p_hi))
-        if vmax <= vmin:
-            vmax = vmin + 1e-12
-        normed = (np.clip(v, vmin, vmax) - vmin) / (vmax - vmin)
-
-        # Map the normalised distances to a CloudCompare-like colour scale
-        cc_colors = [
-            (0.0, "blue"),
-            (0.33, "green"),
-            (0.66, "yellow"),
-            (1.0, "red"),
-        ]
-        cc_cmap = LinearSegmentedColormap.from_list("CC_Colormap", cc_colors)
-        colored_valid = (cc_cmap(normed)[:, :3] * 255).astype(np.uint8)
-        colors[valid_mask] = colored_valid
-
-    # Assign a uniform colour to invalid entries (NaNs)
-    colors[~valid_mask] = np.array(nan_color, dtype=np.uint8)
-
-    # Write the coloured cloud including the distance as scalar field
-    _write_ply_xyzrgb(
-        points=points,
-        colors=colors,
-        outply=outply,
-        scalar=distances.astype(np.float32),
-        scalar_name=scalar_name,
-        binary=write_binary,
-    )
-
-    logger.info(
-        "[TXT->PLY] %s -> %s (%d Punkte, SF='%s')",
-        txt_path,
-        outply,
-        n,
-        scalar_name,
-    )
-
-
 def colorize(
     points: np.ndarray,
     distances: np.ndarray,
@@ -379,7 +273,6 @@ def _write_ply_xyzrgb(
 
 
 __all__ = [
-    "txt_to_ply_with_distance_color",
     "colorize",
     "export_valid",
 ]
