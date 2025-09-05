@@ -231,7 +231,7 @@ def plot_overlay_boxplot(
         order = labels_order or list(df["Version"].unique())
         palette = {v: colors.get(v) for v in order}
         plt.figure(figsize=(10, 6))
-        sns.boxplot(data=df, x="Version", y="Distanz", palette=palette, legend=False, order=order)
+        sns.boxplot(data=df, x="Version", y="Distanz", hue="Version", palette=palette, legend=False, order=order)
         plt.title(title_text or f"Boxplot – {fid}/{fname}")
         plt.xlabel("Version")
         plt.ylabel("M3C2 distance")

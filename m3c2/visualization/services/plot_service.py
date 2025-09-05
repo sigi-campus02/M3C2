@@ -50,18 +50,12 @@ class PlotService:
     def overlay_from_data(
         data_dir: str,
         outdir: str,
-        versions=("python",),
-        bins: int = 256,
-        options: PlotOptions | None = None,
-        skip_existing: bool = True,
+        bins: int = 256
     ) -> None:
         _overlay_from_data(
             data_dir,
             outdir,
-            versions=versions,
-            bins=bins,
-            options=options,
-            skip_existing=skip_existing,
+            bins=bins
         )
 
     @staticmethod
