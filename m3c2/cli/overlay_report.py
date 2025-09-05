@@ -233,14 +233,9 @@ def build_arg_parser_severalfolders(config_path: str | Path | None = None) -> ar
         help="Comma-separated list of folders containing distance files to process.",
     )
     parser.add_argument(
-        "--filename_reference",
+        "--filenames_distances",
         type=str,
-        help="Filename pattern for reference files.",
-    )
-    parser.add_argument(
-        "--filename_comparison",
-        type=str,
-        help="Filename pattern for comparison files.",
+        help="Filename pattern for distance files in the folders.",
     )
     parser.add_argument(
         "--overlay_outdir",
@@ -271,8 +266,7 @@ def build_arg_parser_severalfolders(config_path: str | Path | None = None) -> ar
             logger.debug(f"Could not load config from {cfg_path}")
         data_dir_default = data.get("data_dir")
         folder_default = data.get("folder")
-        filename_reference_default = data.get("filename_reference")
-        filename_comparison_default = data.get("filename_comparison")
+        filenames_distances_default = data.get("filenames_distances")
         outdir_default = data.get("overlay_outdir")
         options_default = data.get("options")
         if options_default:
@@ -283,10 +277,8 @@ def build_arg_parser_severalfolders(config_path: str | Path | None = None) -> ar
             parser.set_defaults(overlay_outdir=outdir_default)
         if data_dir_default:
             parser.set_defaults(data_dir=data_dir_default)
-        if filename_reference_default:
-            parser.set_defaults(filename_reference=filename_reference_default)
-        if filename_comparison_default:
-            parser.set_defaults(filename_comparison=filename_comparison_default)
+        if filenames_distances_default:
+            parser.set_defaults(filenames_distances=filenames_distances_default)
 
     return parser
 
@@ -294,4 +286,4 @@ def build_arg_parser_severalfolders(config_path: str | Path | None = None) -> ar
 if __name__ == "__main__":
     parser = build_arg_parser()
     args = parser.parse_args()
-    main(args.data_dir, args.folders, args.filename_reference, args.filename_comparison, args.overlay_outdir, args.options)
+    main(args.data_dir, args.folders, args.filenames_distances, args.overlay_outdir, args.options)

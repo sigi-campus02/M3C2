@@ -245,15 +245,11 @@
           "items": { "type": "string" },
           "default": ["pointclouds"]
         },
-        "filename_reference": {
-          "type": "string",
-          "description": "Reference point cloud filename (same in each folder).",
-          "default": ""
-        },
-        "filename_comparison": {
-          "type": "string",
-          "description": "Comparison point cloud filename (same in each folder).",
-          "default": ""
+        "filenames_distances": {
+          "type": "array",
+          "description": "List of distance filenames (same in each folder).",
+          "items": { "type": "string" },
+          "default": []
         },
         "overlay_outdir": {
           "type": "string",
@@ -273,8 +269,7 @@
       "required": [
         "data_dir",
         "folders",
-        "filename_reference",
-        "filename_comparison",
+        "filenames_distances",
         "overlay_outdir",
         "options"
       ]
