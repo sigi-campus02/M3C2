@@ -79,7 +79,6 @@ class DataLoader:
             folder=os.path.join(cfg.data_dir, cfg.folder_id),
             comparison_basename=cfg.filename_comparison,
             reference_basename=cfg.filename_reference,
-            comparison_as_corepoints=cfg.comparison_as_corepoints,
             use_subsampled_corepoints=cfg.use_subsampled_corepoints,
         )
         ds = DataSource(ds_config)

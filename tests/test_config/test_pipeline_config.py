@@ -23,7 +23,6 @@ def test_defaults_and_immutability():
         filename_comparison="comparison.las",
         filename_reference="reference.las",
         filename_singlecloud="single.las",
-        comparison_as_corepoints=True,
         use_subsampled_corepoints=0,
         only_stats=False,
         stats_singleordistance="single",

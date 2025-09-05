@@ -70,11 +70,6 @@
           "description": "Single point cloud filename used for single-cloud statistics.",
           "default": ""
         },
-        "comparison_as_corepoints": {
-          "type": "boolean",
-          "description": "Use comparison cloud as core points (the reference will be compared to this set).",
-          "default": true
-        },
         "use_subsampled_corepoints": {
           "type": "integer",
           "description": "Use subsampled core points for distance computation. Eg. 3: Every 3rd point is used for the subsample.",
@@ -151,7 +146,6 @@
         "filename_reference",
         "filename_comparison",
         "filename_singlecloud",
-        "comparison_as_corepoints",
         "use_subsampled_corepoints",
         "sample_size",
         "scale_strategy",
@@ -184,7 +178,6 @@
         "filename_reference": "cloud_i_want_to_compare",
         "filename_comparison": "second_cloud_to_compare",
         "filename_singlecloud": "If_I_only_want_cloud_stats",
-        "comparison_as_corepoints": true,
         "use_subsampled_corepoints": 1,
         "sample_size": 10000,
         "scale_strategy": "radius",

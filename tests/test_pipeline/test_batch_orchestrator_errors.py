@@ -28,7 +28,6 @@ def _cfg(tmp_path, folder_id="run"):
         filename_comparison="comparison.xyz",
         filename_reference="reference.xyz",
         filename_singlecloud="sc.xyz",
-        comparison_as_corepoints=True,
         use_subsampled_corepoints=1,
         only_stats=True,
         stats_singleordistance="single",

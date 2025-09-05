@@ -82,7 +82,7 @@ class DataSource:
             raise RuntimeError("'py4dgeo' ist nicht installiert.")
 
         comparison, reference = self._load_epochs()
-        corepoints = self._derive_corepoints(comparison, reference)
+        corepoints = self._derive_corepoints(comparison)
 
         if not isinstance(corepoints, np.ndarray):
             raise TypeError("Unerwarteter Typ für corepoints; erwarte np.ndarray (Nx3).")
@@ -162,18 +162,17 @@ class DataSource:
         return loader.load_single(s_xyz)
     
 
-    def _derive_corepoints(self, comparison: object, reference: object) -> np.ndarray:
+    def _derive_corepoints(self, comparison: object) -> np.ndarray:
         """Derive core points from configured epoch with optional subsampling."""
 
-        use_comparison = self.config.comparison_as_corepoints
-        label = "comparison" if use_comparison else "reference"
+        label = "comparison"
         logger.info(
             "Nutze %s als Corepoints und nutze Subsamling: %s",
             label,
             self.config.use_subsampled_corepoints,
         )
 
-        source = comparison if use_comparison else reference
+        source = comparison
         data = source.cloud if hasattr(source, "cloud") else source
         return data[:: self.config.use_subsampled_corepoints]
 

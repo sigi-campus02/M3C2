@@ -7,7 +7,6 @@ package "Pipeline" {
     +folder_id: str
     +filename_comparison: str
     +filename_reference: str
-    +comparison_as_corepoints: bool
     +use_subsampled_corepoints: int
     +process_python_CC: str
     +only_stats: bool

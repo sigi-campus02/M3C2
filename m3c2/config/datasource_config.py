@@ -12,8 +12,6 @@ comparison_basename:
     Basename for the comparison point cloud file.
 reference_basename:
     Basename for the reference point cloud file.
-comparison_as_corepoints:
-    If ``True``, the comparison cloud provides the core points.
 use_subsampled_corepoints:
     Factor by which core points are subsampled.
 """
@@ -36,8 +34,6 @@ class DataSourceConfig:
         Basename for the reference point cloud file (without extension).
     filename_singlecloud:
         Name used when a single point cloud file is provided.
-    comparison_as_corepoints:
-        If ``True``, the comparison cloud is used to derive core points.
     use_subsampled_corepoints:
         Factor by which to subsample the core points.
     """
@@ -46,6 +42,5 @@ class DataSourceConfig:
     comparison_basename: str = "comparison"
     reference_basename: str = "reference"
     filename_singlecloud: str = "comparison"
-    comparison_as_corepoints: bool = True
     use_subsampled_corepoints: int = 1
 

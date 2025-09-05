@@ -18,8 +18,6 @@ class PipelineConfig:
         File name of the comparison point cloud.
     filename_reference:
         File name of the reference point cloud.
-    comparison_as_corepoints:
-        Whether to use the comparison cloud as core points.
     use_subsampled_corepoints:
         Number of subsampled core points to use (0 disables
         subsampling).
@@ -52,7 +50,6 @@ class PipelineConfig:
     project: str
 
     # ----- Processing Options -----
-    comparison_as_corepoints: bool
     use_subsampled_corepoints: int
     only_stats: bool
     stats_singleordistance: str

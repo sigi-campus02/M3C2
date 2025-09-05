@@ -83,7 +83,6 @@ If neither is provided, the log level defaults to the `logging.level` entry in
 | `filename_reference`            | string         | `""`             | Reference point cloud file for distance calculation (not used for single cloud statistics). |
 | `filename_comparison`            | string         | `""`             | Comparison point cloud file for distance calculation (not used for single cloud statistics). |
 | `filename_singlecloud`    | string         | `""` | Single point cloud filename used for single-cloud statistics. |
-| `comparison_as_corepoints`       | boolean        | `true`           | Use comparison cloud as core points (the reference will be compared to this set). |
 | `use_subsampled_corepoints` | int          | `1`              | Use subsampled core points for distance computation. Eg. 3: Every 3rd point is used for the subsample. |
 | `sample_size`             | int            | `10000`          | Number of core points used for parameter estimation (normal & projection scale). Not used to subsample distances. |
 | `scale_strategy`          | string         | `"radius"`       | Strategy used for parameter estimation (currently only 'radius' is supported). |

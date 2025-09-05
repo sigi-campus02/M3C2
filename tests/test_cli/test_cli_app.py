@@ -19,7 +19,6 @@ def test_build_parser_defaults() -> None:
     assert args.data_dir == "data"
     assert args.scale_strategy == "radius"
     assert args.project == "PROJECT"
-    assert args.comparison_as_corepoints is True
     assert args.only_stats is True
 
 

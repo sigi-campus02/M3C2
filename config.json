@@ -14,7 +14,6 @@
     "filename_reference": "reference",
     "filename_comparison": "comparison",
     "filename_singlecloud": "",
-    "comparison_as_corepoints": false,
     "use_subsampled_corepoints": 100,
     "sample_size": 10000,
     "scale_strategy": "radius",

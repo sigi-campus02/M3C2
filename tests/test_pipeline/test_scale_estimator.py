@@ -97,7 +97,6 @@ def _minimal_cfg(**kwargs) -> PipelineConfig:
         filename_comparison="",
         filename_reference="",
         filename_singlecloud="",
-        comparison_as_corepoints=True,
         use_subsampled_corepoints=0,
         only_stats=False,
         stats_singleordistance="single",

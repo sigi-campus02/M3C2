@@ -100,11 +100,6 @@ class CLIApp:
             help="Name of single statistics file.",
         )
         parser.add_argument(
-            "--comparison_as_corepoints",
-            action=argparse.BooleanOptionalAction,
-            help="Use comparison point cloud as corepoints.",
-        )
-        parser.add_argument(
             "--use_subsampled_corepoints",
             type=int,
             help="Subsampling factor for corepoints (1 = no subsampling).",
@@ -219,7 +214,6 @@ class CLIApp:
                 filename_reference=args.filename_reference,
                 filename_comparison=args.filename_comparison,
                 filename_singlecloud=args.filename_singlecloud,
-                comparison_as_corepoints=args.comparison_as_corepoints,
                 use_subsampled_corepoints=args.use_subsampled_corepoints,
                 sample_size=args.sample_size,
                 only_stats=args.only_stats,

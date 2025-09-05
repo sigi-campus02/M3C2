@@ -35,7 +35,6 @@ def test_load_data_uses_data_dir(tmp_path, monkeypatch):
         filename_comparison="comparison.xyz",
         filename_reference="reference.xyz",
         filename_singlecloud="single.xyz",
-        comparison_as_corepoints=True,
         use_subsampled_corepoints=1,
         only_stats=False,
         stats_singleordistance="single",
