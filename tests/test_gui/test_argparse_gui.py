@@ -90,6 +90,70 @@ def test_run_gui_invokes_parse_args_and_main_func() -> None:
     main_mock.assert_called_once_with(["--flag", "--opt", "value", "positional"])
 
 
+def test_run_gui_parses_comma_separated_lists() -> None:
+    """Lists entered as comma-separated strings are split into multiple args."""
+
+    parser = argparse.ArgumentParser(prog="prog")
+    parser.add_argument("--folders", nargs="+")
+    parser.set_defaults(folders=["one", "two"])
+
+    button_cmds: dict[str, mock.Mock] = {}
+    vars_created: list[object] = []
+
+    class FakeStringVar:
+        def __init__(self, value: object | None = None) -> None:
+            self.value = value
+            vars_created.append(self)
+
+        def get(self) -> object:
+            return self.value
+
+        def set(self, value: object) -> None:
+            self.value = value
+
+    class FakeBooleanVar(FakeStringVar):
+        pass
+
+    def fake_widget(*args, **kwargs):
+        widget = mock.MagicMock()
+        widget.grid = mock.MagicMock()
+        return widget
+
+    def fake_button(root, text: str, command):
+        btn = mock.MagicMock()
+        btn.grid = mock.MagicMock()
+        button_cmds[text] = command
+        return btn
+
+    fake_tk = types.SimpleNamespace(
+        Tk=lambda: mock.MagicMock(mainloop=lambda: None, destroy=lambda: None, title=lambda *a, **k: None),
+        Label=fake_widget,
+        Entry=fake_widget,
+        Button=fake_button,
+        StringVar=FakeStringVar,
+        BooleanVar=FakeBooleanVar,
+        Variable=FakeStringVar,
+        Widget=object,
+    )
+
+    parse_mock = mock.MagicMock()
+    parser.parse_args = parse_mock
+    main_mock = mock.MagicMock()
+
+    with mock.patch("m3c2.cli.argparse_gui.tk", fake_tk), mock.patch(
+        "m3c2.cli.argparse_gui.messagebox"
+    ):
+        run_gui(parser, main_mock)
+        (folders_var,) = vars_created
+        assert folders_var.get() == "one, two"
+        folders_var.set("A, B, C")
+        button_cmds["Start"]()
+
+    expected = ["--folders", "A", "B", "C"]
+    parse_mock.assert_called_once_with(expected)
+    main_mock.assert_called_once_with(expected)
+
+
 def test_run_gui_mode_selection_sets_stats_arg() -> None:
     """Ensure that selecting a mode passes the stats argument to the parser."""
 
@@ -138,6 +202,8 @@ def test_run_gui_mode_selection_sets_stats_arg() -> None:
         Button=fake_button,
         StringVar=FakeStringVar,
         BooleanVar=FakeBooleanVar,
+        Variable=FakeStringVar,
+        Widget=object,
     )
 
     parse_mock = mock.MagicMock()
