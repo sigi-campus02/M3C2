@@ -9,6 +9,7 @@
       "type": "string",
       "description": "Optional JSON Schema reference for editor validation"
     },
+    
     "logging": {
       "type": "object",
       "title": "Logging Settings",
@@ -158,6 +159,41 @@
         "use_existing_params",
         "outlier_detection_method",
         "outlier_multiplicator"
+      ]
+    },
+
+    "arguments_plotting": {
+      "type": "object",
+      "title": "Plotting Arguments",
+      "additionalProperties": false,
+      "properties": {
+        "outdir": {
+          "type": "string",
+          "description": "Output directory for plots.",
+          "default": "output/plots"
+        },
+        "files": {
+          "type": "array",
+          "description": "List of distance.txt files for overlay plots.",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "plot_types": {
+          "type": "array",
+          "description": "Types of plots to generate (comma-separated in GUI).",
+          "items": { 
+            "type": "string",
+            "enum": ["histogram", "boxplot", "scatter", "heatmap"]
+          },
+          "default": ["histogram", "boxplot", "scatter", "heatmap"]
+        }
+      },
+      "required": [
+        "outdir",
+        "files",
+        "plot_types"
       ]
     }
   },

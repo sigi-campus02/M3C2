@@ -20,6 +20,8 @@ from __future__ import annotations
 import argparse
 import logging
 import os
+import json
+from pathlib import Path
 from typing import Dict, List
 import numpy as np
 
@@ -108,18 +110,38 @@ def main(files: List[str], outdir: str = "overlay_report") -> str:
     return pdf
 
 
-def build_arg_parser() -> argparse.ArgumentParser:
+def build_arg_parser(config_path: str | Path | None = None) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Create overlay plot report for multiple distance files"
     )
     parser.add_argument(
         "files",
-        nargs="+",
+        nargs="*",
         help="Distance files (.txt or .csv) to include in the overlay",
     )
     parser.add_argument(
         "--outdir", default="overlay_report", help="Directory for plots and PDF"
     )
+
+    
+    cfg_path = (
+        Path(config_path)
+        if config_path is not None
+        else Path(__file__).resolve().parents[2] / "config.json"
+    )
+    if cfg_path.exists():
+        try:
+            with cfg_path.open("r", encoding="utf-8") as handle:
+                data = json.load(handle).get("arguments_plotting", {})
+        except (OSError, json.JSONDecodeError):
+            data = {}
+        files_default = data.get("overlay_files")
+        outdir_default = data.get("overlay_outdir")
+        if files_default:
+            parser.set_defaults(files=files_default)
+        if outdir_default:
+            parser.set_defaults(outdir=outdir_default)
+
     return parser
 
 

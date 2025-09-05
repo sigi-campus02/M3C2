@@ -8,6 +8,7 @@
     "format": "%(asctime)s [%(levelname)-8s] %(name)s - %(message)s",
     "date_format": "%Y-%m-%d %H:%M:%S"
   },
+
   "arguments":   {
     "data_dir": "data",
     "folders": ["0342-0349"],
@@ -26,5 +27,13 @@
     "use_existing_params": true,
     "outlier_detection_method": "rmse",
     "outlier_multiplicator": 3.0
+  },
+
+  "arguments_plotting": {
+    "outdir": "output/plots",
+    "files": [
+      "C:\\Users\\sieglinde.hoedl\\AI_Mars3D\\src_uptodate\\data\\1130-1133\\python_ref_m3c2_distances.txt", 
+      "C:\\Users\\sieglinde.hoedl\\AI_Mars3D\\src_uptodate\\data\\1130-1133\\python_ref_ai_m3c2_distances.txt"],
+    "plot_types": ["histogram", "boxplot", "scatter", "heatmap"]
   }
 }
