@@ -227,6 +227,57 @@
         "overlay_outdir",
         "options"
       ]
+    },
+
+    "arguments_plot_several_folders": {
+      "type": "object",
+      "title": "Plotting Arguments for Several Folders",
+      "additionalProperties": false,
+      "properties": {
+        "data_dir": {
+          "type": "string",
+          "description": "Input directory containing folders with point clouds.",
+          "default": "data"
+        },
+        "folders": {
+          "type": "array",
+          "description": "List of folders containing point clouds (comma-separated in GUI).",
+          "items": { "type": "string" },
+          "default": ["pointclouds"]
+        },
+        "filename_reference": {
+          "type": "string",
+          "description": "Reference point cloud filename (same in each folder).",
+          "default": ""
+        },
+        "filename_comparison": {
+          "type": "string",
+          "description": "Comparison point cloud filename (same in each folder).",
+          "default": ""
+        },
+        "overlay_outdir": {
+          "type": "string",
+          "description": "Output directory for plots.",
+          "default": "output/plots"
+        },
+        "options": {
+          "type": "array",
+          "description": "Types of plots to generate (comma-separated in GUI).",
+          "items": {
+            "type": "string",
+            "enum": ["plot_hist", "plot_gauss", "plot_weibull", "plot_box", "plot_qq", "plot_grouped_bar"]
+          },
+          "default": ["plot_hist", "plot_gauss", "plot_weibull", "plot_box", "plot_qq", "plot_grouped_bar"]
+        }
+      },
+      "required": [
+        "data_dir",
+        "folders",
+        "filename_reference",
+        "filename_comparison",
+        "overlay_outdir",
+        "options"
+      ]
     }
   },
 

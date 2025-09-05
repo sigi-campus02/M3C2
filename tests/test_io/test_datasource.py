@@ -155,7 +155,7 @@ def test_load_points_xyz(tmp_path: Path, monkeypatch) -> None:
 
     assert np.allclose(comparison_epoch.cloud, comparison)
     assert np.allclose(reference_epoch.cloud, reference)
-    assert np.allclose(corepoints, comparison)
+    assert np.allclose(corepoints, reference)
     assert DummyPy4DGeo.last_call == "xyz"
 
 
@@ -196,4 +196,4 @@ def test_load_points_ply(tmp_path: Path, monkeypatch) -> None:
     comparison_epoch, reference_epoch, corepoints = ds.load_points()
 
     assert DummyPy4DGeo.last_call == "ply"
-    assert np.allclose(corepoints, comparison_epoch.cloud)
+    assert np.allclose(corepoints, reference_epoch.cloud)

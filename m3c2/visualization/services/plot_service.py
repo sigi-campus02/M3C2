@@ -8,7 +8,7 @@ whereas PDF assembly is handled by :mod:`report_builder`.
 from __future__ import annotations
 
 import logging
-from typing import List
+from typing import Iterable, List
 
 from m3c2.config.plot_config import PlotConfig, PlotOptions
 
@@ -31,13 +31,33 @@ class PlotService:
     def overlay_by_index(
         data_dir: str,
         outdir: str,
-        options: PlotOptions | None = None,
+        options: PlotOptions | Iterable[str] | None = None,
     ) -> None:
-        """Scan ``data_dir`` and create overlay plots grouped by part index."""
+        """Scan ``data_dir`` and create overlay plots grouped by part index.
+
+        ``options`` may either be an instance of :class:`~PlotOptions` or an
+        iterable of option names (e.g. ``["plot_hist", "plot_gauss"]``).  The
+        latter is converted into a :class:`PlotOptions` object where only the
+        specified attributes are enabled.  Unknown names are ignored.
+        """
+
+        if options is None:
+            opts = PlotOptions()
+        elif isinstance(options, PlotOptions):
+            opts = options
+        else:
+            available = {name: False for name in PlotOptions.__annotations__}
+            for name in options:
+                if name in available:
+                    available[name] = True
+                else:
+                    logger.warning("Unknown plot option '%s' ignored", name)
+            opts = PlotOptions(**available)
+
         _overlay_by_index(
             data_dir,
             outdir,
-            options=options
+            options=opts
         )
 
     @staticmethod
