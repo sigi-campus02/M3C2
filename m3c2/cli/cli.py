@@ -123,8 +123,12 @@ class CLIApp:
         parser.add_argument(
             "--stats_singleordistance",
             type=str,
-            choices=["single", "distance"],
-            help="Type of statistics to compute: 'single' for single-cloud, 'distance' for distance-based.",
+            choices=["single", "distance", "plot"],
+            help=(
+                "Type of operation: 'single' for single-cloud statistics, "
+                "'distance' for distance-based processing, or 'plot' to "
+                "generate plots from existing distance files."
+            ),
         )
         parser.add_argument(
             "--output_format",
