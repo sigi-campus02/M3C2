@@ -45,7 +45,20 @@ def test_run_invokes_orchestrator(monkeypatch, tmp_path) -> None:
     monkeypatch.setattr("m3c2.cli.cli.BatchOrchestrator", orchestrator_cls)
 
     app = CLIApp()
-    result = app.run(["--data_dir", str(tmp_path), "--folders", "001"])
+    result = app.run(
+        [
+            "--data_dir",
+            str(tmp_path),
+            "--folders",
+            "001",
+            "--stats_singleordistance",
+            "distance",
+            "--filename_ref",
+            "ref",
+            "--filename_mov",
+            "mov",
+        ]
+    )
 
     assert result == 0
     orchestrator_cls.assert_called_once()
