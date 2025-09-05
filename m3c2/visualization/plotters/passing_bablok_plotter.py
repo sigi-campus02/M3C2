@@ -16,21 +16,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from ..loaders.comparison_loader import _load_and_mask
+from ..plot_helpers import _square_limits
 
 logger = logging.getLogger(__name__)
-
-
-def _square_limits(x: np.ndarray, y: np.ndarray, pad: float = 0.05):
-    """Return square axis limits covering all points with a small padding."""
-    x_min, x_max = float(np.min(x)), float(np.max(x))
-    y_min, y_max = float(np.min(y)), float(np.max(y))
-    v_min = min(x_min, y_min)
-    v_max = max(x_max, y_max)
-    cx = cy = (v_min + v_max) / 2.0
-    half = max((x_max - x_min), (y_max - y_min)) / 2.0
-    half = half * (1.0 + pad) if half > 0 else 1.0
-    return (cx - half, cx + half), (cy - half, cy + half)
-
 
 def passing_bablok_plot(
     folder_ids: List[str],
