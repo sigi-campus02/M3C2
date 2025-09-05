@@ -164,3 +164,61 @@ def test_run_gui_mode_selection_sets_stats_arg() -> None:
     ]
     parse_mock.assert_called_once_with(expected)
     main_mock.assert_called_once_with(expected)
+
+
+def test_run_gui_boolean_optional_action() -> None:
+    """BooleanOptionalAction arguments can be toggled via checkboxes."""
+
+    parser = argparse.ArgumentParser(prog="prog")
+    parser.add_argument("--use_existing", action=argparse.BooleanOptionalAction)
+    parser.set_defaults(use_existing=False)
+
+    button_cmds: dict[str, mock.Mock] = {}
+    vars_created: list[object] = []
+
+    class FakeBooleanVar:
+        def __init__(self, value: object | None = None) -> None:
+            self.value = value
+            vars_created.append(self)
+
+        def get(self) -> object:
+            return self.value
+
+        def set(self, value: object) -> None:
+            self.value = value
+
+    def fake_widget(*args, **kwargs):
+        widget = mock.MagicMock()
+        widget.grid = mock.MagicMock()
+        return widget
+
+    def fake_button(root, text: str, command):
+        btn = mock.MagicMock()
+        btn.grid = mock.MagicMock()
+        button_cmds[text] = command
+        return btn
+
+    fake_tk = types.SimpleNamespace(
+        Tk=lambda: mock.MagicMock(mainloop=lambda: None, destroy=lambda: None, title=lambda *args, **kwargs: None),
+        Label=fake_widget,
+        Checkbutton=fake_widget,
+        Button=fake_button,
+        BooleanVar=FakeBooleanVar,
+    )
+
+    parse_mock = mock.MagicMock()
+    parser.parse_args = parse_mock
+    main_mock = mock.MagicMock()
+
+    with mock.patch("m3c2.cli.argparse_gui.tk", fake_tk), mock.patch(
+        "m3c2.cli.argparse_gui.messagebox"
+    ):
+        run_gui(parser, main_mock)
+
+        (use_var,) = vars_created
+        use_var.set(True)
+
+        button_cmds["Start"]()
+
+    parse_mock.assert_called_once_with(["--use_existing"])
+    main_mock.assert_called_once_with(["--use_existing"])

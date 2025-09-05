@@ -63,6 +63,8 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
         ).grid(row=row, column=1, sticky="e", padx=5, pady=5)
         row += 1
 
+    bool_action = getattr(argparse, "BooleanOptionalAction", None)
+
     for action in parser._actions:
         # Skip help actions – they are not user facing parameters
         if isinstance(action, argparse._HelpAction):
@@ -78,7 +80,10 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
                 row=row, column=2, sticky="w", padx=5, pady=5
             )
 
-        if action.option_strings and action.nargs == 0 and action.const is True:
+        if action.option_strings and action.nargs == 0 and (
+            action.const is True
+            or (bool_action is not None and isinstance(action, bool_action))
+        ):
             var = tk.BooleanVar(value=bool(action.default))
             widget = tk.Checkbutton(root, variable=var)
             widget.grid(row=row, column=1, sticky="w", padx=5, pady=5)
@@ -117,8 +122,13 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
             var = widgets[action.dest][0]
             if action.option_strings:
                 if isinstance(var, tk.BooleanVar):
-                    if var.get():
-                        argv.append(action.option_strings[0])
+                    if bool_action is not None and isinstance(action, bool_action):
+                        if var.get() != action.default:
+                            opt = action.option_strings[0] if var.get() else action.option_strings[1]
+                            argv.append(opt)
+                    else:
+                        if var.get() != action.default:
+                            argv.append(action.option_strings[0])
                 else:
                     value = var.get().strip()
                     if action.nargs not in (None, 1):
