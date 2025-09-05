@@ -83,7 +83,6 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
                 plot_label = tk.Label(root, text="Plot Strategie")
                 plot_label.grid(row=row, column=0, sticky="w", padx=5, pady=5)
                 plot_widgets.append(plot_label)
-
                 plot_var = tk.StringVar(value=str(plot_action.default or "specificfile"))
                 rb = tk.Radiobutton(
                     root,
@@ -271,7 +270,6 @@ def _update_mode_fields(
 ) -> None:
     """Show only widgets relevant for the selected mode and strategy."""
 
-
     mode = mode_var.get()
     dist_fields = [
         "filename_reference",
@@ -285,6 +283,17 @@ def _update_mode_fields(
     plot_specific = ["overlay_files", "overlay_outdir", "plot_types"]
     plot_onefolder = ["folder", "overlay_outdir", "options"]
     plot_several = ["data_dir", "folders", "filenames", "overlay_outdir", "options"]
+
+    common_fields = [
+        "sample_size",
+        "scale_strategy",
+        "output_format",
+        "project",
+        "normal_override",
+        "proj_override",
+        "use_existing_params",
+    ]
+
 
     def _hide(
         var: tk.Variable, widget: tk.Widget, label: tk.Widget, desc: tk.Widget | None
@@ -324,8 +333,16 @@ def _update_mode_fields(
             if mode == "single":
                 _show(widget, label, desc)
             else:
-
                 _hide(var, widget, label, desc)
+
+    # Gemeinsame Felder für Single- und Distanz-Mode
+    for name in common_fields:
+        if name in widgets:
+            var, widget, label, desc = widgets[name]
+            if mode == "plot":
+                _hide(var, widget, label, desc)
+            else:
+                _show(widget, label, desc)
 
 
     # Plot-Mode-Felder
@@ -342,7 +359,6 @@ def _update_mode_fields(
                     or (strategy == "onefolder" and name in plot_onefolder)
                     or (strategy == "severalfolders" and name in plot_several)
                 ):
-
                     _show(widget, label, desc)
                 else:
                     _hide(var, widget, label, desc)
@@ -353,7 +369,6 @@ def _update_mode_fields(
         for w in plot_widgets:
             if mode == "plot":
                 w.grid()
-
                 try:
                     w.configure(state="normal")
                 except tk.TclError:
