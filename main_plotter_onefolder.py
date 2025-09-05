@@ -43,6 +43,10 @@ def main() -> None:
         overlay_outdir.mkdir(parents=True, exist_ok=True)
         logger.info("Created output directory %s", overlay_outdir)
 
+    logger.debug("Plot types: %s", plot_types_arg)
+    logger.debug("Folder: %s", folder)
+    logger.debug("Output directory: %s", overlay_outdir)
+    
     PlotService.overlay_by_index(
         data_dir=folder,
         outdir=overlay_outdir,

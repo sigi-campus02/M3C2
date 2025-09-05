@@ -65,6 +65,8 @@ def scan_distance_files_by_index(data_dir: str) -> Tuple[Dict[int, Dict[str, Dic
         match the expected format.
         """
         m = re.match(r'^[ab]-(\d+)(?:-AI)?$', tag, re.IGNORECASE)
+        logger.debug("idx_of: tag=%s -> %s", tag, m.group(1) if m else None)
+        
         return int(m.group(1)) if m else -1
 
     def to_case_and_label(comparison: str, reference: str, i: int) -> tuple[str, str]:
@@ -144,4 +146,7 @@ def scan_distance_files_by_index(data_dir: str) -> Tuple[Dict[int, Dict[str, Dic
         "CASE3": "#2ca02c",
         "CASE4": "#9467bd",
     }
+    logger.debug("Gefundene Indizes: %s", list(per_index.keys()))
+    logger.debug("Gefundene Fälle: %s", list(case_colors.keys()))
+
     return per_index, case_colors
