@@ -364,7 +364,7 @@ def _update_mode_fields(
                     _show(widget, label, desc)
                 else:
                     _hide(var, widget, label, desc)
-            else:
+            elif name not in common_fields:
                 _hide(var, widget, label, desc)
 
     if plot_widgets is not None:
