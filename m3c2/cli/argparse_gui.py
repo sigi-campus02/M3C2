@@ -176,6 +176,8 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
         for action in parser._actions:
             if isinstance(action, argparse._HelpAction) or (
                 mode_action is not None and action is mode_action
+            ) or (
+                plot_action is not None and action is plot_action
             ):
                 continue
             var = widgets[action.dest][0]
