@@ -37,9 +37,9 @@ def scan_distance_files_by_index(data_dir: str) -> Tuple[Dict[int, Dict[str, Dic
     case identifiers to colours that remain stable across parts.
     """
     logger.info("[Scan] Scanne Distanzdateien in %s für Versionen: %s", data_dir)
-
+    version = "python"
     pat_with = re.compile(
-        r'^(?P<ver>(?:' + "|".join("python") + r'))_'
+        r'^(?P<ver>(?:' + "|".join(version) + r'))_'
         r'(?P<comparison>[ab]-\d+(?:-AI)?)'
         r'-'
         r'(?P<reference>[ab]-\d+(?:-AI)?)'
@@ -47,7 +47,7 @@ def scan_distance_files_by_index(data_dir: str) -> Tuple[Dict[int, Dict[str, Dic
         re.IGNORECASE,
     )
     pat_inl = re.compile(
-        r'^(?P<ver>(?:' + "|".join("python") + r'))_'
+        r'^(?P<ver>(?:' + "|".join(version) + r'))_'
         r'(?P<comparison>[ab]-\d+(?:-AI)?)'
         r'-'
         r'(?P<reference>[ab]-\d+(?:-AI)?)'
