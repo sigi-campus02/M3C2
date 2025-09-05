@@ -274,7 +274,6 @@ def _update_mode_fields(
     dist_fields = [
         "filename_reference",
         "filename_comparison",
-        "use_subsampled_corepoints",
         "outlier_detection_method",
         "outlier_multiplicator",
         "only_stats",
@@ -285,6 +284,9 @@ def _update_mode_fields(
     plot_several = ["data_dir", "folders", "filenames", "overlay_outdir", "options"]
 
     common_fields = [
+        "data_dir",
+        "folders",
+        "use_subsampled_corepoints",
         "sample_size",
         "scale_strategy",
         "output_format",
