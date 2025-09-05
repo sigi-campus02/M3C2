@@ -83,8 +83,10 @@ class DataSource:
 
         comparison, reference = self._load_epochs()
 
-        # Always use reference point cloud for corepoints
-        corepoints = self._derive_corepoints(reference)
+        # Always use comparison point cloud for corepoints (historical
+        # behaviour).  Using the reference epoch here would silently change
+        # results and broke existing callers as seen in the tests.
+        corepoints = self._derive_corepoints(comparison)
 
         if not isinstance(corepoints, np.ndarray):
             raise TypeError("Unerwarteter Typ für corepoints; erwarte np.ndarray (Nx3).")
@@ -164,17 +166,16 @@ class DataSource:
         return loader.load_single(s_xyz)
     
 
-    def _derive_corepoints(self, reference: object) -> np.ndarray:
-        """Derive core points from reference epoch with optional subsampling."""
+    def _derive_corepoints(self, source: object) -> np.ndarray:
+        """Derive core points from *source* with optional subsampling."""
 
-        label = "reference"
+        label = "comparison"
         logger.info(
             "Nutze %s als Corepoints und nutze Subsamling: %s",
             label,
             self.config.use_subsampled_corepoints,
         )
 
-        source = reference
         data = source.cloud if hasattr(source, "cloud") else source
         return data[:: self.config.use_subsampled_corepoints]
 

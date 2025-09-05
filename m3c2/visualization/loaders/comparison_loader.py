@@ -99,7 +99,7 @@ def _load_and_mask(fid: str, reference_variants: List[str]) -> tuple[np.ndarray,
     Any issues (missing files, only NaN values) are logged and result in
     ``None`` instead of an exception.
     """
-    data = [_load_referenceerence_variant_data(fid, v) for v in reference_variants]
+    data = [_load_reference_variant_data(fid, v) for v in reference_variants]
     if any(d is None for d in data):
         return None
     a_raw, b_raw = data
