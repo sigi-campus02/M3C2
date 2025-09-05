@@ -51,7 +51,7 @@
         },
         "folders": {
           "type": "array",
-          "description": "List of folders containing point clouds.",
+          "description": "List of folders containing point clouds (comma-separated in GUI).",
           "items": { "type": "string" },
           "default": ["pointclouds"]
         },

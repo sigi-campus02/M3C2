@@ -12,6 +12,7 @@ from tkinter import messagebox
 import logging
 import os
 import json
+import re
 from typing import Tuple
 from m3c2.config.logging_config import setup_logging
 from m3c2.cli.cli import CLIApp
@@ -95,7 +96,10 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
         else:
             var = tk.StringVar()
             if action.default not in (None, argparse.SUPPRESS):
-                var.set(str(action.default))
+                if isinstance(action.default, (list, tuple)):
+                    var.set(", ".join(map(str, action.default)))
+                else:
+                    var.set(str(action.default))
             widget = tk.Entry(root, textvariable=var)
             widget.grid(row=row, column=1, sticky="ew", padx=5, pady=5)
         widgets[action.dest] = (var, widget)
@@ -134,14 +138,20 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
                     if action.nargs not in (None, 1):
                         if value:
                             argv.append(action.option_strings[0])
-                            argv.extend(value.split())
+                            items = [
+                                v.strip()
+                                for v in re.split(r"[,\s]+", value)
+                                if v.strip()
+                            ]
+                            argv.extend(items)
                     else:
                         if value:
                             argv.extend([action.option_strings[0], value])
             else:  # positional
                 value = var.get().strip()
                 if action.nargs not in (None, 1):
-                    argv.extend(value.split())
+                    parts = [v.strip() for v in re.split(r"[,\s]+", value) if v.strip()]
+                    argv.extend(parts)
                 elif value:
                     argv.append(value)
 
