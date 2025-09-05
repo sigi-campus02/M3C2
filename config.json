@@ -11,10 +11,10 @@
   "arguments":   {
     "data_dir": "data",
     "folders": ["0342-0349"],
-    "filename_ref": "ref",
-    "filename_mov": "mov",
+    "filename_reference": "reference",
+    "filename_comparison": "comparison",
     "filename_singlecloud": "",
-    "mov_as_corepoints": false,
+    "comparison_as_corepoints": false,
     "use_subsampled_corepoints": 100,
     "sample_size": 10000,
     "scale_strategy": "radius",

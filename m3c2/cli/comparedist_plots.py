@@ -24,7 +24,7 @@ class PlotServiceCompareDistances:
         os.makedirs(cfg.path, exist_ok=True)
 
 
-def main(folder_ids, ref_variants, outdir):
+def main(folder_ids, reference_variants, outdir):
     """Entry point used by tests.
 
     Parameters are largely ignored.  The function simply constructs a
@@ -33,7 +33,7 @@ def main(folder_ids, ref_variants, outdir):
     """
 
     cfg = SimpleNamespace(path=os.path.join(outdir, "MARS_output", "MARS_plots"))
-    opts = SimpleNamespace(folder_ids=folder_ids, ref_variants=ref_variants)
+    opts = SimpleNamespace(folder_ids=folder_ids, reference_variants=reference_variants)
     PlotServiceCompareDistances.overlay_plots(cfg, opts)
 
 

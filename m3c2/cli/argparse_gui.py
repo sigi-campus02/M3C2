@@ -206,9 +206,9 @@ def _update_mode_fields(mode_var: tk.StringVar, widgets: dict[str, Tuple[tk.Vari
 
     mode = mode_var.get()
     dist_fields = [
-        "filename_ref",
-        "filename_mov",
-        "mov_as_corepoints",
+        "filename_reference",
+        "filename_comparison",
+        "comparison_as_corepoints",
         "use_subsampled_corepoints",
         "outlier_detection_method",
         "outlier_multiplicator",

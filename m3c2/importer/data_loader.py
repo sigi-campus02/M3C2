@@ -27,14 +27,14 @@ class DataLoader:
             Configuration defining the location of the point clouds and
             which epoch to use for the core points.
         mode : str
-            ``"multicloud"`` to load moving and reference epochs or
+            ``"multicloud"`` to load comparison and reference epochs or
             ``"singlecloud"`` to load a single epoch.
 
         Returns
         -------
         tuple or object
-            For ``"multicloud"`` returns ``(ds, mov, ref, corepoints)``
-            containing the :class:`DataSource` used for loading, the moving
+            For ``"multicloud"`` returns ``(ds, comparison, reference, corepoints)``
+            containing the :class:`DataSource` used for loading, the comparison
             and reference epochs and a NumPy array of the core point
             coordinates.  For ``"singlecloud"`` returns only the single cloud
             epoch.
@@ -69,32 +69,32 @@ class DataLoader:
         Returns
         -------
         tuple
-            ``(ds, mov, ref, corepoints)`` containing the :class:`DataSource`
-            used for loading, the moving and reference epochs and a NumPy array
+            ``(ds, comparison, reference, corepoints)`` containing the :class:`DataSource`
+            used for loading, the comparison and reference epochs and a NumPy array
             of the core point coordinates.
         """
         t0 = time.perf_counter()
 
         ds_config = DataSourceConfig(
             folder=os.path.join(cfg.data_dir, cfg.folder_id),
-            mov_basename=cfg.filename_mov,
-            ref_basename=cfg.filename_ref,
-            mov_as_corepoints=cfg.mov_as_corepoints,
+            comparison_basename=cfg.filename_comparison,
+            reference_basename=cfg.filename_reference,
+            comparison_as_corepoints=cfg.comparison_as_corepoints,
             use_subsampled_corepoints=cfg.use_subsampled_corepoints,
         )
         ds = DataSource(ds_config)
 
-        mov, ref, corepoints = ds.load_points()
+        comparison, reference, corepoints = ds.load_points()
 
         logger.info(
-            "[Load] data/%s: mov=%s, ref=%s, corepoints=%s | %.3fs",
+            "[Load] data/%s: comparison=%s, reference=%s, corepoints=%s | %.3fs",
             cfg.folder_id,
-            getattr(mov, "cloud", np.array([])).shape if hasattr(mov, "cloud") else "Epoch",
-            getattr(ref, "cloud", np.array([])).shape if hasattr(ref, "cloud") else "Epoch",
+            getattr(comparison, "cloud", np.array([])).shape if hasattr(comparison, "cloud") else "Epoch",
+            getattr(reference, "cloud", np.array([])).shape if hasattr(reference, "cloud") else "Epoch",
             np.asarray(corepoints).shape,
             time.perf_counter() - t0,
         )
-        return ds, mov, ref, corepoints
+        return ds, comparison, reference, corepoints
 
     def _load_data_single(self, cfg) -> object:
         """Load single-cloud data according to ``cfg``.

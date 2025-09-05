@@ -19,7 +19,7 @@ class FileNameParams:
         if cfg.stats_singleordistance == "single":
             tag = cfg.filename_singlecloud
         else:
-            tag = f"{cfg.filename_mov}-{cfg.filename_ref}"
+            tag = f"{cfg.filename_comparison}-{cfg.filename_reference}"
         return cls(
             prefix=cfg.project,
             tag=tag,
@@ -56,11 +56,11 @@ class FileNameParams:
     def stats_clouds(self, ext: str) -> str:
         return FileNames.stats_clouds(self.prefix, ext)
 
-    def report_cloud_moved_distances(self) -> str:
-        return FileNames.report_cloud_moved_distances(self.prefix, self.fid)
+    def report_cloud_comparison_distances(self) -> str:
+        return FileNames.report_cloud_comparison_distances(self.prefix, self.fid)
 
-    def report_cloud_moved_distances_inlier(self) -> str:
-        return FileNames.report_cloud_moved_distances_inlier(
+    def report_cloud_comparison_distances_inlier(self) -> str:
+        return FileNames.report_cloud_comparison_distances_inlier(
             self.prefix, self.fid, self.method
         )
 
@@ -105,10 +105,10 @@ class FileNames:
 
     # Report service patterns
     REPORT_CLOUD_MOVED_DISTANCES = (
-        "{prefix}_Job_0378_8400-110-rad-{fid}_cloud_moved_m3c2_distances.txt"
+        "{prefix}_Job_0378_8400-110-rad-{fid}_cloud_comparison_m3c2_distances.txt"
     )
     REPORT_CLOUD_MOVED_DISTANCES_INLIER = (
-        "{prefix}_Job_0378_8400-110-rad-{fid}_cloud_moved_m3c2_distances_coordinates_inlier_{method}.txt"
+        "{prefix}_Job_0378_8400-110-rad-{fid}_cloud_comparison_m3c2_distances_coordinates_inlier_{method}.txt"
     )
 
     @staticmethod
@@ -178,13 +178,13 @@ class FileNames:
         return FileNames.CLOUD_STATS_XLSX
 
     @staticmethod
-    def report_cloud_moved_distances(prefix: str, fid: str) -> str:
+    def report_cloud_comparison_distances(prefix: str, fid: str) -> str:
         return FileNames.REPORT_CLOUD_MOVED_DISTANCES.format(
             prefix=prefix, fid=fid
         )
 
     @staticmethod
-    def report_cloud_moved_distances_inlier(
+    def report_cloud_comparison_distances_inlier(
         prefix: str, fid: str, method: str
     ) -> str:
         return FileNames.REPORT_CLOUD_MOVED_DISTANCES_INLIER.format(

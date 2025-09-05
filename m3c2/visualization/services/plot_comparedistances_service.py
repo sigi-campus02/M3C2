@@ -50,14 +50,14 @@ class PlotServiceCompareDistances:
         """
         os.makedirs(config.path, exist_ok=True)
         folder_ids = config.folder_ids
-        ref_variants = config.filenames
+        reference_variants = config.filenames
 
         if options.plot_blandaltman:
             logger.info("Generating Bland-Altman plots...")
-            bland_altman_plot(folder_ids, ref_variants, outdir=config.path)
+            bland_altman_plot(folder_ids, reference_variants, outdir=config.path)
         if options.plot_passingbablok:
             logger.info("Generating Passing-Bablok plots...")
-            passing_bablok_plot(folder_ids, ref_variants, outdir=config.path)
+            passing_bablok_plot(folder_ids, reference_variants, outdir=config.path)
         if options.plot_linearregression:
             logger.info("Generating Linear Regression plots...")
-            linear_regression_plot(folder_ids, ref_variants, outdir=config.path)
+            linear_regression_plot(folder_ids, reference_variants, outdir=config.path)

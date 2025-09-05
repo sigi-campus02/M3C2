@@ -40,17 +40,17 @@ def scan_distance_files_by_index(data_dir: str, versions=("python", "CC")) -> Tu
 
     pat_with = re.compile(
         r'^(?P<ver>(?:' + "|".join(versions) + r'))_'
-        r'(?P<mov>[ab]-\d+(?:-AI)?)'
+        r'(?P<comparison>[ab]-\d+(?:-AI)?)'
         r'-'
-        r'(?P<ref>[ab]-\d+(?:-AI)?)'
+        r'(?P<reference>[ab]-\d+(?:-AI)?)'
         r'_m3c2_distances\.txt$',
         re.IGNORECASE,
     )
     pat_inl = re.compile(
         r'^(?P<ver>(?:' + "|".join(versions) + r'))_'
-        r'(?P<mov>[ab]-\d+(?:-AI)?)'
+        r'(?P<comparison>[ab]-\d+(?:-AI)?)'
         r'-'
-        r'(?P<ref>[ab]-\d+(?:-AI)?)'
+        r'(?P<reference>[ab]-\d+(?:-AI)?)'
         r'_m3c2_distances_coordinates_inlier_(?P<meth>[a-zA-Z0-9_]+)\.txt$',
         re.IGNORECASE,
     )
@@ -67,31 +67,31 @@ def scan_distance_files_by_index(data_dir: str, versions=("python", "CC")) -> Tu
         m = re.match(r'^[ab]-(\d+)(?:-AI)?$', tag, re.IGNORECASE)
         return int(m.group(1)) if m else -1
 
-    def to_case_and_label(mov: str, ref: str, i: int) -> tuple[str, str]:
+    def to_case_and_label(comparison: str, reference: str, i: int) -> tuple[str, str]:
         """Derive case identifier and label for a dataset comparison.
 
-        Both *mov* and *ref* contain tags such as ``"a-1"`` or
+        Both *comparison* and *reference* contain tags such as ``"a-1"`` or
         ``"b-2-AI"``.  The presence of the ``"-AI"`` suffix determines the
         classification into one of four cases:
 
         * ``CASE1`` – neither tag includes ``"-AI"``.
         * ``CASE2`` – only the reference tag includes ``"-AI"``.
-        * ``CASE3`` – only the moving tag includes ``"-AI"``.
+        * ``CASE3`` – only the comparison tag includes ``"-AI"``.
         * ``CASE4`` – both tags include ``"-AI"``.
 
         The returned label mirrors the underlying tags using the pattern
         ``"a-{i}... vs b-{i}..."``.
         """
 
-        mov_ai = "-AI" in mov
-        ref_ai = "-AI" in ref
-        if not mov_ai and not ref_ai:
+        comparison_ai = "-AI" in comparison
+        reference_ai = "-AI" in reference
+        if not comparison_ai and not reference_ai:
             return "CASE1", f"a-{i} vs b-{i}"
-        if not mov_ai and ref_ai:
+        if not comparison_ai and reference_ai:
             return "CASE2", f"a-{i} vs b-{i}-AI"
-        if mov_ai and not ref_ai:
+        if comparison_ai and not reference_ai:
             return "CASE3", f"a-{i}-AI vs b-{i}"
-        if mov_ai and ref_ai:
+        if comparison_ai and reference_ai:
             return "CASE4", f"a-{i}-AI vs b-{i}-AI"
         return "CASE1", f"a-{i} vs b-{i}"
 
@@ -106,11 +106,11 @@ def scan_distance_files_by_index(data_dir: str, versions=("python", "CC")) -> Tu
 
         mW = pat_with.match(name)
         if mW:
-            mov, ref = mW.group("mov"), mW.group("ref")
-            i_mov, i_ref = idx_of(mov), idx_of(ref)
-            if i_mov == i_ref and i_mov != -1:
-                i = i_mov
-                cas, label = to_case_and_label(mov, ref, i)
+            comparison, reference = mW.group("comparison"), mW.group("reference")
+            i_comparison, i_reference = idx_of(comparison), idx_of(reference)
+            if i_comparison == i_reference and i_comparison != -1:
+                i = i_comparison
+                cas, label = to_case_and_label(comparison, reference, i)
                 try:
                     arr = load_1col_distances(p)
                     per_index[i]["WITH"][label] = arr
@@ -123,11 +123,11 @@ def scan_distance_files_by_index(data_dir: str, versions=("python", "CC")) -> Tu
 
         mI = pat_inl.match(name)
         if mI:
-            mov, ref = mI.group("mov"), mI.group("ref")
-            i_mov, i_ref = idx_of(mov), idx_of(ref)
-            if i_mov == i_ref and i_mov != -1:
-                i = i_mov
-                cas, label = to_case_and_label(mov, ref, i)
+            comparison, reference = mI.group("comparison"), mI.group("reference")
+            i_comparison, i_reference = idx_of(comparison), idx_of(reference)
+            if i_comparison == i_reference and i_comparison != -1:
+                i = i_comparison
+                cas, label = to_case_and_label(comparison, reference, i)
                 try:
                     arr = load_coordinates_inlier_distances(p)
                     per_index[i]["INLIER"][label] = arr

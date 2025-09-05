@@ -20,10 +20,10 @@ def test_defaults_and_immutability():
     config = PipelineConfig(
         data_dir="data",
         folder_id="folder",
-        filename_mov="mov.las",
-        filename_ref="ref.las",
+        filename_comparison="comparison.las",
+        filename_reference="reference.las",
         filename_singlecloud="single.las",
-        mov_as_corepoints=True,
+        comparison_as_corepoints=True,
         use_subsampled_corepoints=0,
         only_stats=False,
         stats_singleordistance="single",

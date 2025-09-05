@@ -11,8 +11,8 @@ logger = logging.getLogger(__name__)
 
 def main(
     folder_ids: list[str] | None = None,
-    filename_mov: str = "HandheldRoi",
-    filename_ref: str = "MavicRoi",
+    filename_comparison: str = "HandheldRoi",
+    filename_reference: str = "MavicRoi",
     area_m2: float | None = None,
     radius: float = 1.0,
     k: int = 6,
@@ -27,12 +27,12 @@ def main(
     # ``setup_logging`` determines the log level internally.
     setup_logging()
     logger.info(
-        "Parameters received: folder_ids=%s, filename_mov=%s, filename_ref=%s, "
+        "Parameters received: folder_ids=%s, filename_comparison=%s, filename_reference=%s, "
         "area_m2=%s, radius=%s, k=%s, sample_size=%s, use_convex_hull=%s, "
         "out_path=%s, sheet_name=%s, output_format=%s",
         folder_ids,
-        filename_mov,
-        filename_ref,
+        filename_comparison,
+        filename_reference,
         area_m2,
         radius,
         k,
@@ -49,7 +49,7 @@ def main(
     try:
         calc_single_cloud_stats(
             folder_ids=folder_ids,
-            filename_singlecloud=filename_mov,
+            filename_singlecloud=filename_comparison,
             area_m2=area_m2,
             radius=radius,
             k=k,

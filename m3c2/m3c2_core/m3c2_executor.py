@@ -18,7 +18,7 @@ class M3C2Executor:
     """High level interface for executing the M3C2 algorithm.
 
     The executor exposes :meth:`run_m3c2`, which accepts a configuration
-    object, moving and reference point clouds, an array of core points and the
+    object, comparison and reference point clouds, an array of core points and the
     normal and projection scales used by the algorithm.  It delegates the
     heavy computation to :class:`~m3c2.core.m3c2_runner.M3C2Runner` while
     handling logging and persistence of the results.
@@ -28,7 +28,7 @@ class M3C2Executor:
     ``cfg``
         Configuration object that must provide ``process_python_CC`` to build
         output file names.
-    ``mov`` and ``ref``
+    ``comparison`` and ``reference``
         Point cloud data as ``(N, 3)`` arrays or objects exposing a ``cloud``
         attribute with such an array.
     ``corepoints``
@@ -52,7 +52,7 @@ class M3C2Executor:
     emitted.
     """
 
-    def run_m3c2(self, cfg, mov, ref, corepoints, normal: float, projection: float, out_base: str, tag: str,
+    def run_m3c2(self, cfg, comparison, reference, corepoints, normal: float, projection: float, out_base: str, tag: str,
     ) -> Tuple[np.ndarray, np.ndarray]:
         """Run the core M3C2 computation and persist results to disk.
 
@@ -62,12 +62,12 @@ class M3C2Executor:
             Configuration object. Must provide the attribute
             ``process_python_CC`` which is used to construct output file
             names.
-        mov : array-like or object
-            Moving point cloud. May be provided as an ``(N, 3)`` array or as
+        comparison : array-like or object
+            Comparison point cloud. May be provided as an ``(N, 3)`` array or as
             an object exposing a ``cloud`` attribute containing such an
             array.
-        ref : array-like or object
-            Reference point cloud in the same format as ``mov``.
+        reference : array-like or object
+            Reference point cloud in the same format as ``comparison``.
         corepoints : array-like
             ``(N, 3)`` coordinates of the core points where distances are
             evaluated.
@@ -105,7 +105,7 @@ class M3C2Executor:
         # M3C2 computation
         t0 = time.perf_counter()
         runner = M3C2Runner()
-        distances, uncertainties = runner.run(mov, ref, corepoints, normal, projection)
+        distances, uncertainties = runner.run(comparison, reference, corepoints, normal, projection)
 
         #------------------------------------------
         # Logging for quick overview of distance cloud metrics and computation time
@@ -122,10 +122,10 @@ class M3C2Executor:
         logger.info("[Run] Distanzen gespeichert: %s (%d Werte, %.2f%% NaN)", dists_path, n, 100.0 * nan_share)
 
         coords_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances_coordinates.txt")
-        if hasattr(mov, "cloud"):
-            xyz = np.asarray(mov.cloud)
+        if hasattr(comparison, "cloud"):
+            xyz = np.asarray(comparison.cloud)
         else:
-            xyz = np.asarray(mov)
+            xyz = np.asarray(comparison)
         if xyz.shape[0] == distances.shape[0]:
             arr = np.column_stack((xyz, distances))
             header = "x y z distance"

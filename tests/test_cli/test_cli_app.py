@@ -19,7 +19,7 @@ def test_build_parser_defaults() -> None:
     assert args.data_dir == "data"
     assert args.scale_strategy == "radius"
     assert args.project == "PROJECT"
-    assert args.mov_as_corepoints is True
+    assert args.comparison_as_corepoints is True
     assert args.only_stats is True
 
 
@@ -53,10 +53,10 @@ def test_run_invokes_orchestrator(monkeypatch, tmp_path) -> None:
             "001",
             "--stats_singleordistance",
             "distance",
-            "--filename_ref",
-            "ref",
-            "--filename_mov",
-            "mov",
+            "--filename_reference",
+            "reference",
+            "--filename_comparison",
+            "comparison",
         ]
     )
 

@@ -63,7 +63,7 @@ class PipelineComponentFactory:
         return M3C2Executor()
 
     # def create_outlier_handler(self) -> OutlierHandler:
-    #     """Instantiate an :class:`OutlierHandler` for removing statistical outliers.
+    #     """Instantiate an :class:`OutlierHandler` for recomparison statistical outliers.
 
     #     The returned handler applies the configured outlier detection method to the
     #     generated M3C2 results and filters out measurements deemed to be outliers.

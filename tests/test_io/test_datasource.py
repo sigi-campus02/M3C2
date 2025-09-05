@@ -36,16 +36,16 @@ class DummyPy4DGeo:
     @staticmethod
     def read_from_xyz(m_path: str, r_path: str):  # type: ignore[override]
         DummyPy4DGeo.last_call = "xyz"
-        mov_arr = np.loadtxt(m_path)
-        ref_arr = np.loadtxt(r_path)
-        return DummyEpoch(mov_arr), DummyEpoch(ref_arr)
+        comparison_arr = np.loadtxt(m_path)
+        reference_arr = np.loadtxt(r_path)
+        return DummyEpoch(comparison_arr), DummyEpoch(reference_arr)
 
     @staticmethod
     def read_from_ply(m_path: str, r_path: str):  # type: ignore[override]
         DummyPy4DGeo.last_call = "ply"
-        mov_arr = np.array([[0.0, 0.0, 0.0]])
-        ref_arr = np.array([[1.0, 1.0, 1.0]])
-        return DummyEpoch(mov_arr), DummyEpoch(ref_arr)
+        comparison_arr = np.array([[0.0, 0.0, 0.0]])
+        reference_arr = np.array([[1.0, 1.0, 1.0]])
+        return DummyEpoch(comparison_arr), DummyEpoch(reference_arr)
 
 
 def test_detect_xyz(tmp_path: Path) -> None:
@@ -65,19 +65,19 @@ def test_detect_xyz(tmp_path: Path) -> None:
     --------
     >>> folder = tmp_path / 'data'
     >>> folder.mkdir()
-    >>> (folder / 'mov.xyz').write_text('0 0 0\n')
-    >>> detect(folder / 'mov')[0]
+    >>> (folder / 'comparison.xyz').write_text('0 0 0\n')
+    >>> detect(folder / 'comparison')[0]
     'xyz'
     """
 
     folder = tmp_path / "data"
     folder.mkdir()
-    (folder / "mov.xyz").write_text("0 0 0\n")
+    (folder / "comparison.xyz").write_text("0 0 0\n")
 
-    kind, path = detect(folder / "mov")
+    kind, path = detect(folder / "comparison")
 
     assert kind == "xyz"
-    assert path == folder / "mov.xyz"
+    assert path == folder / "comparison.xyz"
 
 
 def test_ensure_xyz_from_gpc(tmp_path: Path) -> None:
@@ -95,16 +95,16 @@ def test_ensure_xyz_from_gpc(tmp_path: Path) -> None:
 
     Examples
     --------
-    >>> gpc_path = tmp_path / 'mov.gpc'
+    >>> gpc_path = tmp_path / 'comparison.gpc'
     >>> gpc_path.write_text('1 2 3\n4 5 6\n')
-    >>> xyz_path = ensure_xyz(tmp_path / 'mov', ('gpc', gpc_path))
+    >>> xyz_path = ensure_xyz(tmp_path / 'comparison', ('gpc', gpc_path))
     >>> xyz_path.suffix
     '.xyz'
     """
 
-    gpc_path = tmp_path / "mov.gpc"
+    gpc_path = tmp_path / "comparison.gpc"
     gpc_path.write_text("1 2 3\n4 5 6\n")
-    base = tmp_path / "mov"
+    base = tmp_path / "comparison"
 
     xyz_path = ensure_xyz(base, ("gpc", gpc_path))
 
@@ -130,10 +130,10 @@ def test_load_points_xyz(tmp_path: Path, monkeypatch) -> None:
 
     Examples
     --------
-    >>> mov = np.array([[0, 0, 0], [1, 1, 1]], dtype=float)
-    >>> ref = np.array([[0, 0, 0], [2, 2, 2]], dtype=float)
-    >>> np.savetxt(tmp_path / 'mov.xyz', mov, fmt='%.6f')
-    >>> np.savetxt(tmp_path / 'ref.xyz', ref, fmt='%.6f')
+    >>> comparison = np.array([[0, 0, 0], [1, 1, 1]], dtype=float)
+    >>> reference = np.array([[0, 0, 0], [2, 2, 2]], dtype=float)
+    >>> np.savetxt(tmp_path / 'comparison.xyz', comparison, fmt='%.6f')
+    >>> np.savetxt(tmp_path / 'reference.xyz', reference, fmt='%.6f')
     >>> monkeypatch.setattr(ds_module, 'py4dgeo', DummyPy4DGeo)
     >>> cfg = DataSourceConfig(str(tmp_path))
     >>> ds = ds_module.DataSource(cfg)
@@ -141,21 +141,21 @@ def test_load_points_xyz(tmp_path: Path, monkeypatch) -> None:
     (2, 3)
     """
 
-    mov = np.array([[0, 0, 0], [1, 1, 1]], dtype=float)
-    ref = np.array([[0, 0, 0], [2, 2, 2]], dtype=float)
-    np.savetxt(tmp_path / "mov.xyz", mov, fmt="%.6f")
-    np.savetxt(tmp_path / "ref.xyz", ref, fmt="%.6f")
+    comparison = np.array([[0, 0, 0], [1, 1, 1]], dtype=float)
+    reference = np.array([[0, 0, 0], [2, 2, 2]], dtype=float)
+    np.savetxt(tmp_path / "comparison.xyz", comparison, fmt="%.6f")
+    np.savetxt(tmp_path / "reference.xyz", reference, fmt="%.6f")
 
     DummyPy4DGeo.last_call = None
     monkeypatch.setattr(ds_module, "py4dgeo", DummyPy4DGeo)
 
     cfg = DataSourceConfig(str(tmp_path))
     ds = ds_module.DataSource(cfg)
-    mov_epoch, ref_epoch, corepoints = ds.load_points()
+    comparison_epoch, reference_epoch, corepoints = ds.load_points()
 
-    assert np.allclose(mov_epoch.cloud, mov)
-    assert np.allclose(ref_epoch.cloud, ref)
-    assert np.allclose(corepoints, mov)
+    assert np.allclose(comparison_epoch.cloud, comparison)
+    assert np.allclose(reference_epoch.cloud, reference)
+    assert np.allclose(corepoints, comparison)
     assert DummyPy4DGeo.last_call == "xyz"
 
 
@@ -176,8 +176,8 @@ def test_load_points_ply(tmp_path: Path, monkeypatch) -> None:
 
     Examples
     --------
-    >>> (tmp_path / 'mov.ply').write_text('dummy')
-    >>> (tmp_path / 'ref.ply').write_text('dummy')
+    >>> (tmp_path / 'comparison.ply').write_text('dummy')
+    >>> (tmp_path / 'reference.ply').write_text('dummy')
     >>> monkeypatch.setattr(ds_module, 'py4dgeo', DummyPy4DGeo)
     >>> cfg = DataSourceConfig(str(tmp_path))
     >>> ds = ds_module.DataSource(cfg)
@@ -185,15 +185,15 @@ def test_load_points_ply(tmp_path: Path, monkeypatch) -> None:
     (1, 3)
     """
 
-    (tmp_path / "mov.ply").write_text("dummy")
-    (tmp_path / "ref.ply").write_text("dummy")
+    (tmp_path / "comparison.ply").write_text("dummy")
+    (tmp_path / "reference.ply").write_text("dummy")
 
     DummyPy4DGeo.last_call = None
     monkeypatch.setattr(ds_module, "py4dgeo", DummyPy4DGeo)
 
     cfg = DataSourceConfig(str(tmp_path))
     ds = ds_module.DataSource(cfg)
-    mov_epoch, ref_epoch, corepoints = ds.load_points()
+    comparison_epoch, reference_epoch, corepoints = ds.load_points()
 
     assert DummyPy4DGeo.last_call == "ply"
-    assert np.allclose(corepoints, mov_epoch.cloud)
+    assert np.allclose(corepoints, comparison_epoch.cloud)

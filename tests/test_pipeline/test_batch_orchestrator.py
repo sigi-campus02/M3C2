@@ -32,10 +32,10 @@ def test_load_data_uses_data_dir(tmp_path, monkeypatch):
     cfg = PipelineConfig(
         data_dir=str(tmp_path),
         folder_id="sub",
-        filename_mov="mov.xyz",
-        filename_ref="ref.xyz",
+        filename_comparison="comparison.xyz",
+        filename_reference="reference.xyz",
         filename_singlecloud="single.xyz",
-        mov_as_corepoints=True,
+        comparison_as_corepoints=True,
         use_subsampled_corepoints=1,
         only_stats=False,
         stats_singleordistance="single",
@@ -47,9 +47,9 @@ def test_load_data_uses_data_dir(tmp_path, monkeypatch):
         "m3c2.importer.data_loader.DataSource", DummyDS
     )
     loader = DataLoader()
-    ds, mov, ref, corepoints = loader.load_data(cfg, mode="multicloud")
+    ds, comparison, reference, corepoints = loader.load_data(cfg, mode="multicloud")
 
     assert ds.config.folder == os.path.join(cfg.data_dir, cfg.folder_id)
-    assert mov.shape == (1, 3)
-    assert ref.shape == (1, 3)
+    assert comparison.shape == (1, 3)
+    assert reference.shape == (1, 3)
     assert corepoints.shape == (1, 3)

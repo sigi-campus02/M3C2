@@ -15,9 +15,9 @@ def test_load_and_mask_removes_nan(tmp_path):
 
     fid_dir = tmp_path / "fid1"
     fid_dir.mkdir()
-    (fid_dir / "python_ref_m3c2_distances.txt").write_text("0.0\n1.0\nnan\n2.0\n")
-    (fid_dir / "python_ref_ai_m3c2_distances.txt").write_text("0.1\n1.1\n2.1\n3.1\n")
-    result = _load_and_mask(str(fid_dir), ["ref", "ref_ai"])
+    (fid_dir / "python_reference_m3c2_distances.txt").write_text("0.0\n1.0\nnan\n2.0\n")
+    (fid_dir / "python_reference_ai_m3c2_distances.txt").write_text("0.1\n1.1\n2.1\n3.1\n")
+    result = _load_and_mask(str(fid_dir), ["reference", "reference_ai"])
     assert result is not None
     a, b = result
     assert len(a) == len(b) == 3

@@ -43,7 +43,7 @@ def test_build_delegates(monkeypatch, tmp_path):
 
     cfg = PlotConfig(
         folder_ids=["f1"],
-        filenames=["ref"],
+        filenames=["reference"],
         bins=10,
         outdir=str(tmp_path),
         project="P",

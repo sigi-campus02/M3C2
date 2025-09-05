@@ -17,14 +17,14 @@ class CallRecorder:
 
     Instances of this class act as callables and store all invocations in the
     ``calls`` list attribute.  Each call is recorded as a tuple containing the
-    ``folder_ids``, ``ref_variants``, and ``outdir`` arguments.
+    ``folder_ids``, ``reference_variants``, and ``outdir`` arguments.
     """
 
     def __init__(self):
         self.calls = []
 
-    def __call__(self, folder_ids, ref_variants, outdir):
-        self.calls.append((tuple(folder_ids), tuple(ref_variants), outdir))
+    def __call__(self, folder_ids, reference_variants, outdir):
+        self.calls.append((tuple(folder_ids), tuple(reference_variants), outdir))
 
 
 def test_overlay_plots_delegates(monkeypatch, tmp_path):
@@ -49,7 +49,7 @@ def test_overlay_plots_delegates(monkeypatch, tmp_path):
 
     cfg = PlotConfig(
         folder_ids=["f1"],
-        filenames=["ref", "ref_ai"],
+        filenames=["reference", "reference_ai"],
         bins=10,
         outdir=str(tmp_path),
         project="P",
@@ -90,7 +90,7 @@ def test_overlay_plots_no_options(monkeypatch, tmp_path):
 
     cfg = PlotConfig(
         folder_ids=["f1"],
-        filenames=["ref", "ref_ai"],
+        filenames=["reference", "reference_ai"],
         bins=10,
         outdir=str(tmp_path),
         project="P",

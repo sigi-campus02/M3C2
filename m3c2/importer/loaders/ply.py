@@ -13,8 +13,8 @@ class PLYLoader:
             raise RuntimeError("'py4dgeo' lacks PLY support")
         self.backend = backend
 
-    def load_pair(self, mov_path: Path, ref_path: Path):
-        return self.backend.read_from_ply(str(mov_path), str(ref_path))
+    def load_pair(self, comparison_path: Path, reference_path: Path):
+        return self.backend.read_from_ply(str(comparison_path), str(reference_path))
 
     def load_single(self, path: Path):
         return self.backend.read_from_ply(str(path))

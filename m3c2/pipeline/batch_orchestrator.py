@@ -86,7 +86,7 @@ class BatchOrchestrator:
     # Small helper to create consistent file name tags
     @staticmethod
     def _run_tag(cfg: PipelineConfig) -> str:
-        """Return a concise tag representing the moving and reference files.
+        """Return a concise tag representing the comparison and reference files.
 
         Parameters
         ----------
@@ -96,10 +96,10 @@ class BatchOrchestrator:
         Returns
         -------
         str
-            Combination of moving and reference filenames.
+            Combination of comparison and reference filenames.
         """
-        if cfg.filename_mov and cfg.filename_ref:
-            return f"{cfg.filename_mov}-{cfg.filename_ref}"
+        if cfg.filename_comparison and cfg.filename_reference:
+            return f"{cfg.filename_comparison}-{cfg.filename_reference}"
         else:
             return f"{cfg.filename_singlecloud}"
         
@@ -130,13 +130,13 @@ class BatchOrchestrator:
                 logger.exception(
                     "[Job] Fehler in Job '%s' (Version %s)",
                     cfg.folder_id,
-                    cfg.filename_ref,
+                    cfg.filename_reference,
                 )
             except RuntimeError:
                 logger.exception(
                     "[Job] Unerwarteter Fehler in Job '%s' (Version %s)",
                     cfg.folder_id,
-                    cfg.filename_ref,
+                    cfg.filename_reference,
                 )
                 if self.fail_fast:
                     raise
@@ -144,7 +144,7 @@ class BatchOrchestrator:
                 logger.exception(
                     "[Job] Unbekannter Fehler in Job '%s' (Version %s)",
                     cfg.folder_id,
-                    cfg.filename_ref,
+                    cfg.filename_reference,
                 )
                 if self.fail_fast:
                     raise
@@ -169,8 +169,8 @@ class BatchOrchestrator:
         logger.info(
             "%s, %s, %s, %s",
             cfg.folder_id,
-            cfg.filename_mov,
-            cfg.filename_ref,
+            cfg.filename_comparison,
+            cfg.filename_reference,
             cfg.process_python_CC,
         )
         start = time.perf_counter()

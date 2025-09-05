@@ -29,7 +29,7 @@ def test_main_creates_output(tmp_path, monkeypatch):
     )
 
     comparedist_plots.main(
-        folder_ids=["id"], ref_variants=["ref"], outdir=str(tmp_path)
+        folder_ids=["id"], reference_variants=["reference"], outdir=str(tmp_path)
     )
 
     expected = tmp_path / "MARS_output" / "MARS_plots" / "dummy.txt"

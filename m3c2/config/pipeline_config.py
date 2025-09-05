@@ -14,12 +14,12 @@ class PipelineConfig:
     ----------
     folder_id:
         Identifier of the data folder containing the point clouds.
-    filename_mov:
-        File name of the moving point cloud.
-    filename_ref:
+    filename_comparison:
+        File name of the comparison point cloud.
+    filename_reference:
         File name of the reference point cloud.
-    mov_as_corepoints:
-        Whether to use the moving cloud as core points.
+    comparison_as_corepoints:
+        Whether to use the comparison cloud as core points.
     use_subsampled_corepoints:
         Number of subsampled core points to use (0 disables
         subsampling).
@@ -46,13 +46,13 @@ class PipelineConfig:
     # ---- Input/Output Files ----
     data_dir: str
     folder_id: str
-    filename_mov: str
-    filename_ref: str
+    filename_comparison: str
+    filename_reference: str
     filename_singlecloud: str
     project: str
 
     # ----- Processing Options -----
-    mov_as_corepoints: bool
+    comparison_as_corepoints: bool
     use_subsampled_corepoints: int
     only_stats: bool
     stats_singleordistance: str

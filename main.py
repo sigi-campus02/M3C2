@@ -8,8 +8,8 @@ Run the pipeline from the command line using one of the following options:
         python -m main \
             --data_dir ./data \
             --folders 0342-0349 \
-            --filename_ref ref.ply \
-            --filename_mov mov.ply \
+            --filename_reference reference.ply \
+            --filename_comparison comparison.ply \
             --project MARS \
             --output_format excel \
             --outlier_detection_method rmse \

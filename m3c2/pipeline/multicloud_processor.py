@@ -30,15 +30,15 @@ class MulticloudProcessor:
 
     def process(self, cfg: PipelineConfig, tag: str) -> None:
         """Process statistics for a pair of point clouds."""
-        ds, mov, ref, corepoints = self.data_loader.load_data(cfg, mode="multicloud")
+        ds, comparison, reference, corepoints = self.data_loader.load_data(cfg, mode="multicloud")
         out_base = ds.config.folder
 
         if not cfg.only_stats:
-            self._process_full(cfg, mov, ref, corepoints, out_base, tag)
+            self._process_full(cfg, comparison, reference, corepoints, out_base, tag)
         else:
             try:
                 logger.info("[Statistics] Berechne Statistiken …")
-                self.statistics_runner.compute_statistics(cfg, mov, ref, tag)
+                self.statistics_runner.compute_statistics(cfg, comparison, reference, tag)
             except (IOError, ValueError):
                 logger.exception("Fehler bei der Berechnung der Statistik")
             except RuntimeError:
@@ -50,8 +50,8 @@ class MulticloudProcessor:
     def _process_full(
         self,
         cfg: PipelineConfig,
-        mov: str,
-        ref: str,
+        comparison: str,
+        reference: str,
         corepoints: np.ndarray,
         out_base: str,
         tag: str,
@@ -76,9 +76,9 @@ class MulticloudProcessor:
             self.param_manager.save_params(cfg, normal, projection, out_base, tag)
 
         distances, _, _ = self.m3c2_executor.run_m3c2(
-            cfg, mov, ref, corepoints, normal, projection, out_base, tag
+            cfg, comparison, reference, corepoints, normal, projection, out_base, tag
         )
 
         self.visualization_runner.generate_visuals(
-            cfg, mov, distances, out_base, tag
+            cfg, comparison, distances, out_base, tag
         )

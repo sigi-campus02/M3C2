@@ -160,7 +160,7 @@ def test_run_gui_mode_selection_sets_stats_arg() -> None:
     parser = argparse.ArgumentParser(prog="prog")
     parser.add_argument("--stats_singleordistance", choices=["single", "distance"])
     parser.add_argument("--only_stats", action="store_true")
-    parser.add_argument("--filename_ref")
+    parser.add_argument("--filename_reference")
     parser.add_argument("--filename_singlecloud")
 
     button_cmds: dict[str, mock.Mock] = {}
@@ -215,7 +215,7 @@ def test_run_gui_mode_selection_sets_stats_arg() -> None:
     ):
         run_gui(parser, main_mock)
 
-        mode_var, only_stats_var, filename_ref_var, filename_singlecloud_var = vars_created
+        mode_var, only_stats_var, filename_reference_var, filename_singlecloud_var = vars_created
         mode_var.set("single")
         filename_singlecloud_var.set("cloud.las")
 

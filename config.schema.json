@@ -55,14 +55,14 @@
           "items": { "type": "string" },
           "default": ["pointclouds"]
         },
-        "filename_ref": {
+        "filename_reference": {
           "type": "string",
           "description": "Reference point cloud filename for distance calculation (unused for single-cloud statistics).",
           "default": ""
         },
-        "filename_mov": {
+        "filename_comparison": {
           "type": "string",
-          "description": "Moving point cloud filename for distance calculation (unused for single-cloud statistics).",
+          "description": "Comparison point cloud filename for distance calculation (unused for single-cloud statistics).",
           "default": ""
         },
         "filename_singlecloud": {
@@ -70,9 +70,9 @@
           "description": "Single point cloud filename used for single-cloud statistics.",
           "default": ""
         },
-        "mov_as_corepoints": {
+        "comparison_as_corepoints": {
           "type": "boolean",
-          "description": "Use moving cloud as core points (the reference will be compared to this set).",
+          "description": "Use comparison cloud as core points (the reference will be compared to this set).",
           "default": true
         },
         "use_subsampled_corepoints": {
@@ -148,10 +148,10 @@
       "required": [
         "data_dir",
         "folders",
-        "filename_ref",
-        "filename_mov",
+        "filename_reference",
+        "filename_comparison",
         "filename_singlecloud",
-        "mov_as_corepoints",
+        "comparison_as_corepoints",
         "use_subsampled_corepoints",
         "sample_size",
         "scale_strategy",
@@ -181,10 +181,10 @@
       "arguments": {
         "data_dir": "data",
         "folders": ["cloudfolder"],
-        "filename_ref": "cloud_i_want_to_compare",
-        "filename_mov": "second_cloud_to_compare",
+        "filename_reference": "cloud_i_want_to_compare",
+        "filename_comparison": "second_cloud_to_compare",
         "filename_singlecloud": "If_I_only_want_cloud_stats",
-        "mov_as_corepoints": true,
+        "comparison_as_corepoints": true,
         "use_subsampled_corepoints": 1,
         "sample_size": 10000,
         "scale_strategy": "radius",

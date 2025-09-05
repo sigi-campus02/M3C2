@@ -25,10 +25,10 @@ def _cfg(tmp_path, folder_id="run"):
     return PipelineConfig(
         data_dir=str(tmp_path),
         folder_id=folder_id,
-        filename_mov="mov.xyz",
-        filename_ref="ref.xyz",
+        filename_comparison="comparison.xyz",
+        filename_reference="reference.xyz",
         filename_singlecloud="sc.xyz",
-        mov_as_corepoints=True,
+        comparison_as_corepoints=True,
         use_subsampled_corepoints=1,
         only_stats=True,
         stats_singleordistance="single",

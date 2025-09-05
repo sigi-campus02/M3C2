@@ -24,7 +24,7 @@ class StatisticsRunner:
         """
         self.output_format = output_format
 
-    def compute_statistics(self, cfg, mov, ref, tag: str) -> None:
+    def compute_statistics(self, cfg, comparison, reference, tag: str) -> None:
         """Compute distance based M3C2 statistics for a job.
 
         Parameters
@@ -33,8 +33,8 @@ class StatisticsRunner:
             Configuration object describing the current job.  The runner
             expects attributes such as :attr:`stats_singleordistance`,
             :attr:`folder_id`, :attr:`project` and various filenames.
-        mov, ref
-            Information on the moving and reference clouds.  The parameters are
+        comparison, reference
+            Information on the comparison and reference clouds.  The parameters are
             currently unused but kept for API compatibility with other pipeline
             components.
         tag : str
@@ -57,9 +57,9 @@ class StatisticsRunner:
         This method is part of the public pipeline API.
         """
         if cfg.stats_singleordistance == "distance":
-            return self._multi_cloud_handler(cfg, mov, ref, tag)
+            return self._multi_cloud_handler(cfg, comparison, reference, tag)
 
-    def _multi_cloud_handler(self, cfg, mov, ref, tag):
+    def _multi_cloud_handler(self, cfg, comparison, reference, tag):
         """Compute and export distance-based statistics across multiple clouds.
 
         Parameters
@@ -68,8 +68,8 @@ class StatisticsRunner:
             Configuration object describing the current job. It provides the
             output directory, project name and options for the statistics
             calculation.
-        mov, ref
-            Information about the moving and reference clouds. The parameters
+        comparison, reference
+            Information about the comparison and reference clouds. The parameters
             are currently unused but preserved for API compatibility with the
             pipeline's public methods.
         tag : str
@@ -85,7 +85,7 @@ class StatisticsRunner:
           :func:`m3c2.statistics.m3c2_aggregator.compute_m3c2_statistics`.
         """
         logger.info(
-            f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_ref} …"
+            f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_reference} …"
         )
         if self.output_format == "excel":
             out_path = os.path.join(
@@ -100,7 +100,7 @@ class StatisticsRunner:
 
         compute_m3c2_statistics(
             folder_ids=[cfg.folder_id],
-            filename_ref=tag,
+            filename_reference=tag,
             process_python_CC=cfg.process_python_CC,
             out_path=out_path,
             sheet_name="Results",

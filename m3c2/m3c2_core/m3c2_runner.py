@@ -23,8 +23,8 @@ class M3C2Runner:
 
     @staticmethod
     def run(
-        mov: object,
-        ref: object,
+        comparison: object,
+        reference: object,
         corepoints: np.ndarray,
         normal: float,
         projection: float,
@@ -33,8 +33,8 @@ class M3C2Runner:
 
         Parameters
         ----------
-        mov, ref : :class:`py4dgeo.Epoch`
-            The moving and reference epochs to compare.
+        comparison, reference : :class:`py4dgeo.Epoch`
+            The comparison and reference epochs to compare.
         corepoints : ndarray
             Array of core point coordinates where distances are evaluated.
         normal : float
@@ -70,7 +70,7 @@ class M3C2Runner:
         try:
             # Create the py4dgeo object that performs the actual computation
             m3c2 = py4dgeo.M3C2(
-                epochs=(mov, ref),
+                epochs=(comparison, reference),
                 corepoints=corepoints,
                 cyl_radius=projection,
                 normal_radii=[normal],

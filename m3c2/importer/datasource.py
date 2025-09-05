@@ -5,7 +5,7 @@ of supported file formats and converting them to a unified XYZ representation.
 Only the necessary optional dependencies are imported for the requested file
 types, enabling this module to be imported even when those libraries are not
 installed.  The :class:`DataSource` class is the public entry point and exposes
-the :meth:`DataSource.load_points` method which returns the moving epoch, the
+the :meth:`DataSource.load_points` method which returns the comparison epoch, the
 reference epoch and the core points as NumPy arrays.
 """
 
@@ -37,18 +37,18 @@ class DataSource:
     # ------------------------------------------------------------------
     # path helpers
     @property
-    def mov_base(self) -> Path:
-        """Base path of the moving epoch file.
+    def comparison_base(self) -> Path:
+        """Base path of the comparison epoch file.
 
-        Combines the configured folder and moving filename base without
-        an extension, resulting in the path used to detect the moving
+        Combines the configured folder and comparison filename base without
+        an extension, resulting in the path used to detect the comparison
         epoch's data file.
         """
 
-        return Path(self.config.folder) / self.config.mov_basename
+        return Path(self.config.folder) / self.config.comparison_basename
 
     @property
-    def ref_base(self) -> Path:
+    def reference_base(self) -> Path:
         """Return the base path for the reference epoch.
 
         The path is constructed by combining the configured data folder with
@@ -56,7 +56,7 @@ class DataSource:
         a file extension; downstream loaders append the appropriate suffix when
         searching for the actual reference data file.
         """
-        return Path(self.config.folder) / self.config.ref_basename
+        return Path(self.config.folder) / self.config.reference_basename
     
 
     @property
@@ -76,18 +76,18 @@ class DataSource:
     # ------------------------------------------------------------------
     # public API
     def load_points(self) -> Tuple[object, object, np.ndarray]:
-        """Load the moving and reference epochs and derive core points."""
+        """Load the comparison and reference epochs and derive core points."""
 
         if py4dgeo is None:
             raise RuntimeError("'py4dgeo' ist nicht installiert.")
 
-        mov, ref = self._load_epochs()
-        corepoints = self._derive_corepoints(mov, ref)
+        comparison, reference = self._load_epochs()
+        corepoints = self._derive_corepoints(comparison, reference)
 
         if not isinstance(corepoints, np.ndarray):
             raise TypeError("Unerwarteter Typ für corepoints; erwarte np.ndarray (Nx3).")
 
-        return mov, ref, corepoints
+        return comparison, reference, corepoints
     
     # ------------------------------------------------------------------
     # public API SINGLE CLOUD
@@ -111,8 +111,8 @@ class DataSource:
     def _load_epochs(self) -> Tuple[object, object]:
         """Detect input types and read epochs using format-specific loaders."""
 
-        m_kind, m_path = detect(self.mov_base)
-        r_kind, r_path = detect(self.ref_base)
+        m_kind, m_path = detect(self.comparison_base)
+        r_kind, r_path = detect(self.reference_base)
 
         if m_kind == r_kind == "xyz":
             logger.info("Nutze py4dgeo.read_from_xyz")
@@ -129,8 +129,8 @@ class DataSource:
             loader = PLYLoader(py4dgeo)
             return loader.load_pair(m_path, r_path)
 
-        m_xyz = ensure_xyz(self.mov_base, (m_kind, m_path))
-        r_xyz = ensure_xyz(self.ref_base, (r_kind, r_path))
+        m_xyz = ensure_xyz(self.comparison_base, (m_kind, m_path))
+        r_xyz = ensure_xyz(self.reference_base, (r_kind, r_path))
         logger.info("Mischtypen → konvertiert zu XYZ → py4dgeo.read_from_xyz")
         loader = XYZLoader(py4dgeo)
         return loader.load_pair(m_xyz, r_xyz)
@@ -162,18 +162,18 @@ class DataSource:
         return loader.load_single(s_xyz)
     
 
-    def _derive_corepoints(self, mov: object, ref: object) -> np.ndarray:
+    def _derive_corepoints(self, comparison: object, reference: object) -> np.ndarray:
         """Derive core points from configured epoch with optional subsampling."""
 
-        use_mov = self.config.mov_as_corepoints
-        label = "mov" if use_mov else "ref"
+        use_comparison = self.config.comparison_as_corepoints
+        label = "comparison" if use_comparison else "reference"
         logger.info(
             "Nutze %s als Corepoints und nutze Subsamling: %s",
             label,
             self.config.use_subsampled_corepoints,
         )
 
-        source = mov if use_mov else ref
+        source = comparison if use_comparison else reference
         data = source.cloud if hasattr(source, "cloud") else source
         return data[:: self.config.use_subsampled_corepoints]
 

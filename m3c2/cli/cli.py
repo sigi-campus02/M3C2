@@ -85,14 +85,14 @@ class CLIApp:
             help="List of folder IDs to process (e.g., '0342-0349 0817-0821').",
         )
         parser.add_argument(
-            "--filename_ref",
+            "--filename_reference",
             type=str,
             help="Name of reference cloud file to be compared.",
         )
         parser.add_argument(
-            "--filename_mov",
+            "--filename_comparison",
             type=str,
-            help="Name of moving point cloud file.",
+            help="Name of comparison point cloud file.",
         )
         parser.add_argument(
             "--filename_singlecloud",
@@ -100,9 +100,9 @@ class CLIApp:
             help="Name of single statistics file.",
         )
         parser.add_argument(
-            "--mov_as_corepoints",
+            "--comparison_as_corepoints",
             action=argparse.BooleanOptionalAction,
-            help="Use moving point cloud as corepoints.",
+            help="Use comparison point cloud as corepoints.",
         )
         parser.add_argument(
             "--use_subsampled_corepoints",
@@ -216,10 +216,10 @@ class CLIApp:
             config = PipelineConfig(
                 data_dir=args.data_dir,
                 folder_id=folder,
-                filename_ref=args.filename_ref,
-                filename_mov=args.filename_mov,
+                filename_reference=args.filename_reference,
+                filename_comparison=args.filename_comparison,
                 filename_singlecloud=args.filename_singlecloud,
-                mov_as_corepoints=args.mov_as_corepoints,
+                comparison_as_corepoints=args.comparison_as_corepoints,
                 use_subsampled_corepoints=args.use_subsampled_corepoints,
                 sample_size=args.sample_size,
                 only_stats=args.only_stats,
@@ -259,11 +259,11 @@ class CLIApp:
             self.logger.error("The following folders are missing in the data directory: %s", missing_folders)
             return 1
     
-        if not arg.filename_ref and not arg.stats_singleordistance == "single":
-            self.logger.error("No ref filename specified.")
+        if not arg.filename_reference and not arg.stats_singleordistance == "single":
+            self.logger.error("No reference filename specified.")
             return 1
-        if not arg.filename_mov and not arg.stats_singleordistance == "single":
-            self.logger.error("No mov filename specified.")
+        if not arg.filename_comparison and not arg.stats_singleordistance == "single":
+            self.logger.error("No comparison filename specified.")
             return 1
         if not arg.filename_singlecloud and arg.stats_singleordistance == "single":
             self.logger.error(
@@ -275,8 +275,8 @@ class CLIApp:
 
         self.logger.info("Base directories for processing: %s", base_dir)
         self.logger.info("Folder IDs for processing: %s", folder_ids)
-        self.logger.info("Reference filename for processing: %s", arg.filename_ref)
-        self.logger.info("Moving filename for processing: %s", arg.filename_mov)
+        self.logger.info("Reference filename for processing: %s", arg.filename_reference)
+        self.logger.info("Comparison filename for processing: %s", arg.filename_comparison)
         self.logger.info(
             "Single statistics filename for processing: %s", arg.filename_singlecloud
         )

@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 CLOUD_HEADER_COMMENTS = {
     "Timestamp": "Zeitpunkt der Auswertung.",
     "File/Folder": "Quelle der Punktwolke (Dateipfad oder Ordner).",
-    "Role": "Rolle in einem Datensatz-Ordner (mov/ref). Leer bei Einzeldatei.",
+    "Role": "Rolle in einem Datensatz-Ordner (comparison/reference). Leer bei Einzeldatei.",
 
     # Identifikation/Fläche/Dichte
     "Num Points": "Anzahl der Punkte (nach optionalem Subsample nur für lokale Metriken).",

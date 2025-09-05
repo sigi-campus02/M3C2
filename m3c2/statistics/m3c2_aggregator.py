@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 def compute_m3c2_statistics(
     folder_ids: List[str],
-    filename_ref: str = "",
+    filename_reference: str = "",
     process_python_CC: str = "python",
     bins: int = 256,
     range_override: Optional[Tuple[float, float]] = None,
@@ -36,7 +36,7 @@ def compute_m3c2_statistics(
     ----------
     folder_ids : List[str]
         Identifiers of project folders to process.
-    filename_ref : str, optional
+    filename_reference : str, optional
         Reference label used to construct filenames, by default ``""``.
     process_python_CC : str, optional
         Indicates whether results stem from the Python or CloudCompare
@@ -68,9 +68,9 @@ def compute_m3c2_statistics(
     rows: List[Dict] = []
 
     for fid in folder_ids:
-        py_dist_path = _resolve(fid, f"python_{filename_ref}_m3c2_distances.txt")
+        py_dist_path = _resolve(fid, f"python_{filename_reference}_m3c2_distances.txt")
 
-        py_params_path = _resolve(fid, f"python_{filename_ref}_m3c2_params.txt")
+        py_params_path = _resolve(fid, f"python_{filename_reference}_m3c2_params.txt")
 
         if os.path.exists(py_dist_path):
             logger.info("Processing Python distances: %s", py_dist_path)
@@ -98,7 +98,7 @@ def compute_m3c2_statistics(
             rows.append(
                 {
                     "Folder": fid,
-                    "Version": filename_ref or "",
+                    "Version": filename_reference or "",
                     "Distances Path": py_dist_path,
                     "Params Path": py_params_path if os.path.exists(py_params_path) else "",
                     **stats,

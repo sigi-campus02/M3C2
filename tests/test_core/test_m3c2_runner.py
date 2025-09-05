@@ -37,14 +37,14 @@ def test_m3c2_runner(monkeypatch):
     dummy_py4dgeo = types.SimpleNamespace(M3C2=DummyM3C2)
     monkeypatch.setitem(sys.modules, 'py4dgeo', dummy_py4dgeo)
 
-    mov = object()
-    ref = object()
+    comparison = object()
+    reference = object()
     corepoints = np.array([[0.0, 0.0, 0.0]])
 
     distances, uncertainties = M3C2Runner.run(
-        mov, ref, corepoints, normal=0.5, projection=1.0
+        comparison, reference, corepoints, normal=0.5, projection=1.0
     )
 
     assert np.allclose(distances, [1.0])
     assert np.allclose(uncertainties, [0.1])
-    assert called['params'] == ((mov, ref), corepoints, 1.0, [0.5])
+    assert called['params'] == ((comparison, reference), corepoints, 1.0, [0.5])

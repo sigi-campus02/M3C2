@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 def bland_altman_plot(
     folder_ids: List[str],
-    ref_variants: List[str],
+    reference_variants: List[str],
     outdir: str = "BlandAltman",
 ) -> None:
     """Create Bland–Altman plots for given folders and reference variants.
@@ -31,7 +31,7 @@ def bland_altman_plot(
     ----------
     folder_ids : List[str]
         Identifiers of the folders whose comparison data should be plotted.
-    ref_variants : List[str]
+    reference_variants : List[str]
         Names of the two reference variants to compare. Must contain exactly
         two entries.
     outdir : str, optional
@@ -41,13 +41,13 @@ def bland_altman_plot(
     The function saves one PNG per folder in ``outdir`` with the filename
     pattern ``bland_altman_<folder>_<ref1>_vs_<ref2>.png``.
     """
-    if len(ref_variants) != 2:
-        raise ValueError("ref_variants must contain exactly two entries")
+    if len(reference_variants) != 2:
+        raise ValueError("reference_variants must contain exactly two entries")
 
     os.makedirs(outdir, exist_ok=True)
 
     for fid in folder_ids:
-        result = _load_and_mask(fid, ref_variants)
+        result = _load_and_mask(fid, reference_variants)
         if result is None:
             continue
         a, b = result
@@ -85,11 +85,11 @@ def bland_altman_plot(
         plt.axhline(lower, color="green", linestyle="--", label=f"-1.96 SD {lower:.4f}")
         plt.xlabel("Mean of measurements")
         plt.ylabel("Difference")
-        plt.title(f"Bland-Altman {fid}: {ref_variants[0]} vs {ref_variants[1]}")
+        plt.title(f"Bland-Altman {fid}: {reference_variants[0]} vs {reference_variants[1]}")
         plt.legend()
         outpath = os.path.join(
             outdir,
-            f"bland_altman_{fid}_{ref_variants[0]}_vs_{ref_variants[1]}.png",
+            f"bland_altman_{fid}_{reference_variants[0]}_vs_{reference_variants[1]}.png",
         )
         plt.tight_layout()
         plt.savefig(outpath, dpi=300)

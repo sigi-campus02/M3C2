@@ -5,9 +5,9 @@
 package "Pipeline" {
   class PipelineConfig {
     +folder_id: str
-    +filename_mov: str
-    +filename_ref: str
-    +mov_as_corepoints: bool
+    +filename_comparison: str
+    +filename_reference: str
+    +comparison_as_corepoints: bool
     +use_subsampled_corepoints: int
     +process_python_CC: str
     +only_stats: bool

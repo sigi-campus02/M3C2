@@ -47,7 +47,7 @@ def _square_limits(x: np.ndarray, y: np.ndarray, pad: float = 0.05):
 
 def linear_regression_plot(
     folder_ids: List[str],
-    ref_variants: List[str],
+    reference_variants: List[str],
     outdir: str = "LinearRegression",
 ) -> None:
     """Create OLS linear regression plots for given folders.
@@ -57,7 +57,7 @@ def linear_regression_plot(
     folder_ids:
         List of folder identifiers whose comparison results should be
         visualised.
-    ref_variants:
+    reference_variants:
         Names of the two reference variants to compare.  The list must
         contain exactly two entries.
     outdir, optional:
@@ -71,14 +71,14 @@ def linear_regression_plot(
         written to *outdir*.
     """
 
-    if len(ref_variants) != 2:
-        raise ValueError("ref_variants must contain exactly two entries")
+    if len(reference_variants) != 2:
+        raise ValueError("reference_variants must contain exactly two entries")
 
     os.makedirs(outdir, exist_ok=True)
 
     for fid in folder_ids:
         logger.info("[OLS] Processing folder: %s", fid)
-        result = _load_and_mask(fid, ref_variants)
+        result = _load_and_mask(fid, reference_variants)
         if result is None:
             continue
         x, y = result
@@ -146,14 +146,14 @@ def linear_regression_plot(
         ax.set_ylim(yl, yu)
         ax.set_aspect("equal", adjustable="box")
 
-        ax.set_xlabel(ref_variants[0])
-        ax.set_ylabel(ref_variants[1])
-        ax.set_title(f"Linear Regression {fid}: {ref_variants[0]} vs {ref_variants[1]}")
+        ax.set_xlabel(reference_variants[0])
+        ax.set_ylabel(reference_variants[1])
+        ax.set_title(f"Linear Regression {fid}: {reference_variants[0]} vs {reference_variants[1]}")
         ax.legend(frameon=False)
 
         outpath = os.path.join(
             outdir,
-            f"linear_regression_{fid}_{ref_variants[0]}_vs_{ref_variants[1]}.png",
+            f"linear_regression_{fid}_{reference_variants[0]}_vs_{reference_variants[1]}.png",
         )
         plt.savefig(outpath, dpi=300)
         plt.close()

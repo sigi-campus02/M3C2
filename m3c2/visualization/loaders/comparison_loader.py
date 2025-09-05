@@ -44,7 +44,7 @@ def _resolve(fid: str, filename: str) -> str:
     return os.path.join("data", fid, filename)
 
 
-def _load_ref_variant_data(fid: str, variant: str) -> np.ndarray | None:
+def _load_reference_variant_data(fid: str, variant: str) -> np.ndarray | None:
     """Load distance data for a specific reference variant.
 
     Parameters
@@ -77,14 +77,14 @@ def _load_ref_variant_data(fid: str, variant: str) -> np.ndarray | None:
         return None
 
 
-def _load_and_mask(fid: str, ref_variants: List[str]) -> tuple[np.ndarray, np.ndarray] | None:
+def _load_and_mask(fid: str, reference_variants: List[str]) -> tuple[np.ndarray, np.ndarray] | None:
     """Load two reference variants and remove NaN values.
 
     Parameters
     ----------
     fid:
         Folder identifier that contains the reference distance files.
-    ref_variants:
+    reference_variants:
         List containing the names of two variants to be compared.
 
     Returns
@@ -99,7 +99,7 @@ def _load_and_mask(fid: str, ref_variants: List[str]) -> tuple[np.ndarray, np.nd
     Any issues (missing files, only NaN values) are logged and result in
     ``None`` instead of an exception.
     """
-    data = [_load_ref_variant_data(fid, v) for v in ref_variants]
+    data = [_load_referenceerence_variant_data(fid, v) for v in reference_variants]
     if any(d is None for d in data):
         return None
     a_raw, b_raw = data

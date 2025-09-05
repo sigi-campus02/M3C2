@@ -63,7 +63,7 @@ class ReportBuilder:
             for v in self.config.versions:
                 label = f"{v}_{fid}"
                 base_inl = (
-                    f"{v}_Job_0378_8400-110-rad-{fid}_cloud_moved_m3c2_distances_coordinates_inlier_std.txt"
+                    f"{v}_Job_0378_8400-110-rad-{fid}_cloud_comparison_m3c2_distances_coordinates_inlier_std.txt"
                 )
                 path_inl = resolve_path(fid, base_inl)
                 logger.info("[Report] Lade INLIER: %s", path_inl)

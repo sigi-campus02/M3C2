@@ -43,7 +43,7 @@ def test_compute_statistics_distance(monkeypatch, caplog):
     cfg = SimpleNamespace(
         stats_singleordistance="distance",
         folder_id="fid",
-        filename_ref="ref",
+        filename_reference="reference",
         process_python_CC="proc",
         project="proj",
         outlier_multiplicator=3.0,
@@ -52,7 +52,7 @@ def test_compute_statistics_distance(monkeypatch, caplog):
 
     runner = StatisticsRunner(output_format="excel")
     caplog.set_level(logging.INFO)
-    runner.compute_statistics(cfg, mov=None, ref=None, tag="ref")
+    runner.compute_statistics(cfg, comparison=None, reference=None, tag="reference")
 
     assert called["out_path"].endswith("proj_m3c2_stats_distances.xlsx")
     assert any("Stats on Distance" in rec.message for rec in caplog.records)
@@ -110,9 +110,9 @@ def test_invalid_output_format():
     """
 
     runner = StatisticsRunner(output_format="xml")
-    cfg = SimpleNamespace(stats_singleordistance="distance", folder_id="fid", filename_ref="ref")
+    cfg = SimpleNamespace(stats_singleordistance="distance", folder_id="fid", filename_reference="reference")
     try:
-        runner.compute_statistics(cfg, mov=None, ref=None, tag="ref")
+        runner.compute_statistics(cfg, comparison=None, reference=None, tag="reference")
     except ValueError:
         pass
     else:

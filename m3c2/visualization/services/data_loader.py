@@ -71,7 +71,7 @@ def load_data(
     gauss_with: Dict[str, Tuple[float, float]] = {}
 
     for v in versions:
-        base_with = f"{v}_Job_0378_8400-110-rad-{fid}_cloud_moved_m3c2_distances.txt"
+        base_with = f"{v}_Job_0378_8400-110-rad-{fid}_cloud_comparison_m3c2_distances.txt"
         path_with = resolve_path(fid, base_with)
         logger.info("[Report] Lade WITH: %s", path_with)
         if not os.path.exists(path_with):

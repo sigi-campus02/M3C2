@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class VisualizationRunner:
     """Create histograms and coloured point clouds for M3C2 outputs."""
 
-    def generate_visuals(self, cfg, mov, distances: np.ndarray, out_base: str, tag: str) -> None:
+    def generate_visuals(self, cfg, comparison, distances: np.ndarray, out_base: str, tag: str) -> None:
         """Create visualisations for computed distances.
 
         Parameters
@@ -23,8 +23,8 @@ class VisualizationRunner:
         cfg:
             Runtime configuration providing naming conventions such as
             ``process_python_CC``.
-        mov:
-            Moving point cloud object.  If ``mov.cloud`` is not available no
+        comparison:
+            Comparison point cloud object.  If ``comparison.cloud`` is not available no
             point cloud visualisations are generated.
         distances:
             Array of per-point M3C2 distances used for colouring and the
@@ -54,9 +54,9 @@ class VisualizationRunner:
 
         histogram(distances, path=hist_path)
         logger.info("[Visual] Histogram gespeichert: %s", hist_path)
-        cloud = getattr(mov, "cloud", None)
+        cloud = getattr(comparison, "cloud", None)
         if cloud is None:
-            logger.warning("[Visual] mov besitzt kein 'cloud'-Attribut; Visualisierung übersprungen")
+            logger.warning("[Visual] comparison besitzt kein 'cloud'-Attribut; Visualisierung übersprungen")
             return
 
         colors = colorize(cloud, distances, outply=ply_path)

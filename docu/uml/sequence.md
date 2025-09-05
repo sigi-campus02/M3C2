@@ -6,7 +6,7 @@ main -> BatchOrchestrator : run_all()
 
 loop für jede PipelineConfig
   BatchOrchestrator -> DataSource : load_points()
-  DataSource --> BatchOrchestrator : mov, ref, corepoints
+  DataSource --> BatchOrchestrator : comparison, reference, corepoints
 
   alt process_python_CC == "python" && !only_stats
     BatchOrchestrator -> ParamEstimator : estimate_min_spacing()
@@ -14,7 +14,7 @@ loop für jede PipelineConfig
     BatchOrchestrator -> ParamEstimator : select_scales()
     ParamEstimator --> BatchOrchestrator : normal, projection
 
-    BatchOrchestrator -> M3C2Runner : run(mov, ref, corepoints, normal, projection)
+    BatchOrchestrator -> M3C2Runner : run(comparison, reference, corepoints, normal, projection)
     M3C2Runner --> BatchOrchestrator : distances, uncertainties
 
     BatchOrchestrator -> VisualizationService : histogram()/colorize()/export_valid()

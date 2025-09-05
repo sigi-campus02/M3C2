@@ -94,10 +94,10 @@ def _minimal_cfg(**kwargs) -> PipelineConfig:
     defaults = dict(
         data_dir="",
         folder_id="",
-        filename_mov="",
-        filename_ref="",
+        filename_comparison="",
+        filename_reference="",
         filename_singlecloud="",
-        mov_as_corepoints=True,
+        comparison_as_corepoints=True,
         use_subsampled_corepoints=0,
         only_stats=False,
         stats_singleordistance="single",
@@ -139,7 +139,7 @@ def test_determine_scales_unknown_strategy(monkeypatch):
     Parameters
     ----------
     monkeypatch : pytest.MonkeyPatch
-        Pytest fixture for removing available strategies.
+        Pytest fixture for recomparison available strategies.
 
     Returns
     -------

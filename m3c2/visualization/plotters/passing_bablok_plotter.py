@@ -34,7 +34,7 @@ def _square_limits(x: np.ndarray, y: np.ndarray, pad: float = 0.05):
 
 def passing_bablok_plot(
     folder_ids: List[str],
-    ref_variants: List[str],
+    reference_variants: List[str],
     outdir: str = "PassingBablok",
 ) -> None:
     """Create Passing–Bablok regression plots.
@@ -44,7 +44,7 @@ def passing_bablok_plot(
     folder_ids:
         Identifiers of input folders that contain the distance comparison
         files to analyse.
-    ref_variants:
+    reference_variants:
         Names of the two reference variants whose distances are compared. The
         first element is used for the x‑axis and the second for the y‑axis.
     outdir:
@@ -67,14 +67,14 @@ def passing_bablok_plot(
     coefficients as a side effect.
     """
 
-    if len(ref_variants) != 2:
-        raise ValueError("ref_variants must contain exactly two entries")
+    if len(reference_variants) != 2:
+        raise ValueError("reference_variants must contain exactly two entries")
 
     os.makedirs(outdir, exist_ok=True)
 
     for fid in folder_ids:
         logger.info("[PassingBablok] Processing folder: %s", fid)
-        result = _load_and_mask(fid, ref_variants)
+        result = _load_and_mask(fid, reference_variants)
         if result is None:
             continue
         x, y = result
@@ -155,14 +155,14 @@ def passing_bablok_plot(
         ax.set_ylim(yl, yu)
         ax.set_aspect("equal", adjustable="box")
 
-        ax.set_xlabel(ref_variants[0])
-        ax.set_ylabel(ref_variants[1])
-        ax.set_title(f"Passing–Bablok {fid}: {ref_variants[0]} vs {ref_variants[1]}")
+        ax.set_xlabel(reference_variants[0])
+        ax.set_ylabel(reference_variants[1])
+        ax.set_title(f"Passing–Bablok {fid}: {reference_variants[0]} vs {reference_variants[1]}")
         ax.legend(frameon=False)
 
         outpath = os.path.join(
             outdir,
-            f"passing_bablok_{fid}_{ref_variants[0]}_vs_{ref_variants[1]}.png",
+            f"passing_bablok_{fid}_{reference_variants[0]}_vs_{reference_variants[1]}.png",
         )
         plt.savefig(outpath, dpi=300)
         plt.close()
