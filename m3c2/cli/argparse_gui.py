@@ -79,6 +79,7 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
             ).grid(row=row, column=1, sticky="w", padx=5, pady=5)
             row += 1
             if plot_action is not None:
+
                 plot_label = tk.Label(root, text="Plot Strategie")
                 plot_label.grid(row=row, column=0, sticky="w", padx=5, pady=5)
                 plot_widgets.append(plot_label)
@@ -282,6 +283,7 @@ def _update_mode_fields(
     plot_specific = ["overlay_files", "overlay_outdir", "plot_types"]
     plot_onefolder = ["folder", "overlay_outdir", "options"]
     plot_several = ["data_dir", "folders", "filenames", "overlay_outdir", "options"]
+
     common_fields = [
         "sample_size",
         "scale_strategy",
@@ -291,6 +293,7 @@ def _update_mode_fields(
         "proj_override",
         "use_existing_params",
     ]
+
 
     def _hide(
         var: tk.Variable, widget: tk.Widget, label: tk.Widget, desc: tk.Widget | None
@@ -341,11 +344,14 @@ def _update_mode_fields(
             else:
                 _show(widget, label, desc)
 
+
     # Plot-Mode-Felder
     all_plot_fields = set(plot_specific + plot_onefolder + plot_several)
     for name in all_plot_fields:
         if name in widgets:
+
             var, widget, label, desc = widgets[name]
+
             if mode == "plot":
                 strategy = plot_var.get() if plot_var is not None else "specificfile"
                 if (
