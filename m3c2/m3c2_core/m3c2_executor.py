@@ -122,10 +122,10 @@ class M3C2Executor:
         logger.info("[Run] Distanzen gespeichert: %s (%d Werte, %.2f%% NaN)", dists_path, n, 100.0 * nan_share)
 
         coords_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances_coordinates.txt")
-        if hasattr(comparison, "cloud"):
-            xyz = np.asarray(comparison.cloud)
+        if hasattr(reference, "cloud"):
+            xyz = np.asarray(reference.cloud)
         else:
-            xyz = np.asarray(comparison)
+            xyz = np.asarray(reference)
         if xyz.shape[0] == distances.shape[0]:
             arr = np.column_stack((xyz, distances))
             header = "x y z distance"

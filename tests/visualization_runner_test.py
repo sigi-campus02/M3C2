@@ -33,13 +33,13 @@ def test_generate_visuals_with_cloud(monkeypatch, tmp_path):
     --------
     >>> runner = VisualizationRunner()
     >>> cfg = SimpleNamespace(process_python_CC='foo')
-    >>> comparison = SimpleNamespace(cloud='dummy')
+    >>> reference = SimpleNamespace(cloud='dummy')
     >>> distances = np.array([1.0, 2.0])
-    >>> runner.generate_visuals(cfg, comparison, distances, '/tmp', 'tag')
+    >>> runner.generate_visuals(cfg, reference, distances, '/tmp', 'tag')
     """
     runner = VisualizationRunner()
     cfg = SimpleNamespace(process_python_CC="foo")
-    comparison = SimpleNamespace(cloud="dummy")
+    reference = SimpleNamespace(cloud="dummy")
     distances = np.array([1.0, 2.0])
 
     calls = {}
@@ -58,7 +58,7 @@ def test_generate_visuals_with_cloud(monkeypatch, tmp_path):
     monkeypatch.setattr(vr, "colorize", fake_colorize)
     monkeypatch.setattr(vr, "export_valid", fake_export_valid)
 
-    runner.generate_visuals(cfg, comparison, distances, str(tmp_path), "tag")
+    runner.generate_visuals(cfg, reference, distances, str(tmp_path), "tag")
 
     assert "colorize" in calls
     assert "export_valid" in calls

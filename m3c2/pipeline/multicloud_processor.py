@@ -80,5 +80,5 @@ class MulticloudProcessor:
         )
 
         self.visualization_runner.generate_visuals(
-            cfg, comparison, distances, out_base, tag
+            cfg, reference, distances, out_base, tag
         )
