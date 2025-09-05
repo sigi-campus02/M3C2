@@ -43,6 +43,7 @@ def histogram(
     """
 
     vals = distances[~np.isnan(distances)]
+
     plt.figure(figsize=(10, 6))
     if _HAS_SNS:
         sns.histplot(vals, bins=bins, kde=False)

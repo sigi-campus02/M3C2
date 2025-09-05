@@ -117,4 +117,8 @@ def setup_logging() -> None:
 
         file_handler.setLevel(numeric_level)
         file_handler.setFormatter(formatter)
+    
+    # Suppress excessive matplotlib DEBUG output
+    logging.getLogger("matplotlib").setLevel(logging.WARNING)
+    logging.getLogger("PIL").setLevel(logging.WARNING)
 

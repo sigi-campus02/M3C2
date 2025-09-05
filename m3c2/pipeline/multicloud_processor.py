@@ -75,7 +75,7 @@ class MulticloudProcessor:
             )
             self.param_manager.save_params(cfg, normal, projection, out_base, tag)
 
-        distances = self.m3c2_executor.run_m3c2(
+        distances, _, _ = self.m3c2_executor.run_m3c2(
             cfg, mov, ref, corepoints, normal, projection, out_base, tag
         )
 
