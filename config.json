@@ -47,8 +47,7 @@
     "arguments_plot_several_folders": {
     "data_dir": "data",
     "folders": ["0342-0349", "1130-1133"],
-    "filename_reference": "mov",
-    "filename_comparison": "ref",
+    "filenames": ["mov-ref", "mov-ref_ai"],
     "overlay_outdir": "outputs/Test_Plots",
     "options": ["plot_hist", "plot_gauss", "plot_weibull", "plot_box", "plot_qq", "plot_grouped_bar"]
   }

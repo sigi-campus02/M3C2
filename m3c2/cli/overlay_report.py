@@ -230,17 +230,13 @@ def build_arg_parser_severalfolders(config_path: str | Path | None = None) -> ar
         "--folders",
         type=str,
         nargs="+",
-        help="Comma-separated list of folders containing distance files to process.",
+        help="List of folders containing distance files to process.",
     )
     parser.add_argument(
-        "--filename_reference",
+        "--filenames",
         type=str,
-        help="Filename pattern for reference files.",
-    )
-    parser.add_argument(
-        "--filename_comparison",
-        type=str,
-        help="Filename pattern for comparison files.",
+        nargs="+",
+        help="Distance file name parts present in each folder.",
     )
     parser.add_argument(
         "--overlay_outdir",
@@ -263,30 +259,27 @@ def build_arg_parser_severalfolders(config_path: str | Path | None = None) -> ar
     if cfg_path.exists():
         try:
             with cfg_path.open("r", encoding="utf-8") as handle:
-                data = json.load(handle).get("arguments_plot_files_in_folder", {})
+                data = json.load(handle).get("arguments_plot_several_folders", {})
                 logger.debug(f"Loaded config from {cfg_path}")
                 logger.debug(f"Config data: {data}")
         except (OSError, json.JSONDecodeError):
             data = {}
             logger.debug(f"Could not load config from {cfg_path}")
         data_dir_default = data.get("data_dir")
-        folder_default = data.get("folder")
-        filename_reference_default = data.get("filename_reference")
-        filename_comparison_default = data.get("filename_comparison")
+        folders_default = data.get("folders")
+        filenames_default = data.get("filenames")
         outdir_default = data.get("overlay_outdir")
         options_default = data.get("options")
         if options_default:
             parser.set_defaults(options=options_default)
-        if folder_default:
-            parser.set_defaults(folder=folder_default)
+        if folders_default:
+            parser.set_defaults(folders=folders_default)
         if outdir_default:
             parser.set_defaults(overlay_outdir=outdir_default)
         if data_dir_default:
             parser.set_defaults(data_dir=data_dir_default)
-        if filename_reference_default:
-            parser.set_defaults(filename_reference=filename_reference_default)
-        if filename_comparison_default:
-            parser.set_defaults(filename_comparison=filename_comparison_default)
+        if filenames_default:
+            parser.set_defaults(filenames=filenames_default)
 
     return parser
 
@@ -294,4 +287,4 @@ def build_arg_parser_severalfolders(config_path: str | Path | None = None) -> ar
 if __name__ == "__main__":
     parser = build_arg_parser()
     args = parser.parse_args()
-    main(args.data_dir, args.folders, args.filename_reference, args.filename_comparison, args.overlay_outdir, args.options)
+    main(args.overlay_files, args.overlay_outdir)
