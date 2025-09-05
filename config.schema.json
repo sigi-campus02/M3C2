@@ -96,8 +96,8 @@
         },
         "stats_singleordistance": {
           "type": "string",
-          "description": "Statistics type: 'single' for single-cloud statistics or 'distance' for pairwise distance analysis.",
-          "enum": ["single", "distance"],
+          "description": "Operation mode: 'single' for single-cloud statistics, 'distance' for pairwise distance analysis, or 'plot' to create plots from existing distance files.",
+          "enum": ["single", "distance", "plot"],
           "default": "single"
         },
         "output_format": {

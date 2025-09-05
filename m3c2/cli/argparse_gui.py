@@ -33,7 +33,7 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
     logger.info("GUI window opened")
     root.title(parser.prog or "Argumente")
 
-    widgets: dict[str, Tuple[tk.Variable, tk.Widget]] = {}
+    widgets: dict[str, Tuple[tk.Variable, tk.Widget, tk.Widget, tk.Widget | None]] = {}
     row = 0
 
     descriptions = _load_arg_descriptions("config.schema.json")
@@ -42,7 +42,13 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
         (a for a in parser._actions if getattr(a, "dest", "") == "stats_singleordistance"),
         None,
     )
+    plot_action = next(
+        (a for a in parser._actions if getattr(a, "dest", "") == "plot_strategy"),
+        None,
+    )
     mode_var: tk.StringVar | None = None
+    plot_var: tk.StringVar | None = None
+    plot_widgets: list[tk.Widget] = []
 
     if mode_action is not None:
         tk.Label(root, text="Modus").grid(row=row, column=0, sticky="w", padx=5, pady=5)
@@ -52,7 +58,7 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
             text="Distanz Calculation (M3C2)",
             variable=mode_var,
             value="distance",
-            command=lambda: _update_mode_fields(mode_var, widgets),
+            command=lambda: _update_mode_fields(mode_var, widgets, plot_var, plot_widgets),
         ).grid(row=row, column=1, sticky="w", padx=5, pady=5)
         row += 1
         tk.Radiobutton(
@@ -60,9 +66,53 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
             text="Single Cloud Statistiks",
             variable=mode_var,
             value="single",
-            command=lambda: _update_mode_fields(mode_var, widgets),
+            command=lambda: _update_mode_fields(mode_var, widgets, plot_var, plot_widgets),
         ).grid(row=row, column=1, sticky="e", padx=5, pady=5)
         row += 1
+        if "plot" in getattr(mode_action, "choices", []):
+            tk.Radiobutton(
+                root,
+                text="Plots from Distances",
+                variable=mode_var,
+                value="plot",
+                command=lambda: _update_mode_fields(mode_var, widgets, plot_var, plot_widgets),
+            ).grid(row=row, column=1, sticky="w", padx=5, pady=5)
+            row += 1
+            if plot_action is not None:
+                plot_label = tk.Label(root, text="Plot Strategie")
+                plot_label.grid(row=row, column=0, sticky="w", padx=5, pady=5)
+                plot_widgets.append(plot_label)
+                plot_var = tk.StringVar(value=str(plot_action.default or "specificfile"))
+                rb = tk.Radiobutton(
+                    root,
+                    text="Dateien in Ordner",
+                    variable=plot_var,
+                    value="onefolder",
+                    command=lambda: _update_mode_fields(mode_var, widgets, plot_var, plot_widgets),
+                )
+                rb.grid(row=row, column=1, sticky="w", padx=5, pady=5)
+                plot_widgets.append(rb)
+                row += 1
+                rb = tk.Radiobutton(
+                    root,
+                    text="Mehrere Ordner",
+                    variable=plot_var,
+                    value="severalfolders",
+                    command=lambda: _update_mode_fields(mode_var, widgets, plot_var, plot_widgets),
+                )
+                rb.grid(row=row, column=1, sticky="w", padx=5, pady=5)
+                plot_widgets.append(rb)
+                row += 1
+                rb = tk.Radiobutton(
+                    root,
+                    text="Spezifische Dateien",
+                    variable=plot_var,
+                    value="specificfile",
+                    command=lambda: _update_mode_fields(mode_var, widgets, plot_var, plot_widgets),
+                )
+                rb.grid(row=row, column=1, sticky="w", padx=5, pady=5)
+                plot_widgets.append(rb)
+                row += 1
 
     bool_action = getattr(argparse, "BooleanOptionalAction", None)
 
@@ -72,14 +122,18 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
             continue
         if mode_action is not None and action is mode_action:
             continue
+        if plot_action is not None and action is plot_action:
+            continue
 
-        tk.Label(root, text=action.dest).grid(row=row, column=0, sticky="w", padx=5, pady=5)
+        label = tk.Label(root, text=action.dest)
+        label.grid(row=row, column=0, sticky="w", padx=5, pady=5)
         desc = descriptions.get(action.dest, "")
-
+        desc_widget: tk.Widget | None = None
         if desc:
-            tk.Label(root, text=desc, fg="gray", wraplength=350, justify="left").grid(
-                row=row, column=2, sticky="w", padx=5, pady=5
+            desc_widget = tk.Label(
+                root, text=desc, fg="gray", wraplength=350, justify="left"
             )
+            desc_widget.grid(row=row, column=2, sticky="w", padx=5, pady=5)
 
         if action.option_strings and action.nargs == 0 and (
             action.const is True
@@ -102,11 +156,11 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
                     var.set(str(action.default))
             widget = tk.Entry(root, textvariable=var)
             widget.grid(row=row, column=1, sticky="ew", padx=5, pady=5)
-        widgets[action.dest] = (var, widget)
+        widgets[action.dest] = (var, widget, label, desc_widget)
         row += 1
 
     if mode_var is not None:
-        _update_mode_fields(mode_var, widgets)
+        _update_mode_fields(mode_var, widgets, plot_var, plot_widgets)
 
     def on_start() -> None:
         """Handle the start event by collecting arguments and executing the main function.
@@ -157,6 +211,12 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
 
         if mode_action is not None and mode_var is not None:
             argv.extend([mode_action.option_strings[0], mode_var.get()])
+            if (
+                mode_var.get() == "plot"
+                and plot_action is not None
+                and plot_var is not None
+            ):
+                argv.extend([plot_action.option_strings[0], plot_var.get()])
 
         logger.info("Start pressed with arguments: %s", argv)
         try:
@@ -201,8 +261,13 @@ def _load_arg_descriptions(schema_path):
     return {key: value.get("description", "") for key, value in arg_props.items()}
 
 
-def _update_mode_fields(mode_var: tk.StringVar, widgets: dict[str, Tuple[tk.Variable, tk.Widget]]) -> None:
-    """Enable or disable widgets depending on the selected statistics mode."""
+def _update_mode_fields(
+    mode_var: tk.StringVar,
+    widgets: dict[str, Tuple[tk.Variable, tk.Widget, tk.Widget, tk.Widget | None]],
+    plot_var: tk.StringVar | None = None,
+    plot_widgets: list[tk.Widget] | None = None,
+) -> None:
+    """Show only widgets relevant for the selected mode and strategy."""
 
     mode = mode_var.get()
     dist_fields = [
@@ -211,51 +276,90 @@ def _update_mode_fields(mode_var: tk.StringVar, widgets: dict[str, Tuple[tk.Vari
         "use_subsampled_corepoints",
         "outlier_detection_method",
         "outlier_multiplicator",
+        "only_stats",
     ]
     single_fields = ["filename_singlecloud"]
+    plot_specific = ["overlay_files", "overlay_outdir", "plot_types"]
+    plot_onefolder = ["folder", "overlay_outdir", "options"]
+    plot_several = ["data_dir", "folders", "filenames", "overlay_outdir", "options"]
 
-    def _disable(var: tk.Variable, widget: tk.Widget) -> None:
-        widget.configure(state="disabled")
-        # WICHTIG: BooleanVar nicht auf "" setzen!
+    def _hide(
+        var: tk.Variable, widget: tk.Widget, label: tk.Widget, desc: tk.Widget | None
+    ) -> None:
+        widget.grid_remove()
+        label.grid_remove()
+        if desc is not None:
+            desc.grid_remove()
         if isinstance(var, tk.BooleanVar):
-            var.set(False)  # oder True, falls gewünscht
+            var.set(False)
         else:
             var.set("")
 
-    def _enable(widget: tk.Widget) -> None:
-        widget.configure(state="normal")
+    def _show(widget: tk.Widget, label: tk.Widget, desc: tk.Widget | None) -> None:
+        label.grid()
+        widget.grid()
+        if desc is not None:
+            desc.grid()
+        try:
+            widget.configure(state="normal")
+        except tk.TclError:
+            pass
 
     # Distanz-Mode-Felder
     for name in dist_fields:
         if name in widgets:
-            var, widget = widgets[name]
+            var, widget, label, desc = widgets[name]
             if mode == "distance":
-                _enable(widget)
+                _show(widget, label, desc)
             else:
-                _disable(var, widget)
+                _hide(var, widget, label, desc)
 
     # Single-Mode-Felder
     for name in single_fields:
         if name in widgets:
-            var, widget = widgets[name]
+            var, widget, label, desc = widgets[name]
             if mode == "single":
-                _enable(widget)
+                _show(widget, label, desc)
             else:
-                _disable(var, widget)
+                _hide(var, widget, label, desc)
 
-    # only_stats im Single-Mode fix auf True setzen und sperren
-    if "only_stats" in widgets:
-        only_var, only_widget = widgets["only_stats"]
-        if mode == "single":
-            if isinstance(only_var, tk.BooleanVar):
-                only_var.set(True)
+    # Plot-Mode-Felder
+    all_plot_fields = set(plot_specific + plot_onefolder + plot_several)
+    for name in all_plot_fields:
+        if name in widgets:
+            var, widget, label, desc = widgets[name]
+            if mode == "plot":
+                strategy = plot_var.get() if plot_var is not None else "specificfile"
+                if (
+                    (strategy == "specificfile" and name in plot_specific)
+                    or (strategy == "onefolder" and name in plot_onefolder)
+                    or (strategy == "severalfolders" and name in plot_several)
+                ):
+                    _show(widget, label, desc)
+                else:
+                    _hide(var, widget, label, desc)
             else:
-                # falls aus irgendeinem Grund kein BooleanVar
+                _hide(var, widget, label, desc)
+
+    if plot_widgets is not None:
+        for w in plot_widgets:
+            if mode == "plot":
+                w.grid()
                 try:
-                    only_var.set("1")
-                except Exception:
+                    w.configure(state="normal")
+                except tk.TclError:
                     pass
-            only_widget.configure(state="disabled")
+            else:
+                w.grid_remove()
+
+    # only_stats im Single-Mode fix auf True setzen
+    if "only_stats" in widgets and mode == "single":
+        only_var = widgets["only_stats"][0]
+        if isinstance(only_var, tk.BooleanVar):
+            only_var.set(True)
         else:
-            only_widget.configure(state="normal")
+            try:
+                only_var.set("1")
+            except Exception:
+                pass
 
