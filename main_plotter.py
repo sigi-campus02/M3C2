@@ -1,11 +1,10 @@
-+28
--0
-
 """Entry point for visualization utilities.
 
 This script provides a thin wrapper around the plotting CLI so that
 visualisations can be triggered directly via ``python -m main_plotter``.
 """
+
+from __future__ import annotations
 
 import logging
 
@@ -24,8 +23,9 @@ def main() -> None:
 
     parser = overlay_report.build_arg_parser()
     args = parser.parse_args()
-    overlay_report.main(args.file_a, args.file_b, args.outdir)
+    overlay_report.main(args.files, args.outdir)
 
 
 if __name__ == "__main__":
     main()
+

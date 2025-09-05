@@ -1,14 +1,15 @@
 """Generate overlay plots and bundle them into a PDF report.
 
-This command line utility compares the distributions from two distance files
-by creating a set of overlay plots.  The resulting images are fed into the
-existing :mod:`report_builder` facilities via :class:`~m3c2.visualization.services.plot_service.PlotService`
-to assemble a consolidated PDF report.
+This command line utility compares the distributions from multiple distance
+files by creating a set of overlay plots. The resulting images are fed into
+the existing :mod:`report_builder` facilities via
+:class:`~m3c2.visualization.services.plot_service.PlotService` to assemble a
+consolidated PDF report.
 
 Example
 -------
     >>> from m3c2.cli.overlay_report import main
-    >>> main("distances_run1.txt", "distances_run2.txt")
+    >>> main(["distances_run1.txt", "distances_run2.txt"])
 
 The function above will create PNG plots in the directory ``overlay_report``
 and a combined PDF called ``overlay_report/report.pdf``.
@@ -84,11 +85,14 @@ def generate_overlay_plots(data: Dict[str, np.ndarray], outdir: str) -> List[str
 # Main workflow
 # ---------------------------------------------------------------------------
 
-def main(file_a: str, file_b: str, outdir: str = "overlay_report") -> str:
-    """Generate overlay plots for two files and return the PDF path."""
+def main(files: List[str], outdir: str = "overlay_report") -> str:
+    """Generate overlay plots for *files* and return the PDF path."""
+
+    if len(files) < 2:
+        raise ValueError("At least two distance files are required")
 
     data: Dict[str, np.ndarray] = {}
-    for f in (file_a, file_b):
+    for f in files:
         label = os.path.splitext(os.path.basename(f))[0]
         data[label] = load_distance_file(f)
 
@@ -106,10 +110,13 @@ def main(file_a: str, file_b: str, outdir: str = "overlay_report") -> str:
 
 def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Create overlay plot report for two distance files"
+        description="Create overlay plot report for multiple distance files"
     )
-    parser.add_argument("file_a", help="First distance file (.txt or .csv)")
-    parser.add_argument("file_b", help="Second distance file (.txt or .csv)")
+    parser.add_argument(
+        "files",
+        nargs="+",
+        help="Distance files (.txt or .csv) to include in the overlay",
+    )
     parser.add_argument(
         "--outdir", default="overlay_report", help="Directory for plots and PDF"
     )
@@ -119,4 +126,4 @@ def build_arg_parser() -> argparse.ArgumentParser:
 if __name__ == "__main__":
     parser = build_arg_parser()
     args = parser.parse_args()
-    main(args.file_a, args.file_b, args.outdir)
+    main(args.files, args.outdir)

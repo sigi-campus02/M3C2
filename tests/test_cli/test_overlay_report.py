@@ -36,5 +36,5 @@ def test_main_builds_pdf(tmp_path, monkeypatch):
         staticmethod(fake_build_parts_pdf),
     )
 
-    pdf = overlay_report.main(str(a), str(b), outdir=str(tmp_path))
+    pdf = overlay_report.main([str(a), str(b)], outdir=str(tmp_path))
     assert Path(pdf).exists()
