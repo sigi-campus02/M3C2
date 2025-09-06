@@ -50,17 +50,11 @@ class _Plotter:
 
 
 class _PDFWriter:
-    """Persist figures as a report within the configured output directory."""
-
-    def __init__(self, out_dir: Path) -> None:
-        self.out_dir = out_dir
+    """Persist figures as a PDF report."""
 
     def write(self, figures, out_path: Path, title: str):
-        self.out_dir.mkdir(parents=True, exist_ok=True)
-        pdf_path = pdf_writer.write(figures)
-        target = self.out_dir / "report.pdf"
-        pdf_path.replace(target)
-        return target
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        return pdf_writer.write(figures, out_path, title)
 
 
 def main(argv: Sequence[str] | None = None) -> None:
@@ -71,7 +65,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         return
     builder = ns.builder_factory(ns)
     plotter = _Plotter(ns.max_per_page, ns.color_mapping, ns.title, ns.plot_type)
-    pdf_writer_instance = _PDFWriter(ns.out)
+    pdf_writer_instance = _PDFWriter()
     orchestrator = ReportOrchestrator(plotter, pdf_writer_instance, builder)
     pdf_path = orchestrator.run(ns.out, ns.title or "")
     print(pdf_path)

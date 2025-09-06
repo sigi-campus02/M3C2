@@ -83,8 +83,8 @@ def _add_shared_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--out",
         type=Path,
-        default=Path("report"),
-        help="Output directory for generated plots and report.",
+        default=Path("overlay_report.pdf"),
+        help="Path to the generated PDF report.",
     )
     parser.add_argument(
         "--title",
