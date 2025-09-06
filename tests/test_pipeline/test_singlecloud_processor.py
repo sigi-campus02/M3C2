@@ -54,9 +54,9 @@ def test_process_single_cloud(tmp_path):
             calls["stats"] = SimpleNamespace(cfg=cfg, arr=arr, normal=normal)
 
     class DummyParamManager:
-        def save_params(self, cfg, normal, projection, out_base, tag):
+        def save_params(self, config, normal, projection, output_dir, tag):
             calls["save_params"] = SimpleNamespace(
-                cfg=cfg, normal=normal, projection=projection, out_base=out_base, tag=tag
+                cfg=config, normal=normal, projection=projection, output_dir=output_dir, tag=tag
             )
 
         def handle_override_params(self, cfg):  # pragma: no cover - should not be called
@@ -75,7 +75,7 @@ def test_process_single_cloud(tmp_path):
 
     assert calls["load_data"].mode == "singlecloud"
     assert calls["determine_scales"].arr is cloud
-    assert calls["save_params"].out_base == os.path.join(cfg.data_dir, cfg.folder_id)
+    assert calls["save_params"].output_dir == os.path.join(cfg.data_dir, cfg.folder_id)
     assert calls["stats"].normal == 1.0
     assert "handle_override_params" not in calls
 

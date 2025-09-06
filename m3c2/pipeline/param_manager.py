@@ -14,12 +14,18 @@ class ParamManager:
     """Handle persistence and retrieval of M3C2 parameters."""
 
     def save_params(
-        self, cfg: PipelineConfig, normal: float, projection: float, out_base: str, tag: str
+        self,
+        config: PipelineConfig,
+        normal: float,
+        projection: float,
+        output_dir: str,
+        tag: str,
     ) -> None:
         """Persist determined scale parameters to disk."""
-        os.makedirs(out_base, exist_ok=True)
+        # Ensure the output directory exists and compose the parameter file path
+        os.makedirs(output_dir, exist_ok=True)
         params_path = os.path.join(
-            out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt"
+            output_dir, f"{config.process_python_CC}_{tag}_m3c2_params.txt"
         )
         try:
             with open(params_path, "w") as f:
@@ -30,15 +36,16 @@ class ParamManager:
         logger.info("[Params] gespeichert: %s", params_path)
 
     def handle_existing_params(
-        self, cfg: PipelineConfig, out_base: str, tag: str
+        self, config: PipelineConfig, output_dir: str, tag: str
     ) -> Tuple[float, float]:
         """Load previously determined M3C2 scale parameters."""
-        if cfg.normal_override is not None and cfg.proj_override is not None:
-            return self.handle_override_params(cfg)
+        # Configuration overrides take precedence over persisted parameters
+        if config.normal_override is not None and config.proj_override is not None:
+            return self.handle_override_params(config)
 
-        if cfg.normal_override is None and cfg.proj_override is None:
+        if config.normal_override is None and config.proj_override is None:
             params_path = os.path.join(
-                out_base, f"{cfg.process_python_CC}_{tag}_m3c2_params.txt"
+                output_dir, f"{config.process_python_CC}_{tag}_m3c2_params.txt"
             )
             normal, projection = _load_params(params_path)
             if not np.isnan(normal) and not np.isnan(projection):
@@ -51,13 +58,14 @@ class ParamManager:
                 return normal, projection
 
         logger.info("[Params] keine vorhandenen Parameter gefunden")
+        # Signal absence of parameters by returning NaNs
         return np.nan, np.nan
 
-    def handle_override_params(self, cfg: PipelineConfig) -> Tuple[float, float]:
+    def handle_override_params(self, config: PipelineConfig) -> Tuple[float, float]:
         """Load scale parameter overrides provided via configuration."""
-        if cfg.normal_override is not None and cfg.proj_override is not None:
-            normal = cfg.normal_override
-            projection = cfg.proj_override
+        if config.normal_override is not None and config.proj_override is not None:
+            normal = config.normal_override
+            projection = config.proj_override
             logger.info(
                 "[Params] Überschreibe mit: (NormalScale=%.6f, SearchScale=%.6f)",
                 normal,
@@ -66,4 +74,5 @@ class ParamManager:
             return normal, projection
 
         logger.info("[Params] keine vorhandenen Parameter gefunden")
+        # Return NaNs when overrides are incomplete
         return np.nan, np.nan

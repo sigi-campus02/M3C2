@@ -47,10 +47,10 @@ def test_process_exports_ply_with_nan(tmp_path):
             pass
 
     class DummyParamManager:
-        def save_params(self, cfg, normal, projection, out_base, tag):
+        def save_params(self, config, normal, projection, output_dir, tag):
             pass
 
-        def handle_existing_params(self, cfg, out_base, tag):
+        def handle_existing_params(self, config, output_dir, tag):
             return np.nan, np.nan
 
     cfg = SimpleNamespace(

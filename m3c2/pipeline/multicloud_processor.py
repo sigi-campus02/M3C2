@@ -33,10 +33,10 @@ class MulticloudProcessor:
     def process(self, cfg: PipelineConfig, tag: str) -> None:
         """Process statistics for a pair of point clouds."""
         ds, comparison, reference, corepoints = self.data_loader.load_data(cfg, mode="multicloud")
-        out_base = ds.config.folder
+        output_dir = ds.config.folder
 
         if not cfg.only_stats:
-            self._process_full(cfg, comparison, reference, corepoints, out_base, tag)
+            self._process_full(cfg, comparison, reference, corepoints, output_dir, tag)
         else:
             try:
                 logger.info("[Statistics] Berechne Statistiken ...")
@@ -55,14 +55,14 @@ class MulticloudProcessor:
         comparison: str,
         reference: str,
         corepoints: np.ndarray,
-        out_base: str,
+        output_dir: str,
         tag: str,
     ) -> None:
         normal = projection = np.nan
 
         if cfg.use_existing_params:
             normal, projection = self.param_manager.handle_existing_params(
-                cfg, out_base, tag
+                cfg, output_dir, tag
             )
             if np.isnan(normal) and np.isnan(projection):
                 logger.info(
@@ -75,10 +75,10 @@ class MulticloudProcessor:
             normal, projection = self.scale_estimator.determine_scales(
                 cfg, corepoints
             )
-            self.param_manager.save_params(cfg, normal, projection, out_base, tag)
+            self.param_manager.save_params(cfg, normal, projection, output_dir, tag)
 
         distances, _, _ = self.m3c2_executor.run_m3c2(
-            cfg, comparison, reference, corepoints, normal, projection, out_base, tag
+            cfg, comparison, reference, corepoints, normal, projection, output_dir, tag
         )
 
         outliers = self.outlier_handler.detect(
@@ -86,7 +86,7 @@ class MulticloudProcessor:
         )
 
         ply_path = os.path.join(
-            out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances.ply"
+            output_dir, f"{cfg.process_python_CC}_{tag}_m3c2_distances.ply"
         )
         export_xyz_distance(corepoints, distances, outliers, ply_path)
         logger.info("[PLY] Distanzen als PLY gespeichert: %s", ply_path)

@@ -35,8 +35,8 @@ class SinglecloudProcessor:
             normal, projection = self.scale_estimator.determine_scales(
                 cfg, single_cloud
             )
-            out_base = os.path.join(cfg.data_dir, cfg.folder_id)
-            self.param_manager.save_params(cfg, normal, projection, out_base, tag)
+            output_dir = os.path.join(cfg.data_dir, cfg.folder_id)
+            self.param_manager.save_params(cfg, normal, projection, output_dir, tag)
         else:
             logger.error("[Params] Ungültige/Fehlende Parameter in Config")
             normal = projection = np.nan
