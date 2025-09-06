@@ -39,6 +39,19 @@ def _chunked(seq: Iterable[DistanceFile], size: int) -> Iterator[list[DistanceFi
         yield chunk
 
 
+def _square_limits(x: np.ndarray, y: np.ndarray, pad: float = 0.05) -> tuple[tuple[float, float], tuple[float, float]]:
+    """Return square axis limits covering the ``x`` and ``y`` data."""
+
+    x_min, x_max = float(np.min(x)), float(np.max(x))
+    y_min, y_max = float(np.min(y)), float(np.max(y))
+    v_min = min(x_min, y_min)
+    v_max = max(x_max, y_max)
+    cx = cy = (v_min + v_max) / 2.0
+    half = max((x_max - x_min), (y_max - y_min)) / 2.0
+    half = half * (1.0 + pad) if half > 0 else 1.0
+    return (cx - half, cx + half), (cy - half, cy + half)
+
+
 def _overlay_histogram(ax, data, colors) -> None:
     for label, arr in data.items():
         ax.hist(arr, bins=30, histtype="step", label=label, color=colors.get(label))
@@ -233,3 +246,210 @@ def make_overlay(
         figures.append(fig)
 
     return figures
+
+
+def make_bland_altman(items: list[DistanceFile], title: str | None = None) -> list[Figure]:
+    """Create a Bland–Altman plot for exactly two distance files."""
+
+    if len(items) != 2:
+        raise ValueError("Bland–Altman plot requires exactly two files")
+    a = load_distance_series(items[0].path)
+    b = load_distance_series(items[1].path)
+    n = min(len(a), len(b))
+    a, b = a[:n], b[:n]
+    if n == 0:
+        return []
+
+    mean_vals = (a + b) / 2.0
+    diff_vals = a - b
+    mean_diff = float(np.mean(diff_vals))
+    std_diff = float(np.std(diff_vals, ddof=1))
+    upper = mean_diff + 1.96 * std_diff
+    lower = mean_diff - 1.96 * std_diff
+
+    fig, ax = plt.subplots()
+    if title:
+        ax.set_title(title)
+    ax.scatter(mean_vals, diff_vals, alpha=0.3)
+    ax.axhline(mean_diff, color="red", linestyle="--", label=f"Mean diff {mean_diff:.4f}")
+    ax.axhline(upper, color="green", linestyle="--", label=f"+1.96 SD {upper:.4f}")
+    ax.axhline(lower, color="green", linestyle="--", label=f"-1.96 SD {lower:.4f}")
+    ax.set_xlabel(items[0].label)
+    ax.set_ylabel(items[1].label)
+    ax.legend()
+    fig.tight_layout()
+    return [fig]
+
+
+def make_linear_regression(items: list[DistanceFile], title: str | None = None) -> list[Figure]:
+    """Create an OLS linear regression plot for two distance files."""
+
+    if len(items) != 2:
+        raise ValueError("Linear regression requires exactly two files")
+    x = load_distance_series(items[0].path)
+    y = load_distance_series(items[1].path)
+    n = min(len(x), len(y))
+    x, y = x[:n], y[:n]
+    if n < 3:
+        return []
+
+    xbar = float(np.mean(x))
+    ybar = float(np.mean(y))
+    Sxx = float(np.sum((x - xbar) ** 2))
+    if Sxx == 0.0:
+        return []
+    Sxy = float(np.sum((x - xbar) * (y - ybar)))
+    b = Sxy / Sxx
+    a = ybar - b * xbar
+    resid = y - (a + b * x)
+    SSE = float(np.sum(resid ** 2))
+    s2 = SSE / (n - 2)
+    se_b = float(np.sqrt(s2 / Sxx))
+    se_a = float(np.sqrt(s2 * (1.0 / n + (xbar ** 2) / Sxx)))
+    from scipy.stats import t
+
+    tcrit = float(t.ppf(0.975, df=n - 2))
+    b_L, b_U = b - tcrit * se_b, b + tcrit * se_b
+    a_L, a_U = a - tcrit * se_a, a + tcrit * se_a
+
+    fig, ax = plt.subplots()
+    if title:
+        ax.set_title(title)
+    ax.scatter(x, y, alpha=0.35, s=12, label="Data")
+    (xl, xu), (yl, yu) = _square_limits(x, y, pad=0.05)
+    xx = np.array([xl, xu], dtype=float)
+    ax.plot(xx, xx, linestyle="--", color="grey", label="y = x")
+    ax.plot(xx, a + b * xx, color="red", label=f"OLS: y = {a:.4f} + {b:.4f} x")
+    ax.plot(xx, a_U + b_U * xx, linestyle="--", alpha=0.7, label=f"CI upper")
+    ax.plot(xx, a_L + b_L * xx, linestyle="--", alpha=0.7, label=f"CI lower")
+    ax.fill_between(xx, a_L + b_L * xx, a_U + b_U * xx, alpha=0.12)
+    ax.set_xlim(xl, xu)
+    ax.set_ylim(yl, yu)
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_xlabel(items[0].label)
+    ax.set_ylabel(items[1].label)
+    ax.legend(frameon=False)
+    fig.tight_layout()
+    return [fig]
+
+
+def make_passing_bablok(items: list[DistanceFile], title: str | None = None) -> list[Figure]:
+    """Create a Passing–Bablok regression plot for two distance files."""
+
+    if len(items) != 2:
+        raise ValueError("Passing–Bablok requires exactly two files")
+    x = load_distance_series(items[0].path)
+    y = load_distance_series(items[1].path)
+    n = min(len(x), len(y))
+    x, y = x[:n], y[:n]
+    if n < 2:
+        return []
+
+    S = []
+    for i in range(n - 1):
+        x_i, y_i = x[i], y[i]
+        for j in range(i + 1, n):
+            x_j, y_j = x[j], y[j]
+            if (x_i == x_j) and (y_i == y_j):
+                continue
+            if x_i == x_j:
+                S.append(np.inf if (y_i > y_j) else -np.inf)
+                continue
+            g = (y_i - y_j) / (x_i - x_j)
+            if g == -1:
+                continue
+            S.append(g)
+    if not S:
+        return []
+    S = np.array(S, dtype=float)
+    S.sort()
+    N = int(len(S))
+    K = int((S < -1).sum())
+    if N % 2 != 0:
+        idx = int((N + 1) / 2 + K) - 1
+        b = float(S[idx])
+    else:
+        idx = int(N / 2 + K) - 1
+        b = float(0.5 * (S[idx] + S[idx + 1]))
+    a = float(np.median(y - b * x))
+    from scipy import stats as st
+
+    C = 0.95
+    gamma = 1 - C
+    q = 1 - (gamma / 2.0)
+    w = float(st.norm.ppf(q))
+    C_gamma = w * np.sqrt((n * (n - 1) * (2 * n + 5)) / 18.0)
+    M1 = int(np.round((N - C_gamma) / 2.0))
+    M2 = int(N - M1 + 1)
+    b_L = float(S[M1 + K - 1])
+    b_U = float(S[M2 + K - 1])
+    a_L = float(np.median(y - b_U * x))
+    a_U = float(np.median(y - b_L * x))
+
+    fig, ax = plt.subplots()
+    if title:
+        ax.set_title(title)
+    ax.scatter(x, y, alpha=0.35, s=12, label="Data")
+    (xl, xu), (yl, yu) = _square_limits(x, y, pad=0.05)
+    xx = np.array([xl, xu], dtype=float)
+    ax.plot(xx, xx, linestyle="--", color="grey", label="y = x")
+    ax.plot(xx, a + b * xx, color="red", label=f"PB: y = {a:.4f} + {b:.4f} x")
+    ax.plot(xx, a_U + b_U * xx, linestyle="--", alpha=0.7, label="CI upper")
+    ax.plot(xx, a_L + b_L * xx, linestyle="--", alpha=0.7, label="CI lower")
+    ax.fill_between(xx, a_L + b_L * xx, a_U + b_U * xx, alpha=0.12)
+    ax.set_xlim(xl, xu)
+    ax.set_ylim(yl, yu)
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_xlabel(items[0].label)
+    ax.set_ylabel(items[1].label)
+    ax.legend(frameon=False)
+    fig.tight_layout()
+    return [fig]
+
+
+def make_grouped_bar(items: list[DistanceFile], title: str | None = None) -> list[Figure]:
+    """Create grouped bar plots comparing WITH and INLIER data per label."""
+
+    data_with: dict[str, np.ndarray] = {}
+    data_inl: dict[str, np.ndarray] = {}
+    for item in items:
+        arr = load_distance_series(item.path)
+        if (item.group or "").lower() == "inlier":
+            data_inl[item.label] = arr
+        else:
+            data_with[item.label] = arr
+
+    all_labels = sorted(set(data_with.keys()) | set(data_inl.keys()))
+    means_with: list[float] = []
+    stds_with: list[float] = []
+    means_inl: list[float] = []
+    stds_inl: list[float] = []
+    for lbl in all_labels:
+        arr_w = data_with.get(lbl, np.array([]))
+        arr_i = data_inl.get(lbl, np.array([]))
+        means_with.append(float(np.abs(np.mean(arr_w))) if arr_w.size else np.nan)
+        stds_with.append(float(np.std(arr_w)) if arr_w.size else np.nan)
+        means_inl.append(float(np.abs(np.mean(arr_i))) if arr_i.size else np.nan)
+        stds_inl.append(float(np.std(arr_i)) if arr_i.size else np.nan)
+
+    x = np.arange(len(all_labels))
+    width = 0.4
+    fig, ax = plt.subplots(2, 1, figsize=(max(10, len(all_labels) * 1.8), 8), sharex=True)
+    if title:
+        fig.suptitle(title)
+    ax[0].bar(x - width / 2, means_with, width, label="WITH")
+    ax[0].bar(x + width / 2, means_inl, width, label="INLIER", alpha=0.55)
+    ax[0].set_ylabel("Mean (|μ|)")
+    ax[0].set_ylim(bottom=0)
+    ax[0].legend()
+
+    ax[1].bar(x - width / 2, stds_with, width, label="WITH")
+    ax[1].bar(x + width / 2, stds_inl, width, label="INLIER", alpha=0.55)
+    ax[1].set_ylabel("Std (σ)")
+    ax[1].set_xticks(x)
+    ax[1].set_xticklabels(all_labels, rotation=30, ha="right")
+    ax[1].set_ylim(bottom=0)
+    ax[1].legend()
+
+    fig.tight_layout()
+    return [fig]

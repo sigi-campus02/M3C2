@@ -43,7 +43,18 @@ class ReportOrchestrator:
         figures: list = []
         for job in jobs:
             plot_type = getattr(job, "plot_type", "histogram")
-            figs = self.plotter.make_overlay(job.items, title=job.page_title, plot_type=plot_type)
+            if plot_type in {"histogram", "gauss", "weibull", "boxplot", "qq", "violin"}:
+                figs = self.plotter.make_overlay(job.items, title=job.page_title, plot_type=plot_type)
+            elif plot_type == "bland-altman":
+                figs = self.plotter.make_bland_altman(job.items, title=job.page_title)
+            elif plot_type == "linear-regression":
+                figs = self.plotter.make_linear_regression(job.items, title=job.page_title)
+            elif plot_type == "passing-bablok":
+                figs = self.plotter.make_passing_bablok(job.items, title=job.page_title)
+            elif plot_type == "grouped-bar":
+                figs = self.plotter.make_grouped_bar(job.items, title=job.page_title)
+            else:
+                raise ValueError(f"Unknown plot type: {plot_type}")
             figures.extend(figs)
         pdf_path = self.pdf_writer.write(figures, out_path, title)
         return pdf_path
