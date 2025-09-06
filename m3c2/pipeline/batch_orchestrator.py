@@ -84,12 +84,12 @@ class BatchOrchestrator:
 
     # Small helper to create consistent file name tags
     @staticmethod
-    def _run_tag(cfg: PipelineConfig) -> str:
+    def _run_tag(config: PipelineConfig) -> str:
         """Return a concise tag representing the comparison and reference files.
 
         Parameters
         ----------
-        cfg : PipelineConfig
+        config : PipelineConfig
             Configuration for the current job.
 
         Returns
@@ -97,10 +97,10 @@ class BatchOrchestrator:
         str
             Combination of comparison and reference filenames.
         """
-        if cfg.filename_comparison and cfg.filename_reference:
-            return f"{cfg.filename_comparison}-{cfg.filename_reference}"
+        if config.filename_comparison and config.filename_reference:
+            return f"{config.filename_comparison}-{config.filename_reference}"
         else:
-            return f"{cfg.filename_singlecloud}"
+            return f"{config.filename_singlecloud}"
         
     
     def run_all(self) -> None:
@@ -121,39 +121,42 @@ class BatchOrchestrator:
             logger.warning("Keine Konfigurationen – nichts zu tun.")
             return
 
-        # Process each configuration in sequence
-        for cfg in self.configs:
+        # Process each configuration in sequence.  Each iteration logs
+        # failures so subsequent jobs can continue unless ``fail_fast`` is set.
+        # The heavy lifting, including tagging and branching to the appropriate
+        # processor, is delegated to ``_run_single``.
+        for config in self.configs:
             try:
-                self._run_single(cfg)
+                self._run_single(config)
             except (IOError, ValueError):
                 logger.exception(
                     "[Job] Fehler in Job '%s' (Version %s)",
-                    cfg.folder_id,
-                    cfg.filename_reference,
+                    config.folder_id,
+                    config.filename_reference,
                 )
             except RuntimeError:
                 logger.exception(
                     "[Job] Unerwarteter Fehler in Job '%s' (Version %s)",
-                    cfg.folder_id,
-                    cfg.filename_reference,
+                    config.folder_id,
+                    config.filename_reference,
                 )
                 if self.fail_fast:
                     raise
             except Exception:
                 logger.exception(
                     "[Job] Unbekannter Fehler in Job '%s' (Version %s)",
-                    cfg.folder_id,
-                    cfg.filename_reference,
+                    config.folder_id,
+                    config.filename_reference,
                 )
                 if self.fail_fast:
                     raise
 
-    def _run_single(self, cfg: PipelineConfig) -> None:
+    def _run_single(self, config: PipelineConfig) -> None:
         """Execute the pipeline for a single configuration.
 
         Parameters
         ----------
-        cfg : PipelineConfig
+        config : PipelineConfig
             Configuration for the dataset to process.
 
         Returns
@@ -165,25 +168,30 @@ class BatchOrchestrator:
         Exception
             Any exception from internal steps is caught and logged.
         """
+        # Log key identifiers about the job before processing begins
         logger.info(
             "%s, %s, %s, %s",
-            cfg.folder_id,
-            cfg.filename_comparison,
-            cfg.filename_reference,
-            cfg.process_python_CC,
+            config.folder_id,
+            config.filename_comparison,
+            config.filename_reference,
+            config.process_python_CC,
         )
         start = time.perf_counter()
-        tag = self._run_tag(cfg)
+        # Create a concise tag based on filenames for use in output paths
+        run_tag = self._run_tag(config)
 
-        if cfg.stats_singleordistance == "distance":
-            self.multicloud_processor.process(cfg, tag)
-        elif cfg.stats_singleordistance == "single":
-            self.singlecloud_processor.process(cfg, tag)
+        # Branch to the correct processor depending on whether we compare
+        # multiple clouds or analyse a single cloud
+        if config.stats_singleordistance == "distance":
+            self.multicloud_processor.process(config, run_tag)
+        elif config.stats_singleordistance == "single":
+            self.singlecloud_processor.process(config, run_tag)
         else:
             raise ValueError("Unbekannter stats_singleordistance-Wert")
 
+        # Log runtime after processing is complete
         logger.info(
             "[Job] %s abgeschlossen in %.3fs",
-            cfg.folder_id,
+            config.folder_id,
             time.perf_counter() - start,
         )
