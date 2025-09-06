@@ -1,9 +1,11 @@
-numpy
-pandas
-py4dgeo
-scikit-learn
+laspy[lazrs]
 matplotlib
+numpy
 openpyxl
-scipy
+pandas
 plyfile
-laspy
+py4dgeo
+pytest
+scikit-learn
+scipy
+seaborn
