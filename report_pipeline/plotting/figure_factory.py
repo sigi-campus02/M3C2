@@ -13,6 +13,7 @@ report.
 """
 
 from itertools import islice
+from hashlib import sha256
 from typing import Iterable, Iterator
 
 import matplotlib.pyplot as plt
@@ -37,7 +38,7 @@ def make_overlay(
     items: list[DistanceFile],
     title: str | None = None,
     max_per_page: int = 6,
-    color_strategy: str = "cycle",
+    color_strategy: str = "auto",
 ) -> list[Figure]:
     """Create overlay histogram figures for ``items``.
 
@@ -51,9 +52,10 @@ def make_overlay(
         Maximum number of data series per figure.  Items beyond this limit are
         rendered on additional pages.
     color_strategy:
-        Currently only ``"cycle"`` and ``"group"`` are recognised.  The
-        strategy influences colour assignment.  With ``"group"`` items sharing
-        the same ``group`` attribute receive identical colours.
+        Strategy influencing colour assignment.  ``"auto"`` attempts to pick a
+        sensible default, ``"by_label"`` assigns identical colours to matching
+        labels and ``"by_folder"`` groups by the parent folder name.  Colour
+        selection is deterministic across calls.
 
     Returns
     -------
@@ -63,28 +65,34 @@ def make_overlay(
 
     figures: list[Figure] = []
 
-    # Determine colour assignment strategy
-    if color_strategy == "group":
-        groups: dict[str | None, str] = {}
-        color_cycle = plt.rcParams["axes.prop_cycle"].by_key().get("color", [])
-        for idx, g in enumerate({item.group for item in items}):
-            groups[g] = color_cycle[idx % len(color_cycle)]
+    color_cycle = plt.rcParams["axes.prop_cycle"].by_key().get("color", [])
+
+    # Determine key function for colour assignment
+    if color_strategy == "by_label":
+        keyfunc = lambda item: item.label
+    elif color_strategy == "by_folder":
+        keyfunc = lambda item: str(item.path.parent)
+    elif color_strategy == "auto":
+        labels = [i.label for i in items]
+        if len(set(labels)) == len(labels):
+            keyfunc = lambda item: item.label
+        else:
+            keyfunc = lambda item: str(item.path.parent)
     else:
-        groups = {}
-        color_cycle = plt.rcParams["axes.prop_cycle"].by_key().get("color", [])
+        raise ValueError(f"Unknown color strategy: {color_strategy}")
+
+    def _colour(key: str) -> str:
+        digest = sha256(key.encode("utf8")).hexdigest()
+        return color_cycle[int(digest, 16) % len(color_cycle)]
 
     for chunk_index, chunk in enumerate(_chunked(items, max_per_page)):
         fig, ax = plt.subplots()
         if title and chunk_index == 0:
             ax.set_title(title)
 
-        for i, item in enumerate(chunk):
+        for item in chunk:
             data = load_distance_series(item.path)
-            color = (
-                groups.get(item.group)
-                if color_strategy == "group"
-                else color_cycle[i % len(color_cycle)]
-            )
+            color = _colour(keyfunc(item))
             ax.hist(data, bins=30, histtype="step", label=item.label, color=color)
 
         ax.set_xlabel("Distance")
