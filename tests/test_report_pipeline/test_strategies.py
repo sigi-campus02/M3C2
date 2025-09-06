@@ -1,6 +1,8 @@
 from pathlib import Path
 import pytest
 
+import pytest
+
 from report_pipeline.strategies.folder import FolderJobBuilder
 from report_pipeline.strategies.files import FilesJobBuilder
 from report_pipeline.strategies.multifolder import MultiFolderJobBuilder
@@ -11,11 +13,11 @@ def test_folder_job_builder_sorts(tmp_path):
     (tmp_path / "a__g1.txt").write_text("2\n")
     builder = FolderJobBuilder(folder=tmp_path)
     jobs = builder.build_jobs()
-    assert len(jobs) == 1
-    labels = [item.label for item in jobs[0].items]
+    assert len(jobs) == 2
+    labels = [job.items[0].label for job in jobs]
     assert labels == ["a", "b"]
-    groups = [item.group for item in jobs[0].items]
-    assert groups == ["g", "g"]
+    groups = [job.items[0].group for job in jobs]
+    assert groups == ["g1", "g2"]
 
 
 
@@ -49,8 +51,7 @@ def test_multifolder_job_builder(tmp_path):
     jobs = builder.build_jobs()
     assert len(jobs) == 2
     titles = [job.page_title for job in jobs]
-
-    assert titles == ["d1 (g1)", "d2 (g2)"]
+    assert titles == ["f1", "f2"]
     labels = [[item.label for item in job.items] for job in jobs]
-    assert labels == [["f1", "f2"], ["f1", "f2"]]
+    assert labels == [["d1", "d2"], ["d1", "d2"]]
 

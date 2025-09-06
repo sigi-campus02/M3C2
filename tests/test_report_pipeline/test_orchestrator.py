@@ -1,5 +1,5 @@
 from pathlib import Path
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, call
 
 from report_pipeline.orchestrator import ReportOrchestrator
 
@@ -24,9 +24,15 @@ def test_orchestrator_flattens_figures():
     builder = MagicMock()
     builder.build_jobs.return_value = jobs
 
-    orchestrator = ReportOrchestrator(plotter, pdf_writer, builder)
+    orchestrator = ReportOrchestrator(plotter, pdf_writer, builder, show_legend=True)
     result = orchestrator.run()
 
     builder.build_jobs.assert_called_once_with()
+    plotter.make_overlay.assert_has_calls(
+        [
+            call([1], title="p1", show_legend=True),
+            call([2], title="p2", show_legend=True),
+        ]
+    )
     pdf_writer.write.assert_called_once_with([fig1, fig2, fig3])
     assert result == Path("out.pdf")

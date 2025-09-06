@@ -39,6 +39,7 @@ def make_overlay(
     title: str | None = None,
     max_per_page: int = 6,
     color_strategy: str = "auto",
+    show_legend: bool = False,
 ) -> list[Figure]:
     """Create overlay histogram figures for ``items``.
 
@@ -56,6 +57,8 @@ def make_overlay(
         sensible default, ``"by_label"`` assigns identical colours to matching
         labels and ``"by_folder"`` groups by the parent folder name.  Colour
         selection is deterministic across calls.
+    show_legend:
+        Include a legend on each generated plot when ``True``.
 
     Returns
     -------
@@ -97,7 +100,8 @@ def make_overlay(
 
         ax.set_xlabel("Distance")
         ax.set_ylabel("Count")
-        ax.legend()
+        if show_legend:
+            ax.legend()
         fig.tight_layout()
         figures.append(fig)
 

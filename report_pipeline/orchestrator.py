@@ -16,7 +16,13 @@ from .strategies.base import JobBuilder
 class ReportOrchestrator:
     """Orchestrate plot creation and PDF generation for a series of jobs."""
 
-    def __init__(self, plotter, pdf_writer, builder: JobBuilder) -> None:
+    def __init__(
+        self,
+        plotter,
+        pdf_writer,
+        builder: JobBuilder,
+        show_legend: bool = False,
+    ) -> None:
         """Create a new orchestrator.
 
         Parameters
@@ -29,11 +35,14 @@ class ReportOrchestrator:
         builder:
             Instance capable of creating :class:`~report_pipeline.domain.PlotJob`
             objects via :meth:`~report_pipeline.strategies.base.JobBuilder.build_jobs`.
+        show_legend:
+            Forwarded to the plotter to control legend visibility.
         """
 
         self.plotter = plotter
         self.pdf_writer = pdf_writer
         self.builder = builder
+        self.show_legend = show_legend
 
     def run(self) -> Path:
         """Generate figures for the builder's jobs and write them to a PDF report."""
@@ -41,7 +50,9 @@ class ReportOrchestrator:
         jobs = self.builder.build_jobs()
         figures: list = []
         for job in jobs:
-            figs = self.plotter.make_overlay(job.items, title=job.page_title)
+            figs = self.plotter.make_overlay(
+                job.items, title=job.page_title, show_legend=self.show_legend
+            )
             figures.extend(figs)
         pdf_path = self.pdf_writer.write(figures)
         return pdf_path
