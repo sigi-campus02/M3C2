@@ -24,17 +24,25 @@ def test_process_exports_ply_with_nan(tmp_path):
     )
 
     class DummyDataLoader:
-        def load_data(self, cfg, mode="multicloud"):
+        def load_data(self, config, mode="multicloud"):
             ds = SimpleNamespace(config=SimpleNamespace(folder=str(tmp_path)))
             return ds, comparison, reference, corepoints
 
     class DummyScaleEstimator:
-        def determine_scales(self, cfg, cps):
+        def determine_scales(self, config, cps):
             return 1.0, 1.0
 
     class DummyM3C2Executor:
         def run_m3c2(
-            self, cfg, comp, ref, cps, normal, projection, out_base, tag
+            self,
+            config,
+            comp,
+            ref,
+            cps,
+            normal_scale,
+            projection_scale,
+            output_dir,
+            run_tag,
         ):
             return distances, None, None
 
@@ -43,17 +51,19 @@ def test_process_exports_ply_with_nan(tmp_path):
             return np.array([0, 1], dtype=np.uint8)
 
     class DummyStatisticsRunner:
-        def compute_statistics(self, cfg, comparison, reference, tag):
+        def compute_statistics(self, config, comparison, reference, run_tag):
             pass
 
     class DummyParamManager:
-        def save_params(self, cfg, normal, projection, out_base, tag):
+        def save_params(
+            self, config, normal_scale, projection_scale, output_dir, run_tag
+        ):
             pass
 
-        def handle_existing_params(self, cfg, out_base, tag):
+        def handle_existing_params(self, config, output_dir, run_tag):
             return np.nan, np.nan
 
-    cfg = SimpleNamespace(
+    config = SimpleNamespace(
         process_python_CC="cfg",
         use_existing_params=False,
         only_stats=False,
@@ -70,7 +80,7 @@ def test_process_exports_ply_with_nan(tmp_path):
         outlier_handler=DummyOutlierHandler(),
     )
 
-    processor.process(cfg, tag="run")
+    processor.process(config, run_tag="run")
 
     ply_file = tmp_path / "cfg_run_m3c2_distances.ply"
     assert ply_file.is_file()
