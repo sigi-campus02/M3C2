@@ -8,7 +8,7 @@ This project provides a Python workflow for comparing 3D point cloud pairs using
 - Execute the M3C2 algorithm via [py4dgeo](https://github.com/py4dgeo/py4dgeo)
 - Detect and exclude outliers with configurable strategies
 - Compute rich statistical metrics and export results to Excel or JSON
-- Generate plots and visualizations for distance distributions
+- Generate comparison reports via the lightweight `report_pipeline` CLI
 - Orchestrate batch processing across many point cloud pairs
 
 ## Installation
@@ -97,12 +97,14 @@ If neither is provided, the log level defaults to the `logging.level` entry in
 | `outlier_multiplicator`   | float          | `3.0`            | Multiplicator applied by the chosen outlier method. |
 | `log_level`               | string         | `"INFO"`         | Logging level for output (overrides `logging.level`). |
 
-## Report CLI Examples
+## Report Pipeline CLI Examples
 
-The lightweight reporting pipeline can be invoked via `m3c2-report`.  Some typical commands are:
+The reporting workflow is exposed through the `report_pipeline` commands.
+Invoke it either with `python -m report_pipeline` or, when installed as a
+package, via the `m3c2-report` console script. Some typical commands are:
 
 ```bash
-m3c2-report folder --folder results/case_07 --pattern "*_distances.txt" --out case_07.pdf
-m3c2-report multifolder --folders results/c1 results/c2 --pattern "*_dist.txt" --paired --out all_cases.pdf
-m3c2-report files --files a1.txt b1.txt a2.txt --out ai_overlay.pdf --legend
+python -m report_pipeline folder --folder results/case_07 --pattern "*_distances.txt" --out case_07.pdf
+python -m report_pipeline multifolder --folders results/c1 results/c2 --pattern "*_dist.txt" --paired --out all_cases.pdf
+python -m report_pipeline files --files a1.txt b1.txt a2.txt --out ai_overlay.pdf --legend
 ```
