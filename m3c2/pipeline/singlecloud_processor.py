@@ -25,26 +25,36 @@ class SinglecloudProcessor:
         self.statistics_runner = statistics_runner
         self.param_manager = param_manager
 
-    def process(self, cfg: PipelineConfig, tag: str) -> None:
-        single_cloud = self.data_loader.load_data(cfg, mode="singlecloud")
+    def process(self, config: PipelineConfig, run_tag: str) -> None:
+        # Load the point cloud for which statistics will be computed
+        cloud_points = self.data_loader.load_data(config, mode="singlecloud")
 
-        if cfg.use_existing_params:
-            normal, projection = self.param_manager.handle_override_params(cfg)
-        elif not cfg.use_existing_params:
-            logger.info("[Params] keine vorhandenen Parameter gefunden, berechne neu")
-            normal, projection = self.scale_estimator.determine_scales(
-                cfg, single_cloud
+        # Step 1: Retrieve or estimate the normal and projection scales
+        if config.use_existing_params:
+            # Existing parameters are loaded from disk and returned
+            normal_scale, projection_scale = self.param_manager.handle_override_params(
+                config
             )
-            out_base = os.path.join(cfg.data_dir, cfg.folder_id)
-            self.param_manager.save_params(cfg, normal, projection, out_base, tag)
+        elif not config.use_existing_params:
+            logger.info("[Params] keine vorhandenen Parameter gefunden, berechne neu")
+            # Compute scales from the point cloud when no saved values are available
+            normal_scale, projection_scale = self.scale_estimator.determine_scales(
+                config, cloud_points
+            )
+            # Step 2: Persist newly determined parameters for future runs
+            out_base = os.path.join(config.data_dir, config.folder_id)
+            self.param_manager.save_params(
+                config, normal_scale, projection_scale, out_base, run_tag
+            )
         else:
             logger.error("[Params] Ungültige/Fehlende Parameter in Config")
-            normal = projection = np.nan
+            normal_scale = projection_scale = np.nan
 
         try:
+            # Step 3: Generate statistics using the determined scales
             logger.info("[Statistics] Berechne Statistiken ...")
             self.statistics_runner.single_cloud_statistics_handler(
-                cfg, single_cloud, normal
+                config, cloud_points, normal_scale
             )
         except (IOError, ValueError):
             logger.exception("Fehler bei der Berechnung der Statistik")
