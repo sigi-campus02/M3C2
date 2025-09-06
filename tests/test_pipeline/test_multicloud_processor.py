@@ -34,7 +34,7 @@ def test_process_exports_ply_with_nan(tmp_path):
 
     class DummyM3C2Executor:
         def run_m3c2(
-            self, cfg, comp, ref, cps, normal, projection, out_base, tag
+            self, cfg, comp, ref, cps, normal, projection, output_dir, run_tag
         ):
             return distances, None, None
 

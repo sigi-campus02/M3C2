@@ -25,7 +25,7 @@ class M3C2Executor:
 
     Inputs
     ------
-    ``cfg``
+    ``config``
         Configuration object that must provide ``process_python_CC`` to build
         output file names.
     ``comparison`` and ``reference``
@@ -37,7 +37,7 @@ class M3C2Executor:
     ``normal`` / ``projection``
         Floating point scale parameters controlling the local surface fitting
         and projection radius.
-    ``out_base`` / ``tag``
+    ``output_dir`` / ``run_tag``
         Output directory and filename tag used for the generated text files.
 
     Outputs
@@ -48,17 +48,26 @@ class M3C2Executor:
     Side Effects
     ------------
     Three ASCII files (distances, distances with coordinates and
-    uncertainties) are written to ``out_base`` and informative log messages are
+    uncertainties) are written to ``output_dir`` and informative log messages are
     emitted.
     """
 
-    def run_m3c2(self, cfg, comparison, reference, corepoints, normal: float, projection: float, out_base: str, tag: str,
+    def run_m3c2(
+        self,
+        config,
+        comparison,
+        reference,
+        corepoints,
+        normal: float,
+        projection: float,
+        output_dir: str,
+        run_tag: str,
     ) -> Tuple[np.ndarray, np.ndarray]:
         """Run the core M3C2 computation and persist results to disk.
 
         Parameters
         ----------
-        cfg : object
+        config : object
             Configuration object. Must provide the attribute
             ``process_python_CC`` which is used to construct output file
             names.
@@ -75,9 +84,9 @@ class M3C2Executor:
             Normal scale used for local surface fitting.
         projection : float
             Projection scale for the M3C2 algorithm.
-        out_base : str
+        output_dir : str
             Directory to which result files are written.
-        tag : str
+        run_tag : str
             Identifier appended to the generated filenames.
 
         Returns
@@ -90,54 +99,55 @@ class M3C2Executor:
 
         Notes
         -----
-        Three ASCII files are written to ``out_base``:
+        Three ASCII files are written to ``output_dir``:
 
-        * ``{cfg.process_python_CC}_{tag}_m3c2_distances.txt`` – distances.
-        * ``{cfg.process_python_CC}_{tag}_m3c2_distances_coordinates.txt`` –
+        * ``{config.process_python_CC}_{run_tag}_m3c2_distances.txt`` – distances.
+        * ``{config.process_python_CC}_{run_tag}_m3c2_distances_coordinates.txt`` –
           core point coordinates with distances.
-        * ``{cfg.process_python_CC}_{tag}_m3c2_uncertainties.txt`` –
+        * ``{config.process_python_CC}_{run_tag}_m3c2_uncertainties.txt`` –
           uncertainty values.
 
         This method is part of the public pipeline API.
         """
 
         #------------------------------------------
-        # M3C2 computation
-        t0 = time.perf_counter()
+        # Computation start: execute the M3C2 algorithm
+        start_time = time.perf_counter()
         runner = M3C2Runner()
         distances, uncertainties = runner.run(comparison, reference, corepoints, normal, projection)
 
         #------------------------------------------
-        # Logging for quick overview of distance cloud metrics and computation time
-        duration = time.perf_counter() - t0
-        n = len(distances)
-        nan_share = float(np.isnan(distances).sum()) / n if n else 0.0
+        # Logging: summarize distance metrics and runtime
+        duration = time.perf_counter() - start_time
+        num_distances = len(distances)
+        nan_share = float(np.isnan(distances).sum()) / num_distances if num_distances else 0.0
 
-        logger.info("[Run] Punkte=%d | NaN=%.2f%% | Zeit=%.3fs", n, 100.0 * nan_share, duration)
+        logger.info("[Run] Punkte=%d | NaN=%.2f%% | Zeit=%.3fs", num_distances, 100.0 * nan_share, duration)
 
         #------------------------------------------
-        # Results saving
-        dists_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances.txt")
+        # File persistence: save computed distances
+        dists_path = os.path.join(output_dir, f"{config.process_python_CC}_{run_tag}_m3c2_distances.txt")
         np.savetxt(dists_path, distances, fmt="%.6f")
-        logger.info("[Run] Distanzen gespeichert: %s (%d Werte, %.2f%% NaN)", dists_path, n, 100.0 * nan_share)
+        logger.info("[Run] Distanzen gespeichert: %s (%d Werte, %.2f%% NaN)", dists_path, num_distances, 100.0 * nan_share)
 
-        coords_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances_coordinates.txt")
+        coordinates_path = os.path.join(output_dir, f"{config.process_python_CC}_{run_tag}_m3c2_distances_coordinates.txt")
         if hasattr(reference, "cloud"):
-            xyz = np.asarray(reference.cloud)
+            reference_coordinates = np.asarray(reference.cloud)
         else:
-            xyz = np.asarray(reference)
-        if xyz.shape[0] == distances.shape[0]:
-            arr = np.column_stack((xyz, distances))
+            reference_coordinates = np.asarray(reference)
+        # Data validation: ensure coordinate and distance arrays align
+        if reference_coordinates.shape[0] == distances.shape[0]:
+            coordinates_with_distances = np.column_stack((reference_coordinates, distances))
             header = "x y z distance"
-            np.savetxt(coords_path, arr, fmt="%.6f", header=header)
-            logger.info(f"[Run] Distanzen mit Koordinaten gespeichert: {coords_path}")
+            np.savetxt(coordinates_path, coordinates_with_distances, fmt="%.6f", header=header)
+            logger.info(f"[Run] Distanzen mit Koordinaten gespeichert: {coordinates_path}")
         else:
             logger.warning(
-                f"[Run] Anzahl Koordinaten stimmt nicht mit Distanzen überein: {xyz.shape[0]} vs {distances.shape[0]}"
+                f"[Run] Anzahl Koordinaten stimmt nicht mit Distanzen überein: {reference_coordinates.shape[0]} vs {distances.shape[0]}"
             )
 
-        uncert_path = os.path.join(out_base, f"{cfg.process_python_CC}_{tag}_m3c2_uncertainties.txt")
-        np.savetxt(uncert_path, uncertainties, fmt="%.6f")
-        logger.info("[Run] Unsicherheiten gespeichert: %s", uncert_path)
+        uncertainties_path = os.path.join(output_dir, f"{config.process_python_CC}_{run_tag}_m3c2_uncertainties.txt")
+        np.savetxt(uncertainties_path, uncertainties, fmt="%.6f")
+        logger.info("[Run] Unsicherheiten gespeichert: %s", uncertainties_path)
 
         return distances, uncertainties, dists_path

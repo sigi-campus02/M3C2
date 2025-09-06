@@ -56,8 +56,8 @@ def test_run_m3c2_writes_outputs(tmp_path, monkeypatch, caplog):
         corepoints,
         normal=0.5,
         projection=0.5,
-        out_base=str(tmp_path),
-        tag="run",
+        output_dir=str(tmp_path),
+        run_tag="run",
     )
 
     assert np.allclose(d[0], 1.0) and np.isnan(d[1])
@@ -112,8 +112,8 @@ def test_run_m3c2_skips_coordinates_on_mismatch(tmp_path, monkeypatch, caplog):
         corepoints,
         normal=0.5,
         projection=0.5,
-        out_base=str(tmp_path),
-        tag="run",
+        output_dir=str(tmp_path),
+        run_tag="run",
     )
 
     coords_file = tmp_path / "cfg_run_m3c2_distances_coordinates.txt"
