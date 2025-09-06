@@ -72,6 +72,32 @@ python -m report_pipeline multifolder --folders results/c1 results/c2 --pattern 
 python -m report_pipeline files --files a1.txt b1.txt a2.txt --out ai_overlay.pdf --legend
 ```
 
+### Example Point Clouds
+
+The repository ships sample LAZ files in `data/examplepointclouds` with one
+reference cloud (`reference.laz`) and four comparison clouds
+(`comparison1.laz` – `comparison4.laz`). The following commands demonstrate how
+to invoke the main pipeline with these files.
+
+#### Single-cloud statistics
+
+```bash
+python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud reference.laz --stats_singleordistance single --use_subsampled_corepoints 1 --sample_size 10000 --scale_strategy radius --only_stats --output_format excel --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --use_existing_params --outlier_detection_method rmse --outlier_multiplicator 3.0
+python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud comparison1.laz --stats_singleordistance single --use_subsampled_corepoints 1 --sample_size 10000 --scale_strategy radius --only_stats --output_format excel --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --use_existing_params --outlier_detection_method rmse --outlier_multiplicator 3.0
+python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud comparison2.laz --stats_singleordistance single --use_subsampled_corepoints 1 --sample_size 10000 --scale_strategy radius --only_stats --output_format excel --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --use_existing_params --outlier_detection_method rmse --outlier_multiplicator 3.0
+python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud comparison3.laz --stats_singleordistance single --use_subsampled_corepoints 1 --sample_size 10000 --scale_strategy radius --only_stats --output_format excel --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --use_existing_params --outlier_detection_method rmse --outlier_multiplicator 3.0
+python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud comparison4.laz --stats_singleordistance single --use_subsampled_corepoints 1 --sample_size 10000 --scale_strategy radius --only_stats --output_format excel --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --use_existing_params --outlier_detection_method rmse --outlier_multiplicator 3.0
+```
+
+#### Distance comparisons
+
+```bash
+python -m main --data_dir ./data --folders examplepointclouds --filename_reference reference.laz --filename_comparison comparison1.laz --stats_singleordistance distance --use_subsampled_corepoints 5 --sample_size 10000 --scale_strategy radius --no-only_stats --output_format json --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --no-use_existing_params --outlier_detection_method nmad --outlier_multiplicator 3.0
+python -m main --data_dir ./data --folders examplepointclouds --filename_reference reference.laz --filename_comparison comparison2.laz --stats_singleordistance distance --use_subsampled_corepoints 5 --sample_size 10000 --scale_strategy radius --no-only_stats --output_format json --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --no-use_existing_params --outlier_detection_method nmad --outlier_multiplicator 3.0
+python -m main --data_dir ./data --folders examplepointclouds --filename_reference reference.laz --filename_comparison comparison3.laz --stats_singleordistance distance --use_subsampled_corepoints 5 --sample_size 10000 --scale_strategy radius --no-only_stats --output_format json --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --no-use_existing_params --outlier_detection_method nmad --outlier_multiplicator 3.0
+python -m main --data_dir ./data --folders examplepointclouds --filename_reference reference.laz --filename_comparison comparison4.laz --stats_singleordistance distance --use_subsampled_corepoints 5 --sample_size 10000 --scale_strategy radius --no-only_stats --output_format json --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --no-use_existing_params --outlier_detection_method nmad --outlier_multiplicator 3.0
+```
+
 ## Logging
 
 Control verbosity with the `--log_level` option or by setting the `LOG_LEVEL`
