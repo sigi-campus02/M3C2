@@ -28,15 +28,21 @@ class ParamManager:
         tag: str,
     ) -> None:
         """Persist determined scale parameters to disk."""
+        # Ensure the output directory exists before writing the parameters file.
         os.makedirs(output_dir, exist_ok=True)
         # Build the path for the parameters file within the output directory.
         params_path = os.path.join(
             output_dir, f"{config.process_python_CC}_{tag}_m3c2_params.txt"
         )
         try:
-            with open(params_path, "w") as f:
-                f.write(f"NormalScale={normal}\nSearchScale={projection}\n")
+            # Attempt to write the scale parameters to disk.
+            with open(params_path, "w") as param_file:
+                # Store normal and projection scale parameters in the file.
+                param_file.write(
+                    f"NormalScale={normal}\nSearchScale={projection}\n"
+                )
         except OSError:
+            # Log the failure and re-raise to signal the error to the caller.
             logger.exception("[Params] speichern fehlgeschlagen: %s", params_path)
             raise
         logger.info("[Params] gespeichert: %s", params_path)
