@@ -12,7 +12,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 import re
-from typing import Iterable, Optional, Tuple
+from typing import Optional, Tuple
 
 # Regular expression matching ``<label>__<group>`` or ``<label>--<group>`` where
 # the group part is optional.  Using a non-greedy match for the label ensures
@@ -31,11 +31,10 @@ class DistanceFile:
 
 @dataclass(frozen=True)
 class PlotJob:
-    """Data required to produce a plot for a set of distances."""
+    """Data required to produce plots for a list of distance files."""
 
-    distances: Iterable[float]
-    label: str
-    group: Optional[str] = None
+    items: list[DistanceFile]
+    page_title: Optional[str] = None
 
 
 def parse_label_group(path: Path) -> Tuple[str, Optional[str]]:

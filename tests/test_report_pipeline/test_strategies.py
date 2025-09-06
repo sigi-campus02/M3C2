@@ -11,9 +11,9 @@ def test_folder_job_builder_sorts(tmp_path):
     (tmp_path / "a__g.txt").write_text("2\n")
     builder = FolderJobBuilder(folder=tmp_path)
     jobs = builder.build_jobs()
-    labels = [job.label for job in jobs]
+    labels = [job.items[0].label for job in jobs]
     assert labels == ["a", "b"]
-    groups = [job.group for job in jobs]
+    groups = [job.items[0].group for job in jobs]
     assert groups == ["g", "g"]
 
 
@@ -38,5 +38,5 @@ def test_multifolder_job_builder(tmp_path):
     )
     jobs = builder.build_jobs()
     assert len(jobs) == 4
-    labels = [job.label for job in jobs]
+    labels = [job.items[0].label for job in jobs]
     assert labels == ["d1", "d2", "d1", "d2"]
