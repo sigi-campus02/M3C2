@@ -1,3 +1,9 @@
+"""Persistence helpers for M3C2 scale parameters.
+
+The param manager stores and retrieves normal and projection scales so
+that expensive calculations can be reused across pipeline runs.
+"""
+
 import logging
 import os
 from typing import Tuple

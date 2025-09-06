@@ -1,3 +1,10 @@
+"""Processing utilities for single-cloud statistic generation.
+
+This module orchestrates computation of statistics for a single point
+cloud, managing scale determination, persistence and execution of the
+statistics routines.
+"""
+
 import logging
 import os
 from typing import Any

@@ -1,3 +1,10 @@
+"""Processing utilities for multi-cloud distance computation.
+
+The module orchestrates end-to-end handling of two point clouds,
+including scale determination, M3C2 execution, outlier detection and
+export of the resulting distances.
+"""
+
 import logging
 import os
 from typing import Any
