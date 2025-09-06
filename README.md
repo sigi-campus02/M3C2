@@ -44,6 +44,34 @@ python -m main --data_dir ./data --folders 0342-0349 --filename_reference refere
 
 Outputs, statistics, and logs are written to dataset folders and the `outputs/` directory.
 
+## CLI Examples
+
+### Single Cloud Statistics
+
+```bash
+python -m main --data_dir ./data --folders scan1 --filename_singlecloud surface.las --stats_singleordistance single
+python -m main --data_dir ./data --folders scanA scanB --filename_singlecloud points.ply --stats_singleordistance single --output_format json
+```
+
+### Distance Metrics
+
+```bash
+python -m main --data_dir ./data --folders pair_01 --filename_reference ref.ply --filename_comparison cmp.ply --stats_singleordistance distance
+python -m main --data_dir ./data --folders pair_A pair_B --filename_reference ref.las --filename_comparison cmp.las --stats_singleordistance distance --use_subsampled_corepoints 5 --outlier_detection_method nmad
+```
+
+### Plot Generation
+
+The reporting workflow is exposed through the `report_pipeline` commands. Invoke
+it either with `python -m report_pipeline` or, when installed as a package, via
+the `m3c2-report` console script. Some typical commands are:
+
+```bash
+python -m report_pipeline folder --folder results/case_07 --pattern "*_distances.txt" --out case_07.pdf
+python -m report_pipeline multifolder --folders results/c1 results/c2 --pattern "*_dist.txt" --paired --out all_cases.pdf
+python -m report_pipeline files --files a1.txt b1.txt a2.txt --out ai_overlay.pdf --legend
+```
+
 ## Logging
 
 Control verbosity with the `--log_level` option or by setting the `LOG_LEVEL`
