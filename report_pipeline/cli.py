@@ -72,6 +72,13 @@ def _add_shared_options(parser: argparse.ArgumentParser) -> None:
         help="Strategy for assigning colors to plots.",
     )
     parser.add_argument(
+        "--plot-type",
+        dest="plot_type",
+        choices=["histogram", "gauss", "weibull", "boxplot", "qq", "violin"],
+        default="histogram",
+        help="Type of overlay plot to generate.",
+    )
+    parser.add_argument(
         "--legend",
         action="store_true",
         help="Include a legend in the plots.",
@@ -121,6 +128,7 @@ def build_parser() -> argparse.ArgumentParser:
             pattern=ns.pattern,
             paired=ns.paired,
             group_by_folder=ns.group_by_folder,
+            plot_type=ns.plot_type,
         )
     )
 
@@ -153,6 +161,7 @@ def build_parser() -> argparse.ArgumentParser:
             folders=ns.folders,
             pattern=ns.pattern,
             paired=ns.paired,
+            plot_type=ns.plot_type,
         )
     )
 
@@ -176,7 +185,7 @@ def build_parser() -> argparse.ArgumentParser:
     _add_shared_options(files_parser)
     files_parser.set_defaults(
         builder_factory=lambda ns: FilesJobBuilder(
-            files=ns.files, paired=ns.paired
+            files=ns.files, paired=ns.paired, plot_type=ns.plot_type
         )
     )
 

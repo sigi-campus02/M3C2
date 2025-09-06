@@ -5,9 +5,10 @@ from report_pipeline.orchestrator import ReportOrchestrator
 
 
 class Job:
-    def __init__(self, items, title):
+    def __init__(self, items, title, plot_type="histogram"):
         self.items = items
         self.page_title = title
+        self.plot_type = plot_type
 
 
 def test_orchestrator_flattens_figures():
@@ -20,7 +21,7 @@ def test_orchestrator_flattens_figures():
     pdf_writer = MagicMock()
     pdf_writer.write.return_value = Path("out.pdf")
 
-    jobs = [Job([1], "p1"), Job([2], "p2")]
+    jobs = [Job([1], "p1", "histogram"), Job([2], "p2", "gauss")]
     builder = MagicMock()
     builder.build_jobs.return_value = jobs
 
@@ -30,4 +31,6 @@ def test_orchestrator_flattens_figures():
 
     builder.build_jobs.assert_called_once_with()
     pdf_writer.write.assert_called_once_with([fig1, fig2, fig3], out_path, "Title")
+    plotter.make_overlay.assert_any_call([1], title="p1", plot_type="histogram")
+    plotter.make_overlay.assert_any_call([2], title="p2", plot_type="gauss")
     assert result == Path("out.pdf")

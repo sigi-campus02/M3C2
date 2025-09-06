@@ -17,6 +17,7 @@ class MultiFolderJobBuilder(JobBuilder):
     folders: Iterable[Path]
     pattern: str = "*.txt"
     paired: bool = False
+    plot_type: str = "histogram"
 
     def build_jobs(self) -> list[PlotJob]:
         folder_paths = [Path(f).expanduser().resolve() for f in self.folders]
@@ -34,7 +35,7 @@ class MultiFolderJobBuilder(JobBuilder):
         jobs: list[PlotJob] = []
         for (label, group), items in groups.items():
             title = label if group is None else f"{label} ({group})"
-            jobs.append(PlotJob(items=items, page_title=title))
+            jobs.append(PlotJob(items=items, page_title=title, plot_type=self.plot_type))
 
         if self.paired:
             expected = len(folder_paths)

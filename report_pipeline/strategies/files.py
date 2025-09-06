@@ -16,6 +16,7 @@ class FilesJobBuilder(JobBuilder):
 
     files: Iterable[Path]
     paired: bool = False
+    plot_type: str = "histogram"
 
     def build_jobs(self) -> list[PlotJob]:
         files = [Path(f).expanduser().resolve() for f in self.files]
@@ -30,7 +31,7 @@ class FilesJobBuilder(JobBuilder):
             item = DistanceFile(path=path, label=label, group=group)
             groups.setdefault(group, []).append(item)
 
-        jobs = [PlotJob(items=items, page_title=grp) for grp, items in groups.items()]
+        jobs = [PlotJob(items=items, page_title=grp, plot_type=self.plot_type) for grp, items in groups.items()]
 
         if self.paired:
             for job in jobs:

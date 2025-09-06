@@ -51,6 +51,7 @@ class PlotJob:
 
     items: list[DistanceFile]
     page_title: Optional[str] = None
+    plot_type: str = "histogram"
 
 
 def parse_label_group(path: Path) -> Tuple[str, Optional[str]]:

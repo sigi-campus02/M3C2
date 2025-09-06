@@ -20,17 +20,25 @@ from .pdf import writer as pdf_writer
 class _Plotter:
     """Adapter exposing ``make_overlay`` for :class:`ReportOrchestrator`."""
 
-    def __init__(self, max_per_page: int | None, color_mapping: str, title: str | None) -> None:
+    def __init__(
+        self,
+        max_per_page: int | None,
+        color_mapping: str,
+        title: str | None,
+        plot_type: str,
+    ) -> None:
         self.max_per_page = max_per_page or 6
         self.color_mapping = color_mapping
         self.title = title
+        self.plot_type = plot_type
 
-    def make_overlay(self, items, title: str | None = None):
+    def make_overlay(self, items, title: str | None = None, plot_type: str | None = None):
         return figure_factory.make_overlay(
             items,
             title=title or self.title,
             max_per_page=self.max_per_page,
             color_strategy=self.color_mapping,
+            plot_type=plot_type or self.plot_type,
         )
 
 
@@ -40,7 +48,7 @@ class _PDFWriter:
     def __init__(self, out_dir: Path) -> None:
         self.out_dir = out_dir
 
-    def write(self, figures):
+    def write(self, figures, out_path: Path, title: str):
         self.out_dir.mkdir(parents=True, exist_ok=True)
         pdf_path = pdf_writer.write(figures)
         target = self.out_dir / "report.pdf"
@@ -55,10 +63,10 @@ def main(argv: Sequence[str] | None = None) -> None:
     if ns.dry_run:
         return
     builder = ns.builder_factory(ns)
-    plotter = _Plotter(ns.max_per_page, ns.color_mapping, ns.title)
+    plotter = _Plotter(ns.max_per_page, ns.color_mapping, ns.title, ns.plot_type)
     pdf_writer_instance = _PDFWriter(ns.out)
     orchestrator = ReportOrchestrator(plotter, pdf_writer_instance, builder)
-    pdf_path = orchestrator.run()
+    pdf_path = orchestrator.run(ns.out, ns.title or "")
     print(pdf_path)
 
 
