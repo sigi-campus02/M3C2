@@ -21,14 +21,19 @@ class FilesJobBuilder(JobBuilder):
         files = [Path(f).expanduser().resolve() for f in self.files]
         if len(files) < 2:
             raise ValueError("At least two files are required")
-        if self.paired and len(files) != 2:
-            raise ValueError("--paired requires exactly two files")
 
-        jobs: list[PlotJob] = []
-        for path in files:
+        groups: dict[str | None, list[DistanceFile]] = {}
+        for path in sorted(files):
             if not path.exists():
                 raise FileNotFoundError(f"Distance file not found: {path}")
             label, group = parse_label_group(path)
             item = DistanceFile(path=path, label=label, group=group)
-            jobs.append(PlotJob(items=[item]))
+            groups.setdefault(group, []).append(item)
+
+        jobs = [PlotJob(items=items, page_title=grp) for grp, items in groups.items()]
+
+        if self.paired:
+            for job in jobs:
+                if len(job.items) != 2:
+                    raise ValueError("--paired requires exactly two files per overlay")
         return jobs

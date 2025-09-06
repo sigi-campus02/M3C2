@@ -24,12 +24,9 @@ class FolderJobBuilder(JobBuilder):
             raise FileNotFoundError(f"Folder does not exist: {folder}")
 
         paths = sorted(p for p in folder.glob(self.pattern) if p.is_file())
-        if self.paired and len(paths) != 2:
-            raise ValueError("--paired requires exactly two files")
 
-        jobs: list[PlotJob] = []
+        groups: dict[str | None, list[DistanceFile]] = {}
         for path in paths:
-
             if self.group_by_folder:
                 try:
                     relative_parent = path.parent.relative_to(folder)
@@ -39,7 +36,14 @@ class FolderJobBuilder(JobBuilder):
                 label = path.stem
             else:
                 label, group = parse_label_group(path)
-            distances = load_distance_file(str(path))
-            jobs.append(PlotJob(distances=distances, label=label, group=group))
+            item = DistanceFile(path=path, label=label, group=group)
+            groups.setdefault(group, []).append(item)
+
+        jobs = [PlotJob(items=items, page_title=grp) for grp, items in groups.items()]
+
+        if self.paired:
+            for job in jobs:
+                if len(job.items) != 2:
+                    raise ValueError("--paired requires exactly two files per overlay")
 
         return jobs
