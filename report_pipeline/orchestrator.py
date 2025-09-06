@@ -11,8 +11,6 @@ finally delegates to the PDF writer to persist the figures as a report.
 from pathlib import Path
 from typing import Iterable
 
-from .domain import PlotJob
-
 
 class ReportOrchestrator:
     """Orchestrate plot creation and PDF generation for a series of jobs."""
@@ -32,18 +30,17 @@ class ReportOrchestrator:
         self.plotter = plotter
         self.pdf_writer = pdf_writer
 
-    def run(self, jobs: Iterable[PlotJob]) -> Path:
+    def run(self, jobs: Iterable) -> Path:
         """Generate figures for *jobs* and write them to a PDF report.
 
-        Each job's ``items`` attribute is passed to ``plotter.make_overlay``
-        along with the job's ``page_title``.  The created figures are then
-        handed to ``pdf_writer.write`` which returns the path to the generated
-        PDF.
+        ``plotter.make_overlay`` may return multiple figures per job.  All
+        figures are collected and finally written to the PDF writer which in
+        turn returns the path to the generated report.
         """
 
         figures: list = []
         for job in jobs:
-            fig = self.plotter.make_overlay(job.items, title=job.page_title)
-            figures.append(fig)
+            figs = self.plotter.make_overlay(job.items, title=job.page_title)
+            figures.extend(figs)
         pdf_path = self.pdf_writer.write(figures)
         return pdf_path
