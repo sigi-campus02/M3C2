@@ -82,11 +82,17 @@ to invoke the main pipeline with these files.
 #### Single-cloud statistics
 
 ```bash
-python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud reference.laz --stats_singleordistance single --use_subsampled_corepoints 1 --sample_size 10000 --scale_strategy radius --only_stats --output_format excel --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --use_existing_params --outlier_detection_method rmse --outlier_multiplicator 3.0
-python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud comparison1.laz --stats_singleordistance single --use_subsampled_corepoints 1 --sample_size 10000 --scale_strategy radius --only_stats --output_format excel --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --use_existing_params --outlier_detection_method rmse --outlier_multiplicator 3.0
-python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud comparison2.laz --stats_singleordistance single --use_subsampled_corepoints 1 --sample_size 10000 --scale_strategy radius --only_stats --output_format excel --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --use_existing_params --outlier_detection_method rmse --outlier_multiplicator 3.0
-python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud comparison3.laz --stats_singleordistance single --use_subsampled_corepoints 1 --sample_size 10000 --scale_strategy radius --only_stats --output_format excel --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --use_existing_params --outlier_detection_method rmse --outlier_multiplicator 3.0
-python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud comparison4.laz --stats_singleordistance single --use_subsampled_corepoints 1 --sample_size 10000 --scale_strategy radius --only_stats --output_format excel --project EXAMPLE --normal_override 0.1 --proj_override 0.2 --use_existing_params --outlier_detection_method rmse --outlier_multiplicator 3.0
+python -m main \
+  --stats_singleordistance single \
+  --data_dir ./data \
+  --folders examplepointclouds \
+  --filename_singlecloud reference.laz \
+  --use_subsampled_corepoints 1 \
+  --sample_size 10000 \
+  --scale_strategy radius \
+  --output_format excel \
+  --project EXAMPLE \
+  --use_existing_params false 
 ```
 
 #### Distance comparisons
