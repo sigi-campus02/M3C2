@@ -50,8 +50,8 @@ def _add_shared_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--out",
         type=Path,
-        default=Path("report"),
-        help="Output directory for generated plots and report.",
+        default=Path("report.pdf"),
+        help="Path to the generated PDF report.",
     )
     parser.add_argument(
         "--title",
@@ -62,6 +62,7 @@ def _add_shared_options(parser: argparse.ArgumentParser) -> None:
         "--max-per-page",
         dest="max_per_page",
         type=int,
+        default=4,
         help="Maximum number of plots per PDF page.",
     )
     parser.add_argument(
@@ -194,8 +195,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def run(argv: Sequence[str] | None = None) -> JobBuilder | None:
-    """Parse ``argv`` and return a job builder.
+def run(argv: Sequence[str] | None = None) -> tuple[JobBuilder, Path] | None:
+    """Parse ``argv`` and return a job builder and output path.
 
     When the ``--dry-run`` option is supplied no filesystem interaction takes
     place and ``None`` is returned.  The function is intended mainly for tests
@@ -206,7 +207,8 @@ def run(argv: Sequence[str] | None = None) -> JobBuilder | None:
     factory: BuilderFactory = ns.builder_factory
     if ns.dry_run:
         return None
-    return factory(ns)
+    builder = factory(ns)
+    return builder, ns.out
 
 
 __all__ = ["build_parser", "parse_args", "run"]

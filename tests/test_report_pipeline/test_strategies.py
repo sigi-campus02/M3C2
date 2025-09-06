@@ -7,9 +7,9 @@ from report_pipeline.strategies.multifolder import MultiFolderJobBuilder
 
 
 def test_folder_job_builder_sorts(tmp_path):
-    (tmp_path / "b__g2.txt").write_text("1\n")
-    (tmp_path / "a__g1.txt").write_text("2\n")
-    builder = FolderJobBuilder(folder=tmp_path)
+    (tmp_path / "b__g.txt").write_text("1\n")
+    (tmp_path / "a__g.txt").write_text("2\n")
+    builder = FolderJobBuilder(folder=tmp_path, paired=True)
     jobs = builder.build_jobs()
     assert len(jobs) == 1
     labels = [item.label for item in jobs[0].items]
@@ -45,7 +45,7 @@ def test_multifolder_job_builder(tmp_path):
         (sub / "d1__g1.txt").write_text("1\n")
         (sub / "d2__g2.txt").write_text("2\n")
         folders.append(sub)
-    builder = MultiFolderJobBuilder(folders=folders)
+    builder = MultiFolderJobBuilder(folders=folders, paired=True)
     jobs = builder.build_jobs()
     assert len(jobs) == 2
     titles = [job.page_title for job in jobs]

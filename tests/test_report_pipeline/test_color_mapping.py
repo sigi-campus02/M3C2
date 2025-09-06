@@ -17,7 +17,7 @@ def test_by_folder_color_strategy_assigns_same_color(monkeypatch):
     ax = MagicMock()
     monkeypatch.setattr(figure_factory.plt, "subplots", lambda: (fig, ax))
 
-    figure_factory.make_overlay(items, color_strategy="by_folder")
+    figure_factory.make_overlay(items, color_mapping="by_folder")
     colors = [call.kwargs.get("color") for call in ax.hist.call_args_list]
     assert colors[0] == colors[2]
     assert colors[0] != colors[1]
@@ -41,8 +41,8 @@ def test_by_label_strategy_deterministic_across_calls(monkeypatch):
 
     monkeypatch.setattr(figure_factory.plt, "subplots", fake_subplots)
 
-    figure_factory.make_overlay(items1, color_strategy="by_label")
-    figure_factory.make_overlay(items2, color_strategy="by_label")
+    figure_factory.make_overlay(items1, color_mapping="by_label")
+    figure_factory.make_overlay(items2, color_mapping="by_label")
 
     first = axes[0].hist.call_args_list[1].kwargs["color"]
     second = axes[1].hist.call_args_list[0].kwargs["color"]

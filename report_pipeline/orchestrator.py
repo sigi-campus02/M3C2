@@ -35,13 +35,27 @@ class ReportOrchestrator:
         self.pdf_writer = pdf_writer
         self.builder = builder
 
-    def run(self) -> Path:
+    def run(
+        self,
+        *,
+        max_per_page: int = 6,
+        color_mapping: str = "auto",
+        legend: bool = False,
+        title: str | None = None,
+        out: Path | None = None,
+    ) -> Path:
         """Generate figures for the builder's jobs and write them to a PDF report."""
 
         jobs = self.builder.build_jobs()
         figures: list = []
         for job in jobs:
-            figs = self.plotter.make_overlay(job.items, title=job.page_title)
+            figs = self.plotter.make_overlay(
+                job.items,
+                title=job.page_title or title,
+                max_per_page=max_per_page,
+                color_mapping=color_mapping,
+                legend=legend,
+            )
             figures.extend(figs)
-        pdf_path = self.pdf_writer.write(figures)
+        pdf_path = self.pdf_writer.write(figures, out)
         return pdf_path

@@ -38,7 +38,8 @@ def make_overlay(
     items: list[DistanceFile],
     title: str | None = None,
     max_per_page: int = 6,
-    color_strategy: str = "auto",
+    color_mapping: str = "auto",
+    legend: bool = False,
 ) -> list[Figure]:
     """Create overlay histogram figures for ``items``.
 
@@ -51,11 +52,13 @@ def make_overlay(
     max_per_page:
         Maximum number of data series per figure.  Items beyond this limit are
         rendered on additional pages.
-    color_strategy:
+    color_mapping:
         Strategy influencing colour assignment.  ``"auto"`` attempts to pick a
         sensible default, ``"by_label"`` assigns identical colours to matching
         labels and ``"by_folder"`` groups by the parent folder name.  Colour
         selection is deterministic across calls.
+    legend:
+        When ``True`` a legend is added to each figure.
 
     Returns
     -------
@@ -68,18 +71,18 @@ def make_overlay(
     color_cycle = plt.rcParams["axes.prop_cycle"].by_key().get("color", [])
 
     # Determine key function for colour assignment
-    if color_strategy == "by_label":
+    if color_mapping == "by_label":
         keyfunc = lambda item: item.label
-    elif color_strategy == "by_folder":
+    elif color_mapping == "by_folder":
         keyfunc = lambda item: str(item.path.parent)
-    elif color_strategy == "auto":
+    elif color_mapping == "auto":
         labels = [i.label for i in items]
         if len(set(labels)) == len(labels):
             keyfunc = lambda item: item.label
         else:
             keyfunc = lambda item: str(item.path.parent)
     else:
-        raise ValueError(f"Unknown color strategy: {color_strategy}")
+        raise ValueError(f"Unknown color strategy: {color_mapping}")
 
     def _colour(key: str) -> str:
         digest = sha256(key.encode("utf8")).hexdigest()
@@ -97,7 +100,8 @@ def make_overlay(
 
         ax.set_xlabel("Distance")
         ax.set_ylabel("Count")
-        ax.legend()
+        if legend:
+            ax.legend()
         fig.tight_layout()
         figures.append(fig)
 
