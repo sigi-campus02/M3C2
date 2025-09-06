@@ -19,25 +19,33 @@ class MultiFolderJobBuilder(JobBuilder):
     paired: bool = False
 
     def build_jobs(self) -> list[PlotJob]:
-        groups: dict[tuple[str, str | None], list[DistanceFile]] = {}
+        """Return a job for every folder containing matching files.
+
+        Files are searched in each configured *folder* using ``pattern``.  All
+        files from a folder are collected into a single :class:`PlotJob` whose
+        page title is the folder name.  When ``paired`` is set the folder must
+        contain exactly two matching files, otherwise a :class:`ValueError` is
+        raised.
+        """
+
+        jobs: list[PlotJob] = []
         folder_paths = [Path(f).expanduser().resolve() for f in self.folders]
+
         for folder_path in folder_paths:
             if not folder_path.is_dir():
                 raise FileNotFoundError(f"Folder does not exist: {folder_path}")
+
             paths = sorted(p for p in folder_path.glob(self.pattern) if p.is_file())
+            items: list[DistanceFile] = []
+
             for path in paths:
-                base_label, base_group = parse_label_group(path)
-                item = DistanceFile(path=path, label=folder_path.name, group=base_group)
-                key = (base_label, base_group)
-                groups.setdefault(key, []).append(item)
+                label, group = parse_label_group(path)
+                items.append(DistanceFile(path=path, label=label, group=group))
 
-        jobs: list[PlotJob] = []
-        for (label, group), items in groups.items():
-            title = label if group is None else f"{label} ({group})"
-            jobs.append(PlotJob(items=items, page_title=title))
+            if self.paired and len(items) != 2:
+                raise ValueError("--paired requires exactly two files per folder")
 
-        if self.paired:
-            for job in jobs:
-                if len(job.items) != 2:
-                    raise ValueError("--paired requires exactly two files per overlay")
+            if items:
+                jobs.append(PlotJob(items=items, page_title=folder_path.name))
+
         return jobs
