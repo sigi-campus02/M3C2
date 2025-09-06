@@ -17,7 +17,7 @@ from m3c2.config.pipeline_config import PipelineConfig
 from m3c2.pipeline.singlecloud_processor import SinglecloudProcessor
 
 
-def _cfg(tmp_path, use_existing_params=False):
+def _config(tmp_path, use_existing_params=False):
     return PipelineConfig(
         data_dir=str(tmp_path),
         folder_id="run",
@@ -40,27 +40,39 @@ def test_process_single_cloud(tmp_path):
     cloud = np.zeros((1, 3))
 
     class DummyDataLoader:
-        def load_data(self, cfg, mode="singlecloud"):
-            calls["load_data"] = SimpleNamespace(cfg=cfg, mode=mode)
+        def load_data(self, config, mode="singlecloud"):
+            calls["load_data"] = SimpleNamespace(config=config, mode=mode)
             return cloud
 
     class DummyScaleEstimator:
-        def determine_scales(self, cfg, arr):
-            calls["determine_scales"] = SimpleNamespace(cfg=cfg, arr=arr)
+        def determine_scales(self, config, cloud_points):
+            calls["determine_scales"] = SimpleNamespace(
+                config=config, cloud_points=cloud_points
+            )
             return 1.0, 2.0
 
     class DummyStatisticsRunner:
-        def single_cloud_statistics_handler(self, cfg, arr, normal):
-            calls["stats"] = SimpleNamespace(cfg=cfg, arr=arr, normal=normal)
-
-    class DummyParamManager:
-        def save_params(self, cfg, normal, projection, out_base, tag):
-            calls["save_params"] = SimpleNamespace(
-                cfg=cfg, normal=normal, projection=projection, out_base=out_base, tag=tag
+        def single_cloud_statistics_handler(self, config, cloud_points, normal_scale):
+            calls["stats"] = SimpleNamespace(
+                config=config, cloud_points=cloud_points, normal_scale=normal_scale
             )
 
-        def handle_override_params(self, cfg):  # pragma: no cover - should not be called
-            calls["handle_override_params"] = cfg
+    class DummyParamManager:
+        def save_params(
+            self, config, normal_scale, projection_scale, out_base, run_tag
+        ):
+            calls["save_params"] = SimpleNamespace(
+                config=config,
+                normal_scale=normal_scale,
+                projection_scale=projection_scale,
+                out_base=out_base,
+                run_tag=run_tag,
+            )
+
+        def handle_override_params(
+            self, config
+        ):  # pragma: no cover - should not be called
+            calls["handle_override_params"] = config
             return np.nan, np.nan
 
     processor = SinglecloudProcessor(
@@ -70,13 +82,15 @@ def test_process_single_cloud(tmp_path):
         param_manager=DummyParamManager(),
     )
 
-    cfg = _cfg(tmp_path, use_existing_params=False)
-    processor.process(cfg, tag="t")
+    config = _config(tmp_path, use_existing_params=False)
+    processor.process(config, run_tag="t")
 
     assert calls["load_data"].mode == "singlecloud"
-    assert calls["determine_scales"].arr is cloud
-    assert calls["save_params"].out_base == os.path.join(cfg.data_dir, cfg.folder_id)
-    assert calls["stats"].normal == 1.0
+    assert calls["determine_scales"].cloud_points is cloud
+    assert (
+        calls["save_params"].out_base == os.path.join(config.data_dir, config.folder_id)
+    )
+    assert calls["stats"].normal_scale == 1.0
     assert "handle_override_params" not in calls
 
 
@@ -86,19 +100,21 @@ def test_process_raises_on_executor_error(tmp_path):
     cloud = np.zeros((1, 3))
 
     class DummyDataLoader:
-        def load_data(self, cfg, mode="singlecloud"):
+        def load_data(self, config, mode="singlecloud"):
             return cloud
 
     class DummyScaleEstimator:
-        def determine_scales(self, cfg, arr):
+        def determine_scales(self, config, cloud_points):
             return 1.0, 1.0
 
     class FailingStatisticsRunner:
-        def single_cloud_statistics_handler(self, cfg, arr, normal):
+        def single_cloud_statistics_handler(
+            self, config, cloud_points, normal_scale
+        ):
             raise RuntimeError("fail")
 
     class DummyParamManager:
-        def handle_override_params(self, cfg):
+        def handle_override_params(self, config):
             return 1.0, 1.0
 
     processor = SinglecloudProcessor(
@@ -108,16 +124,16 @@ def test_process_raises_on_executor_error(tmp_path):
         param_manager=DummyParamManager(),
     )
 
-    cfg = _cfg(tmp_path, use_existing_params=True)
+    config = _config(tmp_path, use_existing_params=True)
     with pytest.raises(RuntimeError):
-        processor.process(cfg, tag="t")
+        processor.process(config, run_tag="t")
 
 
 def test_process_missing_file(tmp_path):
     """Loading a missing file should surface the underlying exception."""
 
     class MissingDataLoader:
-        def load_data(self, cfg, mode="singlecloud"):
+        def load_data(self, config, mode="singlecloud"):
             raise FileNotFoundError("missing")
 
     processor = SinglecloudProcessor(
@@ -127,6 +143,6 @@ def test_process_missing_file(tmp_path):
         param_manager=None,
     )
 
-    cfg = _cfg(tmp_path, use_existing_params=True)
+    config = _config(tmp_path, use_existing_params=True)
     with pytest.raises(FileNotFoundError):
-        processor.process(cfg, tag="t")
+        processor.process(config, run_tag="t")
