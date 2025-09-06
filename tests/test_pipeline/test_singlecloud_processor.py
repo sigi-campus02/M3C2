@@ -59,13 +59,13 @@ def test_process_single_cloud(tmp_path):
 
     class DummyParamManager:
         def save_params(
-            self, config, normal_scale, projection_scale, out_base, run_tag
+            self, config, normal_scale, projection_scale, output_dir, run_tag
         ):
             calls["save_params"] = SimpleNamespace(
                 config=config,
                 normal_scale=normal_scale,
                 projection_scale=projection_scale,
-                out_base=out_base,
+                output_dir=output_dir,
                 run_tag=run_tag,
             )
 
@@ -88,7 +88,8 @@ def test_process_single_cloud(tmp_path):
     assert calls["load_data"].mode == "singlecloud"
     assert calls["determine_scales"].cloud_points is cloud
     assert (
-        calls["save_params"].out_base == os.path.join(config.data_dir, config.folder_id)
+        calls["save_params"].output_dir
+        == os.path.join(config.data_dir, config.folder_id)
     )
     assert calls["stats"].normal_scale == 1.0
     assert "handle_override_params" not in calls
