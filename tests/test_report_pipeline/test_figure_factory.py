@@ -69,3 +69,28 @@ def test_make_passing_bablok(monkeypatch):
     monkeypatch.setattr(figure_factory, "load_distance_series", lambda p: data[p.name])
     figs = figure_factory.make_passing_bablok(items)
     assert len(figs) == 1
+
+
+def test_make_grouped_bar_creates_bars_for_each_group(monkeypatch):
+    items = [
+        DistanceFile(path=Path("with_a.txt"), label="A", group="WITH"),
+        DistanceFile(path=Path("inl_a.txt"), label="A", group="INLIER"),
+        DistanceFile(path=Path("with_b.txt"), label="B"),
+        DistanceFile(path=Path("inl_b.txt"), label="B", group="INLIER"),
+    ]
+    monkeypatch.setattr(figure_factory, "load_distance_series", lambda p: np.array([1, 2]))
+    fig = MagicMock()
+    ax0 = MagicMock()
+    ax1 = MagicMock()
+
+    def fake_subplots(*args, **kwargs):
+        return fig, [ax0, ax1]
+
+    monkeypatch.setattr(figure_factory.plt, "subplots", fake_subplots)
+
+    figure_factory.make_grouped_bar(items)
+
+    assert ax0.bar.call_count == 2
+    assert ax1.bar.call_count == 2
+    for call in ax0.bar.call_args_list + ax1.bar.call_args_list:
+        assert len(call.args[0]) == 2
