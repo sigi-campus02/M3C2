@@ -1,3 +1,5 @@
+"""Processing tasks for statistics of a single point cloud."""
+
 import logging
 import os
 from typing import Any

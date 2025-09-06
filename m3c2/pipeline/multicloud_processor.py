@@ -1,3 +1,5 @@
+"""Processing tasks for pairwise point cloud comparisons."""
+
 import logging
 import os
 from typing import Any

@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 """Utilities for converting point cloud formats to XYZ."""
+
+from __future__ import annotations
 
 from pathlib import Path
 import logging

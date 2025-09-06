@@ -1,3 +1,5 @@
+"""Manage saving and loading of M3C2 scale parameters."""
+
 import logging
 import os
 from typing import Tuple

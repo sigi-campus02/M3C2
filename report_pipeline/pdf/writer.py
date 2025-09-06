@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Utilities to persist matplotlib figures as a PDF document.
 
 The :func:`write` function accepts a sequence of matplotlib figures and stores
@@ -7,6 +5,8 @@ them in a PDF file.  Basic metadata such as title, creation date and the
 command used to invoke the program are embedded in the resulting document.  The
 path to the created PDF is returned to the caller.
 """
+
+from __future__ import annotations
 
 from datetime import datetime
 import sys

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Lightweight orchestration for building PDF reports from plot jobs.
 
 The :class:`ReportOrchestrator` coordinates the interaction between a plotter
@@ -7,6 +5,8 @@ object and a PDF writer.  Given a sequence of :class:`~report_pipeline.domain.Pl
 instances it requests plots from the plotter, collects the resulting figures and
 finally delegates to the PDF writer to persist the figures as a report.
 """
+
+from __future__ import annotations
 
 from pathlib import Path
 

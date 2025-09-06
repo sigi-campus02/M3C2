@@ -1,3 +1,5 @@
+"""Job building strategies for the report pipeline."""
+
 from .base import JobBuilder
 from .folder import FolderJobBuilder
 from .files import FilesJobBuilder

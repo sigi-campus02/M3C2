@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Command line interface for the simple report pipeline.
 
 This module exposes a minimal argument parser with three subcommands for
@@ -26,6 +24,8 @@ orchestration and returns the builder for use by higher level code.  When the
 ``--dry-run`` flag is supplied the function returns ``None`` without creating a
 builder.
 """
+
+from __future__ import annotations
 
 from pathlib import Path
 from typing import Callable, Sequence

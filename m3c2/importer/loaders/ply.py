@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 """Loader for PLY point cloud files."""
+
+from __future__ import annotations
 
 from pathlib import Path
 

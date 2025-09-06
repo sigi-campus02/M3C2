@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 """Loader for plain XYZ point cloud files."""
+
+from __future__ import annotations
 
 from pathlib import Path
 
