@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Any
+from typing import Any, Optional
 
 import numpy as np
 
@@ -21,12 +21,14 @@ class MulticloudProcessor:
         m3c2_executor: Any,
         statistics_runner: Any,
         param_manager: ParamManager,
+        outlier_handler: Optional[Any] = None,
     ) -> None:
         self.data_loader = data_loader
         self.scale_estimator = scale_estimator
         self.m3c2_executor = m3c2_executor
         self.statistics_runner = statistics_runner
         self.param_manager = param_manager
+        self.outlier_handler = outlier_handler
 
     def process(self, cfg: PipelineConfig, tag: str) -> None:
         """Process statistics for a pair of point clouds."""

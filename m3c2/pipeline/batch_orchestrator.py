@@ -59,7 +59,7 @@ class BatchOrchestrator:
         self.data_loader = self.factory.create_data_loader()
         self.scale_estimator = self.factory.create_scale_estimator()
         self.m3c2_executor = self.factory.create_m3c2_executor()
-        # self.outlier_handler = self.factory.create_outlier_handler()
+        self.outlier_handler = self.factory.create_outlier_handler()
         self.statistics_runner = self.factory.create_statistics_runner()
 
         self.param_manager = ParamManager()
@@ -69,6 +69,7 @@ class BatchOrchestrator:
             self.m3c2_executor,
             self.statistics_runner,
             self.param_manager,
+            outlier_handler=self.outlier_handler,
         )
         self.singlecloud_processor = SinglecloudProcessor(
             self.data_loader,
