@@ -28,12 +28,12 @@ class ScaleEstimator:
         """
         self.strategy_name = strategy_name
 
-    def determine_scales(self, cfg, corepoints) -> Tuple[float, float]:
+    def determine_scales(self, config, corepoints) -> Tuple[float, float]:
         """Determine suitable normal and projection scales.
 
         Parameters
         ----------
-        cfg : object
+        config : object
             Pipeline configuration supplying overrides and sampling parameters.
         corepoints : array-like
             Points on which to base the scale estimation.
@@ -47,35 +47,58 @@ class ScaleEstimator:
 
         This method is part of the public pipeline API.
         """
-        if cfg.normal_override is not None and cfg.proj_override is not None and cfg.stats_singleordistance == "distance":
-            normal, projection = cfg.normal_override, cfg.proj_override
-            logger.info("[Scales] Overrides verwendet: normal=%.6f, proj=%.6f", normal, projection)
+        # --- Override handling -------------------------------------------------
+        if (
+            config.normal_override is not None
+            and config.proj_override is not None
+            and config.stats_singleordistance == "distance"
+        ):
+            normal, projection = config.normal_override, config.proj_override
+            logger.info(
+                "[Scales] Overrides verwendet: normal=%.6f, proj=%.6f",
+                normal,
+                projection,
+            )
             return normal, projection
 
-        t0 = time.perf_counter()
+        # --- Spacing estimation -----------------------------------------------
+        start_time = time.perf_counter()
         try:
             strategy_cls = STRATEGIES[self.strategy_name]
         except KeyError as exc:
             raise ValueError(f"Unbekannte Strategie: {self.strategy_name}") from exc
 
-        strategy = strategy_cls(sample_size=cfg.sample_size)
+        strategy = strategy_cls(sample_size=config.sample_size)
         estimator = ParamEstimator(strategy=strategy)
 
-        avg = estimator.estimate_min_spacing(corepoints)
-        logger.info("[Spacing] avg_spacing=%.6f (k=6) | %.3fs", avg, time.perf_counter() - t0)
+        average_spacing = estimator.estimate_min_spacing(corepoints)
+        logger.info(
+            "[Spacing] avg_spacing=%.6f (k=6) | %.3fs",
+            average_spacing,
+            time.perf_counter() - start_time,
+        )
 
-        t0 = time.perf_counter()
-        scans: List[ScaleScan] = estimator.scan_scales(corepoints, avg)
-        logger.info("[Scan] %d Skalen evaluiert | %.3fs", len(scans), time.perf_counter() - t0)
+        # --- Scanning ---------------------------------------------------------
+        start_time = time.perf_counter()
+        scale_scans: List[ScaleScan] = estimator.scan_scales(
+            corepoints, average_spacing
+        )
+        logger.info(
+            "[Scan] %d Skalen evaluiert | %.3fs",
+            len(scale_scans),
+            time.perf_counter() - start_time,
+        )
 
-        if scans:
-            top_valid = sorted(scans, key=lambda s: s.valid_normals, reverse=True)[:5]
+        if scale_scans:
+            top_valid = sorted(
+                scale_scans, key=lambda s: s.valid_normals, reverse=True
+            )[:5]
             logger.debug(
                 "  Top(valid_normals): %s",  # noqa: G004
                 [(round(s.scale, 6), int(s.valid_normals)) for s in top_valid],
             )
             top_smooth = sorted(
-                scans, key=lambda s: (np.nan_to_num(s.roughness, nan=np.inf))
+                scale_scans, key=lambda s: (np.nan_to_num(s.roughness, nan=np.inf))
             )[:5]
             logger.debug(
                 "  Top(min_roughness): %s",  # noqa: G004
@@ -84,7 +107,13 @@ class ScaleEstimator:
         else:
             raise ValueError("Scan-Strategie lieferte keine Skalen.")
 
-        t0 = time.perf_counter()
-        normal, projection = ParamEstimator.select_scales(scans)
-        logger.info("[Select] normal=%.6f, proj=%.6f | %.3fs", normal, projection, time.perf_counter() - t0)
+        # --- Final scale selection -------------------------------------------
+        start_time = time.perf_counter()
+        normal, projection = ParamEstimator.select_scales(scale_scans)
+        logger.info(
+            "[Select] normal=%.6f, proj=%.6f | %.3fs",
+            normal,
+            projection,
+            time.perf_counter() - start_time,
+        )
         return normal, projection
