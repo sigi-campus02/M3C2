@@ -100,6 +100,7 @@ python -m main \
   --use_existing_params false
 
 # Override normal and projection scales
+
 python -m main \
   --stats_singleordistance single \
   --data_dir ./data \
@@ -108,6 +109,7 @@ python -m main \
   --use_subsampled_corepoints 1 \
   --sample_size 10000 \
   --scale_strategy radius \
+
   --only_stats \
   --output_format excel \
   --project EXAMPLE \
@@ -131,6 +133,7 @@ python -m main \
 ```
 
 #### Distance comparisons
+
 
 Comparison commands use `comparison1.laz` as the example target; swap in
 `comparison2.laz`–`comparison4.laz` for the other datasets.
