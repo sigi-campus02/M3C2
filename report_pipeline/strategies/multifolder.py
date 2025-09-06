@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-"""Strategy assembling jobs from multiple folders and filenames."""
+"""Strategy assembling jobs from multiple folders using a file pattern."""
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -12,25 +12,27 @@ from .base import JobBuilder
 
 @dataclass
 class MultiFolderJobBuilder(JobBuilder):
-    """Build jobs from ``filenames`` located in each of ``folders``."""
+    """Build jobs from files matching ``pattern`` in multiple folders."""
 
-    data_dir: Path
-    folders: Iterable[str]
-    filenames: Iterable[str]
+    folders: Iterable[Path]
+    pattern: str = "*.txt"
     paired: bool = False
 
     def build_jobs(self) -> list[PlotJob]:
-        base = Path(self.data_dir).expanduser().resolve()
         jobs: list[PlotJob] = []
         for folder in self.folders:
-            folder_path = base / folder
-            for name in self.filenames:
-                path = folder_path / name
-                if not path.exists():
-                    raise FileNotFoundError(f"Distance file not found: {path}")
+            folder_path = Path(folder).expanduser().resolve()
+            if not folder_path.is_dir():
+                raise FileNotFoundError(f"Folder does not exist: {folder_path}")
+            paths = sorted(p for p in folder_path.glob(self.pattern) if p.is_file())
+            for path in paths:
                 label, group = parse_label_group(path)
-                item = DistanceFile(path=path, label=label, group=group)
-                jobs.append(PlotJob(items=[item]))
+
+                if group is None:
+                    group = folder_path.name
+                distances = load_distance_file(str(path))
+                jobs.append(PlotJob(distances=distances, label=label, group=group))
+
 
         if self.paired and len(jobs) != 2:
             raise ValueError("--paired requires exactly two files")

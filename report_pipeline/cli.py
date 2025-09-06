@@ -27,7 +27,7 @@ higher level code.
 """
 
 from pathlib import Path
-from typing import Callable, Iterable, Sequence
+from typing import Callable, Sequence
 import argparse
 
 from .domain import PlotJob
@@ -67,8 +67,9 @@ def _add_shared_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--color-mapping",
         dest="color_mapping",
-        type=Path,
-        help="Optional JSON file mapping labels to colors.",
+        choices=["auto", "by_label", "by_folder"],
+        default="auto",
+        help="Strategy for assigning colors to plots.",
     )
     parser.add_argument(
         "--legend",
@@ -99,6 +100,16 @@ def build_parser() -> argparse.ArgumentParser:
     )
     folder_parser.add_argument("folder", type=Path, help="Directory containing distance files")
     folder_parser.add_argument(
+        "--pattern",
+        default="*.txt",
+        help="Glob pattern selecting distance files",
+    )
+    folder_parser.add_argument(
+        "--group-by-folder",
+        action="store_true",
+        help="Use the immediate subfolder name as group",
+    )
+    folder_parser.add_argument(
         "--paired",
         action="store_true",
         help="Expect exactly two files; raise an error otherwise.",
@@ -106,7 +117,10 @@ def build_parser() -> argparse.ArgumentParser:
     _add_shared_options(folder_parser)
     folder_parser.set_defaults(
         builder_factory=lambda ns: FolderJobBuilder(
-            folder=ns.folder, paired=ns.paired
+            folder=ns.folder,
+            pattern=ns.pattern,
+            paired=ns.paired,
+            group_by_folder=ns.group_by_folder,
         )
     )
 
@@ -114,22 +128,19 @@ def build_parser() -> argparse.ArgumentParser:
     # multifolder subcommand
     # ------------------------------------------------------------------
     multifolder_parser = subparsers.add_parser(
-        "multifolder", help="Load specific files from multiple folders."
-    )
-    multifolder_parser.add_argument(
-        "data_dir", type=Path, help="Base directory containing the folders"
+        "multifolder", help="Process matching files from multiple folders."
     )
     multifolder_parser.add_argument(
         "--folders",
         nargs="+",
+        type=Path,
         required=True,
-        help="Folder names located below the base directory.",
+        help="Paths to folders containing distance files.",
     )
     multifolder_parser.add_argument(
-        "--filenames",
-        nargs="+",
-        required=True,
-        help="File names to load from each folder.",
+        "--pattern",
+        default="*.txt",
+        help="Glob pattern selecting distance files in each folder",
     )
     multifolder_parser.add_argument(
         "--paired",
@@ -139,9 +150,8 @@ def build_parser() -> argparse.ArgumentParser:
     _add_shared_options(multifolder_parser)
     multifolder_parser.set_defaults(
         builder_factory=lambda ns: MultiFolderJobBuilder(
-            data_dir=ns.data_dir,
             folders=ns.folders,
-            filenames=ns.filenames,
+            pattern=ns.pattern,
             paired=ns.paired,
         )
     )

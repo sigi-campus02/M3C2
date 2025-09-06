@@ -26,16 +26,24 @@ def test_files_job_builder_missing_file(tmp_path):
         builder.build_jobs()
 
 
+def test_files_job_builder_requires_two_files(tmp_path):
+    a = tmp_path / "a.txt"
+    a.write_text("1\n")
+    builder = FilesJobBuilder(files=[a])
+    with pytest.raises(ValueError):
+        builder.build_jobs()
+
+
 def test_multifolder_job_builder(tmp_path):
     base = tmp_path
+    folders = []
     for folder in ["f1", "f2"]:
         sub = base / folder
         sub.mkdir()
         (sub / "d1__g1.txt").write_text("1\n")
         (sub / "d2__g2.txt").write_text("2\n")
-    builder = MultiFolderJobBuilder(
-        data_dir=base, folders=["f1", "f2"], filenames=["d1__g1.txt", "d2__g2.txt"]
-    )
+        folders.append(sub)
+    builder = MultiFolderJobBuilder(folders=folders)
     jobs = builder.build_jobs()
     assert len(jobs) == 4
     labels = [job.items[0].label for job in jobs]
