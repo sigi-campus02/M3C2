@@ -5,9 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from m3c2.cli.overlay_report import load_distance_file
-
-from ..domain import PlotJob, parse_label_group
+from ..domain import DistanceFile, PlotJob, parse_label_group
 from .base import JobBuilder
 
 
@@ -16,6 +14,7 @@ class FolderJobBuilder(JobBuilder):
     """Build jobs for every distance file within a directory."""
 
     folder: Path
+    pattern: str = "*"
     paired: bool = False
 
     def build_jobs(self) -> list[PlotJob]:
@@ -23,13 +22,20 @@ class FolderJobBuilder(JobBuilder):
         if not folder.is_dir():
             raise FileNotFoundError(f"Folder does not exist: {folder}")
 
-        paths = sorted(p for p in folder.iterdir() if p.is_file())
-        if self.paired and len(paths) != 2:
-            raise ValueError("--paired requires exactly two files")
+        paths = sorted(p for p in folder.glob(self.pattern) if p.is_file())
+        if self.paired and len(paths) % 2:
+            raise ValueError("--paired requires an even number of files")
+
+        def to_item(p: Path) -> DistanceFile:
+            label, group = parse_label_group(p)
+            return DistanceFile(path=p, label=label, group=group)
 
         jobs: list[PlotJob] = []
-        for path in paths:
-            label, group = parse_label_group(path)
-            distances = load_distance_file(str(path))
-            jobs.append(PlotJob(distances=distances, label=label, group=group))
+        if self.paired:
+            for idx in range(0, len(paths), 2):
+                items = [to_item(p) for p in paths[idx : idx + 2]]
+                jobs.append(PlotJob(items=items))
+        else:
+            for p in paths:
+                jobs.append(PlotJob(items=[to_item(p)]))
         return jobs

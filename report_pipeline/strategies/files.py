@@ -6,9 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
-from m3c2.cli.overlay_report import load_distance_file
-
-from ..domain import PlotJob, parse_label_group
+from ..domain import DistanceFile, PlotJob, parse_label_group
 from .base import JobBuilder
 
 
@@ -20,15 +18,24 @@ class FilesJobBuilder(JobBuilder):
     paired: bool = False
 
     def build_jobs(self) -> list[PlotJob]:
-        files = [Path(f).expanduser().resolve() for f in self.files]
-        if self.paired and len(files) != 2:
-            raise ValueError("--paired requires exactly two files")
-
-        jobs: list[PlotJob] = []
-        for path in files:
+        paths = [Path(f).expanduser().resolve() for f in self.files]
+        for path in paths:
             if not path.exists():
                 raise FileNotFoundError(f"Distance file not found: {path}")
-            label, group = parse_label_group(path)
-            distances = load_distance_file(str(path))
-            jobs.append(PlotJob(distances=distances, label=label, group=group))
+
+        if self.paired and len(paths) % 2:
+            raise ValueError("--paired requires an even number of files")
+
+        def to_item(p: Path) -> DistanceFile:
+            label, group = parse_label_group(p)
+            return DistanceFile(path=p, label=label, group=group)
+
+        jobs: list[PlotJob] = []
+        if self.paired:
+            for idx in range(0, len(paths), 2):
+                items = [to_item(p) for p in paths[idx : idx + 2]]
+                jobs.append(PlotJob(items=items))
+        else:
+            for p in paths:
+                jobs.append(PlotJob(items=[to_item(p)]))
         return jobs

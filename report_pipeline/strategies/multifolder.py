@@ -6,9 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
-from m3c2.cli.overlay_report import load_distance_file
-
-from ..domain import PlotJob, parse_label_group
+from ..domain import DistanceFile, PlotJob, parse_label_group
 from .base import JobBuilder
 
 
@@ -16,24 +14,34 @@ from .base import JobBuilder
 class MultiFolderJobBuilder(JobBuilder):
     """Build jobs from ``filenames`` located in each of ``folders``."""
 
-    data_dir: Path
-    folders: Iterable[str]
-    filenames: Iterable[str]
+    folders: Iterable[Path]
+    pattern: str
     paired: bool = False
 
     def build_jobs(self) -> list[PlotJob]:
-        base = Path(self.data_dir).expanduser().resolve()
-        jobs: list[PlotJob] = []
-        for folder in self.folders:
-            folder_path = base / folder
-            for name in self.filenames:
-                path = folder_path / name
-                if not path.exists():
-                    raise FileNotFoundError(f"Distance file not found: {path}")
-                label, group = parse_label_group(path)
-                distances = load_distance_file(str(path))
-                jobs.append(PlotJob(distances=distances, label=label, group=group))
+        folder_paths = [Path(f).expanduser().resolve() for f in self.folders]
+        for folder in folder_paths:
+            if not folder.is_dir():
+                raise FileNotFoundError(f"Folder does not exist: {folder}")
 
-        if self.paired and len(jobs) != 2:
-            raise ValueError("--paired requires exactly two files")
+        files_by_name: dict[str, list[DistanceFile]] = {}
+        for folder in folder_paths:
+            for path in sorted(folder.glob(self.pattern)):
+                if not path.is_file():
+                    continue
+                label, group = parse_label_group(path)
+                item = DistanceFile(path=path, label=label, group=group)
+                files_by_name.setdefault(path.name, []).append(item)
+
+        jobs: list[PlotJob] = []
+        expected = len(folder_paths)
+        for name in sorted(files_by_name):
+            items = files_by_name[name]
+            if len(items) != expected:
+                raise FileNotFoundError(
+                    f"File '{name}' not found in all folders"
+                )
+            if self.paired and len(items) != 2:
+                raise ValueError("--paired requires exactly two files per pattern")
+            jobs.append(PlotJob(items=items))
         return jobs

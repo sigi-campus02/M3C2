@@ -97,7 +97,15 @@ def build_parser() -> argparse.ArgumentParser:
     folder_parser = subparsers.add_parser(
         "folder", help="Process all distance files within a folder."
     )
-    folder_parser.add_argument("folder", type=Path, help="Directory containing distance files")
+    folder_parser.add_argument(
+        "folder", type=Path, help="Directory containing distance files"
+    )
+    folder_parser.add_argument(
+        "--pattern",
+        type=str,
+        default="*",
+        help="Glob pattern to select files within the folder.",
+    )
     folder_parser.add_argument(
         "--paired",
         action="store_true",
@@ -106,7 +114,7 @@ def build_parser() -> argparse.ArgumentParser:
     _add_shared_options(folder_parser)
     folder_parser.set_defaults(
         builder_factory=lambda ns: FolderJobBuilder(
-            folder=ns.folder, paired=ns.paired
+            folder=ns.folder, pattern=ns.pattern, paired=ns.paired
         )
     )
 
@@ -114,34 +122,31 @@ def build_parser() -> argparse.ArgumentParser:
     # multifolder subcommand
     # ------------------------------------------------------------------
     multifolder_parser = subparsers.add_parser(
-        "multifolder", help="Load specific files from multiple folders."
-    )
-    multifolder_parser.add_argument(
-        "data_dir", type=Path, help="Base directory containing the folders"
+        "multifolder", help="Load matching files from multiple folders."
     )
     multifolder_parser.add_argument(
         "--folders",
         nargs="+",
         required=True,
-        help="Folder names located below the base directory.",
+        type=Path,
+        help="Folders containing distance files.",
     )
     multifolder_parser.add_argument(
-        "--filenames",
-        nargs="+",
-        required=True,
-        help="File names to load from each folder.",
+        "--pattern",
+        type=str,
+        default="*",
+        help="Glob pattern identifying files to load from each folder.",
     )
     multifolder_parser.add_argument(
         "--paired",
         action="store_true",
-        help="Expect exactly two files overall; raise an error otherwise.",
+        help="Require exactly two files per overlay; raise an error otherwise.",
     )
     _add_shared_options(multifolder_parser)
     multifolder_parser.set_defaults(
         builder_factory=lambda ns: MultiFolderJobBuilder(
-            data_dir=ns.data_dir,
             folders=ns.folders,
-            filenames=ns.filenames,
+            pattern=ns.pattern,
             paired=ns.paired,
         )
     )
