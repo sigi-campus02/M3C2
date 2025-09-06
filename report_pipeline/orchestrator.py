@@ -42,7 +42,8 @@ class ReportOrchestrator:
         jobs = self.builder.build_jobs()
         figures: list = []
         for job in jobs:
-            figs = self.plotter.make_overlay(job.items, title=job.page_title)
+            plot_type = getattr(job, "plot_type", "histogram")
+            figs = self.plotter.make_overlay(job.items, title=job.page_title, plot_type=plot_type)
             figures.extend(figs)
         pdf_path = self.pdf_writer.write(figures, out_path, title)
         return pdf_path
