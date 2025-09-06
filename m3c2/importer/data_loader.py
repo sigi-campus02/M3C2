@@ -17,14 +17,12 @@ logger = logging.getLogger(__name__)
 class DataLoader:
     """Load point cloud data and core points according to a configuration."""
 
-
-    def load_data(self, cfg, mode: str) -> tuple[DataSource, object, object, object] | object:
-
-        """Load point clouds and core points according to ``cfg``.
+    def load_data(self, config, mode: str) -> tuple[DataSource, object, object, object] | object:
+        """Load point clouds and core points according to ``config``.
 
         Parameters
         ----------
-        cfg : PipelineConfig
+        config : PipelineConfig
             Configuration defining the location of the point clouds and
             which epoch to use for the core points.
         mode : str
@@ -34,7 +32,7 @@ class DataLoader:
         Returns
         -------
         tuple or object
-            For ``"multicloud"`` returns ``(ds, comparison, reference, corepoints)``
+            For ``"multicloud"`` returns ``(data_source, comparison, reference, corepoints)``
             containing the :class:`DataSource` used for loading, the comparison
             and reference epochs and a NumPy array of the core point
             coordinates.  For ``"singlecloud"`` returns only the single cloud
@@ -49,59 +47,69 @@ class DataLoader:
         -----
         This method is part of the public pipeline API.
         """
+        # Delegate based on mode. Configuration is passed through to the helper
+        # which knows how to interpret it.
         if mode == "multicloud":
-            return self._load_data_multi(cfg)
+            # Return the data source along with comparison, reference and core points
+            return self._load_data_multi(config)
 
         if mode == "singlecloud":
-            return self._load_data_single(cfg)
+            # Return only the single epoch loaded from the data source
+            return self._load_data_single(config)
 
+        # Reject invalid modes early to help debugging
         raise ValueError(f"Unknown mode '{mode}'")
 
-
-    def _load_data_multi(self, cfg) -> tuple[DataSource, object, object, object]:
-        """Load multi-cloud data according to ``cfg``.
+    def _load_data_multi(self, config) -> tuple[DataSource, object, object, object]:
+        """Load multi-cloud data according to ``config``.
 
         Parameters
         ----------
-        cfg : PipelineConfig
+        config : PipelineConfig
             Configuration defining the location of the point clouds and
             which epoch to use for the core points.
 
         Returns
         -------
         tuple
-            ``(ds, comparison, reference, corepoints)`` containing the :class:`DataSource`
+            ``(data_source, comparison, reference, corepoints)`` containing the :class:`DataSource`
             used for loading, the comparison and reference epochs and a NumPy array
             of the core point coordinates.
         """
-        t0 = time.perf_counter()
+        # Start timing the loading operation
+        start_time = time.perf_counter()
 
-        ds_config = DataSourceConfig(
-            folder=os.path.join(cfg.data_dir, cfg.folder_id),
-            comparison_basename=cfg.filename_comparison,
-            reference_basename=cfg.filename_reference,
-            use_subsampled_corepoints=cfg.use_subsampled_corepoints,
+        # Build a DataSourceConfig from the pipeline configuration
+        datasource_config = DataSourceConfig(
+            folder=os.path.join(config.data_dir, config.folder_id),
+            comparison_basename=config.filename_comparison,
+            reference_basename=config.filename_reference,
+            use_subsampled_corepoints=config.use_subsampled_corepoints,
         )
-        ds = DataSource(ds_config)
+        # Create a DataSource using the configuration above
+        data_source = DataSource(datasource_config)
 
-        comparison, reference, corepoints = ds.load_points()
+        # Load comparison and reference epochs along with core points
+        comparison, reference, corepoints = data_source.load_points()
 
+        # Log the shapes of the loaded data and how long it took
         logger.info(
             "[Load] data/%s: comparison=%s, reference=%s, corepoints=%s | %.3fs",
-            cfg.folder_id,
+            config.folder_id,
             getattr(comparison, "cloud", np.array([])).shape if hasattr(comparison, "cloud") else "Epoch",
             getattr(reference, "cloud", np.array([])).shape if hasattr(reference, "cloud") else "Epoch",
             np.asarray(corepoints).shape,
-            time.perf_counter() - t0,
+            time.perf_counter() - start_time,
         )
-        return ds, comparison, reference, corepoints
+        # Return the data source and the loaded epochs
+        return data_source, comparison, reference, corepoints
 
-    def _load_data_single(self, cfg) -> object:
-        """Load single-cloud data according to ``cfg``.
+    def _load_data_single(self, config) -> object:
+        """Load single-cloud data according to ``config``.
 
         Parameters
         ----------
-        cfg : PipelineConfig
+        config : PipelineConfig
             Configuration defining the location of the point clouds and
             which epoch to use for the core points.
 
@@ -110,20 +118,26 @@ class DataLoader:
         object
             The single cloud epoch.
         """
-        t0 = time.perf_counter()
+        # Time the loading of the single cloud
+        start_time = time.perf_counter()
 
-        ds_config = DataSourceConfig(
-            folder=os.path.join(cfg.data_dir, cfg.folder_id),
-            filename_singlecloud=cfg.filename_singlecloud,
+        # Build the data source configuration for a single cloud
+        datasource_config = DataSourceConfig(
+            folder=os.path.join(config.data_dir, config.folder_id),
+            filename_singlecloud=config.filename_singlecloud,
         )
-        ds_single = DataSource(ds_config)
+        # Instantiate the DataSource with the prepared configuration
+        single_data_source = DataSource(datasource_config)
 
-        single_cloud = ds_single.load_points_singlecloud()
+        # Load the single cloud epoch
+        single_cloud = single_data_source.load_points_singlecloud()
 
+        # Log the shape of the loaded cloud and the elapsed time
         logger.info(
             "[Load] data/%s: single_cloud=%s | %.3fs",
-            cfg.folder_id,
+            config.folder_id,
             getattr(single_cloud, "cloud", np.array([])).shape if hasattr(single_cloud, "cloud") else "Epoch",
-            time.perf_counter() - t0,
+            time.perf_counter() - start_time,
         )
+        # Return the loaded single cloud
         return single_cloud
