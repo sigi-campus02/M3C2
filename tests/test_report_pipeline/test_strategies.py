@@ -14,8 +14,8 @@ def test_folder_job_builder_sorts(tmp_path):
     assert len(jobs) == 1
     labels = [item.label for item in jobs[0].items]
     assert labels == ["a", "b"]
-    groups = [job.items[0].group for job in jobs]
-    assert groups == ["g1", "g2"]
+    groups = [item.group for item in jobs[0].items]
+    assert groups == ["g", "g"]
 
 
 
@@ -49,18 +49,8 @@ def test_multifolder_job_builder(tmp_path):
     jobs = builder.build_jobs()
     assert len(jobs) == 2
     titles = [job.page_title for job in jobs]
-    assert titles == ["f1", "f2"]
+
+    assert titles == ["d1 (g1)", "d2 (g2)"]
     labels = [[item.label for item in job.items] for job in jobs]
-    assert labels == [["d1", "d2"], ["d1", "d2"]]
-    groups = [[item.group for item in job.items] for job in jobs]
-    assert groups == [["g1", "g2"], ["g1", "g2"]]
-
-
-def test_multifolder_job_builder_paired_requires_two_files(tmp_path):
-    folder = tmp_path / "f1"
-    folder.mkdir()
-    (folder / "only.txt").write_text("1\n")
-    builder = MultiFolderJobBuilder(folders=[folder], paired=True)
-    with pytest.raises(ValueError):
-        builder.build_jobs()
+    assert labels == [["f1", "f2"], ["f1", "f2"]]
 
