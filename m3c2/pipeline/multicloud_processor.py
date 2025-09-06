@@ -1,10 +1,12 @@
 import logging
+import os
 from typing import Any
 
 import numpy as np
 
 from m3c2.config.pipeline_config import PipelineConfig
 from m3c2.pipeline.param_manager import ParamManager
+from m3c2.exporter.ply_exporter import export_xyz_distance
 
 logger = logging.getLogger(__name__)
 
@@ -76,3 +78,9 @@ class MulticloudProcessor:
         distances, _, _ = self.m3c2_executor.run_m3c2(
             cfg, comparison, reference, corepoints, normal, projection, out_base, tag
         )
+
+        ply_path = os.path.join(
+            out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances.ply"
+        )
+        export_xyz_distance(corepoints, distances, ply_path)
+        logger.info("[PLY] Distanzen als PLY gespeichert: %s", ply_path)
