@@ -93,60 +93,26 @@ package "M3C2" {
   }
 }
 
-' =======================
-'   Visualization & Plots
-' =======================
-package "Visualization" {
-  class VisualizationService {
-    +histogram()
-    +colorize()
-    +export_valid()
-  }
+ ' =======================
+ '   Reporting CLI
+ ' =======================
+ package "report_pipeline" {
+   class ReportPipelineCLI {
+     +folder()
+     +multifolder()
+     +files()
+   }
+ }
 
-  class PlotOptions {
-    +plot_hist: bool
-    +plot_gauss: bool
-    +plot_weibull: bool
-    +plot_box: bool
-    +plot_qq: bool
-    +plot_grouped_bar: bool
-  }
-
-  class PlotConfig {
-    +folder_id: str
-    +filenames: List<str>
-    +versions: List<str>
-    +bins: int
-    +colors: Dict<str,str>
-    +outdir: str
-    +ensure_colors()
-  }
-
-  class PlotService {
-    +overlay_plots()
-    +summary_pdf()
-    -_resolve()
-    -_load_data()
-    -_get_common_range()
-    -_plot_overlay_histogram()
-    -_plot_overlay_gauss()
-    -_plot_overlay_weibull()
-    -_plot_overlay_boxplot()
-    -_plot_overlay_qq()
-    -_plot_grouped_bar_means_stds()
-  }
-}
-
-' =======================
-'   Beziehungen
-' =======================
-BatchOrchestrator --> PipelineConfig
-BatchOrchestrator --> DataSource
-BatchOrchestrator --> ParamEstimator
-BatchOrchestrator --> M3C2Runner
-BatchOrchestrator --> VisualizationService
-BatchOrchestrator --> StatisticsService
-ParamEstimator --> ScaleStrategy
-ScaleStrategy <|.. RadiusScanStrategy
+ ' =======================
+ '   Beziehungen
+ ' =======================
+ BatchOrchestrator --> PipelineConfig
+ BatchOrchestrator --> DataSource
+ BatchOrchestrator --> ParamEstimator
+ BatchOrchestrator --> M3C2Runner
+ BatchOrchestrator --> StatisticsService
+ ParamEstimator --> ScaleStrategy
+ ScaleStrategy <|.. RadiusScanStrategy
 ScaleStrategy <|.. VoxelScanStrategy
 @enduml

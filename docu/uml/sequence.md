@@ -17,9 +17,9 @@ loop für jede PipelineConfig
     BatchOrchestrator -> M3C2Runner : run(comparison, reference, corepoints, normal, projection)
     M3C2Runner --> BatchOrchestrator : distances, uncertainties
 
-    BatchOrchestrator -> VisualizationService : histogram()/colorize()/export_valid()
   end
 
   BatchOrchestrator -> StatisticsService : compute_m3c2_statistics()/calc_single_cloud_stats()
 end
+User -> report_pipeline : generate_report()
 @enduml

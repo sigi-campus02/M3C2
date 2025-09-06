@@ -55,7 +55,7 @@ If neither is provided, the log level defaults to the `logging.level` entry in
 - `datasource/` – unified loading of point cloud data
 - `generation/` – utilities for producing derived clouds
 - `orchestration/` – batch runners and M3C2 execution logic
-- `services/` – parameter estimation, statistics, outlier handling, visualization
+- `report_pipeline/` – lightweight CLI for generating comparison reports
 - `tests/` – unit tests covering key functionality
 
 

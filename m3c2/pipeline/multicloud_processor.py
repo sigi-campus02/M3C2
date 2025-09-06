@@ -18,14 +18,12 @@ class MulticloudProcessor:
         scale_estimator: Any,
         m3c2_executor: Any,
         statistics_runner: Any,
-        visualization_runner: Any,
         param_manager: ParamManager,
     ) -> None:
         self.data_loader = data_loader
         self.scale_estimator = scale_estimator
         self.m3c2_executor = m3c2_executor
         self.statistics_runner = statistics_runner
-        self.visualization_runner = visualization_runner
         self.param_manager = param_manager
 
     def process(self, cfg: PipelineConfig, tag: str) -> None:
@@ -79,6 +77,4 @@ class MulticloudProcessor:
             cfg, comparison, reference, corepoints, normal, projection, out_base, tag
         )
 
-        self.visualization_runner.generate_visuals(
-            cfg, reference, distances, out_base, tag
-        )
+        # Visualization handled externally via the report_pipeline CLI.

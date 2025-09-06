@@ -1,9 +1,7 @@
 """Helpers for exporting coloured point clouds to PLY files.
 
-This module provides a small collection of functions that were previously
-grouped in :mod:`m3c2.visualization.services.visualization_service`.  They are
-kept free of any class based wrappers which makes importing individual helpers
-simple and avoids loading optional dependencies unless required.
+This module contains standalone helper functions kept free of class wrappers,
+making imports lightweight and avoiding optional dependencies unless required.
 """
 
 from __future__ import annotations

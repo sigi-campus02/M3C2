@@ -1,5 +1,3 @@
-"""Visualization utilities and plotting services."""
+"""Visualization utilities such as data loaders and PLY export helpers."""
 
-from .services.plot_service import PlotService
-
-__all__ = ["PlotService"]
+__all__: list[str] = []
