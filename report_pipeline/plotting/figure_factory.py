@@ -164,6 +164,7 @@ def make_overlay(
     max_per_page: int = 6,
     color_strategy: str = "auto",
     plot_type: str = "histogram",
+    show_legend: bool = True,
 ) -> list[Figure]:
     """Create overlay figures for ``items``.
 
@@ -184,6 +185,8 @@ def make_overlay(
     plot_type:
         Type of overlay plot to generate.  Supported values are ``"histogram"``,
         ``"gauss"``, ``"weibull"``, ``"boxplot"``, ``"qq"`` and ``"violin"``.
+    show_legend:
+        Whether to render a legend on the created axes.
 
     Returns
     -------
@@ -240,8 +243,8 @@ def make_overlay(
             _overlay_violin(ax, data, colors)
         else:
             raise ValueError(f"Unknown plot type: {plot_type}")
-
-        ax.legend()
+        if show_legend:
+            ax.legend()
         fig.tight_layout()
         figures.append(fig)
 

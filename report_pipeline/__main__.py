@@ -32,13 +32,20 @@ class _Plotter:
         self.title = title
         self.plot_type = plot_type
 
-    def make_overlay(self, items, title: str | None = None, plot_type: str | None = None):
+    def make_overlay(
+        self,
+        items,
+        title: str | None = None,
+        plot_type: str | None = None,
+        show_legend: bool = False,
+    ):
         return figure_factory.make_overlay(
             items,
             title=title or self.title,
             max_per_page=self.max_per_page,
             color_strategy=self.color_mapping,
             plot_type=plot_type or self.plot_type,
+            show_legend=show_legend,
         )
 
 

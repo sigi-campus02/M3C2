@@ -41,10 +41,19 @@ class ReportOrchestrator:
 
         jobs = self.builder.build_jobs()
         figures: list = []
+        try:
+            show_legend = object.__getattribute__(self.builder, "legend")
+        except AttributeError:
+            show_legend = False
         for job in jobs:
             plot_type = getattr(job, "plot_type", "histogram")
             if plot_type in {"histogram", "gauss", "weibull", "boxplot", "qq", "violin"}:
-                figs = self.plotter.make_overlay(job.items, title=job.page_title, plot_type=plot_type)
+                figs = self.plotter.make_overlay(
+                    job.items,
+                    title=job.page_title,
+                    plot_type=plot_type,
+                    show_legend=show_legend,
+                )
             elif plot_type == "bland-altman":
                 figs = self.plotter.make_bland_altman(job.items, title=job.page_title)
             elif plot_type == "linear-regression":
