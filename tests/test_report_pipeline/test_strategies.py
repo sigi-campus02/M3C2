@@ -45,12 +45,12 @@ def test_multifolder_job_builder(tmp_path):
         (sub / "d1__g1.txt").write_text("1\n")
         (sub / "d2__g2.txt").write_text("2\n")
         folders.append(sub)
-    builder = MultiFolderJobBuilder(folders=folders)
+    builder = MultiFolderJobBuilder(folders=folders, paired=True)
     jobs = builder.build_jobs()
     assert len(jobs) == 2
     titles = [job.page_title for job in jobs]
 
-    assert titles == ["d1 (g1)", "d2 (g2)"]
+    assert titles == ["d1 (g)", "d2 (g)"]
     labels = [[item.label for item in job.items] for job in jobs]
     assert labels == [["f1", "f2"], ["f1", "f2"]]
 

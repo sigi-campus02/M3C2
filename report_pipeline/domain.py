@@ -20,6 +20,22 @@ from typing import Optional, Tuple
 _LABEL_GROUP_RE = re.compile(r"^(?P<label>.+?)(?:[-_]{2}(?P<group>.+))?$")
 
 
+def normalize_group(group: Optional[str]) -> Optional[str]:
+    """Return *group* without a trailing numeric suffix.
+
+    The report pipeline often uses naming schemes such as ``g1`` or
+    ``experiment2`` where the digits merely indicate repetitions.  For the
+    purpose of grouping we want to treat ``g1`` and ``g2`` as the same group
+    ``g``.  This helper therefore strips a trailing sequence of digits from the
+    provided *group* and returns the simplified name.  ``None`` is returned
+    unchanged.
+    """
+
+    if group is None:
+        return None
+    return re.sub(r"\d+$", "", group)
+
+
 @dataclass(frozen=True)
 class DistanceFile:
     """A distance file on disk along with its label and optional group."""
@@ -60,5 +76,7 @@ def parse_label_group(path: Path) -> Tuple[str, Optional[str]]:
 
     m = _LABEL_GROUP_RE.match(path.stem)
     if m:
-        return m.group("label"), m.group("group")
+        label = m.group("label")
+        group = normalize_group(m.group("group"))
+        return label, group
     return path.stem, None
