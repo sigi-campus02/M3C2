@@ -10,10 +10,43 @@ class LASLoader:
     """Read point clouds from LAS or LAZ files."""
 
     def __init__(self, backend):
+        """Initialize loader with a backend providing LAS/LAZ read support.
+
+        Parameters
+        ----------
+        backend : object
+            Object exposing a ``read_from_las`` function used to read files.
+        """
         self.backend = backend
 
     def load_pair(self, comparison_path: Path, reference_path: Path):
+        """Load comparison and reference point clouds from the given paths.
+
+        Parameters
+        ----------
+        comparison_path : Path
+            Path to the comparison epoch.
+        reference_path : Path
+            Path to the reference epoch.
+
+        Returns
+        -------
+        Any
+            Objects returned by the backend for the two epochs.
+        """
         return self.backend.read_from_las(str(comparison_path), str(reference_path))
 
     def load_single(self, path: Path):
+        """Load a single point cloud from the given path.
+
+        Parameters
+        ----------
+        path : Path
+            Path to the point cloud file.
+
+        Returns
+        -------
+        Any
+            Object returned by the backend for the epoch.
+        """
         return self.backend.read_from_las(str(path))
