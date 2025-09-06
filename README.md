@@ -136,15 +136,3 @@ Global settings for the pipeline and report generation live in `config.json` and
 | `outlier_detection_method`| string         | `"rmse"`         | `rmse`, `mad`, `nmad`, `std`                    | Outlier removal strategy. `rmse`: threshold by root mean square error; `mad`: median absolute deviation; `nmad`: normalized MAD; `std`: standard deviation. |
 | `outlier_multiplicator`   | float          | `3.0`            | —                                               | Multiplicator applied by the chosen outlier method. |
 | `log_level`               | string         | `"INFO"`         | `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL` | Overrides logging verbosity. `DEBUG`: detailed diagnostics; `INFO`: general messages; `WARNING`: potential issues; `ERROR`: errors; `CRITICAL`: fatal errors. |
-
-## Report Pipeline CLI Examples
-
-The reporting workflow is exposed through the `report_pipeline` commands.
-Invoke it either with `python -m report_pipeline` or, when installed as a
-package, via the `m3c2-report` console script. Some typical commands are:
-
-```bash
-python -m report_pipeline folder --folder results/case_07 --pattern "*_distances.txt" --out case_07.pdf
-python -m report_pipeline multifolder --folders results/c1 results/c2 --pattern "*_dist.txt" --paired --out all_cases.pdf
-python -m report_pipeline files --files a1.txt b1.txt a2.txt --out ai_overlay.pdf --legend
-```
