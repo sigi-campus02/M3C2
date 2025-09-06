@@ -88,26 +88,26 @@ Global settings for the pipeline and report generation live in `config.json` and
 
 ### Arguments
 
-| Parameter                 | Type           | Default / Example | Description |
-|---------------------------|----------------|------------------|-------------|
-| `data_dir`                | string         | `"data"` | Input directory containing point cloud folders. |
-| `folders`                 | list\[string]  | `["pointclouds"]`      | List of folders containing point clouds. |
-| `filename_reference`            | string         | `""`             | Reference point cloud file for distance calculation (not used for single cloud statistics). |
-| `filename_comparison`            | string         | `""`             | Comparison point cloud file for distance calculation (not used for single cloud statistics). |
-| `filename_singlecloud`    | string         | `""` | Single point cloud filename used for single-cloud statistics. |
-| `use_subsampled_corepoints` | int          | `1`              | Use subsampled core points for distance computation. Eg. 3: Every 3rd point is used for the subsample. |
-| `sample_size`             | int            | `10000`          | Number of core points used for parameter estimation (normal & projection scale). Not used to subsample distances. |
-| `scale_strategy`          | string         | `"radius"`       | Strategy used for parameter estimation (currently only 'radius' is supported). |
-| `only_stats`              | boolean        | `true`           | If true, compute only statistics (no parameter estimation or M3C2 distance calculation). |
-| `stats_singleordistance`  | string         | `"single"`       | "Statistics type: 'single' for single-cloud statistics or 'distance' for pairwise distance analysis." |
-| `output_format`           | string         | `"excel"`        | Output format for results. |
-| `project`                 | string         | `"PROJECT"`     | Project name used as prefix for folders and output files. |
-| `normal_override`         | float / null   | `null`           | Manual override for normal scale instead of automatic estimation. |
-| `proj_override`           | float / null   | `null`           | Manual override for projection scale instead of automatic estimation. |
-| `use_existing_params`     | boolean        | `false`          | If true, use existing parameter file instead of recalculating. |
-| `outlier_detection_method`| string         | `"rmse"`         | Outlier detection method (`rmse`, `mad`, `nmad`, `std`). |
-| `outlier_multiplicator`   | float          | `3.0`            | Multiplicator applied by the chosen outlier method. |
-| `log_level`               | string         | `"INFO"`         | Logging level for output (overrides `logging.level`). |
+| Parameter                 | Type           | Default / Example | Options                                         | Description |
+|---------------------------|----------------|------------------|-------------------------------------------------|-------------|
+| `data_dir`                | string         | `"data"`         | —                                               | Input directory containing point cloud folders. |
+| `folders`                 | list\[string]  | `["pointclouds"]`| —                                               | List of folders containing point clouds. |
+| `filename_reference`      | string         | `""`             | —                                               | Reference point cloud file for distance calculation (not used for single cloud statistics). |
+| `filename_comparison`     | string         | `""`             | —                                               | Comparison point cloud file for distance calculation (not used for single cloud statistics). |
+| `filename_singlecloud`    | string         | `""`             | —                                               | Single point cloud filename used for single-cloud statistics. |
+| `use_subsampled_corepoints` | int          | `1`              | ≥1                                              | Use subsampled core points for distance computation. Eg. 3: Every 3rd point is used for the subsample. |
+| `sample_size`             | int            | `10000`          | ≥1                                              | Number of core points used for parameter estimation (normal & projection scale). Not used to subsample distances. |
+| `scale_strategy`          | string         | `"radius"`       | `radius`                                        | Parameter estimation strategy. `radius`: derive scales from neighborhood radius. |
+| `only_stats`              | boolean        | `true`           | `true`, `false`                                 | Whether to skip M3C2 distances. `true`: compute only statistics; `false`: run full distance analysis. |
+| `stats_singleordistance`  | string         | `"single"`       | `single`, `distance`, `plot`                    | Statistics mode. `single`: metrics for a single cloud; `distance`: pairwise distance analysis; `plot`: create plots from existing distance files. |
+| `output_format`           | string         | `"excel"`        | `excel`, `json`                                 | Result export format. `excel`: write `.xlsx`; `json`: write JSON file. |
+| `project`                 | string         | `"PROJECT"`      | —                                               | Project name used as prefix for folders and output files. |
+| `normal_override`         | float / null   | `null`           | —                                               | Manual override for normal scale instead of automatic estimation. |
+| `proj_override`           | float / null   | `null`           | —                                               | Manual override for projection scale instead of automatic estimation. |
+| `use_existing_params`     | boolean        | `false`          | `true`, `false`                                 | Whether to reuse parameter file. `true`: load existing parameters; `false`: re-estimate parameters. |
+| `outlier_detection_method`| string         | `"rmse"`         | `rmse`, `mad`, `nmad`, `std`                    | Outlier removal strategy. `rmse`: threshold by root mean square error; `mad`: median absolute deviation; `nmad`: normalized MAD; `std`: standard deviation. |
+| `outlier_multiplicator`   | float          | `3.0`            | —                                               | Multiplicator applied by the chosen outlier method. |
+| `log_level`               | string         | `"INFO"`         | `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL` | Overrides logging verbosity. `DEBUG`: detailed diagnostics; `INFO`: general messages; `WARNING`: potential issues; `ERROR`: errors; `CRITICAL`: fatal errors. |
 
 ## Report Pipeline CLI Examples
 
