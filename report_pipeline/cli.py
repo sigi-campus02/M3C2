@@ -195,7 +195,7 @@ def build_parser() -> argparse.ArgumentParser:
     multifolder_parser.add_argument(
         "--paired",
         action="store_true",
-        help="Expect exactly two files overall; raise an error otherwise.",
+        help="Expect exactly two files per folder; raise an error otherwise.",
     )
     _add_shared_options(multifolder_parser)
     multifolder_parser.set_defaults(builder_factory=_multifolder_builder_factory)
