@@ -49,10 +49,11 @@ def test_multifolder_job_builder(tmp_path):
     jobs = builder.build_jobs()
     assert len(jobs) == 2
     titles = [job.page_title for job in jobs]
-
-    assert titles == ["d1 (g)", "d2 (g)"]
+    assert titles == ["f1", "f2"]
     labels = [[item.label for item in job.items] for job in jobs]
-    assert labels == [["f1", "f2"], ["f1", "f2"]]
+    assert labels == [["d1", "d2"], ["d1", "d2"]]
+    groups = [[item.group for item in job.items] for job in jobs]
+    assert groups == [["g", "g"], ["g", "g"]]
 
 
 def test_multifolder_job_builder_paired_validation(tmp_path):
@@ -60,8 +61,10 @@ def test_multifolder_job_builder_paired_validation(tmp_path):
     f2 = tmp_path / "f2"
     f1.mkdir()
     f2.mkdir()
-    (f1 / "d1__g1.txt").write_text("1\n")
-    # Missing matching file in f2
+    # f1 contains only one file while f2 contains two
+    (f1 / "d1.txt").write_text("1\n")
+    (f2 / "a.txt").write_text("1\n")
+    (f2 / "b.txt").write_text("1\n")
     builder = MultiFolderJobBuilder(folders=[f1, f2], paired=True)
     with pytest.raises(ValueError):
         builder.build_jobs()
