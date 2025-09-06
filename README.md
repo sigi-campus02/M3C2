@@ -8,6 +8,7 @@ This project provides a Python workflow for comparing 3D point cloud pairs using
 - Execute the M3C2 algorithm via [py4dgeo](https://github.com/py4dgeo/py4dgeo)
 - Detect and exclude outliers with configurable strategies
 - Compute rich statistical metrics and export results to Excel or JSON
+- Configure processing and reporting through `config.json` validated by `config.schema.json`
 - Generate comparison reports via the lightweight `report_pipeline` CLI
 - Orchestrate batch processing across many point cloud pairs
 
@@ -28,10 +29,17 @@ package manager:
 - **Windows:** included with the standard Python installer
 
 ## Usage
-Adjust the settings in `main.py` and run:
+Configuration is supplied via `config.json` (validated by `config.schema.json`).
+Run the pipeline with the configuration file:
 
 ```bash
-python main.py
+python -m main
+```
+
+Alternatively, pass parameters directly on the command line:
+
+```bash
+python -m main --data_dir ./data --folders 0342-0349 --filename_reference reference.ply --filename_comparison comparison.ply
 ```
 
 Outputs, statistics, and logs are written to dataset folders and the `outputs/` directory.
@@ -44,7 +52,7 @@ For example:
 
 ```bash
 export LOG_LEVEL=DEBUG
-python main.py
+python -m main
 ```
 
 If neither is provided, the log level defaults to the `logging.level` entry in
@@ -58,10 +66,9 @@ If neither is provided, the log level defaults to the `logging.level` entry in
 - `report_pipeline/` – lightweight CLI for generating comparison reports
 - `tests/` – unit tests covering key functionality
 
+## Configuration
 
-
-
-## Configuration Parameters
+Global settings for the pipeline and report generation live in `config.json` and are validated against `config.schema.json`. The `arguments` section controls the main pipeline, while sections prefixed with `arguments_plot_` configure the `report_pipeline` CLI.
 
 ### Logging
 
