@@ -113,69 +113,77 @@ class DataSource:
     def _load_epochs(self) -> Tuple[object, object]:
         """Detect input types and read epochs using format-specific loaders."""
 
-        m_kind, m_path = detect(self.comparison_base)
-        r_kind, r_path = detect(self.reference_base)
+        # Detect input types and actual file paths for the two epochs
+        comparison_kind, comparison_path = detect(self.comparison_base)
+        reference_kind, reference_path = detect(self.reference_base)
 
-        if m_kind == r_kind == "xyz":
+        if comparison_kind == reference_kind == "xyz":
             logger.info("Nutze py4dgeo.read_from_xyz")
-            loader = XYZLoader(py4dgeo)
-            return loader.load_pair(m_path, r_path)
+            loader = XYZLoader(py4dgeo)  # select XYZ loader
+            return loader.load_pair(comparison_path, reference_path)
 
-        if m_kind == r_kind == "laslike":
+        if comparison_kind == reference_kind == "laslike":
             logger.info("Nutze py4dgeo.read_from_las (unterstützt .las und .laz)")
-            loader = LASLoader(py4dgeo)
-            return loader.load_pair(m_path, r_path)
+            loader = LASLoader(py4dgeo)  # select LAS loader
+            return loader.load_pair(comparison_path, reference_path)
 
-        if m_kind == r_kind == "ply" and hasattr(py4dgeo, "read_from_ply"):
+        if comparison_kind == reference_kind == "ply" and hasattr(py4dgeo, "read_from_ply"):
             logger.info("Nutze py4dgeo.read_from_ply")
-            loader = PLYLoader(py4dgeo)
-            return loader.load_pair(m_path, r_path)
+            loader = PLYLoader(py4dgeo)  # select PLY loader
+            return loader.load_pair(comparison_path, reference_path)
 
-        m_xyz = ensure_xyz(self.comparison_base, (m_kind, m_path))
-        r_xyz = ensure_xyz(self.reference_base, (r_kind, r_path))
+        # Mixed formats: convert both epochs to temporary XYZ files
+        comparison_xyz_path = ensure_xyz(self.comparison_base, (comparison_kind, comparison_path))
+        reference_xyz_path = ensure_xyz(self.reference_base, (reference_kind, reference_path))
         logger.info("Mischtypen -> konvertiert zu XYZ -> py4dgeo.read_from_xyz")
         loader = XYZLoader(py4dgeo)
-        return loader.load_pair(m_xyz, r_xyz)
+        return loader.load_pair(comparison_xyz_path, reference_xyz_path)
     
 
     def _load_epochs_singlecloud(self) -> np.ndarray:
         """Detect input types and read epochs using format-specific loaders."""
 
-        s_kind, s_path = detect(self.singlecloud_base)
+        # Detect input type and file path for the single cloud
+        single_kind, single_path = detect(self.singlecloud_base)
 
-        if s_kind == "xyz":
+        if single_kind == "xyz":
             logger.info("Nutze py4dgeo.read_from_xyz")
-            loader = XYZLoader(py4dgeo)
-            return loader.load_single(s_path)
+            loader = XYZLoader(py4dgeo)  # select XYZ loader
+            return loader.load_single(single_path)
 
-        if s_kind == "laslike":
+        if single_kind == "laslike":
             logger.info("Nutze py4dgeo.read_from_las (unterstützt .las und .laz)")
-            loader = LASLoader(py4dgeo)
-            return loader.load_single(s_path)
+            loader = LASLoader(py4dgeo)  # select LAS loader
+            return loader.load_single(single_path)
 
-        if s_kind == "ply" and hasattr(py4dgeo, "read_from_ply"):
+        if single_kind == "ply" and hasattr(py4dgeo, "read_from_ply"):
             logger.info("Nutze py4dgeo.read_from_ply")
-            loader = PLYLoader(py4dgeo)
-            return loader.load_single(s_path)
+            loader = PLYLoader(py4dgeo)  # select PLY loader
+            return loader.load_single(single_path)
 
-        s_xyz = ensure_xyz(self.singlecloud_base, (s_kind, s_path))
+        # Convert input to XYZ when format is mixed/unsupported
+        single_xyz_path = ensure_xyz(self.singlecloud_base, (single_kind, single_path))
         logger.info("Mischtypen -> konvertiert zu XYZ -> py4dgeo.read_from_xyz")
         loader = XYZLoader(py4dgeo)
-        return loader.load_single(s_xyz)
+        return loader.load_single(single_xyz_path)
     
 
     def _derive_corepoints(self, reference: object) -> np.ndarray:
         """Derive core points from reference epoch with optional subsampling."""
 
-        label = "reference"
+        # For logging, label the source of the core points
+        reference_label = "reference"
         logger.info(
             "Nutze %s als Corepoints und nutze Subsamling: %s",
-            label,
+            reference_label,
             self.config.use_subsampled_corepoints,
         )
 
+        # Extract the raw NumPy array from the py4dgeo object when needed
         source = reference
         data = source.cloud if hasattr(source, "cloud") else source
+
+        # Apply subsampling step to reduce the number of core points
         return data[:: self.config.use_subsampled_corepoints]
 
 
