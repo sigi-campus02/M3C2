@@ -11,10 +11,12 @@ def test_folder_job_builder_sorts(tmp_path):
     (tmp_path / "a__g1.txt").write_text("2\n")
     builder = FolderJobBuilder(folder=tmp_path)
     jobs = builder.build_jobs()
-    labels = [job.items[0].label for job in jobs]
+    assert len(jobs) == 1
+    labels = [item.label for item in jobs[0].items]
     assert labels == ["a", "b"]
     groups = [job.items[0].group for job in jobs]
     assert groups == ["g1", "g2"]
+
 
 
 def test_files_job_builder_missing_file(tmp_path):
@@ -61,3 +63,4 @@ def test_multifolder_job_builder_paired_requires_two_files(tmp_path):
     builder = MultiFolderJobBuilder(folders=[folder], paired=True)
     with pytest.raises(ValueError):
         builder.build_jobs()
+
