@@ -72,6 +72,145 @@ python -m report_pipeline multifolder --folders results/c1 results/c2 --pattern 
 python -m report_pipeline files --files a1.txt b1.txt a2.txt --out ai_overlay.pdf --legend
 ```
 
+### Example Point Clouds
+
+The repository ships sample LAZ files in `data/examplepointclouds` with one
+reference cloud (`reference.laz`) and four comparison clouds
+(`comparison1.laz` – `comparison4.laz`). The following commands demonstrate how
+to invoke the main pipeline with these files.
+
+#### Single-cloud statistics
+
+The examples below use `reference.laz`; replace it with `comparison1.laz`
+through `comparison4.laz` to process the other sample clouds.
+
+```bash
+# Recalculate scales for this run
+python -m main \
+  --stats_singleordistance single \
+  --data_dir ./data \
+  --folders examplepointclouds \
+  --filename_singlecloud reference.laz \
+  --use_subsampled_corepoints 1 \
+  --sample_size 10000 \
+  --scale_strategy radius \
+  --only_stats \
+  --output_format excel \
+  --project EXAMPLE \
+  --use_existing_params false
+
+# Override normal and projection scales
+python -m main \
+  --stats_singleordistance single \
+  --data_dir ./data \
+  --folders examplepointclouds \
+  --filename_singlecloud reference.laz \
+  --use_subsampled_corepoints 1 \
+  --sample_size 10000 \
+  --scale_strategy radius \
+  --only_stats \
+  --output_format excel \
+  --project EXAMPLE \
+  --normal_override 0.1 \
+  --proj_override 0.2 \
+  --use_existing_params false
+
+# Reuse previously saved parameters
+python -m main \
+  --stats_singleordistance single \
+  --data_dir ./data \
+  --folders examplepointclouds \
+  --filename_singlecloud reference.laz \
+  --use_subsampled_corepoints 1 \
+  --sample_size 10000 \
+  --scale_strategy radius \
+  --only_stats \
+  --output_format excel \
+  --project EXAMPLE \
+  --use_existing_params true
+```
+
+#### Distance comparisons
+
+Comparison commands use `comparison1.laz` as the example target; swap in
+`comparison2.laz`–`comparison4.laz` for the other datasets.
+
+```bash
+# Recalculate scales before measuring distances
+python -m main \
+  --stats_singleordistance distance \
+  --data_dir ./data \
+  --folders examplepointclouds \
+  --filename_reference reference.laz \
+  --filename_comparison comparison1.laz \
+  --use_subsampled_corepoints 5 \
+  --sample_size 10000 \
+  --scale_strategy radius \
+  --no-only_stats \
+  --output_format json \
+  --project EXAMPLE \
+  --use_existing_params false \
+  --outlier_detection_method nmad \
+  --outlier_multiplicator 3.0
+
+# Override normal and projection scales
+python -m main \
+  --stats_singleordistance distance \
+  --data_dir ./data \
+  --folders examplepointclouds \
+  --filename_reference reference.laz \
+  --filename_comparison comparison1.laz \
+  --use_subsampled_corepoints 5 \
+  --sample_size 10000 \
+  --scale_strategy radius \
+  --no-only_stats \
+  --output_format json \
+  --project EXAMPLE \
+  --normal_override 0.1 \
+  --proj_override 0.2 \
+  --use_existing_params false \
+  --outlier_detection_method nmad \
+  --outlier_multiplicator 3.0
+
+# Reuse parameters from a previous run
+python -m main \
+  --stats_singleordistance distance \
+  --data_dir ./data \
+  --folders examplepointclouds \
+  --filename_reference reference.laz \
+  --filename_comparison comparison1.laz \
+  --use_subsampled_corepoints 5 \
+  --sample_size 10000 \
+  --scale_strategy radius \
+  --no-only_stats \
+  --output_format json \
+  --project EXAMPLE \
+  --use_existing_params true \
+  --outlier_detection_method nmad \
+  --outlier_multiplicator 3.0
+```
+
+#### Plot commands
+
+After computing distances, the following commands visualize the results.
+
+```bash
+# Plot with the main CLI
+python -m main \
+  --stats_singleordistance plot \
+  --data_dir ./data \
+  --folders examplepointclouds \
+  --filename_reference reference.laz \
+  --filename_comparison comparison1.laz \
+  --project EXAMPLE
+
+# Create a PDF report
+python -m report_pipeline folder \
+  --folder outputs/EXAMPLE_output \
+  --pattern '*reference_comparison1_distances.txt' \
+  --out EXAMPLE_reference_comparison1.pdf
+```
+
 ## Logging
 
 Control verbosity with the `--log_level` option or by setting the `LOG_LEVEL`
