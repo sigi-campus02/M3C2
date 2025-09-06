@@ -24,12 +24,12 @@ class StatisticsRunner:
         """
         self.output_format = output_format
 
-    def compute_statistics(self, cfg, comparison, reference, tag: str) -> None:
+    def compute_statistics(self, config, comparison, reference, run_tag: str) -> None:
         """Compute distance based M3C2 statistics for a job.
 
         Parameters
         ----------
-        cfg
+        config
             Configuration object describing the current job.  The runner
             expects attributes such as :attr:`stats_singleordistance`,
             :attr:`folder_id`, :attr:`project` and various filenames.
@@ -37,7 +37,7 @@ class StatisticsRunner:
             Information on the comparison and reference clouds.  The parameters are
             currently unused but kept for API compatibility with other pipeline
             components.
-        tag : str
+        run_tag : str
             Identifier for the reference cloud when evaluating distance based
             statistics.
 
@@ -56,15 +56,15 @@ class StatisticsRunner:
 
         This method is part of the public pipeline API.
         """
-        if cfg.stats_singleordistance == "distance":
-            return self._multi_cloud_handler(cfg, comparison, reference, tag)
+        if config.stats_singleordistance == "distance":
+            return self._multi_cloud_handler(config, comparison, reference, run_tag)
 
-    def _multi_cloud_handler(self, cfg, comparison, reference, tag):
+    def _multi_cloud_handler(self, config, comparison, reference, run_tag):
         """Compute and export distance-based statistics across multiple clouds.
 
         Parameters
         ----------
-        cfg
+        config
             Configuration object describing the current job. It provides the
             output directory, project name and options for the statistics
             calculation.
@@ -72,7 +72,7 @@ class StatisticsRunner:
             Information about the comparison and reference clouds. The parameters
             are currently unused but preserved for API compatibility with the
             pipeline's public methods.
-        tag : str
+        run_tag : str
             Identifier for the reference cloud whose distance statistics are
             calculated.
 
@@ -85,35 +85,39 @@ class StatisticsRunner:
           :func:`m3c2.statistics.m3c2_aggregator.compute_m3c2_statistics`.
         """
         logger.info(
-            f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_reference} ..."
+            f"[Stats on Distance] Berechne M3C2-Statistiken {config.folder_id},{config.filename_reference} ..."
         )
         if self.output_format == "excel":
-            out_path = os.path.join(
-                f"outputs/{cfg.project}_output/{cfg.project}_m3c2_stats_distances.xlsx"
+            # Excel output requested: assemble path for workbook export.
+            output_path = os.path.join(
+                f"outputs/{config.project}_output/{config.project}_m3c2_stats_distances.xlsx"
             )
         elif self.output_format == "json":
-            out_path = os.path.join(
-                f"outputs/{cfg.project}_output/{cfg.project}_m3c2_stats_distances.json"
+            # JSON output requested: assemble path for JSON export.
+            output_path = os.path.join(
+                f"outputs/{config.project}_output/{config.project}_m3c2_stats_distances.json"
             )
         else:
+            # Protect against unsupported formats to avoid silent errors.
             raise ValueError("Ungültiges Ausgabeformat. Verwenden Sie 'excel' oder 'json'.")
 
+        # Delegate the heavy lifting and write results to the derived path.
         compute_m3c2_statistics(
-            folder_ids=[cfg.folder_id],
-            filename_reference=tag,
-            process_python_CC=cfg.process_python_CC,
-            out_path=out_path,
+            folder_ids=[config.folder_id],
+            filename_reference=run_tag,
+            process_python_CC=config.process_python_CC,
+            out_path=output_path,
             sheet_name="Results",
             output_format=self.output_format,
-            outlier_multiplicator=cfg.outlier_multiplicator,
-            outlier_method=cfg.outlier_detection_method,
+            outlier_multiplicator=config.outlier_multiplicator,
+            outlier_method=config.outlier_detection_method,
         )
 
-    def single_cloud_statistics_handler(self, cfg, singlecloud, normal):
+    def single_cloud_statistics_handler(self, config, singlecloud, normal):
         """Compute statistics for a single point cloud.
 
         Args:
-            cfg: Configuration for the current job. Must provide
+            config: Configuration for the current job. Must provide
                 ``folder_id``, ``filename_singlecloud`` and ``project`` so
                 that results can be written to the correct output folder.
             singlecloud: The point cloud for which statistics are evaluated.
@@ -126,26 +130,30 @@ class StatisticsRunner:
         format.
         """
         logger.info(
-            f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_singlecloud} ...",
+            f"[Stats on SingleClouds] Berechne M3C2-Statistiken {config.folder_id},{config.filename_singlecloud} ...",
         )
         if self.output_format == "excel":
-            out_path = os.path.join(
-                f"outputs/{cfg.project}_output/{cfg.project}_m3c2_stats_clouds.xlsx"
+            # Build path for Excel workbook containing cloud statistics.
+            output_path = os.path.join(
+                f"outputs/{config.project}_output/{config.project}_m3c2_stats_clouds.xlsx"
             )
         elif self.output_format == "json":
-            out_path = os.path.join(
-                f"outputs/{cfg.project}_output/{cfg.project}_m3c2_stats_clouds.json"
+            # Build path for JSON output when requested.
+            output_path = os.path.join(
+                f"outputs/{config.project}_output/{config.project}_m3c2_stats_clouds.json"
             )
         else:
+            # Unsupported formats are rejected to prevent misconfiguration.
             raise ValueError("Ungültiges Ausgabeformat. Verwenden Sie 'excel' oder 'json'.")
 
+        # Compute statistics for the single cloud and export to the path.
         calc_single_cloud_stats(
-            folder_ids=[cfg.folder_id],
-            filename_singlecloud=cfg.filename_singlecloud,
+            folder_ids=[config.folder_id],
+            filename_singlecloud=config.filename_singlecloud,
             singlecloud=singlecloud,
-            data_dir=cfg.data_dir,
+            data_dir=config.data_dir,
             radius=normal,
-            out_path=out_path,
+            out_path=output_path,
             sheet_name="CloudStats",
             output_format=self.output_format,
         )
