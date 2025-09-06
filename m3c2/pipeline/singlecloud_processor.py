@@ -42,7 +42,7 @@ class SinglecloudProcessor:
             normal = projection = np.nan
 
         try:
-            logger.info("[Statistics] Berechne Statistiken …")
+            logger.info("[Statistics] Berechne Statistiken ...")
             self.statistics_runner.single_cloud_statistics_handler(
                 cfg, single_cloud, normal
             )

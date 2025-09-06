@@ -16,7 +16,7 @@ strategies defined in :mod:`report_pipeline.strategies`:
     Use an explicit list of distance files.
 
 Each subcommand shares a common set of options controlling the report
-generation (``--out``, ``--title`` …).  The parser stores a ``builder_factory``
+generation (``--out``, ``--title`` ...).  The parser stores a ``builder_factory``
 callable on the resulting namespace which can be used to construct an
 appropriate :class:`~report_pipeline.strategies.base.JobBuilder` instance.
 

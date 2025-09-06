@@ -85,7 +85,7 @@ class StatisticsRunner:
           :func:`m3c2.statistics.m3c2_aggregator.compute_m3c2_statistics`.
         """
         logger.info(
-            f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_reference} …"
+            f"[Stats on Distance] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_reference} ..."
         )
         if self.output_format == "excel":
             out_path = os.path.join(
@@ -126,7 +126,7 @@ class StatisticsRunner:
         format.
         """
         logger.info(
-            f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_singlecloud} …",
+            f"[Stats on SingleClouds] Berechne M3C2-Statistiken {cfg.folder_id},{cfg.filename_singlecloud} ...",
         )
         if self.output_format == "excel":
             out_path = os.path.join(
