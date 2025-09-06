@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Command-line entry point for the report pipeline.
 
 Running ``python -m report_pipeline`` or the corresponding console script
@@ -7,6 +5,9 @@ invokes this module.  It parses command-line arguments via
 :mod:`report_pipeline.cli` and executes the lightweight report pipeline,
 producing a PDF report from distance files.
 """
+
+from __future__ import annotations
+
 
 from pathlib import Path
 from typing import Sequence

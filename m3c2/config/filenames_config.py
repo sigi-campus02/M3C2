@@ -1,3 +1,5 @@
+"""Resolved filename components derived from a :class:`PipelineConfig`."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -7,7 +9,6 @@ from m3c2.config.pipeline_config import PipelineConfig
 
 @dataclass(frozen=True)
 class FileNameParams:
-    """Resolved filename components derived from a :class:`PipelineConfig`."""
 
     prefix: str
     tag: str

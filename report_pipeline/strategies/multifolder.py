@@ -1,6 +1,7 @@
+"""Strategy assembling jobs from multiple folders using a file pattern."""
+
 from __future__ import annotations
 
-"""Strategy assembling jobs from multiple folders using a file pattern."""
 
 from dataclasses import dataclass
 from pathlib import Path

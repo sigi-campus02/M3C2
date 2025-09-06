@@ -1,6 +1,7 @@
+"""Protocols for job building strategies."""
+
 from __future__ import annotations
 
-"""Protocols for job building strategies."""
 
 from typing import Protocol
 

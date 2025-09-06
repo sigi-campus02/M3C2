@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Simple utilities for reading numeric distance data from text files.
 
 This module provides a lightweight :func:`load_distance_series` function that
@@ -8,6 +6,9 @@ Only finite values are returned; non-numeric entries trigger a ``ValueError``.
 The implementation is intentionally small and does not depend on any project
 specific infrastructure which makes it easy to test in isolation.
 """
+
+from __future__ import annotations
+
 
 from pathlib import Path
 

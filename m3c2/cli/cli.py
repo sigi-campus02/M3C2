@@ -1,4 +1,5 @@
 """Command-line interface for the M3C2 pipeline."""
+
 from __future__ import annotations
 
 import argparse

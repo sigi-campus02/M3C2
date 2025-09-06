@@ -1,6 +1,7 @@
+"""Loader for LAS/LAZ point cloud files."""
+
 from __future__ import annotations
 
-"""Loader for LAS/LAZ point cloud files."""
 
 from pathlib import Path
 

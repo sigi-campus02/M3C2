@@ -1,6 +1,7 @@
+"""Helper utilities for detecting point cloud file formats."""
+
 from __future__ import annotations
 
-"""Helper utilities for detecting point cloud file formats."""
 
 from pathlib import Path
 import logging

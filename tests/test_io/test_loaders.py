@@ -1,6 +1,7 @@
+"""Tests for simple point cloud loaders."""
+
 from __future__ import annotations
 
-"""Tests for simple point cloud loaders."""
 
 from pathlib import Path
 import io

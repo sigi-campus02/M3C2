@@ -1,4 +1,5 @@
 """Tests for :mod:`m3c2.importer.data_loader`."""
+
 from __future__ import annotations
 
 import os
