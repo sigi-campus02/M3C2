@@ -21,6 +21,8 @@ class FilesJobBuilder(JobBuilder):
 
     def build_jobs(self) -> list[PlotJob]:
         files = [Path(f).expanduser().resolve() for f in self.files]
+        if len(files) < 2:
+            raise ValueError("At least two files are required")
         if self.paired and len(files) != 2:
             raise ValueError("--paired requires exactly two files")
 
