@@ -76,5 +76,3 @@ class MulticloudProcessor:
         distances, _, _ = self.m3c2_executor.run_m3c2(
             cfg, comparison, reference, corepoints, normal, projection, out_base, tag
         )
-
-        # Visualization handled externally via the report_pipeline CLI.
