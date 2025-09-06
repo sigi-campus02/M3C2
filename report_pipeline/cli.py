@@ -95,6 +95,7 @@ def _add_shared_options(parser: argparse.ArgumentParser) -> None:
         "--max-per-page",
         dest="max_per_page",
         type=int,
+        default=4,
         help="Maximum number of plots per PDF page.",
     )
     parser.add_argument(
