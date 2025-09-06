@@ -99,9 +99,6 @@ class FileNames:
     STATS_CLOUDS_XLSX = (
         "outputs/{project}_output/{project}_m3c2_stats_clouds.xlsx"
     )
-    STATS_ALL_XLSX = "m3c2_stats_all.xlsx"
-    STATS_CLOUDS_XLSX_SIMPLE = "m3c2_stats_clouds.xlsx"
-    CLOUD_STATS_XLSX = "cloud_stats.xlsx"
 
     # Report service patterns
     REPORT_CLOUD_MOVED_DISTANCES = (
@@ -164,18 +161,6 @@ class FileNames:
         if ext == "xlsx":
             return FileNames.STATS_CLOUDS_XLSX.format(project=project)
         raise ValueError("Unsupported extension: {ext}")
-
-    @staticmethod
-    def stats_all_xlsx() -> str:
-        return FileNames.STATS_ALL_XLSX
-
-    @staticmethod
-    def stats_clouds_xlsx() -> str:
-        return FileNames.STATS_CLOUDS_XLSX_SIMPLE
-
-    @staticmethod
-    def cloud_stats_xlsx() -> str:
-        return FileNames.CLOUD_STATS_XLSX
 
     @staticmethod
     def report_cloud_comparison_distances(prefix: str, fid: str) -> str:
