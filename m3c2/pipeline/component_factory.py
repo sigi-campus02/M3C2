@@ -7,6 +7,7 @@ import logging
 from m3c2.importer.data_loader import DataLoader
 from m3c2.m3c2_core.param_handler.scale_estimator import ScaleEstimator
 from m3c2.m3c2_core.m3c2_executor import M3C2Executor
+from m3c2.statistics.outlier_handler import OutlierHandler
 from m3c2.statistics.statistics_runner import StatisticsRunner
 
 logger = logging.getLogger(__name__)
@@ -60,16 +61,16 @@ class PipelineComponentFactory:
         logger.debug("Creating %s", M3C2Executor.__name__)
         return M3C2Executor()
 
-    # def create_outlier_handler(self) -> OutlierHandler:
-    #     """Instantiate an :class:`OutlierHandler` for recomparison statistical outliers.
+    def create_outlier_handler(self) -> OutlierHandler:
+        """Instantiate an :class:`OutlierHandler` for recomparison statistical outliers.
 
-    #     The returned handler applies the configured outlier detection method to the
-    #     generated M3C2 results and filters out measurements deemed to be outliers.
-    #     This ensures downstream statistics and visualizations are based on
-    #     cleaned data.
-    #     """
-    #     logger.debug("Creating %s", OutlierHandler.__name__)
-    #     return OutlierHandler()
+        The returned handler applies the configured outlier detection method to the
+        generated M3C2 results and filters out measurements deemed to be outliers.
+        This ensures downstream statistics and visualizations are based on
+        cleaned data.
+        """
+        logger.debug("Creating %s", OutlierHandler.__name__)
+        return OutlierHandler()
 
     def create_statistics_runner(self) -> StatisticsRunner:
         """Create a :class:`StatisticsRunner` honoring the output format.
