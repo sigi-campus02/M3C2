@@ -72,6 +72,32 @@ python -m report_pipeline multifolder --folders results/c1 results/c2 --pattern 
 python -m report_pipeline files --files a1.txt b1.txt a2.txt --out ai_overlay.pdf --legend
 ```
 
+### Example Point Clouds
+
+The repository ships sample LAZ files in `data/examplepointclouds` with one
+reference cloud (`reference.laz`) and four comparison clouds
+(`comparison1.laz` – `comparison4.laz`). The following commands demonstrate how
+to invoke the main pipeline with these files.
+
+#### Single-cloud statistics
+
+```bash
+python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud reference.laz --stats_singleordistance single
+python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud comparison1.laz --stats_singleordistance single
+python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud comparison2.laz --stats_singleordistance single
+python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud comparison3.laz --stats_singleordistance single
+python -m main --data_dir ./data --folders examplepointclouds --filename_singlecloud comparison4.laz --stats_singleordistance single
+```
+
+#### Distance comparisons
+
+```bash
+python -m main --data_dir ./data --folders examplepointclouds --filename_reference reference.laz --filename_comparison comparison1.laz --stats_singleordistance distance
+python -m main --data_dir ./data --folders examplepointclouds --filename_reference reference.laz --filename_comparison comparison2.laz --stats_singleordistance distance
+python -m main --data_dir ./data --folders examplepointclouds --filename_reference reference.laz --filename_comparison comparison3.laz --stats_singleordistance distance
+python -m main --data_dir ./data --folders examplepointclouds --filename_reference reference.laz --filename_comparison comparison4.laz --stats_singleordistance distance
+```
+
 ## Logging
 
 Control verbosity with the `--log_level` option or by setting the `LOG_LEVEL`
