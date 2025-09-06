@@ -64,6 +64,11 @@ def _multifolder_builder_factory(ns: argparse.Namespace) -> MultiFolderJobBuilde
 
 
 def _files_builder_factory(ns: argparse.Namespace) -> FilesJobBuilder:
+    if len(ns.files) < 2:
+        raise argparse.ArgumentTypeError(
+            "At least two paths are required"
+        )
+
     builder = FilesJobBuilder(
         files=ns.files,
         paired=ns.paired,
@@ -203,7 +208,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     files_parser.add_argument(
         "files",
-        nargs="+",
+        nargs=argparse.REMAINDER,
         type=Path,
         help="Paths to distance files that should be plotted.",
     )
