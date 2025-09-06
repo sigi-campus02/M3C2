@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 from report_pipeline.pdf import writer
 
 
-def test_write_creates_pdf():
+def test_write_creates_pdf(tmp_path):
     fig, ax = plt.subplots()
     ax.plot([1, 2], [3, 4])
-    fig.suptitle('Demo')
-    pdf_path = writer.write([fig])
+    out_path = tmp_path / "out.pdf"
+    pdf_path = writer.write([fig], out_path, "Demo")
     plt.close(fig)
     assert pdf_path.exists()
     assert pdf_path.suffix == '.pdf'

@@ -24,8 +24,9 @@ class ReportOrchestrator:
         plotter:
             Object providing a ``make_overlay`` method returning a figure.
         pdf_writer:
-            Object providing a ``write`` method accepting a sequence of figures
-            and returning the path to the generated PDF report.
+            Object providing a ``write`` method accepting a sequence of figures,
+            an output path and a document title, returning the path to the
+            generated PDF report.
         builder:
             Instance capable of creating :class:`~report_pipeline.domain.PlotJob`
             objects via :meth:`~report_pipeline.strategies.base.JobBuilder.build_jobs`.
@@ -35,7 +36,7 @@ class ReportOrchestrator:
         self.pdf_writer = pdf_writer
         self.builder = builder
 
-    def run(self) -> Path:
+    def run(self, out_path: Path, title: str) -> Path:
         """Generate figures for the builder's jobs and write them to a PDF report."""
 
         jobs = self.builder.build_jobs()
@@ -43,5 +44,5 @@ class ReportOrchestrator:
         for job in jobs:
             figs = self.plotter.make_overlay(job.items, title=job.page_title)
             figures.extend(figs)
-        pdf_path = self.pdf_writer.write(figures)
+        pdf_path = self.pdf_writer.write(figures, out_path, title)
         return pdf_path
