@@ -148,29 +148,33 @@ class ParamEstimator:
                 logger.error("[Select] no scales provided")
                 raise ValueError("Keine Scales gefunden.")
 
-            # Filter out scans lacking essential quality metrics to ensure that
-            # subsequent computations work on well-defined data only.
-            valid = [
-                s
-                for s in scans
+            # Filter out scans that lack essential quality metrics. A scan is
+            # considered valid only if roughness, curvature (``lambda3``) and the
+            # number of valid normals are all present, finite and positive.
+            valid_scans = [
+                scan
+                for scan in scans
                 if (
-                    s.roughness is not None
-                    and not np.isnan(s.roughness)
-                    and s.mean_lambda3 is not None
-                    and not np.isnan(s.mean_lambda3)
-                    and s.valid_normals is not None
-                    and s.valid_normals > 0
+                    scan.roughness is not None
+                    and not np.isnan(scan.roughness)
+                    and scan.mean_lambda3 is not None
+                    and not np.isnan(scan.mean_lambda3)
+                    and scan.valid_normals is not None
+                    and scan.valid_normals > 0
                 )
             ]
 
-            # If all scans are invalid, fall back to using the middle scale(s) from
-            # the ladder of provided scales to ensure a deterministic result.
-            if not valid:
-                ladder = sorted({float(s.scale) for s in scans})
-                mid_idx = len(ladder) // 2
-                normal = ladder[mid_idx]
+            # If no scan passes the validation step, fall back to selecting the
+            # middle pair of scales from the ladder of all scanned scales. This
+            # deterministic fallback avoids failures when input data are poor.
+            if not valid_scans:
+                scale_ladder = sorted({float(scan.scale) for scan in scans})
+                middle_index = len(scale_ladder) // 2
+                normal = scale_ladder[middle_index]
                 projection = (
-                    ladder[mid_idx + 1] if mid_idx + 1 < len(ladder) else ladder[mid_idx]
+                    scale_ladder[middle_index + 1]
+                    if middle_index + 1 < len(scale_ladder)
+                    else scale_ladder[middle_index]
                 )
                 logger.debug(
                     "[Select] no valid scans; using middle scales normal=%.6f projection=%.6f",
@@ -179,25 +183,26 @@ class ParamEstimator:
                 )
                 return float(normal), float(projection)
 
-            # Sort valid scans by increasing ``lambda3`` (curvature) while
-            # favouring scans with many valid normals and low roughness.
-            valid.sort(
-                key=lambda s: (
-                    float(s.mean_lambda3),
-                    -int(s.valid_normals),
-                    float(s.roughness),
+            # Sort the validated scans so that smoother, well-defined surfaces are
+            # ranked first: primarily by increasing curvature, then by decreasing
+            # number of valid normals, and finally by increasing roughness.
+            valid_scans.sort(
+                key=lambda scan: (
+                    float(scan.mean_lambda3),
+                    -int(scan.valid_normals),
+                    float(scan.roughness),
                 )
             )
 
             # Choose the first scan whose scale-to-roughness ratio indicates a
             # sufficiently smooth surface; otherwise default to the best ranked
             # scan.
-            chosen = None
-            for scan in valid:
+            selected_scan = None
+            for scan in valid_scans:
                 if scan.roughness > 0 and (
                     float(scan.scale) / float(scan.roughness)
                 ) >= 25.0:
-                    chosen = scan
+                    selected_scan = scan
                     logger.debug(
                         "[Select] scan %.6f chosen by ratio (roughness=%.6f, valid_normals=%d)",
                         float(scan.scale),
@@ -205,31 +210,41 @@ class ParamEstimator:
                         int(scan.valid_normals),
                     )
                     break
-            if chosen is None:
-                chosen = valid[0]
+            if selected_scan is None:
+                selected_scan = valid_scans[0]
                 logger.debug(
                     "[Select] no scan met ratio threshold; using best ranked scale %.6f",
-                    float(chosen.scale),
+                    float(selected_scan.scale),
                 )
 
-            # Determine the neighbouring scales of the chosen scan from the ladder
-            # of unique scales; this yields normal and projection scale.
-            ladder = sorted({float(s.scale) for s in scans})
-            eps = 1e-12
+            # Determine the neighbouring scales of the selected scan from the
+            # ladder of unique scales. The chosen scale becomes the normal scale
+            # and its next neighbour (or itself if none exists) the projection
+            # scale.
+            scale_ladder = sorted({float(scan.scale) for scan in scans})
+            epsilon = 1e-12  # tolerance for matching floating-point scales
             try:
-                idx = next(
-                    i for i, v in enumerate(ladder) if abs(v - float(chosen.scale)) <= eps
+                scale_index = next(
+                    i
+                    for i, v in enumerate(scale_ladder)
+                    if abs(v - float(selected_scan.scale)) <= epsilon
                 )
             except StopIteration:
-                idx = min(
-                    range(len(ladder)), key=lambda i: abs(ladder[i] - float(chosen.scale))
+                scale_index = min(
+                    range(len(scale_ladder)),
+                    key=lambda i: abs(scale_ladder[i] - float(selected_scan.scale)),
                 )
                 logger.debug(
-                    "[Select] exact chosen scale missing; using nearest index %d", idx
+                    "[Select] exact selected scale missing; using nearest index %d",
+                    scale_index,
                 )
 
-            normal = ladder[idx]
-            projection = ladder[idx + 1] if (idx + 1) < len(ladder) else ladder[idx]
+            normal = scale_ladder[scale_index]
+            projection = (
+                scale_ladder[scale_index + 1]
+                if (scale_index + 1) < len(scale_ladder)
+                else scale_ladder[scale_index]
+            )
             logger.debug(
                 "[Select] resulting normal=%.6f projection=%.6f", normal, projection
             )
