@@ -208,7 +208,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     files_parser.add_argument(
         "files",
-        nargs=argparse.REMAINDER,
+        nargs="+",
         type=Path,
         help="Paths to distance files that should be plotted.",
     )

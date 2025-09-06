@@ -36,3 +36,16 @@ def test_files_builder_requires_two_paths(tmp_path):
     ns = cli.parse_args(["files", str(tmp_path / "a.txt")])
     with pytest.raises(argparse.ArgumentTypeError):
         ns.builder_factory(ns)
+
+
+def test_files_parser_recognises_trailing_options(tmp_path):
+    ns = cli.parse_args(
+        [
+            "files",
+            str(tmp_path / "a.txt"),
+            str(tmp_path / "b.txt"),
+            "--dry-run",
+        ]
+    )
+    assert ns.dry_run
+    assert ns.files == [tmp_path / "a.txt", tmp_path / "b.txt"]
