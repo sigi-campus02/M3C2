@@ -87,11 +87,16 @@ If neither is provided, the log level defaults to the `logging.level` entry in
 `config.json`.
 
 ## Repository Structure
-- `config/` – dataclasses and plotting configuration
-- `datasource/` – unified loading of point cloud data
-- `generation/` – utilities for producing derived clouds
-- `orchestration/` – batch runners and M3C2 execution logic
+- `m3c2/`
+  - `cli/` – command-line interface and GUI helpers
+  - `config/` – dataclasses and plotting configuration
+  - `importer/` – unified loading of point cloud data
+  - `exporter/` – utilities for writing PLY and statistics outputs
+  - `m3c2_core/` – core algorithm execution and parameter estimation
+  - `pipeline/` – orchestrators for batch and single-cloud processing
+  - `statistics/` – computation and aggregation of metrics
 - `report_pipeline/` – lightweight CLI for generating comparison reports
+- `docu/` – project documentation and UML diagrams
 - `tests/` – unit tests covering key functionality
 
 ## Configuration
@@ -111,23 +116,35 @@ Global settings for the pipeline and report generation live in `config.json` and
 
 ### Arguments
 
-| Parameter                 | Type           | Default / Example | Description |
-|---------------------------|----------------|------------------|-------------|
-| `data_dir`                | string         | `"data"` | Input directory containing point cloud folders. |
-| `folders`                 | list\[string]  | `["pointclouds"]`      | List of folders containing point clouds. |
-| `filename_reference`            | string         | `""`             | Reference point cloud file for distance calculation (not used for single cloud statistics). |
-| `filename_comparison`            | string         | `""`             | Comparison point cloud file for distance calculation (not used for single cloud statistics). |
-| `filename_singlecloud`    | string         | `""` | Single point cloud filename used for single-cloud statistics. |
-| `use_subsampled_corepoints` | int          | `1`              | Use subsampled core points for distance computation. Eg. 3: Every 3rd point is used for the subsample. |
-| `sample_size`             | int            | `10000`          | Number of core points used for parameter estimation (normal & projection scale). Not used to subsample distances. |
-| `scale_strategy`          | string         | `"radius"`       | Strategy used for parameter estimation (currently only 'radius' is supported). |
-| `only_stats`              | boolean        | `true`           | If true, compute only statistics (no parameter estimation or M3C2 distance calculation). |
-| `stats_singleordistance`  | string         | `"single"`       | "Statistics type: 'single' for single-cloud statistics or 'distance' for pairwise distance analysis." |
-| `output_format`           | string         | `"excel"`        | Output format for results. |
-| `project`                 | string         | `"PROJECT"`     | Project name used as prefix for folders and output files. |
-| `normal_override`         | float / null   | `null`           | Manual override for normal scale instead of automatic estimation. |
-| `proj_override`           | float / null   | `null`           | Manual override for projection scale instead of automatic estimation. |
-| `use_existing_params`     | boolean        | `false`          | If true, use existing parameter file instead of recalculating. |
-| `outlier_detection_method`| string         | `"rmse"`         | Outlier detection method (`rmse`, `mad`, `nmad`, `std`). |
-| `outlier_multiplicator`   | float          | `3.0`            | Multiplicator applied by the chosen outlier method. |
-| `log_level`               | string         | `"INFO"`         | Logging level for output (overrides `logging.level`). |
+| Parameter                 | Type           | Default / Example | Options                                         | Description |
+|---------------------------|----------------|------------------|-------------------------------------------------|-------------|
+| `data_dir`                | string         | `"data"`         | —                                               | Input directory containing point cloud folders. |
+| `folders`                 | list\[string]  | `["pointclouds"]`| —                                               | List of folders containing point clouds. |
+| `filename_reference`      | string         | `""`             | —                                               | Reference point cloud file for distance calculation (not used for single cloud statistics). |
+| `filename_comparison`     | string         | `""`             | —                                               | Comparison point cloud file for distance calculation (not used for single cloud statistics). |
+| `filename_singlecloud`    | string         | `""`             | —                                               | Single point cloud filename used for single-cloud statistics. |
+| `use_subsampled_corepoints` | int          | `1`              | ≥1                                              | Use subsampled core points for distance computation. Eg. 3: Every 3rd point is used for the subsample. |
+| `sample_size`             | int            | `10000`          | ≥1                                              | Number of core points used for parameter estimation (normal & projection scale). Not used to subsample distances. |
+| `scale_strategy`          | string         | `"radius"`       | `radius`                                        | Parameter estimation strategy. `radius`: derive scales from neighborhood radius. |
+| `only_stats`              | boolean        | `true`           | `true`, `false`                                 | Whether to skip M3C2 distances. `true`: compute only statistics; `false`: run full distance analysis. |
+| `stats_singleordistance`  | string         | `"single"`       | `single`, `distance`, `plot`                    | Statistics mode. `single`: metrics for a single cloud; `distance`: pairwise distance analysis; `plot`: create plots from existing distance files. |
+| `output_format`           | string         | `"excel"`        | `excel`, `json`                                 | Result export format. `excel`: write `.xlsx`; `json`: write JSON file. |
+| `project`                 | string         | `"PROJECT"`      | —                                               | Project name used as prefix for folders and output files. |
+| `normal_override`         | float / null   | `null`           | —                                               | Manual override for normal scale instead of automatic estimation. |
+| `proj_override`           | float / null   | `null`           | —                                               | Manual override for projection scale instead of automatic estimation. |
+| `use_existing_params`     | boolean        | `false`          | `true`, `false`                                 | Whether to reuse parameter file. `true`: load existing parameters; `false`: re-estimate parameters. |
+| `outlier_detection_method`| string         | `"rmse"`         | `rmse`, `mad`, `nmad`, `std`                    | Outlier removal strategy. `rmse`: threshold by root mean square error; `mad`: median absolute deviation; `nmad`: normalized MAD; `std`: standard deviation. |
+| `outlier_multiplicator`   | float          | `3.0`            | —                                               | Multiplicator applied by the chosen outlier method. |
+| `log_level`               | string         | `"INFO"`         | `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL` | Overrides logging verbosity. `DEBUG`: detailed diagnostics; `INFO`: general messages; `WARNING`: potential issues; `ERROR`: errors; `CRITICAL`: fatal errors. |
+
+## Report Pipeline CLI Examples
+
+The reporting workflow is exposed through the `report_pipeline` commands.
+Invoke it either with `python -m report_pipeline` or, when installed as a
+package, via the `m3c2-report` console script. Some typical commands are:
+
+```bash
+python -m report_pipeline folder --folder results/case_07 --pattern "*_distances.txt" --out case_07.pdf
+python -m report_pipeline multifolder --folders results/c1 results/c2 --pattern "*_dist.txt" --paired --out all_cases.pdf
+python -m report_pipeline files --files a1.txt b1.txt a2.txt --out ai_overlay.pdf --legend
+```
