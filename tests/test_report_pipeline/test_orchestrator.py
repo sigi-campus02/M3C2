@@ -21,8 +21,12 @@ def test_orchestrator_flattens_figures():
     pdf_writer.write.return_value = Path("out.pdf")
 
     jobs = [Job([1], "p1"), Job([2], "p2")]
-    orchestrator = ReportOrchestrator(plotter, pdf_writer)
-    result = orchestrator.run(jobs)
+    builder = MagicMock()
+    builder.build_jobs.return_value = jobs
 
+    orchestrator = ReportOrchestrator(plotter, pdf_writer, builder)
+    result = orchestrator.run()
+
+    builder.build_jobs.assert_called_once_with()
     pdf_writer.write.assert_called_once_with([fig1, fig2, fig3])
     assert result == Path("out.pdf")

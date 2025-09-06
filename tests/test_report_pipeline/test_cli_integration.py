@@ -16,6 +16,6 @@ def test_parse_args_creates_correct_builders(tmp_path):
     assert isinstance(ns.builder_factory(ns), MultiFolderJobBuilder)
 
 
-def test_run_dry_run_returns_empty_list(tmp_path):
+def test_run_dry_run_returns_none(tmp_path):
     result = cli.run(["folder", str(tmp_path), "--dry-run"])
-    assert result == []
+    assert result is None
