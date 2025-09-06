@@ -96,3 +96,13 @@ If neither is provided, the log level defaults to the `logging.level` entry in
 | `outlier_detection_method`| string         | `"rmse"`         | Outlier detection method (`rmse`, `mad`, `nmad`, `std`). |
 | `outlier_multiplicator`   | float          | `3.0`            | Multiplicator applied by the chosen outlier method. |
 | `log_level`               | string         | `"INFO"`         | Logging level for output (overrides `logging.level`). |
+
+## Report CLI Examples
+
+The lightweight reporting pipeline can be invoked via `m3c2-report`.  Some typical commands are:
+
+```bash
+m3c2-report folder --folder results/case_07 --pattern "*_distances.txt" --out case_07.pdf
+m3c2-report multifolder --folders results/c1 results/c2 --pattern "*_dist.txt" --paired --out all_cases.pdf
+m3c2-report files --files a1.txt b1.txt a2.txt --out ai_overlay.pdf --legend
+```
