@@ -31,6 +31,10 @@ def test_orchestrator_flattens_figures():
 
     builder.build_jobs.assert_called_once_with()
     pdf_writer.write.assert_called_once_with([fig1, fig2, fig3], out_path, "Title")
-    plotter.make_overlay.assert_any_call([1], title="p1", plot_type="histogram")
-    plotter.make_overlay.assert_any_call([2], title="p2", plot_type="gauss")
+    plotter.make_overlay.assert_any_call(
+        [1], title="p1", plot_type="histogram", show_legend=False
+    )
+    plotter.make_overlay.assert_any_call(
+        [2], title="p2", plot_type="gauss", show_legend=False
+    )
     assert result == Path("out.pdf")

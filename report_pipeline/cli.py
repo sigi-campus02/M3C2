@@ -40,6 +40,39 @@ from .strategies.files import FilesJobBuilder
 BuilderFactory = Callable[[argparse.Namespace], JobBuilder]
 
 
+def _folder_builder_factory(ns: argparse.Namespace) -> FolderJobBuilder:
+    builder = FolderJobBuilder(
+        folder=ns.folder,
+        pattern=ns.pattern,
+        paired=ns.paired,
+        group_by_folder=ns.group_by_folder,
+        plot_type=ns.plot_type,
+    )
+    builder.legend = ns.legend
+    return builder
+
+
+def _multifolder_builder_factory(ns: argparse.Namespace) -> MultiFolderJobBuilder:
+    builder = MultiFolderJobBuilder(
+        folders=ns.folders,
+        pattern=ns.pattern,
+        paired=ns.paired,
+        plot_type=ns.plot_type,
+    )
+    builder.legend = ns.legend
+    return builder
+
+
+def _files_builder_factory(ns: argparse.Namespace) -> FilesJobBuilder:
+    builder = FilesJobBuilder(
+        files=ns.files,
+        paired=ns.paired,
+        plot_type=ns.plot_type,
+    )
+    builder.legend = ns.legend
+    return builder
+
+
 # ---------------------------------------------------------------------------
 # Parser construction
 # ---------------------------------------------------------------------------
@@ -133,15 +166,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Expect exactly two files; raise an error otherwise.",
     )
     _add_shared_options(folder_parser)
-    folder_parser.set_defaults(
-        builder_factory=lambda ns: FolderJobBuilder(
-            folder=ns.folder,
-            pattern=ns.pattern,
-            paired=ns.paired,
-            group_by_folder=ns.group_by_folder,
-            plot_type=ns.plot_type,
-        )
-    )
+    folder_parser.set_defaults(builder_factory=_folder_builder_factory)
 
     # ------------------------------------------------------------------
     # multifolder subcommand
@@ -167,14 +192,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Expect exactly two files overall; raise an error otherwise.",
     )
     _add_shared_options(multifolder_parser)
-    multifolder_parser.set_defaults(
-        builder_factory=lambda ns: MultiFolderJobBuilder(
-            folders=ns.folders,
-            pattern=ns.pattern,
-            paired=ns.paired,
-            plot_type=ns.plot_type,
-        )
-    )
+    multifolder_parser.set_defaults(builder_factory=_multifolder_builder_factory)
 
     # ------------------------------------------------------------------
     # files subcommand
@@ -194,11 +212,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Expect exactly two files; raise an error otherwise.",
     )
     _add_shared_options(files_parser)
-    files_parser.set_defaults(
-        builder_factory=lambda ns: FilesJobBuilder(
-            files=ns.files, paired=ns.paired, plot_type=ns.plot_type
-        )
-    )
+    files_parser.set_defaults(builder_factory=_files_builder_factory)
 
     return parser
 
