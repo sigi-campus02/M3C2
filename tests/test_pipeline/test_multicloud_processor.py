@@ -38,6 +38,10 @@ def test_process_exports_ply_with_nan(tmp_path):
         ):
             return distances, None, None
 
+    class DummyOutlierHandler:
+        def detect(self, distances, method, factor):
+            return np.array([0, 1], dtype=np.uint8)
+
     class DummyStatisticsRunner:
         def compute_statistics(self, cfg, comparison, reference, tag):
             pass
@@ -53,6 +57,8 @@ def test_process_exports_ply_with_nan(tmp_path):
         process_python_CC="cfg",
         use_existing_params=False,
         only_stats=False,
+        outlier_detection_method="rmse",
+        outlier_multiplicator=3.0,
     )
 
     processor = MulticloudProcessor(
@@ -61,6 +67,7 @@ def test_process_exports_ply_with_nan(tmp_path):
         m3c2_executor=DummyM3C2Executor(),
         statistics_runner=DummyStatisticsRunner(),
         param_manager=DummyParamManager(),
+        outlier_handler=DummyOutlierHandler(),
     )
 
     processor.process(cfg, tag="run")
@@ -71,4 +78,5 @@ def test_process_exports_ply_with_nan(tmp_path):
     ply = PlyData.read(ply_file)
     distances_read = ply["vertex"]["distance"]
     assert any(np.isnan(distances_read))
+    np.testing.assert_array_equal(ply["vertex"]["mask"], np.array([0, 1], dtype=np.uint8))
 
