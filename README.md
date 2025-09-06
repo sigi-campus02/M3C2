@@ -59,11 +59,16 @@ If neither is provided, the log level defaults to the `logging.level` entry in
 `config.json`.
 
 ## Repository Structure
-- `config/` – dataclasses and plotting configuration
-- `datasource/` – unified loading of point cloud data
-- `generation/` – utilities for producing derived clouds
-- `orchestration/` – batch runners and M3C2 execution logic
+- `m3c2/`
+  - `cli/` – command-line interface and GUI helpers
+  - `config/` – dataclasses and plotting configuration
+  - `importer/` – unified loading of point cloud data
+  - `exporter/` – utilities for writing PLY and statistics outputs
+  - `m3c2_core/` – core algorithm execution and parameter estimation
+  - `pipeline/` – orchestrators for batch and single-cloud processing
+  - `statistics/` – computation and aggregation of metrics
 - `report_pipeline/` – lightweight CLI for generating comparison reports
+- `docu/` – project documentation and UML diagrams
 - `tests/` – unit tests covering key functionality
 
 ## Configuration
