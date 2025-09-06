@@ -30,17 +30,26 @@ class MulticloudProcessor:
         self.param_manager = param_manager
         self.outlier_handler = outlier_handler
 
-    def process(self, cfg: PipelineConfig, tag: str) -> None:
+    def process(self, config: PipelineConfig, run_tag: str) -> None:
         """Process statistics for a pair of point clouds."""
-        ds, comparison, reference, corepoints = self.data_loader.load_data(cfg, mode="multicloud")
-        out_base = ds.config.folder
+        # Load data and corepoints for multicloud processing
+        data_source, comparison, reference, corepoints = self.data_loader.load_data(
+            config, mode="multicloud"
+        )
+        output_dir = data_source.config.folder
 
-        if not cfg.only_stats:
-            self._process_full(cfg, comparison, reference, corepoints, out_base, tag)
+        if not config.only_stats:
+            # Perform full M3C2 workflow and export
+            self._process_full(
+                config, comparison, reference, corepoints, output_dir, run_tag
+            )
         else:
             try:
                 logger.info("[Statistics] Berechne Statistiken ...")
-                self.statistics_runner.compute_statistics(cfg, comparison, reference, tag)
+                # Only compute statistics without running M3C2
+                self.statistics_runner.compute_statistics(
+                    config, comparison, reference, run_tag
+                )
             except (IOError, ValueError):
                 logger.exception("Fehler bei der Berechnung der Statistik")
             except RuntimeError:
@@ -51,42 +60,59 @@ class MulticloudProcessor:
 
     def _process_full(
         self,
-        cfg: PipelineConfig,
+        config: PipelineConfig,
         comparison: str,
         reference: str,
         corepoints: np.ndarray,
-        out_base: str,
-        tag: str,
+        output_dir: str,
+        run_tag: str,
     ) -> None:
-        normal = projection = np.nan
+        # Initialize scales as NaN until estimated or loaded
+        normal_scale = projection_scale = np.nan
 
-        if cfg.use_existing_params:
-            normal, projection = self.param_manager.handle_existing_params(
-                cfg, out_base, tag
+        if config.use_existing_params:
+            # Try to load previously computed scales
+            normal_scale, projection_scale = self.param_manager.handle_existing_params(
+                config, output_dir, run_tag
             )
-            if np.isnan(normal) and np.isnan(projection):
+            if np.isnan(normal_scale) and np.isnan(projection_scale):
                 logger.info(
                     "[Params] keine vorhandenen Parameter gefunden, berechne neu"
                 )
-                normal, projection = self.scale_estimator.determine_scales(
-                    cfg, corepoints
+                # Estimate scales from corepoints if none were found
+                normal_scale, projection_scale = self.scale_estimator.determine_scales(
+                    config, corepoints
                 )
         else:
-            normal, projection = self.scale_estimator.determine_scales(
-                cfg, corepoints
+            # Estimate scales from corepoints
+            normal_scale, projection_scale = self.scale_estimator.determine_scales(
+                config, corepoints
             )
-            self.param_manager.save_params(cfg, normal, projection, out_base, tag)
+            # Persist estimated scales for subsequent runs
+            self.param_manager.save_params(
+                config, normal_scale, projection_scale, output_dir, run_tag
+            )
 
+        # Execute the M3C2 algorithm to compute distances
         distances, _, _ = self.m3c2_executor.run_m3c2(
-            cfg, comparison, reference, corepoints, normal, projection, out_base, tag
+            config,
+            comparison,
+            reference,
+            corepoints,
+            normal_scale,
+            projection_scale,
+            output_dir,
+            run_tag,
         )
 
+        # Detect outliers in the distance results
         outliers = self.outlier_handler.detect(
-            distances, cfg.outlier_detection_method, cfg.outlier_multiplicator
+            distances, config.outlier_detection_method, config.outlier_multiplicator
         )
 
+        # Export the distances and outlier flags as a PLY file
         ply_path = os.path.join(
-            out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances.ply"
+            output_dir, f"{config.process_python_CC}_{run_tag}_m3c2_distances.ply"
         )
         export_xyz_distance(corepoints, distances, outliers, ply_path)
         logger.info("[PLY] Distanzen als PLY gespeichert: %s", ply_path)
