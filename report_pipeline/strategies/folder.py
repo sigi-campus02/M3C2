@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from ..domain import DistanceFile, PlotJob, parse_label_group
+from ..domain import DistanceFile, PlotJob, normalize_group, parse_label_group
 from .base import JobBuilder
 
 
@@ -38,6 +38,7 @@ class FolderJobBuilder(JobBuilder):
                         )
                     except ValueError:
                         group = path.parent.name
+                    group = normalize_group(group)
                     label = path.stem
                 else:
                     label, group = parse_label_group(path)
@@ -51,7 +52,7 @@ class FolderJobBuilder(JobBuilder):
                     raise ValueError("--paired requires exactly two files per overlay")
             return jobs
 
-        jobs: list[PlotJob] = []
+        items: list[DistanceFile] = []
         for path in paths:
             if self.group_by_folder:
                 try:
@@ -63,10 +64,12 @@ class FolderJobBuilder(JobBuilder):
                     )
                 except ValueError:
                     group = path.parent.name
+                group = normalize_group(group)
                 label = path.stem
             else:
                 label, group = parse_label_group(path)
             item = DistanceFile(path=path, label=label, group=group)
-            jobs.append(PlotJob(items=[item], page_title=group))
+            items.append(item)
 
-        return jobs
+        items.sort(key=lambda df: df.label)
+        return [PlotJob(items=items)]
