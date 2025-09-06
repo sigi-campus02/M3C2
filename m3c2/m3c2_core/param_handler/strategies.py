@@ -40,7 +40,7 @@ class ScaleScan:
     mean_population : float
         Average number of neighbours per core point.
     roughness : float
-        Mean roughness :math:`\sigma(D)` of the neighbourhoods.
+        Mean roughness :math:`\\sigma(D)` of the neighbourhoods.
     coverage : float
         Fraction of core points that produced a valid normal.
     mean_lambda3 : float
@@ -86,7 +86,7 @@ def _fit_plane_pca(points: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarr
     eigenvalues : (3,) ndarray
         Ascending eigenvalues of the covariance matrix.
     sigma : float
-        Orthogonal roughness :math:`\sigma(D)` based on point-to-plane
+        Orthogonal roughness :math:`\\sigma(D)` based on point-to-plane
         distances.
     """
     centroid = points.mean(axis=0)
