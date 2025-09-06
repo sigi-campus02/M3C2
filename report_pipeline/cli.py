@@ -21,16 +21,16 @@ callable on the resulting namespace which can be used to construct an
 appropriate :class:`~report_pipeline.strategies.base.JobBuilder` instance.
 
 The :func:`run` convenience function demonstrates how the parsed options can be
-used to create jobs.  It intentionally performs only a dry orchestration and
-returns the generated jobs, leaving the actual plotting/report creation to
-higher level code.
+used to create a job builder.  It intentionally performs only a dry
+orchestration and returns the builder for use by higher level code.  When the
+``--dry-run`` flag is supplied the function returns ``None`` without creating a
+builder.
 """
 
 from pathlib import Path
 from typing import Callable, Sequence
 import argparse
 
-from .domain import PlotJob
 from .strategies.base import JobBuilder
 from .strategies.folder import FolderJobBuilder
 from .strategies.multifolder import MultiFolderJobBuilder
@@ -194,20 +194,19 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def run(argv: Sequence[str] | None = None) -> list[PlotJob]:
-    """Parse ``argv`` and return plotting jobs.
+def run(argv: Sequence[str] | None = None) -> JobBuilder | None:
+    """Parse ``argv`` and return a job builder.
 
     When the ``--dry-run`` option is supplied no filesystem interaction takes
-    place and an empty list is returned.  The function is intended mainly for
-    tests and higher level orchestration code.
+    place and ``None`` is returned.  The function is intended mainly for tests
+    and higher level orchestration code.
     """
 
     ns = parse_args(argv)
     factory: BuilderFactory = ns.builder_factory
     if ns.dry_run:
-        return []
-    builder = factory(ns)
-    return builder.build_jobs()
+        return None
+    return factory(ns)
 
 
 __all__ = ["build_parser", "parse_args", "run"]

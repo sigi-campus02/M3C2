@@ -19,25 +19,45 @@ class MultiFolderJobBuilder(JobBuilder):
     paired: bool = False
 
     def build_jobs(self) -> list[PlotJob]:
-        groups: dict[tuple[str, str | None], list[DistanceFile]] = {}
         folder_paths = [Path(f).expanduser().resolve() for f in self.folders]
-        for folder_path in folder_paths:
-            if not folder_path.is_dir():
-                raise FileNotFoundError(f"Folder does not exist: {folder_path}")
-            paths = sorted(p for p in folder_path.glob(self.pattern) if p.is_file())
-            for path in paths:
-                base_label, base_group = parse_label_group(path)
-                item = DistanceFile(path=path, label=folder_path.name, group=base_group)
-                key = (base_label, base_group)
-                groups.setdefault(key, []).append(item)
-
-        jobs: list[PlotJob] = []
-        for (label, group), items in groups.items():
-            title = label if group is None else f"{label} ({group})"
-            jobs.append(PlotJob(items=items, page_title=title))
-
         if self.paired:
+            groups: dict[tuple[str, str | None], list[DistanceFile]] = {}
+            for folder_path in folder_paths:
+                if not folder_path.is_dir():
+                    raise FileNotFoundError(f"Folder does not exist: {folder_path}")
+                paths = sorted(p for p in folder_path.glob(self.pattern) if p.is_file())
+                for path in paths:
+                    base_label, base_group = parse_label_group(path)
+                    item = DistanceFile(path=path, label=folder_path.name, group=base_group)
+                    key = (base_label, base_group)
+                    groups.setdefault(key, []).append(item)
+
+            jobs: list[PlotJob] = []
+            for (label, group), items in groups.items():
+                title = label if group is None else f"{label} ({group})"
+                jobs.append(PlotJob(items=items, page_title=title))
+
             for job in jobs:
                 if len(job.items) != 2:
                     raise ValueError("--paired requires exactly two files per overlay")
+            return jobs
+
+        jobs: list[PlotJob] = []
+        for folder_path in folder_paths:
+            if not folder_path.is_dir():
+                raise FileNotFoundError(f"Folder does not exist: {folder_path}")
+
+            paths = sorted(p for p in folder_path.glob(self.pattern) if p.is_file())
+            items: list[DistanceFile] = []
+
+            for path in paths:
+                label, group = parse_label_group(path)
+                items.append(DistanceFile(path=path, label=label, group=group))
+
+            if self.paired and len(items) != 2:
+                raise ValueError("--paired requires exactly two files per folder")
+            if items:
+                jobs.append(PlotJob(items=items, page_title=folder_path.name))
+
+
         return jobs
