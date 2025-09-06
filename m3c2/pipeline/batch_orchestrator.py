@@ -61,7 +61,6 @@ class BatchOrchestrator:
         self.m3c2_executor = self.factory.create_m3c2_executor()
         # self.outlier_handler = self.factory.create_outlier_handler()
         self.statistics_runner = self.factory.create_statistics_runner()
-        self.visualization_runner = self.factory.create_visualization_runner()
 
         self.param_manager = ParamManager()
         self.multicloud_processor = MulticloudProcessor(
@@ -69,7 +68,6 @@ class BatchOrchestrator:
             self.scale_estimator,
             self.m3c2_executor,
             self.statistics_runner,
-            self.visualization_runner,
             self.param_manager,
         )
         self.singlecloud_processor = SinglecloudProcessor(

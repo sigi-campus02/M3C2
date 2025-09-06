@@ -11,7 +11,6 @@ from m3c2.importer.data_loader import DataLoader
 from m3c2.m3c2_core.param_handler.scale_estimator import ScaleEstimator
 from m3c2.m3c2_core.m3c2_executor import M3C2Executor
 from m3c2.statistics.statistics_runner import StatisticsRunner
-from m3c2.visualization.services.visualization_runner import VisualizationRunner
 
 
 def test_factory_creates_configured_components():
@@ -36,5 +35,3 @@ def test_factory_creates_configured_components():
     stats_runner = factory.create_statistics_runner()
     assert isinstance(stats_runner, StatisticsRunner)
     assert stats_runner.output_format == "excel"
-
-    assert isinstance(factory.create_visualization_runner(), VisualizationRunner)

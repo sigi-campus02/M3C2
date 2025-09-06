@@ -8,8 +8,6 @@ from m3c2.importer.data_loader import DataLoader
 from m3c2.m3c2_core.param_handler.scale_estimator import ScaleEstimator
 from m3c2.m3c2_core.m3c2_executor import M3C2Executor
 from m3c2.statistics.statistics_runner import StatisticsRunner
-from m3c2.visualization.services.visualization_runner import VisualizationRunner
-
 
 logger = logging.getLogger(__name__)
 
@@ -83,11 +81,3 @@ class PipelineComponentFactory:
         logger.debug("Creating %s", StatisticsRunner.__name__)
         return StatisticsRunner(self.output_format)
 
-    def create_visualization_runner(self) -> VisualizationRunner:
-        """Create the :class:`VisualizationRunner` for the pipeline.
-
-        The returned runner generates histograms and colourised point cloud
-        visualizations of M3C2 outputs.
-        """
-        logger.debug("Creating %s", VisualizationRunner.__name__)
-        return VisualizationRunner()
