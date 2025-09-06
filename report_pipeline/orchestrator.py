@@ -41,30 +41,39 @@ class ReportOrchestrator:
         """Generate figures for the builder's jobs and write them to a PDF report."""
 
         jobs = self.builder.build_jobs()
-        figures: list = []
+        all_figures: list = []
+
+        # Detect whether the builder exposes a legend flag.
         try:
             show_legend = object.__getattribute__(self.builder, "legend")
         except AttributeError:
             show_legend = False
+
         for job in jobs:
             plot_type = getattr(job, "plot_type", "histogram")
+
+            # Branch based on the desired plot type for the current job.
             if plot_type in {"histogram", "gauss", "weibull", "boxplot", "qq", "violin"}:
-                figs = self.plotter.make_overlay(
+                current_figures = self.plotter.make_overlay(
                     job.items,
                     title=job.page_title,
                     plot_type=plot_type,
                     show_legend=show_legend,
                 )
             elif plot_type == "bland-altman":
-                figs = self.plotter.make_bland_altman(job.items, title=job.page_title)
+                current_figures = self.plotter.make_bland_altman(job.items, title=job.page_title)
             elif plot_type == "linear-regression":
-                figs = self.plotter.make_linear_regression(job.items, title=job.page_title)
+                current_figures = self.plotter.make_linear_regression(job.items, title=job.page_title)
             elif plot_type == "passing-bablok":
-                figs = self.plotter.make_passing_bablok(job.items, title=job.page_title)
+                current_figures = self.plotter.make_passing_bablok(job.items, title=job.page_title)
             elif plot_type == "grouped-bar":
-                figs = self.plotter.make_grouped_bar(job.items, title=job.page_title)
+                current_figures = self.plotter.make_grouped_bar(job.items, title=job.page_title)
             else:
                 raise ValueError(f"Unknown plot type: {plot_type}")
-            figures.extend(figs)
-        pdf_path = self.pdf_writer.write(figures, out_path, title)
+
+            # Aggregate figures from this job into the full report collection.
+            all_figures.extend(current_figures)
+
+        # Write the collected figures to the output PDF.
+        pdf_path = self.pdf_writer.write(all_figures, out_path, title)
         return pdf_path
