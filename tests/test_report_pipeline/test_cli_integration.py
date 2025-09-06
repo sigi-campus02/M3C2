@@ -1,4 +1,7 @@
 from pathlib import Path
+import argparse
+
+import pytest
 
 from report_pipeline import cli
 from report_pipeline.strategies.folder import FolderJobBuilder
@@ -27,3 +30,9 @@ def test_parse_args_creates_correct_builders(tmp_path):
 def test_run_dry_run_returns_none(tmp_path):
     result = cli.run(["folder", str(tmp_path), "--dry-run"])
     assert result is None
+
+
+def test_files_builder_requires_two_paths(tmp_path):
+    ns = cli.parse_args(["files", str(tmp_path / "a.txt")])
+    with pytest.raises(argparse.ArgumentTypeError):
+        ns.builder_factory(ns)
