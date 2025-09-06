@@ -25,25 +25,48 @@ class FolderJobBuilder(JobBuilder):
 
         paths = sorted(p for p in folder.glob(self.pattern) if p.is_file())
 
-        groups: dict[str | None, list[DistanceFile]] = {}
+        if self.paired:
+            groups: dict[str | None, list[DistanceFile]] = {}
+            for path in paths:
+                if self.group_by_folder:
+                    try:
+                        relative_parent = path.parent.relative_to(folder)
+                        group = (
+                            relative_parent.parts[0]
+                            if relative_parent.parts
+                            else folder.name
+                        )
+                    except ValueError:
+                        group = path.parent.name
+                    label = path.stem
+                else:
+                    label, group = parse_label_group(path)
+                item = DistanceFile(path=path, label=label, group=group)
+                groups.setdefault(group, []).append(item)
+
+            jobs = [PlotJob(items=items, page_title=grp) for grp, items in groups.items()]
+
+            for job in jobs:
+                if len(job.items) != 2:
+                    raise ValueError("--paired requires exactly two files per overlay")
+            return jobs
+
+        jobs: list[PlotJob] = []
         for path in paths:
             if self.group_by_folder:
                 try:
                     relative_parent = path.parent.relative_to(folder)
-                    group = relative_parent.parts[0] if relative_parent.parts else folder.name
+                    group = (
+                        relative_parent.parts[0]
+                        if relative_parent.parts
+                        else folder.name
+                    )
                 except ValueError:
                     group = path.parent.name
                 label = path.stem
             else:
                 label, group = parse_label_group(path)
             item = DistanceFile(path=path, label=label, group=group)
-            groups.setdefault(group, []).append(item)
-
-        jobs = [PlotJob(items=items, page_title=grp) for grp, items in groups.items()]
-
-        if self.paired:
-            for job in jobs:
-                if len(job.items) != 2:
-                    raise ValueError("--paired requires exactly two files per overlay")
+            jobs.append(PlotJob(items=[item], page_title=group))
 
         return jobs
