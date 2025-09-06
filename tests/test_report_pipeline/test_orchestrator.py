@@ -25,8 +25,9 @@ def test_orchestrator_flattens_figures():
     builder.build_jobs.return_value = jobs
 
     orchestrator = ReportOrchestrator(plotter, pdf_writer, builder)
-    result = orchestrator.run()
+    out_path = Path("out.pdf")
+    result = orchestrator.run(out_path, "Title")
 
     builder.build_jobs.assert_called_once_with()
-    pdf_writer.write.assert_called_once_with([fig1, fig2, fig3])
+    pdf_writer.write.assert_called_once_with([fig1, fig2, fig3], out_path, "Title")
     assert result == Path("out.pdf")
