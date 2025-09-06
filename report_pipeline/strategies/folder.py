@@ -5,9 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from m3c2.cli.overlay_report import load_distance_file
-
-from ..domain import PlotJob, parse_label_group
+from ..domain import DistanceFile, PlotJob, parse_label_group
 from .base import JobBuilder
 
 
@@ -30,6 +28,6 @@ class FolderJobBuilder(JobBuilder):
         jobs: list[PlotJob] = []
         for path in paths:
             label, group = parse_label_group(path)
-            distances = load_distance_file(str(path))
-            jobs.append(PlotJob(distances=distances, label=label, group=group))
+            item = DistanceFile(path=path, label=label, group=group)
+            jobs.append(PlotJob(items=[item]))
         return jobs
