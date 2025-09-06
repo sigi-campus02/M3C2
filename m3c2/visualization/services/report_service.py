@@ -26,7 +26,6 @@ from ..plotters.overlay_plotter import (
     plot_overlay_weibull,
 )
 from .data_loader import load_data, resolve_path
-from ..plotters.grouped_bar_plotter import plot_grouped_bar_means_stds_dual
 
 logger = logging.getLogger(__name__)
 
@@ -105,9 +104,7 @@ class ReportBuilder:
         if self.options.plot_qq:
             plot_overlay_qq(fid, fname, data_with_all, self.colors, self.config.path)
         if self.options.plot_grouped_bar:
-            plot_grouped_bar_means_stds_dual(
-                fid, fname, data_with_all, data_inlier_all, self.colors, self.config.path
-            )
+            logger.warning("Grouped bar plotting is no longer supported in this module")
         if self.options.plot_violin:
             plot_overlay_violin(fid, fname, data_with_all, self.colors, self.config.path)
         logger.info("[Report] PNGs für %s (WITH) erzeugt.", fid)
@@ -135,9 +132,7 @@ class ReportBuilder:
             if self.options.plot_qq:
                 plot_overlay_qq(fid, fname, data_inlier_all, self.colors, self.config.path)
             if self.options.plot_grouped_bar:
-                plot_grouped_bar_means_stds_dual(
-                    fid, fname, data_with_all, data_inlier_all, self.colors, self.config.path
-                )
+                logger.warning("Grouped bar plotting is no longer supported in this module")
             if self.options.plot_violin:
                 plot_overlay_violin(fid, fname, data_inlier_all, self.colors, self.config.path)
             logger.info("[Report] PNGs für %s (INLIER) erzeugt.", fid)

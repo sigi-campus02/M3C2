@@ -74,9 +74,20 @@ def _add_shared_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--plot-type",
         dest="plot_type",
-        choices=["histogram", "gauss", "weibull", "boxplot", "qq", "violin"],
+        choices=[
+            "histogram",
+            "gauss",
+            "weibull",
+            "boxplot",
+            "qq",
+            "violin",
+            "bland-altman",
+            "grouped-bar",
+            "linear-regression",
+            "passing-bablok",
+        ],
         default="histogram",
-        help="Type of overlay plot to generate.",
+        help="Type of plot to generate.",
     )
     parser.add_argument(
         "--legend",
