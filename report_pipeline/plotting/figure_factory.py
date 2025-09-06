@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Factory functions creating matplotlib figures for distance overlays.
 
 The module focuses on a single high level function :func:`make_overlay` which
@@ -11,6 +9,9 @@ smaller than the number of items, multiple figures are created.  The caller is
 responsible for further processing, for instance writing the figures to a PDF
 report.
 """
+
+from __future__ import annotations
+
 
 from itertools import islice
 from hashlib import sha256

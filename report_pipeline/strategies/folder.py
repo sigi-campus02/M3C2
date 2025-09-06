@@ -1,6 +1,7 @@
+"""Strategy producing jobs from all distance files in a folder."""
+
 from __future__ import annotations
 
-"""Strategy producing jobs from all distance files in a folder."""
 
 from dataclasses import dataclass
 from pathlib import Path
