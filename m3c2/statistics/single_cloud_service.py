@@ -8,7 +8,7 @@ from typing import Dict, List, Optional
 import pandas as pd
 
 from .singlecloud_metrics import calc_single_cloud_stats as _calc_single_cloud_stats
-from .exporters import write_cloud_stats
+from m3c2.exporter.statistics_exporter import write_cloud_stats
 
 
 def calc_single_cloud_stats(

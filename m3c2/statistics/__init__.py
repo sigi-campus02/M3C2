@@ -10,7 +10,7 @@ from .distance_stats import calc_stats, _load_params
 from .m3c2_aggregator import compute_m3c2_statistics
 from .single_cloud_service import calc_single_cloud_stats
 from .path_utils import _resolve
-from .exporters import CANONICAL_COLUMNS, write_table, write_cloud_stats
+from m3c2.exporter.statistics_exporter import CANONICAL_COLUMNS, write_table, write_cloud_stats
 
 __all__ = [
     "calc_stats",

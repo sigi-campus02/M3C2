@@ -14,8 +14,6 @@ import logging
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from m3c2.statistics import exporters
-
 
 def test_write_table_calls_excel_by_default():
     """Ensure ``write_table`` uses the Excel backend by default.

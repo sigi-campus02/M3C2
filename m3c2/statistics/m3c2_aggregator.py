@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 from .distance_stats import calc_stats
-from .exporters import _append_df_to_excel, _append_df_to_json
+from m3c2.exporter.statistics_exporter import _append_df_to_excel, _append_df_to_json
 from .path_utils import _resolve
 
 logger = logging.getLogger(__name__)
