@@ -81,12 +81,12 @@ class MulticloudProcessor:
             cfg, comparison, reference, corepoints, normal, projection, out_base, tag
         )
 
-        mask = self.outlier_handler.detect(
+        outliers = self.outlier_handler.detect(
             distances, cfg.outlier_detection_method, cfg.outlier_multiplicator
         )
 
         ply_path = os.path.join(
             out_base, f"{cfg.process_python_CC}_{tag}_m3c2_distances.ply"
         )
-        export_xyz_distance(corepoints, distances, mask, ply_path)
+        export_xyz_distance(corepoints, distances, outliers, ply_path)
         logger.info("[PLY] Distanzen als PLY gespeichert: %s", ply_path)

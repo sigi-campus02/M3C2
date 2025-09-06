@@ -78,5 +78,7 @@ def test_process_exports_ply_with_nan(tmp_path):
     ply = PlyData.read(ply_file)
     distances_read = ply["vertex"]["distance"]
     assert any(np.isnan(distances_read))
-    np.testing.assert_array_equal(ply["vertex"]["mask"], np.array([0, 1], dtype=np.uint8))
+    np.testing.assert_array_equal(
+        ply["vertex"]["outlier"], np.array([0, 1], dtype=np.uint8)
+    )
 
