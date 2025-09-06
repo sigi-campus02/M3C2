@@ -11,6 +11,38 @@ from m3c2.config.logging_config import setup_logging
 from m3c2.pipeline.batch_orchestrator import BatchOrchestrator
 from m3c2.config.pipeline_config import PipelineConfig
 
+
+def _str2bool(value: str) -> bool:
+    """Return a boolean for a variety of truthy/falsey strings.
+
+    Parameters
+    ----------
+    value:
+        Input value provided on the command line.
+
+    Returns
+    -------
+    bool
+        ``True`` for values like ``"true"`` or ``"1"`` and ``False`` for
+        ``"false"`` or ``"0"``.
+
+    Raises
+    ------
+    argparse.ArgumentTypeError
+        If ``value`` cannot be interpreted as a boolean.
+    """
+
+    if isinstance(value, bool):
+        return value
+
+    text = value.lower()
+    if text in {"1", "true", "t", "yes", "y"}:
+        return True
+    if text in {"0", "false", "f", "no", "n"}:
+        return False
+
+    raise argparse.ArgumentTypeError("Boolean value expected.")
+
 class CLIApp:
     """Command line application wrapper for the pipeline."""
 
@@ -117,7 +149,9 @@ class CLIApp:
         )
         parser.add_argument(
             "--only_stats",
-            action=argparse.BooleanOptionalAction,
+            type=_str2bool,
+            nargs="?",
+            const=True,
             help="Only compute statistics based on existing distance files (no M3C2 processing).",
         )
         parser.add_argument(
@@ -153,7 +187,9 @@ class CLIApp:
         )
         parser.add_argument(
             "--use_existing_params",
-            action=argparse.BooleanOptionalAction,
+            type=_str2bool,
+            nargs="?",
+            const=True,
             help="Use existing parameters in folder if available.",
         )
         parser.add_argument(

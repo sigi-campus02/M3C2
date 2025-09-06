@@ -136,9 +136,9 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
             )
             desc_widget.grid(row=row, column=2, sticky="w", padx=5, pady=5)
 
-        if action.option_strings and action.nargs == 0 and (
-            action.const is True
-            or (bool_action is not None and isinstance(action, bool_action))
+        if action.option_strings and (
+            (bool_action is not None and isinstance(action, bool_action))
+            or (action.const is True and action.nargs in (0, "?"))
         ):
             var = tk.BooleanVar(value=bool(action.default))
             widget = tk.Checkbutton(root, variable=var)
@@ -187,6 +187,11 @@ def run_gui(parser: argparse.ArgumentParser, main_func) -> None:
                         if var.get() != action.default:
                             opt = action.option_strings[0] if var.get() else action.option_strings[1]
                             argv.append(opt)
+                    elif action.nargs in (0, "?"):
+                        if var.get() != action.default:
+                            argv.append(action.option_strings[0])
+                            if action.nargs == "?":
+                                argv.append(str(var.get()).lower())
                     else:
                         if var.get() != action.default:
                             argv.append(action.option_strings[0])
