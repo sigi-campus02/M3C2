@@ -133,7 +133,7 @@ class DataSource:
 
         m_xyz = ensure_xyz(self.comparison_base, (m_kind, m_path))
         r_xyz = ensure_xyz(self.reference_base, (r_kind, r_path))
-        logger.info("Mischtypen → konvertiert zu XYZ → py4dgeo.read_from_xyz")
+        logger.info("Mischtypen -> konvertiert zu XYZ -> py4dgeo.read_from_xyz")
         loader = XYZLoader(py4dgeo)
         return loader.load_pair(m_xyz, r_xyz)
     
@@ -159,7 +159,7 @@ class DataSource:
             return loader.load_single(s_path)
 
         s_xyz = ensure_xyz(self.singlecloud_base, (s_kind, s_path))
-        logger.info("Mischtypen → konvertiert zu XYZ → py4dgeo.read_from_xyz")
+        logger.info("Mischtypen -> konvertiert zu XYZ -> py4dgeo.read_from_xyz")
         loader = XYZLoader(py4dgeo)
         return loader.load_single(s_xyz)
     

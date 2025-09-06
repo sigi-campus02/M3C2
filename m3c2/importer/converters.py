@@ -44,7 +44,7 @@ def ensure_xyz(base: Path, detected: tuple[str | None, Path | None]) -> Path:
         return path
 
     if kind == "laslike" and path:
-        logger.info("[%s] Konvertiere LAS/LAZ → XYZ …", base)
+        logger.info("[%s] Konvertiere LAS/LAZ -> XYZ ...", base)
         try:
             arr = read_las(path)
             np.savetxt(xyz, arr, fmt="%.6f")
@@ -57,7 +57,7 @@ def ensure_xyz(base: Path, detected: tuple[str | None, Path | None]) -> Path:
         if PlyData is None:
             logger.error("PLY gefunden, aber 'plyfile' ist nicht installiert.")
             raise RuntimeError("PLY gefunden, aber 'plyfile' ist nicht installiert.")
-        logger.info("[%s] Konvertiere PLY → XYZ …", base)
+        logger.info("[%s] Konvertiere PLY -> XYZ ...", base)
         try:
             arr = read_ply(path)
             np.savetxt(xyz, arr, fmt="%.6f")
@@ -67,7 +67,7 @@ def ensure_xyz(base: Path, detected: tuple[str | None, Path | None]) -> Path:
         return xyz
 
     if kind == "obj" and path:
-        logger.info("[%s] Konvertiere OBJ → XYZ …", base)
+        logger.info("[%s] Konvertiere OBJ -> XYZ ...", base)
         try:
             arr = read_obj(path)
             np.savetxt(xyz, arr, fmt="%.6f")
@@ -77,7 +77,7 @@ def ensure_xyz(base: Path, detected: tuple[str | None, Path | None]) -> Path:
         return xyz
 
     if kind == "gpc" and path:
-        logger.info("[%s] Konvertiere GPC → XYZ …", base)
+        logger.info("[%s] Konvertiere GPC -> XYZ ...", base)
         try:
             arr = read_gpc(path)
             np.savetxt(xyz, arr, fmt="%.6f")

@@ -39,7 +39,7 @@ class MulticloudProcessor:
             self._process_full(cfg, comparison, reference, corepoints, out_base, tag)
         else:
             try:
-                logger.info("[Statistics] Berechne Statistiken …")
+                logger.info("[Statistics] Berechne Statistiken ...")
                 self.statistics_runner.compute_statistics(cfg, comparison, reference, tag)
             except (IOError, ValueError):
                 logger.exception("Fehler bei der Berechnung der Statistik")
