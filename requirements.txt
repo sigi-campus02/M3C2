@@ -1,4 +1,5 @@
-laspy[lazrs]
+laspy
+# lazrs is optional for LAZ support: install via `pip install laspy[lazrs]` if needed
 matplotlib
 numpy
 openpyxl
