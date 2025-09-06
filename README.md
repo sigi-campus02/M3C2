@@ -36,13 +36,26 @@ Run the pipeline with the configuration file:
 python -m main
 ```
 
+```powershell
+python -m main
+```
+
 Alternatively, pass parameters directly on the command line:
 
 ```bash
 python -m main --data_dir ./data --folders 0342-0349 --filename_reference reference.ply --filename_comparison comparison.ply
 ```
 
+```powershell
+python -m main --data_dir .\data --folders 0342-0349 --filename_reference reference.ply --filename_comparison comparison.ply
+```
+
 Outputs, statistics, and logs are written to dataset folders and the `outputs/` directory.
+
+> **Windows PowerShell users:** The command examples in this README are shown in
+> both Bash and PowerShell syntax. When using PowerShell, replace trailing `\`
+> line continuations with backticks (`` ` ``) and use `./` or `.` prefixes for
+> relative paths as demonstrated in the PowerShell listings below.
 
 ## CLI Examples
 
@@ -53,11 +66,21 @@ python -m main --data_dir ./data --folders scan1 --filename_singlecloud surface.
 python -m main --data_dir ./data --folders scanA scanB --filename_singlecloud points.ply --stats_singleordistance single --output_format json
 ```
 
+```powershell
+python -m main --data_dir .\data --folders scan1 --filename_singlecloud surface.las --stats_singleordistance single
+python -m main --data_dir .\data --folders scanA scanB --filename_singlecloud points.ply --stats_singleordistance single --output_format json
+```
+
 ### Distance Metrics
 
 ```bash
 python -m main --data_dir ./data --folders pair_01 --filename_reference ref.ply --filename_comparison cmp.ply --stats_singleordistance distance
 python -m main --data_dir ./data --folders pair_A pair_B --filename_reference ref.las --filename_comparison cmp.las --stats_singleordistance distance --use_subsampled_corepoints 5 --outlier_detection_method nmad
+```
+
+```powershell
+python -m main --data_dir .\data --folders pair_01 --filename_reference ref.ply --filename_comparison cmp.ply --stats_singleordistance distance
+python -m main --data_dir .\data --folders pair_A pair_B --filename_reference ref.las --filename_comparison cmp.las --stats_singleordistance distance --use_subsampled_corepoints 5 --outlier_detection_method nmad
 ```
 
 ### Plot Generation
@@ -69,6 +92,12 @@ the `m3c2-report` console script. Some typical commands are:
 ```bash
 python -m report_pipeline folder --folder results/case_07 --pattern "*_distances.txt" --out case_07.pdf
 python -m report_pipeline multifolder --folders results/c1 results/c2 --pattern "*_dist.txt" --paired --out all_cases.pdf
+python -m report_pipeline files --files a1.txt b1.txt a2.txt --out ai_overlay.pdf --legend
+```
+
+```powershell
+python -m report_pipeline folder --folder results\case_07 --pattern "*_distances.txt" --out case_07.pdf
+python -m report_pipeline multifolder --folders results\c1 results\c2 --pattern "*_dist.txt" --paired --out all_cases.pdf
 python -m report_pipeline files --files a1.txt b1.txt a2.txt --out ai_overlay.pdf --legend
 ```
 
@@ -129,6 +158,52 @@ python -m main \
   --only_stats \
   --output_format excel \
   --project EXAMPLE \
+  --use_existing_params true
+```
+
+```powershell
+# Recalculate scales for this run
+python -m main `
+  --stats_singleordistance single `
+  --data_dir .\data `
+  --folders examplepointclouds `
+  --filename_singlecloud reference.laz `
+  --use_subsampled_corepoints 1 `
+  --sample_size 10000 `
+  --scale_strategy radius `
+  --only_stats `
+  --output_format excel `
+  --project EXAMPLE `
+  --use_existing_params false
+
+# Override normal and projection scales
+python -m main `
+  --stats_singleordistance single `
+  --data_dir .\data `
+  --folders examplepointclouds `
+  --filename_singlecloud reference.laz `
+  --use_subsampled_corepoints 1 `
+  --sample_size 10000 `
+  --scale_strategy radius `
+  --only_stats `
+  --output_format excel `
+  --project EXAMPLE `
+  --normal_override 0.1 `
+  --proj_override 0.2 `
+  --use_existing_params false
+
+# Reuse previously saved parameters
+python -m main `
+  --stats_singleordistance single `
+  --data_dir .\data `
+  --folders examplepointclouds `
+  --filename_singlecloud reference.laz `
+  --use_subsampled_corepoints 1 `
+  --sample_size 10000 `
+  --scale_strategy radius `
+  --only_stats `
+  --output_format excel `
+  --project EXAMPLE `
   --use_existing_params true
 ```
 
@@ -193,6 +268,61 @@ python -m main \
   --outlier_multiplicator 3.0
 ```
 
+```powershell
+# Recalculate scales before measuring distances
+python -m main `
+  --stats_singleordistance distance `
+  --data_dir .\data `
+  --folders examplepointclouds `
+  --filename_reference reference.laz `
+  --filename_comparison comparison1.laz `
+  --use_subsampled_corepoints 5 `
+  --sample_size 10000 `
+  --scale_strategy radius `
+  --no-only_stats `
+  --output_format json `
+  --project EXAMPLE `
+  --use_existing_params false `
+  --outlier_detection_method nmad `
+  --outlier_multiplicator 3.0
+
+# Override normal and projection scales
+python -m main `
+  --stats_singleordistance distance `
+  --data_dir .\data `
+  --folders examplepointclouds `
+  --filename_reference reference.laz `
+  --filename_comparison comparison1.laz `
+  --use_subsampled_corepoints 5 `
+  --sample_size 10000 `
+  --scale_strategy radius `
+  --no-only_stats `
+  --output_format json `
+  --project EXAMPLE `
+  --normal_override 0.1 `
+  --proj_override 0.2 `
+  --use_existing_params false `
+  --outlier_detection_method nmad `
+  --outlier_multiplicator 3.0
+
+# Reuse parameters from a previous run
+python -m main `
+  --stats_singleordistance distance `
+  --data_dir .\data `
+  --folders examplepointclouds `
+  --filename_reference reference.laz `
+  --filename_comparison comparison1.laz `
+  --use_subsampled_corepoints 5 `
+  --sample_size 10000 `
+  --scale_strategy radius `
+  --no-only_stats `
+  --output_format json `
+  --project EXAMPLE `
+  --use_existing_params true `
+  --outlier_detection_method nmad `
+  --outlier_multiplicator 3.0
+```
+
 #### Plot commands
 
 After computing distances, the following commands visualize the results.
@@ -214,6 +344,23 @@ python -m report_pipeline folder \
   --out EXAMPLE_reference_comparison1.pdf
 ```
 
+```powershell
+# Plot with the main CLI
+python -m main `
+  --stats_singleordistance plot `
+  --data_dir .\data `
+  --folders examplepointclouds `
+  --filename_reference reference.laz `
+  --filename_comparison comparison1.laz `
+  --project EXAMPLE
+
+# Create a PDF report
+python -m report_pipeline folder `
+  --folder outputs/EXAMPLE_output `
+  --pattern '*reference_comparison1_distances.txt' `
+  --out EXAMPLE_reference_comparison1.pdf
+```
+
 ## Logging
 
 Control verbosity with the `--log_level` option or by setting the `LOG_LEVEL`
@@ -222,6 +369,11 @@ For example:
 
 ```bash
 export LOG_LEVEL=DEBUG
+python -m main
+```
+
+```powershell
+$env:LOG_LEVEL = 'DEBUG'
 python -m main
 ```
 
