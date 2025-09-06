@@ -83,3 +83,43 @@ def test_run_m3c2_writes_outputs(tmp_path, monkeypatch, caplog):
 
     assert any("Distanzen gespeichert" in rec.message for rec in caplog.records)
     assert any("Unsicherheiten gespeichert" in rec.message for rec in caplog.records)
+
+
+def test_run_m3c2_skips_coordinates_on_mismatch(tmp_path, monkeypatch, caplog):
+    """Warn and skip coordinate file when distances length differs."""
+
+    distances = np.array([1.0])
+    uncertainties = np.array([0.1])
+
+    class DummyRunner:
+        def run(self, comparison, reference, corepoints, normal, projection):
+            return distances, uncertainties
+
+    monkeypatch.setattr("m3c2.m3c2_core.m3c2_executor.M3C2Runner", DummyRunner)
+
+    cfg = SimpleNamespace(process_python_CC="cfg")
+    comparison = np.array([[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]])
+    reference = np.array([[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]])
+    corepoints = np.array([[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]])
+
+    caplog.set_level(logging.WARNING)
+
+    executor = M3C2Executor()
+    executor.run_m3c2(
+        cfg,
+        comparison,
+        reference,
+        corepoints,
+        normal=0.5,
+        projection=0.5,
+        out_base=str(tmp_path),
+        tag="run",
+    )
+
+    coords_file = tmp_path / "cfg_run_m3c2_distances_coordinates.txt"
+    assert not coords_file.exists()
+    assert any(
+        rec.levelno == logging.WARNING
+        and "Anzahl Koordinaten stimmt nicht mit Distanzen überein" in rec.message
+        for rec in caplog.records
+    )
